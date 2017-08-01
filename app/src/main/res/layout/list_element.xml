@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:weightSum="1">
+
+    <LinearLayout
+        android:layout_width="86dp"
+        android:layout_height="100dp"
+        android:layout_weight="0.14"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <ImageView
+            android:id="@+id/imgV"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"
+            app:srcCompat="@android:drawable/ic_menu_gallery" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="271dp"
+        android:layout_height="100dp"
+        android:layout_weight="1.48"
+
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <TextView
+            android:id="@+id/txv_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:text="CODICE"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/txv_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:text="DESC"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/txv_set"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:text="SET"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/txv_year"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:text="ANNO"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+</LinearLayout>
