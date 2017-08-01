@@ -1,6 +1,8 @@
 package com.lucagiorgetti.collectionhelper;
 
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -25,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
     public static ArrayList<Surprise> surpriseList;
     private static DbManager manager;
     private static DbInitializer init;
+    public static final String LOGGED = "logged";
+    public static String username = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +45,13 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        if(getUserLogged() == null){
+            Intent login = new Intent(this, LoginActivity.class);
+            startActivity(login);
+        } else {
+            username = getUserLogged();
+        }
 
         listView = (ListView) findViewById(R.id.list);
         manager = new DbManager(this);
@@ -112,5 +123,26 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public String getUserLogged() {
+        SharedPreferences prefs = getSharedPreferences(LOGGED, MODE_PRIVATE);
+        String login = prefs.getString("username", null);
+        String username = null;
+        if (login != null) {
+            username = prefs.getString("name", "Guest");
+        }
+        return username;
+    }
+    public void unlogUser(){
+        SharedPreferences.Editor editor = getSharedPreferences(MainActivity.LOGGED, MODE_PRIVATE).edit();
+        editor.remove("username");
+        editor.apply();
+    }
+
+    @Override
+    protected void onDestroy() {
+        unlogUser();
+        super.onDestroy();
     }
 }

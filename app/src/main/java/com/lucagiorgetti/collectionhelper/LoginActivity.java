@@ -1,0 +1,69 @@
+package com.lucagiorgetti.collectionhelper;
+
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+
+/**
+ * Created by Luca Giorgetti on 27/06/2017.
+ */
+
+public class LoginActivity extends AppCompatActivity {
+    public static EditText editTextUsername;
+    public static EditText editTextPassword;
+    public static Button login;
+    public static Button new_user;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.login);
+        String username;
+        String password;
+
+        this.editTextUsername = (EditText) findViewById(R.id.edt_username);
+        this.editTextPassword = (EditText) findViewById(R.id.edt_pwd);
+        this.login = (Button) findViewById(R.id.btn_login);
+        this.new_user = (Button) findViewById(R.id.btn_newuser);
+
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(checkLogin(editTextUsername.getText(), editTextPassword.getText())){
+                    setUserLogged(editTextUsername.getText().toString());
+                    finish();
+                }
+                else {
+                    showLoginError(view);
+                }
+            }
+        });
+    }
+
+    private boolean checkLogin(Editable username, Editable password) {
+        Log.w("LOGIN", "User: " + username + " Pwd: " + password);
+        return username.toString().equals("asd") && username.toString().equals("asd");
+    }
+
+    private void showLoginError(View view){
+        Snackbar.make(view, "Nome utente o password errati", Snackbar.LENGTH_SHORT)
+                .setAction("Action", null).show();;
+    }
+
+    public void setUserLogged(String value){
+        SharedPreferences.Editor editor = getSharedPreferences(MainActivity.LOGGED, MODE_PRIVATE).edit();
+        editor.putString("username", value);
+        editor.apply();
+    }
+
+    @Override
+    public void onBackPressed() {
+
+    }
+}
