@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -35,6 +36,12 @@ public class LoginActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                try  {
+                    InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                } catch (Exception e) {
+
+                }
                 if(checkLogin(editTextUsername.getText(), editTextPassword.getText())){
                     setUserLogged(editTextUsername.getText().toString());
                     finish();
@@ -47,8 +54,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private boolean checkLogin(Editable username, Editable password) {
-        Log.w("LOGIN", "User: " + username + " Pwd: " + password);
-        return username.toString().equals("asd") && username.toString().equals("asd");
+        boolean chk_username = username.equals("asd");
+        boolean chk_pwd = password.equals("asd");
+        return chk_username && chk_pwd;
     }
 
     private void showLoginError(View view){

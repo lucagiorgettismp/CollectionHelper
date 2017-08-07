@@ -161,4 +161,31 @@ public class DbManager {
             }
         return year;
     }
+
+    public boolean getExistingUsername(String username) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        Cursor cursor = null;
+        try {
+            String query = "SELECT * FROM " + User.TABLE_NAME +
+                    " ORDER BY " + User.COLUMN_USER_NAME + " ASC";
+            cursor = db.rawQuery(query, null);
+            while (cursor.moveToNext()) {
+                User user = new User(cursor);
+                //ritorno true se ho un utente con lo stesso username
+                if(user.getUsername() == username){
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
+        }
+        // nel caso non abbia trovato nessun utente con lo stesso username.
+        return false;
+    }
 }
