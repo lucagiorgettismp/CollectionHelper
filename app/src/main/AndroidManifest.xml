@@ -27,8 +27,10 @@
             android:name=".LoginActivity"
             android:label="@string/title_activity_login" />
         <activity
-            android:name=".LoginActivity"
-            android:label="@string/title_activity_login"></activity>
+            android:name=".NewUserActivity"
+            android:label="@string/title_activity_newUser"
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".SearchActivity"></activity>
     </application>
 
 </manifest>

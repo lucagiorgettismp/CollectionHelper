@@ -1,5 +1,6 @@
 package com.lucagiorgetti.collectionhelper;
 
+import android.app.DatePickerDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -10,11 +11,16 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 
 import com.lucagiorgetti.collectionhelper.Db.DbManager;
 import com.lucagiorgetti.collectionhelper.MainActivity;
 import com.lucagiorgetti.collectionhelper.R;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 /**
  * Created by Luca Giorgetti on 27/06/2017.
@@ -30,15 +36,17 @@ public class NewUserActivity extends AppCompatActivity {
     public static EditText editTextNationality;
     public static Button submit;
 
+    final Calendar myCalendar = Calendar.getInstance();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login);
+        setContentView(R.layout.registration);
         this.editTextName = (EditText) findViewById(R.id.edt_reg_name);
         this.editTextSurname = (EditText) findViewById(R.id.edt_reg_surname);
         this.editTextEmail = (EditText) findViewById(R.id.edt_reg_email);
-        this.editTextUsername = (EditText) findViewById(R.id.edt_username);
-        this.editTextPassword = (EditText) findViewById(R.id.edt_pwd);
+        this.editTextUsername = (EditText) findViewById(R.id.edt_reg_username);
+        this.editTextPassword = (EditText) findViewById(R.id.edt_reg_pwd);
         this.editTextBirthDate = (EditText) findViewById(R.id.edt_reg_birthdate);
         this.editTextNationality = (EditText) findViewById(R.id.edt_reg_nationality);
 
@@ -63,6 +71,28 @@ public class NewUserActivity extends AppCompatActivity {
                 }
             }
         });
+
+        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                updateLabel();
+            }
+        };
+
+        editTextBirthDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus) {
+                    new DatePickerDialog(NewUserActivity.this, date, myCalendar
+                            .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                            myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                }
+            }
+        });
     }
 
     private boolean checkSubmit(Editable name, Editable surname, Editable email, Editable username, Editable password, Editable birthdate, Editable nationality) {
@@ -77,7 +107,11 @@ public class NewUserActivity extends AppCompatActivity {
         return chk_name && chk_surname && chk_email && chk_username && chk_pwd && chk_birthdate && chk_nationality;
     }
 
-
+    private void updateLabel() {
+        String myFormat = "dd/MM/yyyy";
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        editTextBirthDate.setText(sdf.format(myCalendar.getTime()));
+    }
 
     private void showLoginError(View view){
         Snackbar.make(view, "E' stato riscontrato un errore. Compilare correttamente tutti i campi", Snackbar.LENGTH_SHORT)

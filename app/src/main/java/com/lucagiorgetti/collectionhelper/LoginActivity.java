@@ -1,5 +1,6 @@
 package com.lucagiorgetti.collectionhelper;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -51,11 +52,26 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+
+        new_user.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try  {
+                    Log.w("LOGIN","Registarti cliccato");
+                    Intent registration = new Intent(LoginActivity.this, NewUserActivity.class);
+                    startActivity(registration);
+                    finish();
+
+                } catch (Exception e) {
+
+                }
+            }
+        });
     }
 
     private boolean checkLogin(Editable username, Editable password) {
-        boolean chk_username = username.equals("asd");
-        boolean chk_pwd = password.equals("asd");
+        boolean chk_username = username.toString().equals("asd");
+        boolean chk_pwd = password.toString().equals("asd");
         return chk_username && chk_pwd;
     }
 
@@ -68,10 +84,5 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = getSharedPreferences(MainActivity.LOGGED, MODE_PRIVATE).edit();
         editor.putString("username", value);
         editor.apply();
-    }
-
-    @Override
-    public void onBackPressed() {
-
     }
 }

@@ -4,9 +4,15 @@
     android:background="@color/app_background"
     android:layout_height="match_parent">
 
+    <SearchView
+        android:layout_width="match_parent"
+        android:queryHint="Cerca la serie"
+        android:id="@+id/set_search"
+        android:layout_height="36dp" />
 
     <ListView
-        android:id="@+id/cat_list"
+        android:id="@+id/set_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </LinearLayout>
+

@@ -1,5 +1,7 @@
 package com.lucagiorgetti.collectionhelper.Db;
 
+import android.util.Log;
+
 import com.lucagiorgetti.collectionhelper.model.* ;
 
 import java.util.ArrayList;
@@ -16,7 +18,14 @@ public class DbInitializer{
     }
     private List<Year> years = new ArrayList<>();
     private List<Set> sets = new ArrayList<>();
+    private List<Producer> producers = new ArrayList<>();
     public void AddSurprises() {
+
+        Producer kinder = new Producer("Kinder", "Italia");//1
+        producers.add(kinder);
+
+        for (Producer p : producers) {mng.addProducer(p);}
+
         Year y_2016_1 = new Year(2016, 1);//1
         years.add(y_2016_1);
         Year y_2017_0 = new Year(2017, 0);//2
@@ -24,11 +33,11 @@ public class DbInitializer{
 
         for (Year y : years){mng.addYear(y);}
 
-        Set puffi_2016 = new Set("Puffi", getYearId(y_2016_1) , "", 15);//1
+        Set puffi_2016 = new Set("Puffi", getYearId(y_2016_1) , "", getProducerId(kinder));//1
         sets.add(puffi_2016);
-        Set teenidols_2017 = new Set("TeenIdols", getYearId(y_2017_0) ,"", 15);//2
+        Set teenidols_2017 = new Set("TeenIdols", getYearId(y_2017_0) ,"", getProducerId(kinder));//2
         sets.add(teenidols_2017);
-
+        Log.w("SET", String.valueOf(puffi_2016.getProducerId()));
         for (Set s : sets){ mng.addSet(s);}
 
         mng.addSurprise(new Surprise("SD321","Grande Puffo","/sdcard/Mancolista/SD321.jpg", getSetId(puffi_2016)));
@@ -50,6 +59,10 @@ public class DbInitializer{
 
     public int getSetId(Set set){
         return sets.indexOf(set) + 1;
+    }
+
+    public int getProducerId(Producer producer){
+        return producers.indexOf(producer) + 1;
     }
 }
 

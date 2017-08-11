@@ -103,7 +103,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="datetime"/>
+                android:clickable="true"
+                android:inputType="textPersonName"
+                android:focusable="true"/>
 
             <TextView
                 android:id="@+id/lbl_reg_nationality"

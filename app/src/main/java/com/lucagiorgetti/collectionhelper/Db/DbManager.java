@@ -33,25 +33,13 @@ public class DbManager {
         long row = db.insert(Year.TABLE_NAME, null, year.getContentValues());
         return row > 1;
     }
+    public boolean addProducer(Producer producer) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        long row = db.insert(Producer.TABLE_NAME, null, producer.getContentValues());
+        return row > 1;
+    }
 
-    public boolean updateSurprise(Surprise surprise) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        int row = db.update(Surprise.TABLE_NAME, surprise.getContentValues(),
-                Surprise._ID + " = ? ", new String[]{Integer.toString(surprise.getId())});
-        return row > 0;
-    }
-    public boolean updateSet(Set set) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        int row = db.update(Set.TABLE_NAME, set.getContentValues(),
-                Surprise._ID + " = ? ", new String[]{Integer.toString(set.getId())});
-        return row > 0;
-    }
-    public boolean updateYear(Year year) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        int row = db.update(Year.TABLE_NAME, year.getContentValues(),
-                Surprise._ID + " = ? ", new String[]{Integer.toString(year.getId())});
-        return row > 0;
-    }
+
 
     public boolean deleteSurprise(Surprise surprise) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -93,10 +81,10 @@ public class DbManager {
         }
         return surprises;
     }
-    public List<Set> getSets() {
+    public ArrayList<Set> getSets() {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        List<Set> sets = new ArrayList<>();
+        ArrayList<Set> sets = new ArrayList<>();
 
         Cursor cursor = null;
         try {
@@ -141,6 +129,30 @@ public class DbManager {
         }
         return years;
     }
+    public List<Producer> getProducers() {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        ArrayList<Producer> producers = new ArrayList<>();
+
+        Cursor cursor = null;
+        try {
+            String query = "SELECT * FROM " + Producer.TABLE_NAME +
+                    " ORDER BY " + Producer.COLUMN_PRODUCER_NAME + " ASC";
+            cursor = db.rawQuery(query, null);
+            while (cursor.moveToNext()) {
+                Producer producer = new Producer(cursor);
+                producers.add(producer);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
+        }
+        return producers;
+    }
 
     public Set getSetById(int id){
         List<Set> sets = getSets();
@@ -152,7 +164,6 @@ public class DbManager {
         }
         return set;
     }
-
     public Year getYearById(int id){
         Year year = null;
         for (Year y : this.getYears())
@@ -160,6 +171,14 @@ public class DbManager {
                 year = y;
             }
         return year;
+    }
+    public Producer getProducerById (int id){
+        Producer producer = null;
+        for (Producer p : this.getProducers())
+            if (p.getId() == id) {
+                producer = p;
+            }
+        return producer;
     }
 
     public boolean getExistingUsername(String username) {
