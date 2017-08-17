@@ -22,6 +22,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Utente on 07/04/2017.
@@ -30,10 +31,9 @@ import java.util.List;
 public class SetAdapter extends ArrayAdapter<Set> implements Filterable {
     private final Context context;
     private ArrayList<Set> data;
+    private ArrayList<Set> arraylist;
     private final int layoutResourceId;
     private final DbManager manager;
-    List<Set> filterList;
-    ValueFilter valueFilter;
 
     public SetAdapter(Context context, int layoutResourceId, ArrayList<Set> data, DbManager manager) {
         super(context, layoutResourceId, data);
@@ -41,7 +41,6 @@ public class SetAdapter extends ArrayAdapter<Set> implements Filterable {
         this.data = data;
         this.manager = manager;
         this.layoutResourceId = layoutResourceId;
-        this.filterList = data;
     }
 
     @Override
@@ -70,6 +69,7 @@ public class SetAdapter extends ArrayAdapter<Set> implements Filterable {
 
         holder.textViewSetName.setText(set.getName());
         String season = null;
+        /*
         switch (manager.getYearById(set.getYearId()).getSeason()){
             case 0:
                 season = "Estate";
@@ -77,9 +77,11 @@ public class SetAdapter extends ArrayAdapter<Set> implements Filterable {
             case 1:
                 season = "Inverno";
         }
-        holder.textViewSeason.setText(season);
-        holder.textViewProducer.setText(String.valueOf(manager.getProducerById(set.getProducerId()).getName()));
-        holder.textViewYear.setText(String.valueOf(manager.getYearById(set.getYearId()).getYear()));
+        */
+
+        holder.textViewSeason.setText("culo");
+        holder.textViewProducer.setText("culo");
+        holder.textViewYear.setText("culo");
 
         File imgFile = new  File(set.getImagePath());
         if(imgFile.exists()){
@@ -97,40 +99,22 @@ public class SetAdapter extends ArrayAdapter<Set> implements Filterable {
         }
         return row;
     }
-    @Override
-    public Filter getFilter() {
-        if (valueFilter == null) {
-            valueFilter = new ValueFilter();
-        }
-        return valueFilter;
-    }
-    private class ValueFilter extends Filter {
-        @Override
-        protected FilterResults performFiltering(CharSequence constraint) {
-            FilterResults results = new FilterResults();
 
-            if (constraint != null && constraint.length() > 0) {
-                for (int i = 0; i < filterList.size(); i++) {
-                    if ((filterList.get(i).getName().toUpperCase()).contains(constraint.toString().toUpperCase())) {
-                        filterList.add(filterList.get(i));
-                    }
+    public void filter(String charText) {
+        charText = charText.toLowerCase(Locale.getDefault());
+        ArrayList <Set> arraylist = new ArrayList<>();
+        arraylist = this.manager.getSets();
+        this.data.clear();
+        if (charText.length() == 0) {
+            this.data.addAll(arraylist);
+        } else {
+            for (Set s : arraylist) {
+                if (s.getName().toUpperCase().contains(charText.toUpperCase())) {
+                    this.data.add(s);
                 }
-                results.count = filterList.size();
-                results.values = filterList;
-            } else {
-                results.count = filterList.size();
-                results.values = filterList;
             }
-            return results;
-
         }
-
-        @Override
-        protected void publishResults(CharSequence constraint,
-                                      FilterResults results) {
-            data = (ArrayList<Set>) results.values;
-            notifyDataSetChanged();
-        }
+        notifyDataSetChanged();
     }
     static class ViewHolder
     {

@@ -12,11 +12,12 @@ import com.lucagiorgetti.collectionhelper.model.Surprise;
 
 import java.util.ArrayList;
 
-public class SearchActivity extends AppCompatActivity {
+public class SearchActivity extends AppCompatActivity implements SearchView.OnQueryTextListener{
     public static ListView setsListView;
     public static SearchView setsSearchView;
     public static ArrayList<Set> setsList;
     private static DbManager manager;
+    public SetAdapter adapt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,20 +28,21 @@ public class SearchActivity extends AppCompatActivity {
         manager = new DbManager(this);
         setsList = manager.getSets();
 
-        final ArrayAdapter adapt = new SetAdapter(this, R.layout.sets_element, setsList, manager);
+        adapt = new SetAdapter(this, R.layout.sets_element, setsList, manager);
 
         setsListView.setAdapter(adapt);
-        setsSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
+        setsSearchView.setOnQueryTextListener(this);
+    }
 
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                adapt.getFilter().filter(newText);
-                return false;
-            }
-        });
+    @Override
+    public boolean onQueryTextSubmit(String s) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String s) {
+        String text = s;
+        adapt.filter(text);
+        return false;
     }
 }

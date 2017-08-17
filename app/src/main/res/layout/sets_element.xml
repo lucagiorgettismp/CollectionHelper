@@ -17,17 +17,17 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_height="match_parent"
-            android:layout_width="270dp">
+            android:layout_width="258dp">
 
             <TextView
                 android:id="@+id/txv_setname"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="left"
                 android:paddingLeft="10dp"
                 android:text="NOME"
-                android:gravity="left"
-                android:textSize="18sp"
-                android:layout_weight="1" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/txv_producer"

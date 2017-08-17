@@ -57,6 +57,7 @@ public class DbHelper extends SQLiteOpenHelper {
     public static final String CREATE_TABLE_SET = "CREATE TABLE " + Set.TABLE_NAME +
             " (" +
             Set._ID + INTEGER_PRIMARY_KEY + COMMA_SEP +
+            Set.COLUMN_SET_ID + INTEGER_TYPE + COMMA_SEP +
             Set.COLUMN_SET_NAME + TEXT_TYPE + COMMA_SEP +
             Set.COLUMN_SET_IMAGE_PATH + TEXT_TYPE + COMMA_SEP +
             Set.COLUMN_YEAR_ID + INTEGER_TYPE + COMMA_SEP +
@@ -69,6 +70,7 @@ public class DbHelper extends SQLiteOpenHelper {
     public static final String CREATE_TABLE_YEAR = "CREATE TABLE " + Year.TABLE_NAME +
             " (" +
             Year._ID + INTEGER_PRIMARY_KEY + COMMA_SEP +
+            Year.COLUMN_YEAR_ID + INTEGER_TYPE + COMMA_SEP +
             Year.COLUMN_YEAR_NUMBER + INTEGER_TYPE + COMMA_SEP +
             Year.COLUMN_YEAR_SEASON + INTEGER_TYPE +
             " )";
@@ -77,14 +79,16 @@ public class DbHelper extends SQLiteOpenHelper {
     public static final String CREATE_TABLE_PRODUCR = "CREATE TABLE " + Producer.TABLE_NAME +
             " (" +
             Producer._ID + INTEGER_PRIMARY_KEY + COMMA_SEP +
+            Producer.COLUMN_PRODUCER_ID + INTEGER_TYPE + COMMA_SEP +
             Producer.COLUMN_PRODUCER_NAME + TEXT_TYPE + COMMA_SEP +
-            Producer.COLUMN_PRODUCER_NATIONALITY + TEXT_TYPE +
+            Producer.COLUMN_PRODUCER_NATION + TEXT_TYPE +
             " )";
 
     //Missing
     public static final String CREATE_TABLE_MISSING = "CREATE TABLE " + Missing.TABLE_NAME +
             " (" +
             Missing._ID + INTEGER_PRIMARY_KEY + COMMA_SEP +
+            Missing.COLUMN_MISSING_ID + INTEGER_TYPE + COMMA_SEP +
             Missing.COLUMN_USER_ID + INTEGER_TYPE + COMMA_SEP +
             Missing.COLUMN_SURPRISE_ID + INTEGER_TYPE + COMMA_SEP +
             FOREIGN_KEY + " ( " + Missing.COLUMN_USER_ID + " ) " + REFERENCE + User.TABLE_NAME + ID + COMMA_SEP +
@@ -95,6 +99,7 @@ public class DbHelper extends SQLiteOpenHelper {
     public static final String CREATE_TABLE_DOUBLE = "CREATE TABLE " + Double.TABLE_NAME +
             " (" +
             Double._ID + INTEGER_PRIMARY_KEY + COMMA_SEP +
+            Double.COLUMN_DOUBLE_ID + INTEGER_TYPE + COMMA_SEP +
             Double.COLUMN_USER_ID + INTEGER_TYPE + COMMA_SEP +
             Double.COLUMN_SURPRISE_ID + INTEGER_TYPE + COMMA_SEP +
             FOREIGN_KEY + " ( " + Double.COLUMN_USER_ID + " ) " + REFERENCE + User.TABLE_NAME + ID + COMMA_SEP +
@@ -105,13 +110,14 @@ public class DbHelper extends SQLiteOpenHelper {
     public static final String CREATE_TABLE_USER = "CREATE TABLE " + User.TABLE_NAME +
             " (" +
             User._ID + INTEGER_PRIMARY_KEY + COMMA_SEP +
+            User.COLUMN_USER_ID + INTEGER_TYPE + COMMA_SEP +
             User.COLUMN_USER_NAME + TEXT_TYPE + COMMA_SEP +
             User.COLUMN_USER_SURNAME + TEXT_TYPE + COMMA_SEP +
             User.COLUMN_USER_USERNAME + TEXT_TYPE + COMMA_SEP +
             User.COLUMN_USER_PASSWORD + TEXT_TYPE + COMMA_SEP +
             User.COLUMN_USER_EMAIL + TEXT_TYPE + COMMA_SEP +
             User.COLUMN_USER_BIRTH_DATE + TEXT_TYPE + COMMA_SEP +
-            User.COLUMN_USER_NATIONALITY + TEXT_TYPE +
+            User.COLUMN_USER_NATION + TEXT_TYPE +
             " )";
 
     /**
@@ -124,14 +130,12 @@ public class DbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_TABLE_YEAR);
-        Log.w("TABCREATE", "inizio creazione");
         db.execSQL(CREATE_TABLE_SET);
         db.execSQL(CREATE_TABLE_SURPRISE);
         db.execSQL(CREATE_TABLE_PRODUCR);
         db.execSQL(CREATE_TABLE_USER);
         db.execSQL(CREATE_TABLE_MISSING);
         db.execSQL(CREATE_TABLE_DOUBLE);
-        Log.w("TABCREATE","fine creazione");
     }
 
 

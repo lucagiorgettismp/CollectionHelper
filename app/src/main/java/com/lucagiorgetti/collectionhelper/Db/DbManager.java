@@ -5,12 +5,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.lucagiorgetti.collectionhelper.model.*;
+import com.lucagiorgetti.collectionhelper.model.Double;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DbManager {
-
     private final DbHelper dbHelper;
 
     public DbManager(Context context) {
@@ -38,22 +38,20 @@ public class DbManager {
         long row = db.insert(Producer.TABLE_NAME, null, producer.getContentValues());
         return row > 1;
     }
-
-
+    public boolean addUser(User user){
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        long row = db.insert(User.TABLE_NAME, null, user.getContentValues());
+        return row > 1;
+    }
+    public boolean addMissing(Missing missing){
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        long row = db.insert(Missing.TABLE_NAME, null, missing.getContentValues());
+        return row > 1;
+    }
 
     public boolean deleteSurprise(Surprise surprise) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         int row = db.delete(Surprise.TABLE_NAME, Surprise._ID + " = ?", new String[]{Integer.toString(surprise.getId())});
-        return row > 0;
-    }
-    public boolean deleteSet(Set set) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        int row = db.delete(Set.TABLE_NAME, Set._ID + " = ?", new String[]{Integer.toString(set.getId())});
-        return row > 0;
-    }
-    public boolean deleteYear(Year year) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        int row = db.delete(Year.TABLE_NAME, Year._ID + " = ?", new String[]{Integer.toString(year.getId())});
         return row > 0;
     }
 
@@ -153,12 +151,60 @@ public class DbManager {
         }
         return producers;
     }
+    public List<User> getUsers() {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        ArrayList<User> users = new ArrayList<>();
+
+        Cursor cursor = null;
+        try {
+            String query = "SELECT * FROM " + User.TABLE_NAME +
+                    " ORDER BY " + User.COLUMN_USER_USERNAME + " ASC";
+            cursor = db.rawQuery(query, null);
+            while (cursor.moveToNext()) {
+                User user = new User(cursor);
+                users.add(user);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
+        }
+        return users;
+    }
+    public List<Missing> getMissings(){
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        ArrayList<Missing> missings = new ArrayList<>();
+
+        Cursor cursor = null;
+        try {
+            String query = "SELECT * FROM " + Missing.TABLE_NAME +
+                    " ORDER BY " + Missing.COLUMN_SURPRISE_ID + " ASC";
+            cursor = db.rawQuery(query, null);
+            while (cursor.moveToNext()) {
+                Missing missing = new Missing(cursor);
+                missings.add(missing);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
+        }
+        return missings;
+    }
 
     public Set getSetById(int id){
         List<Set> sets = getSets();
         Set set = null;
         for (Set s : sets) {
-            if (s.getId() == id) {
+            if (s.getSetId() == id) {
                 set = s;
             }
         }
@@ -167,7 +213,7 @@ public class DbManager {
     public Year getYearById(int id){
         Year year = null;
         for (Year y : this.getYears())
-            if (y.getId() == id) {
+            if (y.getYearId() == id) {
                 year = y;
             }
         return year;
@@ -175,10 +221,159 @@ public class DbManager {
     public Producer getProducerById (int id){
         Producer producer = null;
         for (Producer p : this.getProducers())
-            if (p.getId() == id) {
+            if (producer.getProducerId() == id) {
                 producer = p;
             }
         return producer;
+    }
+    public User getUserById (int id){
+        User user = null;
+        for (User u : this.getUsers())
+            if (user.getUserId() == id) {
+                user = u;
+            }
+        return user;
+    }
+
+    public int getNewUserId(){
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        Cursor cursor = null;
+        try {
+            String query = "SELECT * FROM " + User.TABLE_NAME +
+                    " ORDER BY " + User.COLUMN_USER_ID + " DESC" + " LIMIT 1";
+            cursor = db.rawQuery(query, null);
+            while (cursor.moveToNext()) {
+                User user = new User(cursor);
+                int id = user.getUserId();
+                return id++;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
+        }
+        return 0;
+    }
+    public int getNewSetId(){
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        Cursor cursor = null;
+        try {
+            String query = "SELECT * FROM " + Set.TABLE_NAME +
+                    " ORDER BY " + Set.COLUMN_SET_ID + " DESC" + " LIMIT 1";
+            cursor = db.rawQuery(query, null);
+            while (cursor.moveToNext()) {
+                Set set = new Set(cursor);
+                int id = set.getSetId();
+                int new_id = id +1;
+                return new_id;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
+        }
+        return 0;
+    }
+    public int getNewYearId(){
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        Cursor cursor = null;
+        try {
+            String query = "SELECT * FROM " + Year.TABLE_NAME +
+                    " ORDER BY " + Year.COLUMN_YEAR_ID + " DESC" + " LIMIT 1";
+            cursor = db.rawQuery(query, null);
+            while (cursor.moveToNext()) {
+                Year year = new Year(cursor);
+                int id = year.getYearId();
+                int new_id = id +1;
+                return new_id;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
+        }
+        return 0;
+    }
+    public int getNewProducerId(){
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        Cursor cursor = null;
+        try {
+            String query = "SELECT * FROM " + Producer.TABLE_NAME +
+                    " ORDER BY " + Producer.COLUMN_PRODUCER_ID + " DESC" + " LIMIT 1";
+            cursor = db.rawQuery(query, null);
+            while (cursor.moveToNext()) {
+                Producer producer = new Producer(cursor);
+                int id = producer.getProducerId();
+                return id++;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
+        }
+        return 0;
+    }
+    public int getNewMissingId(){
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        Cursor cursor = null;
+        try {
+            String query = "SELECT * FROM " + Missing.TABLE_NAME +
+                    " ORDER BY " + Missing.COLUMN_MISSING_ID + " DESC" + " LIMIT 1";
+            cursor = db.rawQuery(query, null);
+            while (cursor.moveToNext()) {
+                Missing missing = new Missing(cursor);
+                int id = missing.getUserId();
+                return id++;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
+        }
+        return 0;
+    }
+    public int getNewDoubleId(){
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        Cursor cursor = null;
+        try {
+            String query = "SELECT * FROM " + Double.TABLE_NAME +
+                    " ORDER BY " + Double.COLUMN_DOUBLE_ID + " DESC" + " LIMIT 1";
+            cursor = db.rawQuery(query, null);
+            while (cursor.moveToNext()) {
+                Double d = new Double(cursor);
+                int id = d.getDoubleId();
+                return id++;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
+        }
+        return 0;
     }
 
     public boolean getExistingUsername(String username) {

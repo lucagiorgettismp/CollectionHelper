@@ -16,20 +16,23 @@ public class Set implements BaseColumns, Serializable {
     public static final String COLUMN_SET_NAME = "name";
     public static final String COLUMN_PRODUCER_ID = "producer_id";
     public static final String COLUMN_YEAR_ID = "year_id";
+    public static final String COLUMN_SET_ID = "set_id";
     public static final String COLUMN_SET_IMAGE_PATH = "img_path";
 
     private int id;
+    private int setId;
     private String name;
     private int year_id;
     private int producer_id;
     private String img_path;
 
 
-    public Set(String name, int year_id, String img_path, int producer_id){
+    public Set(String name, int year_id, String img_path, int producer_id, int setId){
         this.name = name;
         this.year_id = year_id;
         this.img_path = img_path;
         this.producer_id = producer_id;
+        this.setId = setId;
 
     }
 
@@ -39,6 +42,7 @@ public class Set implements BaseColumns, Serializable {
         this.year_id = cursor.getInt(cursor.getColumnIndex(Set.COLUMN_YEAR_ID));
         this.img_path = cursor.getString(cursor.getColumnIndex(Set.COLUMN_SET_IMAGE_PATH));
         this.producer_id = cursor.getInt(cursor.getColumnIndex((COLUMN_PRODUCER_ID)));
+        this.setId = cursor.getInt(cursor.getColumnIndex(COLUMN_SET_ID));
     }
 
     public int getId(){ return id;}
@@ -46,6 +50,7 @@ public class Set implements BaseColumns, Serializable {
     public int getYearId() { return year_id;}
     public String getImagePath() { return img_path;}
     public int getProducerId(){ return producer_id;}
+    public int getSetId(){return setId;}
 
     @Override
     public String toString(){
@@ -58,7 +63,7 @@ public class Set implements BaseColumns, Serializable {
         cv.put(COLUMN_YEAR_ID, year_id);
         cv.put(COLUMN_SET_IMAGE_PATH, img_path);
         cv.put(COLUMN_PRODUCER_ID, producer_id);
-
+        cv.put(COLUMN_SET_ID, setId);
         return cv;
     }
 }
