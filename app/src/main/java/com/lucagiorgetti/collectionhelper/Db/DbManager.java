@@ -433,4 +433,15 @@ public class DbManager {
         }
         return userId;
     }
+
+    public Surprise getSurpriseByCode(String code){
+        List<Surprise> surprises = getSurprises();
+        Surprise surp = null;
+        for (Surprise s : surprises) {
+            if (s.getCode().equals(code)) {
+                surp = s;
+            }
+        }
+        return surp;
+    }
 }
