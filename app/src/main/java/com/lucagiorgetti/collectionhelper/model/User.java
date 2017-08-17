@@ -57,14 +57,14 @@ public class User implements BaseColumns, Serializable {
 
     public int getId() { return id;}
     public int getColumnUserId() {return userId;}
-    public String getName() { return name;}
+    public String getName() { return this.name;}
     public String getSurname() { return surname;}
     public String getEmail() { return email;}
-    public String getUsername() { return username;}
-    public String getPassword() { return password;}
+    public String getUsername() { return this.username;}
+    public String getPassword() { return this.password;}
     public String getBirth_date() { return birth_date;}
     public String getNationality() { return nation;}
-    public int getUserId() {return userId;};
+    public int getUserId() {return this.userId;};
 
     @Override
     public String toString(){

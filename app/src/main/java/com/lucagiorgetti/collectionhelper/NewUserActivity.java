@@ -17,6 +17,7 @@ import android.widget.EditText;
 import com.lucagiorgetti.collectionhelper.Db.DbManager;
 import com.lucagiorgetti.collectionhelper.MainActivity;
 import com.lucagiorgetti.collectionhelper.R;
+import com.lucagiorgetti.collectionhelper.model.User;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -35,6 +36,7 @@ public class NewUserActivity extends AppCompatActivity {
     public static EditText editTextBirthDate;
     public static EditText editTextNationality;
     public static Button submit;
+    public static DbManager manager;
 
     final Calendar myCalendar = Calendar.getInstance();
 
@@ -51,7 +53,7 @@ public class NewUserActivity extends AppCompatActivity {
         this.editTextNationality = (EditText) findViewById(R.id.edt_reg_nationality);
 
         this.submit = (Button) findViewById(R.id.btn_reg_submit);
-
+        this.manager = new DbManager(this);
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -63,7 +65,13 @@ public class NewUserActivity extends AppCompatActivity {
                 }
                 if(checkSubmit(editTextName.getText(), editTextSurname.getText(), editTextEmail.getText(), editTextUsername.getText(), editTextPassword.getText(),
                         editTextBirthDate.getText(), editTextNationality.getText())){
-                    setUserLogged(editTextUsername.getText().toString());
+                    int userId = manager.getNewUserId();
+                    manager.addUser(new User(
+                            editTextName.getText().toString(),editTextSurname.getText().toString(),
+                            editTextEmail.getText().toString(),editTextUsername.getText().toString(),
+                            editTextPassword.getText().toString(), editTextBirthDate.getText().toString(),
+                            editTextNationality.getText().toString(), userId));
+                    setUserLogged(userId);
                     finish();
                 }
                 else {
@@ -123,9 +131,9 @@ public class NewUserActivity extends AppCompatActivity {
         return !mng.getExistingUsername(username);
     }
 
-    public void setUserLogged(String value){
+    public void setUserLogged(int userId){
         SharedPreferences.Editor editor = getSharedPreferences(MainActivity.LOGGED, MODE_PRIVATE).edit();
-        editor.putString("username", value);
+        editor.putInt("user", userId);
         editor.apply();
     }
 

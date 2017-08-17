@@ -175,7 +175,7 @@ public class DbManager {
         }
         return users;
     }
-    public List<Missing> getMissings(){
+    public List<Missing> getMissings(int userId){
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         ArrayList<Missing> missings = new ArrayList<>();
@@ -187,7 +187,9 @@ public class DbManager {
             cursor = db.rawQuery(query, null);
             while (cursor.moveToNext()) {
                 Missing missing = new Missing(cursor);
-                missings.add(missing);
+                if(missing.getUserId() == userId) {
+                    missings.add(missing);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -221,7 +223,7 @@ public class DbManager {
     public Producer getProducerById (int id){
         Producer producer = null;
         for (Producer p : this.getProducers())
-            if (producer.getProducerId() == id) {
+            if (p.getProducerId() == id) {
                 producer = p;
             }
         return producer;
@@ -246,7 +248,8 @@ public class DbManager {
             while (cursor.moveToNext()) {
                 User user = new User(cursor);
                 int id = user.getUserId();
-                return id++;
+                int new_id = id +1;
+                return new_id;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -340,7 +343,8 @@ public class DbManager {
             while (cursor.moveToNext()) {
                 Missing missing = new Missing(cursor);
                 int id = missing.getUserId();
-                return id++;
+                int new_id = id +1;
+                return new_id;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -363,7 +367,8 @@ public class DbManager {
             while (cursor.moveToNext()) {
                 Double d = new Double(cursor);
                 int id = d.getDoubleId();
-                return id++;
+                int new_id = id +1;
+                return new_id;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -378,17 +383,18 @@ public class DbManager {
 
     public boolean getExistingUsername(String username) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-
+        boolean finded = false;
         Cursor cursor = null;
         try {
             String query = "SELECT * FROM " + User.TABLE_NAME +
-                    " ORDER BY " + User.COLUMN_USER_NAME + " ASC";
+                    " ORDER BY " + User.COLUMN_USER_USERNAME + " ASC";
             cursor = db.rawQuery(query, null);
+            ArrayList<User> list = new ArrayList<>();
             while (cursor.moveToNext()) {
                 User user = new User(cursor);
-                //ritorno true se ho un utente con lo stesso username
-                if(user.getUsername() == username){
-                    return true;
+                list.add(user);
+                if(user.getUsername().equals(username)){
+                    finded = true;
                 }
             }
         } catch (Exception e) {
@@ -400,6 +406,31 @@ public class DbManager {
             db.close();
         }
         // nel caso non abbia trovato nessun utente con lo stesso username.
-        return false;
+        return finded;
+    }
+
+    public int login(String username, String password) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = null;
+        int userId = -1;
+        try {
+            String query = "SELECT * FROM " + User.TABLE_NAME +
+                    " ORDER BY " + User.COLUMN_USER_NAME + " ASC";
+            cursor = db.rawQuery(query, null);
+            while (cursor.moveToNext()) {
+                User user = new User(cursor);
+                if(user.getUsername().equals(username) && user.getPassword().equals(password)){
+                    userId = user.getUserId();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
+        }
+        return userId;
     }
 }

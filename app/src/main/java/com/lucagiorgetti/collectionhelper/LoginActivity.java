@@ -12,6 +12,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.lucagiorgetti.collectionhelper.Db.DbManager;
+
 /**
  * Created by Luca Giorgetti on 27/06/2017.
  */
@@ -21,6 +23,7 @@ public class LoginActivity extends AppCompatActivity {
     public static EditText editTextPassword;
     public static Button login;
     public static Button new_user;
+    public static DbManager manager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -33,6 +36,7 @@ public class LoginActivity extends AppCompatActivity {
         this.editTextPassword = (EditText) findViewById(R.id.edt_pwd);
         this.login = (Button) findViewById(R.id.btn_login);
         this.new_user = (Button) findViewById(R.id.btn_newuser);
+        this.manager = new DbManager(this);
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,13 +47,18 @@ public class LoginActivity extends AppCompatActivity {
                 } catch (Exception e) {
 
                 }
-                if(checkLogin(editTextUsername.getText(), editTextPassword.getText())){
-                    setUserLogged(editTextUsername.getText().toString());
-                    finish();
+                if(editTextUsername.getText().toString() != "" && editTextPassword.getText().toString() != ""){
+                    int userId = manager.login(editTextUsername.getText().toString(), editTextPassword.getText().toString());
+                    if(userId != -1){
+                        setUserLogged(userId);
+                        finish();
+                    } else {
+                        showLoginError(view);
+                    }
+                } else {
+                    showInsertError(view);
                 }
-                else {
-                    showLoginError(view);
-                }
+
             }
         });
 
@@ -69,20 +78,19 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private boolean checkLogin(Editable username, Editable password) {
-        boolean chk_username = username.toString().equals("asd");
-        boolean chk_pwd = password.toString().equals("asd");
-        return chk_username && chk_pwd;
-    }
-
     private void showLoginError(View view){
         Snackbar.make(view, "Nome utente o password errati", Snackbar.LENGTH_SHORT)
                 .setAction("Action", null).show();;
     }
 
-    public void setUserLogged(String value){
+    private void showInsertError(View view){
+        Snackbar.make(view, "Devi inserire tutti i dati richiesti", Snackbar.LENGTH_SHORT)
+                .setAction("Action", null).show();;
+    }
+
+    public void setUserLogged(int userId){
         SharedPreferences.Editor editor = getSharedPreferences(MainActivity.LOGGED, MODE_PRIVATE).edit();
-        editor.putString("username", value);
+        editor.putInt("userId", userId);
         editor.apply();
     }
 }

@@ -33,7 +33,6 @@ public class Set implements BaseColumns, Serializable {
         this.img_path = img_path;
         this.producer_id = producer_id;
         this.setId = setId;
-
     }
 
     public Set (Cursor cursor){

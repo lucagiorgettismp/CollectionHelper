@@ -28,6 +28,7 @@ public class DbInitializer{
     public void AddSurprises() {
 
         mng.addUser(new User("Guest", "Guest", "asd@asd.it", "asd", "asd", "25/01/1995", "Italia", mng.getNewUserId())); //0
+        mng.addUser(new User("Luca", "Giorgetti", "lucagiorgit95@gmail.com", "lg", "asd", "12/11/2010", "Italia", mng.getNewUserId()));
 
         mng.addProducer(new Producer("Kinder", "Italia", mng.getNewProducerId())); //0
 

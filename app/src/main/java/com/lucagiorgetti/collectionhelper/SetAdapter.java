@@ -69,7 +69,7 @@ public class SetAdapter extends ArrayAdapter<Set> implements Filterable {
 
         holder.textViewSetName.setText(set.getName());
         String season = null;
-        /*
+
         switch (manager.getYearById(set.getYearId()).getSeason()){
             case 0:
                 season = "Estate";
@@ -77,11 +77,10 @@ public class SetAdapter extends ArrayAdapter<Set> implements Filterable {
             case 1:
                 season = "Inverno";
         }
-        */
 
-        holder.textViewSeason.setText("culo");
-        holder.textViewProducer.setText("culo");
-        holder.textViewYear.setText("culo");
+        holder.textViewSeason.setText(season);
+        holder.textViewProducer.setText(manager.getProducerById(set.getProducerId()).getName());
+        holder.textViewYear.setText(String.valueOf(manager.getYearById(set.getYearId()).getYear()));
 
         File imgFile = new  File(set.getImagePath());
         if(imgFile.exists()){

@@ -28,11 +28,15 @@ public class MainActivity extends AppCompatActivity {
     private static DbManager manager;
     private static DbInitializer init;
     public static final String LOGGED = "logged";
-    public static String username = null;
+    public static int userId = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //this.deleteDatabase("database.db");
+        //init.AddSurprises();
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -41,34 +45,23 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                        */
                 Intent i = new Intent(MainActivity.this, SearchActivity.class);
                 startActivity(i);
             }
         });
 
-        if(getUserLogged() == null){
+        if(getUserLogged() == -1){
             Intent login = new Intent(this, LoginActivity.class);
             startActivity(login);
         } else {
-            username = getUserLogged();
+            userId = getUserLogged();
         }
 
         listView = (ListView) findViewById(R.id.list);
         manager = new DbManager(this);
         init = new DbInitializer(manager);
-
-        //this.deleteDatabase("database.db");
-
+        
         surpriseList = manager.getSurprises();
-
-        //Aggiunge elementi in db
-        if(surpriseList.isEmpty()){
-            init.AddSurprises();
-        }
 
         final ArrayAdapter adapt = new SurpriseAdapter(this, R.layout.list_element, surpriseList, manager);
         SwipeDismissListViewTouchListener touchListener =
@@ -131,24 +124,24 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public String getUserLogged() {
+    public int getUserLogged() {
         SharedPreferences prefs = getSharedPreferences(LOGGED, MODE_PRIVATE);
-        String login = prefs.getString("username", null);
-        String username = null;
-        if (login != null) {
-            username = prefs.getString("name", "Guest");
+        int login = prefs.getInt("userId", -1);
+        if (login != -1) {
+            int userId = prefs.getInt("userId", -1);
         }
-        return username;
+        return userId;
     }
-    public void unlogUser(){
+
+    public void logOutUser(){
         SharedPreferences.Editor editor = getSharedPreferences(MainActivity.LOGGED, MODE_PRIVATE).edit();
-        editor.remove("username");
+        editor.remove("userId");
         editor.apply();
     }
 
     @Override
     protected void onDestroy() {
-        unlogUser();
+        logOutUser();
         super.onDestroy();
     }
 }
