@@ -91,6 +91,11 @@ public class LoginActivity extends AppCompatActivity {
     public void setUserLogged(int userId){
         SharedPreferences.Editor editor = getSharedPreferences(MainActivity.LOGGED, MODE_PRIVATE).edit();
         editor.putInt("userId", userId);
-        editor.apply();
+        editor.commit();
+    }
+
+    @Override
+    public void onBackPressed(){
+
     }
 }

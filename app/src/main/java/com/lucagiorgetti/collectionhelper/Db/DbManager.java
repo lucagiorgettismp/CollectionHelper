@@ -54,6 +54,11 @@ public class DbManager {
         int row = db.delete(Surprise.TABLE_NAME, Surprise._ID + " = ?", new String[]{Integer.toString(surprise.getId())});
         return row > 0;
     }
+    public boolean deleteMissing(Surprise surprise) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        int row = db.delete(Missing.TABLE_NAME, Missing.COLUMN_SURPRISE_ID + " = ?", new String[]{Integer.toString(surprise.getId())});
+        return row > 0;
+    }
 
     public ArrayList<Surprise> getSurprises() {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -175,9 +180,8 @@ public class DbManager {
         }
         return users;
     }
-    public List<Missing> getMissings(int userId){
+    public ArrayList<Surprise> getMissings(int userId){
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-
         ArrayList<Missing> missings = new ArrayList<>();
 
         Cursor cursor = null;
@@ -199,7 +203,12 @@ public class DbManager {
             }
             db.close();
         }
-        return missings;
+        ArrayList<Surprise> surpriseMissing = new ArrayList<>();
+        for (Missing m: missings) {
+            Surprise surp = this.getSurpriseByCode(m.getSurpriseCode());
+            surpriseMissing.add(surp);
+        }
+        return surpriseMissing;
     }
 
     public Set getSetById(int id){
@@ -421,6 +430,7 @@ public class DbManager {
                 User user = new User(cursor);
                 if(user.getUsername().equals(username) && user.getPassword().equals(password)){
                     userId = user.getUserId();
+                    int c = userId;
                 }
             }
         } catch (Exception e) {
@@ -443,5 +453,30 @@ public class DbManager {
             }
         }
         return surp;
+    }
+
+    public ArrayList<Surprise> getSurprisesBySetId(int setId) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        ArrayList<Surprise> surprises = new ArrayList<>();
+
+        Cursor cursor = null;
+        try {
+            String query = "SELECT * FROM " + Surprise.TABLE_NAME +
+                    "WHERE " + Surprise.COLUMN_SET_ID + " = " + setId +
+                    " ORDER BY " + Surprise.COLUMN_CODE + " ASC";
+            cursor = db.rawQuery(query, null);
+            while (cursor.moveToNext()) {
+                Surprise surprise = new Surprise(cursor);
+                surprises.add(surprise);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
+        }
+        return surprises;
     }
 }
