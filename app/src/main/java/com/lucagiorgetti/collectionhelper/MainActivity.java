@@ -9,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         //this.deleteDatabase("database.db");
+        manager = new DbManager(this);
+        //init = new DbInitializer(manager);
         //init.AddSurprises();
 
         setContentView(R.layout.activity_main);
@@ -58,48 +61,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         listView = (ListView) findViewById(R.id.list);
-        manager = new DbManager(this);
-        init = new DbInitializer(manager);
-        
-        surpriseList = manager.getSurprises();
-
-        final ArrayAdapter adapt = new SurpriseAdapter(this, R.layout.list_element, surpriseList, manager);
-        SwipeDismissListViewTouchListener touchListener =
-                new SwipeDismissListViewTouchListener(listView,
-                        new SwipeDismissListViewTouchListener.DismissCallbacks() {
-                            @Override
-                            public boolean canDismiss(int position) {
-                                return true;
-                            }
-
-                            @Override
-                            public void onDismiss(ListView listView, int[] reverseSortedPositions) {
-                                for (int position : reverseSortedPositions) {
-                                    final Surprise itemClicked = (Surprise) listView.getItemAtPosition(position);
-                                    new AlertDialog.Builder(MainActivity.this)
-                                            .setTitle("Rimozione")
-                                            .setMessage("Eliminare "+ itemClicked.getCode() + " - " + itemClicked.getDesc() + "?")
-                                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialog, int which) {
-                                                    surpriseList.remove(itemClicked);
-                                                    manager.deleteSurprise(itemClicked);
-                                                    adapt.notifyDataSetChanged();
-                                                }
-                                            })
-                                            .setNegativeButton("Annulla", new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialog, int which) {
-                                                    dialog.dismiss();
-                                                }
-                                            })
-                                            .show();
-                                }
-                            }
-                        });
-
-        listView.setOnTouchListener(touchListener);
-        listView.setAdapter(adapt);
     }
 
     @Override
@@ -126,22 +87,69 @@ public class MainActivity extends AppCompatActivity {
 
     public int getUserLogged() {
         SharedPreferences prefs = getSharedPreferences(LOGGED, MODE_PRIVATE);
-        int login = prefs.getInt("userId", -1);
-        if (login != -1) {
-            int userId = prefs.getInt("userId", -1);
-        }
+        int userId = prefs.getInt("userId", -1);
         return userId;
     }
 
     public void logOutUser(){
         SharedPreferences.Editor editor = getSharedPreferences(MainActivity.LOGGED, MODE_PRIVATE).edit();
-        editor.remove("userId");
-        editor.apply();
+        editor.putInt("userId", -1);
+        editor.commit();
     }
 
     @Override
     protected void onDestroy() {
+        Log.w("MAIN","Destroy");
         logOutUser();
         super.onDestroy();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        this.userId = getUserLogged();
+        Log.w("MAIN", "Start id= " + this.userId);
+        if(this.userId != -1){
+             // surpriseList = manager.getSurprises();
+             surpriseList = manager.getMissings(this.userId);
+
+            final ArrayAdapter adapt = new SurpriseAdapter(this, R.layout.list_element, surpriseList, manager);
+            SwipeDismissListViewTouchListener touchListener =
+                    new SwipeDismissListViewTouchListener(listView,
+                            new SwipeDismissListViewTouchListener.DismissCallbacks() {
+                                @Override
+                                public boolean canDismiss(int position) {
+                                    return true;
+                                }
+
+                                @Override
+                                public void onDismiss(ListView listView, int[] reverseSortedPositions) {
+                                    for (int position : reverseSortedPositions) {
+                                        final Surprise itemClicked = (Surprise) listView.getItemAtPosition(position);
+                                        new AlertDialog.Builder(MainActivity.this)
+                                                .setTitle("Rimozione")
+                                                .setMessage("Eliminare " + itemClicked.getCode() + " - " + itemClicked.getDesc() + "?")
+                                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                        surpriseList.remove(itemClicked);
+                                                        manager.deleteMissing(itemClicked);
+                                                        adapt.notifyDataSetChanged();
+                                                    }
+                                                })
+                                                .setNegativeButton("Annulla", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                        dialog.dismiss();
+                                                    }
+                                                })
+                                                .show();
+                                    }
+                                }
+                            });
+
+            listView.setOnTouchListener(touchListener);
+            listView.setAdapter(adapt);
+            }
     }
 }

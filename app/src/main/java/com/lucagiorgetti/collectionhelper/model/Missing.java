@@ -37,9 +37,8 @@ public class Missing implements BaseColumns, Serializable {
 
     public int getId(){ return id;}
     public int getUserId(){ return user_id;}
-    public String getSurpriseId() {return surprise_code;}
+    public String getSurpriseCode() {return surprise_code;}
     public int getMissingId(){ return missingId;}
-
 
     @Override
     public String toString(){
