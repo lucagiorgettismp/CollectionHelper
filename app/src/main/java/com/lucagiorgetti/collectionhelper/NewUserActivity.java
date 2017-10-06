@@ -37,7 +37,7 @@ public class NewUserActivity extends AppCompatActivity {
     public static EditText editTextNationality;
     public static Button submit;
     public static DbManager manager;
-
+    public static SessionManager sessionManager;
     final Calendar myCalendar = Calendar.getInstance();
 
     @Override
@@ -63,19 +63,27 @@ public class NewUserActivity extends AppCompatActivity {
                 } catch (Exception e) {
 
                 }
-                if(checkSubmit(editTextName.getText(), editTextSurname.getText(), editTextEmail.getText(), editTextUsername.getText(), editTextPassword.getText(),
-                        editTextBirthDate.getText(), editTextNationality.getText())){
+                String name = editTextName.getText().toString().trim();
+                String surname = editTextSurname.getText().toString().trim();
+                String username = editTextUsername.getText().toString().trim();
+                String email = editTextEmail.getText().toString().trim();
+                String pwd = editTextPassword.getText().toString().trim();
+                String birthDate = editTextBirthDate.getText().toString().trim();
+                String nation = editTextNationality.getText().toString().trim();
+
+                if(checkSubmit(name, surname, email, username, pwd, birthDate, nation)){
                     int userId = manager.getNewUserId();
-                    manager.addUser(new User(
+                    User newUser = new User(
                             editTextName.getText().toString(),editTextSurname.getText().toString(),
                             editTextEmail.getText().toString(),editTextUsername.getText().toString(),
                             editTextPassword.getText().toString(), editTextBirthDate.getText().toString(),
-                            editTextNationality.getText().toString(), userId));
-                    setUserLogged(userId);
+                            editTextNationality.getText().toString(), userId);
+                    manager.addUser(newUser);
+                    sessionManager.createLoginSession(newUser.getUsername());
                     finish();
                 }
                 else {
-                    showLoginError(view);
+                    showRegistrationError(view);
                 }
             }
         });
@@ -103,14 +111,14 @@ public class NewUserActivity extends AppCompatActivity {
         });
     }
 
-    private boolean checkSubmit(Editable name, Editable surname, Editable email, Editable username, Editable password, Editable birthdate, Editable nationality) {
+    private boolean checkSubmit(String name, String surname, String email, String username, String password, String birthdate, String nation) {
         boolean chk_username = !username.equals("") && checkUsernameNotExisting(username.toString());
         boolean chk_pwd = !password.equals("");
         boolean chk_email = !email.equals("") && isValidEmail(email);
         boolean chk_name = !name.equals("");
         boolean chk_surname = !surname.equals("");
         boolean chk_birthdate = !birthdate.equals("");
-        boolean chk_nationality = !nationality.equals("");
+        boolean chk_nationality = !nation.equals("");
 
         return chk_name && chk_surname && chk_email && chk_username && chk_pwd && chk_birthdate && chk_nationality;
     }
@@ -121,7 +129,7 @@ public class NewUserActivity extends AppCompatActivity {
         editTextBirthDate.setText(sdf.format(myCalendar.getTime()));
     }
 
-    private void showLoginError(View view){
+    private void showRegistrationError(View view){
         Snackbar.make(view, "E' stato riscontrato un errore. Compilare correttamente tutti i campi", Snackbar.LENGTH_SHORT)
                 .setAction("Action", null).show();
     }

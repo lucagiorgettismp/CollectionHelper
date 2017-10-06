@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -16,6 +17,8 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.lucagiorgetti.collectionhelper.Db.DbInitializer;
 import com.lucagiorgetti.collectionhelper.Db.DbManager;
 import com.lucagiorgetti.collectionhelper.model.Surprise;
@@ -26,17 +29,43 @@ public class MainActivity extends AppCompatActivity {
 
     public static ListView listView;
     public static ArrayList<Surprise> surpriseList;
-    private static DbManager manager;
+    private static DbManager dbManager;
     private static DbInitializer init;
     public static final String LOGGED = "logged";
-    public static int userId = -1;
+    public static SessionManager session;
+    private FirebaseAuth fireAuth;
+    private FirebaseAuth.AuthStateListener fireAuthStateListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        session = new SessionManager(getApplicationContext());
+        fireAuth = FirebaseAuth.getInstance();
+        fireAuthStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if(user != null){
+                    // User is logged in
+                    session.createLoginSession(user.getEmail());
+                } else {
+                    // User is logged out
+                    Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+
+                    // Closing all the Activities
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                    // Add new Flag to start new Activity
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                    // Staring Login Activity
+                    getApplicationContext().startActivity(i);
+                }
+            }
+        };
 
         //this.deleteDatabase("database.db");
-        manager = new DbManager(this);
+        dbManager = new DbManager(this);
         //init = new DbInitializer(manager);
         //init.AddSurprises();
 
@@ -53,13 +82,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        if(getUserLogged() == -1){
-            Intent login = new Intent(this, LoginActivity.class);
-            startActivity(login);
-        } else {
-            userId = getUserLogged();
-        }
-
+        session.checkLogin();
+        dbManager.getUserByUsername(session.getUserDetails().get("username"));
         listView = (ListView) findViewById(R.id.list);
     }
 
@@ -81,75 +105,70 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
-    public int getUserLogged() {
-        SharedPreferences prefs = getSharedPreferences(LOGGED, MODE_PRIVATE);
-        int userId = prefs.getInt("userId", -1);
-        return userId;
-    }
-
-    public void logOutUser(){
-        SharedPreferences.Editor editor = getSharedPreferences(MainActivity.LOGGED, MODE_PRIVATE).edit();
-        editor.putInt("userId", -1);
-        editor.commit();
-    }
-
+    
     @Override
     protected void onDestroy() {
         Log.w("MAIN","Destroy");
-        logOutUser();
+        session.logoutUser();
         super.onDestroy();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if( fireAuthStateListener != null){
+            fireAuth.removeAuthStateListener(fireAuthStateListener);
+        }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        this.userId = getUserLogged();
-        Log.w("MAIN", "Start id= " + this.userId);
-        if(this.userId != -1){
-             // surpriseList = manager.getSurprises();
-             surpriseList = manager.getMissings(this.userId);
+        fireAuth.addAuthStateListener(fireAuthStateListener);
+        session.checkLogin();
+        int userId = dbManager.getUserByUsername(session.getUserDetails().get("username")).getUserId();
+        // surpriseList = manager.getSurprises();
+        surpriseList = dbManager.getMissings(userId);
 
-            final ArrayAdapter adapt = new SurpriseAdapter(this, R.layout.list_element, surpriseList, manager);
-            SwipeDismissListViewTouchListener touchListener =
-                    new SwipeDismissListViewTouchListener(listView,
-                            new SwipeDismissListViewTouchListener.DismissCallbacks() {
-                                @Override
-                                public boolean canDismiss(int position) {
-                                    return true;
-                                }
+        final ArrayAdapter adapt = new SurpriseAdapter(this, R.layout.list_element, surpriseList, dbManager);
+        SwipeDismissListViewTouchListener touchListener =
+                new SwipeDismissListViewTouchListener(listView,
+                        new SwipeDismissListViewTouchListener.DismissCallbacks() {
+                            @Override
+                            public boolean canDismiss(int position) {
+                                return true;
+                            }
 
-                                @Override
-                                public void onDismiss(ListView listView, int[] reverseSortedPositions) {
-                                    for (int position : reverseSortedPositions) {
-                                        final Surprise itemClicked = (Surprise) listView.getItemAtPosition(position);
-                                        new AlertDialog.Builder(MainActivity.this)
-                                                .setTitle("Rimozione")
-                                                .setMessage("Eliminare " + itemClicked.getCode() + " - " + itemClicked.getDesc() + "?")
-                                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialog, int which) {
-                                                        surpriseList.remove(itemClicked);
-                                                        manager.deleteMissing(itemClicked);
-                                                        adapt.notifyDataSetChanged();
-                                                    }
-                                                })
-                                                .setNegativeButton("Annulla", new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialog, int which) {
-                                                        dialog.dismiss();
-                                                    }
-                                                })
-                                                .show();
-                                    }
-                                }
-                            });
-
-            listView.setOnTouchListener(touchListener);
-            listView.setAdapter(adapt);
-            }
+                        @Override
+                        public void onDismiss(ListView listView, int[] reverseSortedPositions) {
+                            for (int position : reverseSortedPositions) {
+                                final Surprise itemClicked = (Surprise) listView.getItemAtPosition(position);
+                                new AlertDialog.Builder(MainActivity.this)
+                                        .setTitle("Rimozione")
+                                        .setMessage("Eliminare " + itemClicked.getCode() + " - " + itemClicked.getDesc() + "?")
+                                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                surpriseList.remove(itemClicked);
+                                                dbManager.deleteMissing(itemClicked);
+                                                adapt.notifyDataSetChanged();
+                                            }
+                                        })
+                                        .setNegativeButton("Annulla", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                            }
+                                        })
+                                        .show();
+                            }
+                        }
+                });
+        listView.setOnTouchListener(touchListener);
+        listView.setAdapter(adapt);
+     
     }
 }

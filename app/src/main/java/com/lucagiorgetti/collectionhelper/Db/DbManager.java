@@ -246,6 +246,15 @@ public class DbManager {
         return user;
     }
 
+    public User getUserByUsername (String username){
+        User user = null;
+        for (User u : this.getUsers())
+            if (user.getUsername() == username.trim()) {
+                user = u;
+            }
+        return user;
+    }
+
     public int getNewUserId(){
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
@@ -418,10 +427,9 @@ public class DbManager {
         return finded;
     }
 
-    public int login(String username, String password) {
+    public boolean login(String username, String password) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = null;
-        int userId = -1;
         try {
             String query = "SELECT * FROM " + User.TABLE_NAME +
                     " ORDER BY " + User.COLUMN_USER_NAME + " ASC";
@@ -429,8 +437,7 @@ public class DbManager {
             while (cursor.moveToNext()) {
                 User user = new User(cursor);
                 if(user.getUsername().equals(username) && user.getPassword().equals(password)){
-                    userId = user.getUserId();
-                    int c = userId;
+                    return true;
                 }
             }
         } catch (Exception e) {
@@ -441,7 +448,7 @@ public class DbManager {
             }
             db.close();
         }
-        return userId;
+        return false;
     }
 
     public Surprise getSurpriseByCode(String code){
