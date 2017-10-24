@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="app_background">#ecfefe</color>
+    <color name="app_background">#ffffff</color>
     <color name="background_pari">#d2fcfd</color>
     <color name="background_dispari">#a0eff0</color>
     <color name="text_color">#3f57a7</color>

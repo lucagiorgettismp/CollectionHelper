@@ -1,14 +1,29 @@
 package com.lucagiorgetti.collectionhelper;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
+import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.lucagiorgetti.collectionhelper.Db.DbManager;
 
@@ -17,55 +32,126 @@ import com.lucagiorgetti.collectionhelper.Db.DbManager;
  */
 
 public class LoginActivity extends AppCompatActivity {
-    public static EditText editTextUsername;
-    public static EditText editTextPassword;
-    public static Button login;
-    public static Button new_user;
+    private Button login;
+    private Button facebookLogin;
+    private Button registrate;
+    private String email;
+    private String pwd;
+    private FirebaseAuth fireAuth;
     public static DbManager manager;
-    public static SessionManager session;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login);
+        setContentView(R.layout.app_welcome);
+        fireAuth = FirebaseAuth.getInstance();
 
-        this.session = new SessionManager(getApplicationContext());
+        login = (Button) findViewById(R.id.btn_start_login);
+        facebookLogin  = (Button) findViewById(R.id.btn_start_facebook);
+        registrate  = (Button) findViewById(R.id.btn_start_registration);
 
-        this.editTextUsername = (EditText) findViewById(R.id.edt_username);
-        this.editTextPassword = (EditText) findViewById(R.id.edt_pwd);
-        this.login = (Button) findViewById(R.id.btn_login);
-        this.new_user = (Button) findViewById(R.id.btn_newuser);
+        this.login = (Button) findViewById(R.id.btn_start_login);
+        this.registrate = (Button) findViewById(R.id.btn_start_registration);
+
+        this.login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openLogingDialog();
+            }
+        });
+
+        this.facebookLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Snackbar.make(v, "Non ancora implementato. :(", Snackbar.LENGTH_SHORT)
+                        .setAction("Action", null).show();
+            }
+        });
+
+        this.registrate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), RegistrateActivity.class);
+                // Closing all the Activities
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                // Add new Flag to start new Activity
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                // Staring Login Activity
+                getApplicationContext().startActivity(i);
+            }
+        });
+
         this.manager = new DbManager(this);
+    }
 
-        login.setOnClickListener(new View.OnClickListener() {
+    private void openLogingDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Login");
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+
+        params.setMargins(40, 0, 40, 0);
+
+        final EditText inEmail = new EditText(this);
+        inEmail.setHint("Email");
+        inEmail.setLayoutParams(params);
+        layout.addView(inEmail);
+
+        final EditText inPassword = new EditText(this);
+        inPassword.setHint("Password");
+        inPassword.setLayoutParams(params);
+        layout.addView(inPassword);
+
+        inEmail.setInputType(InputType.TYPE_CLASS_TEXT);
+        inEmail.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+        inPassword.setInputType(InputType.TYPE_CLASS_TEXT);
+        inPassword.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        inPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+
+        builder.setView(layout);
+
+        builder.setPositiveButton("LOGIN", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                try  {
-                    InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-                } catch (Exception e) {
-
-                }
-
-                String username = editTextUsername.getText().toString().trim();
-                String pwd = editTextPassword.getText().toString().trim();
-
+            public void onClick(DialogInterface dialog, int which) {
+                email = inEmail.getText().toString().trim();
+                Log.w("LOGIN", "input email : " + email);
+                pwd = inPassword.getText().toString().trim();
+                Log.w("LOGIN", "input pwd : " + pwd);
+                fireAuth.signInWithEmailAndPassword(email, pwd).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.w("LOGIN", "Fatto. Stato" + task.isSuccessful());
+                        if (!task.isSuccessful())
+                        {
+                            Log.w("LOGIN", "Errore:(");
+                            Toast.makeText(LoginActivity.this, "Errore :(",
+                                    Toast.LENGTH_SHORT).show();                        }
+                    }
+                });
+                dialog.dismiss();
+                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                // Closing all the Activities
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                // Add new Flag to start new Activity
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                // Staring Login Activity
+                getApplicationContext().startActivity(i);
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
             }
         });
 
-        new_user.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try  {
-                    Intent registration = new Intent(LoginActivity.this, NewUserActivity.class);
-                    startActivity(registration);
-                    finish();
-
-                } catch (Exception e) {
-
-                }
-            }
-        });
+        builder.show();
     }
 
     private void showLoginError(View view){

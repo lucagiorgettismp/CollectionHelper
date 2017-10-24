@@ -13,136 +13,55 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
+
             <TextView
-                android:id="@+id/lbl_reg_name"
+                android:id="@+id/txv_reg_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Nome:"
-                android:textAlignment="textStart"
+                android:text="Inserisci email, password, username e nazione di provenienza, e continua su Surprix!"
+                android:textAlignment="center"
                 android:textSize="18sp" />
 
             <EditText
-                android:id="@+id/edt_reg_name"
+                android:id="@+id/edit_reg_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Nome"
-                android:inputType="textPersonName" />
-            <TextView
-                android:id="@+id/lbl_reg_surname"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Cognome:"
-                android:textAlignment="textStart"
-                android:textSize="18sp" />
+                android:inputType="textEmailAddress"
+                android:text="Email" />
 
             <EditText
-                android:id="@+id/edt_reg_surname"
+                android:id="@+id/edit_reg_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Cognome"
-                android:inputType="textPersonName" />
-
-            <TextView
-                android:id="@+id/lbl_reg_email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Email:"
-                android:textAlignment="textStart"
-                android:textSize="18sp" />
+                android:inputType="textPassword"
+                android:text="Password" />
 
             <EditText
-                android:id="@+id/edt_reg_email"
+                android:id="@+id/edit_reg_username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Email"
-                android:inputType="textEmailAddress" />
-
-            <TextView
-                android:id="@+id/lbl_reg_username"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Username:"
-                android:textAlignment="textStart"
-                android:textSize="18sp" />
-
-            <EditText
-                android:id="@+id/edt_reg_username"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Username"
-                android:inputType="textPersonName" />
-
-            <TextView
-                android:id="@+id/lbl_reg_pwd"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Password:"
-                android:textSize="18sp" />
-
-            <EditText
-                android:id="@+id/edt_reg_pwd"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPassword" />
-
-            <TextView
-                android:id="@+id/lbl_reg_birthDate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Data di nascita:"
-                android:textSize="18sp" />
-
-            <EditText
-                android:id="@+id/edt_reg_birthdate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:clickable="true"
                 android:inputType="textPersonName"
-                android:focusable="true"/>
+                android:text="Username" />
 
-            <TextView
-                android:id="@+id/lbl_reg_nationality"
+            <Button
+                android:id="@+id/btn_reg_registrate"
+                style="@android:style/Widget.Holo.Light.Button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Nazione:"
+                android:layout_column="0"
+                android:layout_row="16"
+                android:layout_weight="0.28"
+                android:background="@android:color/holo_green_dark"
+                android:elevation="0dp"
+                android:text="REGISTRATI"
+                android:textColor="@android:color/background_light"
                 android:textSize="18sp" />
 
-            <EditText
-                android:id="@+id/edt_reg_nationality"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"/>
         </LinearLayout>
     </ScrollView>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="bottom|center"
-        android:weightSum="1">
-
-        <Button
-            android:text="REGISTRATI"
-            android:layout_height="wrap_content"
-            android:id="@+id/btn_reg_submit"
-            android:elevation="0dp"
-            style="@android:style/Widget.Holo.Light.Button"
-            android:background="@android:color/holo_blue_dark"
-            android:layout_row="16"
-            android:layout_column="0"
-            android:layout_width="179dp"
-            android:textSize="18sp"
-            android:textColor="@android:color/background_light"
-            android:layout_weight="0.28" />
-    </LinearLayout>
 
 </LinearLayout>

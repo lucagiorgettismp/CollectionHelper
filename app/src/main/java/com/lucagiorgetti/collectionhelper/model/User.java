@@ -5,82 +5,79 @@ import android.database.Cursor;
 import android.provider.BaseColumns;
 
 import java.io.Serializable;
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Utente on 17/04/2017.
  */
 
-public class User implements BaseColumns, Serializable {
+public class User {
 
-    public static final String TABLE_NAME = "user";
-    public static final String COLUMN_USER_ID = "user_id";
-    public static final String COLUMN_USER_NAME = "name";
-    public static final String COLUMN_USER_SURNAME = "surname";
-    public static final String COLUMN_USER_EMAIL = "email";
-    public static final String COLUMN_USER_USERNAME = "username";
-    public static final String COLUMN_USER_PASSWORD = "password";
-    public static final String COLUMN_USER_BIRTH_DATE = "birth_date";
-    public static final String COLUMN_USER_NATION = "nation";
-
-    private int id;
-    private int userId;
     private String name;
     private String surname;
     private String email;
     private String username;
     private String password;
-    private String birth_date;
-    private String nation;
+    private Date birth_date;
+    private Address address;
+    private List<Surprise> missings = new ArrayList<Surprise>();
+    private List<Surprise> doubles = new ArrayList<Surprise>();
 
-    public User(String name, String surname, String email, String username, String password, String birth_date, String nation, int userId) {
+    public User(String name, String surname, String email, String username, String password, Date birth_date, Address address) {
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.username = username;
         this.password = password;
+        this.address = address;
         this.birth_date = birth_date;
-        this.nation = nation;
-        this.userId = userId;
     }
 
-    public User(Cursor cursor){
-        this.id = cursor.getInt(cursor.getColumnIndex(User._ID));
-        this.name = cursor.getString(cursor.getColumnIndex(User.COLUMN_USER_NAME));
-        this.surname = cursor.getString(cursor.getColumnIndex(User.COLUMN_USER_SURNAME));
-        this.email = cursor.getString(cursor.getColumnIndex(User.COLUMN_USER_EMAIL));
-        this.username = cursor.getString(cursor.getColumnIndex(User.COLUMN_USER_USERNAME));
-        this.password = cursor.getString(cursor.getColumnIndex(User.COLUMN_USER_PASSWORD));
-        this.birth_date = cursor.getString(cursor.getColumnIndex(User.COLUMN_USER_NAME));
-        this.nation = cursor.getString(cursor.getColumnIndex(User.COLUMN_USER_NATION));
-        this.userId = cursor.getInt(cursor.getColumnIndex(User.COLUMN_USER_ID));
+    public User(String email, String username, String password) {
+        this.name = null;
+        this.surname = null;
+        this.email = email;
+        this.username = username;
+        this.password = password;
+        this.address = null;
+        this.birth_date = null;
     }
 
-    public int getId() { return id;}
-    public int getColumnUserId() {return userId;}
-    public String getName() { return this.name;}
-    public String getSurname() { return surname;}
-    public String getEmail() { return email;}
-    public String getUsername() { return this.username;}
-    public String getPassword() { return this.password;}
-    public String getBirth_date() { return birth_date;}
-    public String getNationality() { return nation;}
-    public int getUserId() {return this.userId;};
-
-    @Override
-    public String toString(){
-        return String.valueOf(username);
+    public String getName() {
+        return name;
     }
 
-    public ContentValues getContentValues(){
-        ContentValues cv = new ContentValues();
-        cv.put(COLUMN_USER_NAME, name);
-        cv.put(COLUMN_USER_SURNAME, surname);
-        cv.put(COLUMN_USER_EMAIL, email);
-        cv.put(COLUMN_USER_USERNAME, username);
-        cv.put(COLUMN_USER_PASSWORD, password);
-        cv.put(COLUMN_USER_BIRTH_DATE, birth_date);
-        cv.put(COLUMN_USER_NATION, nation);
-        cv.put(COLUMN_USER_ID, userId);
-        return cv;
+    public String getSurname() {
+        return surname;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public Date getBirth_date() {
+        return birth_date;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public List<Surprise> getMissings() {
+        return missings;
+    }
+
+    public List<Surprise> getDoubles() {
+        return doubles;
     }
 }

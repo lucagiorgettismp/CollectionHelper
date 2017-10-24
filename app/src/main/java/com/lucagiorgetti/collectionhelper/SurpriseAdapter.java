@@ -59,11 +59,11 @@ public class SurpriseAdapter extends ArrayAdapter<Surprise> {
         Surprise surp = data.get(position);
 
         holder.textViewCode.setText(surp.getCode());
-        holder.textViewDesc.setText(surp.getDesc());
-        holder.textViewSet.setText(manager.getSetById(surp.getSetId()).getName());
-        holder.textViewYear.setText(String.valueOf(manager.getYearById(manager.getSetById(surp.getSetId()).getYearId()).getYear()));
+        holder.textViewDesc.setText(surp.getDescription());
+        holder.textViewSet.setText(surp.getSet().getName());
+        holder.textViewYear.setText(surp.getSet().getYear());
 
-        File imgFile = new  File(surp.getImgPath());
+        File imgFile = new  File(surp.getImg_path());
         if(imgFile.exists()){
             Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
             holder.imgView.setImageBitmap(myBitmap);
