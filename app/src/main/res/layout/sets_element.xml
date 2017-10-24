@@ -3,86 +3,112 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:weightSum="1">
 
-    <LinearLayout
-        android:orientation="horizontal"
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_weight="0.14"
-        android:weightSum="1"
-        android:layout_height="40dp">
+        android:layout_height="193dp"
+        app:cardBackgroundColor="@color/common_google_signin_btn_text_light_disabled"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="2dp"
+        app:cardUseCompatPadding="true"><![CDATA[>
+
+        ]]>
 
         <LinearLayout
-            android:orientation="vertical"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_width="258dp">
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/txv_setname"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="left"
-                android:paddingLeft="10dp"
-                android:text="NOME"
-                android:textSize="18sp" />
+                android:layout_height="33dp"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/txv_producer"
+                <TextView
+                    android:id="@+id/txv_setname"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="left|center_vertical"
+                    android:paddingLeft="10dp"
+                    android:text="NOME"
+                    android:textAlignment="center"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingLeft="10dp"
-                android:text="PRODUTTORE"
-                android:gravity="left"
-                android:textSize="18sp"
-                android:layout_weight="1" />
+                android:layout_height="2dp"
+                android:background="@android:color/darker_gray" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="37dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/txv_producer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|center"
+                    android:paddingLeft="10dp"
+                    android:text="PRODUTTORE"
+                    android:textSize="18sp" />
+
+                <View
+                    android:id="@+id/view2"
+                    android:layout_width="2dp"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/darker_gray" />
+
+                <TextView
+                    android:id="@+id/txv_setyear"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|center"
+                    android:paddingLeft="10dp"
+                    android:text="ANNO"
+                    android:textSize="18sp" />
+
+                <View
+                    android:id="@+id/view3"
+                    android:layout_width="2dp"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/darker_gray" />
+
+                <TextView
+                    android:id="@+id/txv_season"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|center"
+                    android:paddingLeft="10dp"
+                    android:text="STAG."
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/imgSet"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.91"
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY"
+                app:srcCompat="@android:drawable/ic_menu_gallery" />
+
         </LinearLayout>
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent">
-
-            <TextView
-                android:id="@+id/txv_setyear"
-                android:layout_height="match_parent"
-                android:paddingLeft="10dp"
-                android:text="ANNO"
-                android:gravity="left"
-                android:textSize="18sp"
-                android:layout_weight="1"
-                android:layout_width="match_parent" />
-
-            <TextView
-                android:id="@+id/txv_season"
-                android:layout_height="match_parent"
-                android:paddingLeft="10dp"
-                android:text="STAG."
-                android:gravity="left"
-                android:textSize="18sp"
-                android:layout_weight="1"
-                android:layout_width="match_parent" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:weightSum="1">
-
-        <ImageView
-            android:id="@+id/imgSet"
-            android:layout_width="238dp"
-            android:layout_height="120dp"
-            android:adjustViewBounds="true"
-            android:scaleType="fitXY"
-            app:srcCompat="@android:drawable/ic_menu_gallery"
-            android:layout_weight="0.34" />
-
-    </LinearLayout>
+    </android.support.v7.widget.CardView>
 
 </LinearLayout>
+
+

@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // this.insertData();
+        this.insertData();
         setContentView(R.layout.activity_main);
         listView = (ListView) findViewById(R.id.surprise_list);
         fireAuth = FirebaseAuth.getInstance();
