@@ -131,17 +131,19 @@ public class LoginActivity extends AppCompatActivity {
                         {
                             Log.w("LOGIN", "Errore:(");
                             Toast.makeText(LoginActivity.this, "Errore :(",
-                                    Toast.LENGTH_SHORT).show();                        }
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                            // Closing all the Activities
+                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            // Add new Flag to start new Activity
+                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            // Staring Login Activity
+                            getApplicationContext().startActivity(i);
+                        }
                     }
                 });
                 dialog.dismiss();
-                Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                // Closing all the Activities
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                // Add new Flag to start new Activity
-                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                // Staring Login Activity
-                getApplicationContext().startActivity(i);
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

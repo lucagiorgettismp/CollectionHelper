@@ -55,6 +55,7 @@ public class SetRecyclerAdapter extends RecyclerView.Adapter<SetRecyclerAdapter.
         holder.vProducer.setText(set.getProducer().getName());
         holder.vYear.setText(String.valueOf(set.getYear()));
         holder.vSeason.setText(set.getSeason());
+        holder.vNation.setText(set.getNation());
 
         Glide.with(ctx).load(set.getImg_path()).into(holder.vImage);
 
@@ -111,6 +112,7 @@ public class SetRecyclerAdapter extends RecyclerView.Adapter<SetRecyclerAdapter.
         protected TextView vSeason;
         protected TextView vYear;
         protected TextView vProducer;
+        protected TextView vNation;
         protected ImageView vImage;
 
         public SetViewHolder(View v) {
@@ -120,6 +122,7 @@ public class SetRecyclerAdapter extends RecyclerView.Adapter<SetRecyclerAdapter.
             vYear = (TextView)  v.findViewById(R.id.txv_setyear);
             vProducer = (TextView) v.findViewById(R.id.txv_producer);
             vImage = (ImageView) v.findViewById(R.id.imgSet);
+            vNation = (TextView) v.findViewById(R.id.txv_setnation);
         }
     }
 }
