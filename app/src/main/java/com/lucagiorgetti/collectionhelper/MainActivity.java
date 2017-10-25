@@ -179,10 +179,10 @@ public class MainActivity extends AppCompatActivity {
         Producer kinder = new Producer("Kinder");
         producers.child("kinder").setValue(kinder);
 
-        Set puffi = new Set("Puffi", 2016, kinder, "Invernale", "Italia", "gs://collectionhelper.appspot.com/19145.jpg");
+        Set puffi = new Set("Puffi", 2016, kinder, "Sorpresa", "Italia", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/19145.jpg?alt=media&token=430ba17c-820e-4ebd-9577-4be99ec6bd78");
         sets.child("2016puffi").setValue(puffi);
 
-        Set puffi2 = new Set("Puffi2", 2016, kinder, "Invernale", "Italia", "gs://collectionhelper.appspot.com/19145.jpg");
+        Set puffi2 = new Set("Puffi2", 2016, kinder, "Merendero", "Italia", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/19145.jpg?alt=media&token=430ba17c-820e-4ebd-9577-4be99ec6bd78");
         sets.child("2016puffi2").setValue(puffi2);
     }
 }

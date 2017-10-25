@@ -1,5 +1,6 @@
 package com.lucagiorgetti.collectionhelper;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
@@ -13,6 +14,7 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FileDownloadTask;
@@ -33,10 +35,12 @@ import java.util.List;
 public class SetRecyclerAdapter extends RecyclerView.Adapter<SetRecyclerAdapter.SetViewHolder> implements Filterable{
     private ArrayList<Set> sets = new ArrayList<>();
     ArrayList<Set> mStringFilterList;
+    Context ctx;
 
-    public SetRecyclerAdapter(ArrayList<Set> setsList) {
+    public SetRecyclerAdapter(Context context, ArrayList<Set> setsList) {
         sets = setsList;
         mStringFilterList = setsList;
+        ctx = context;
     }
 
     @Override
@@ -52,32 +56,8 @@ public class SetRecyclerAdapter extends RecyclerView.Adapter<SetRecyclerAdapter.
         holder.vYear.setText(String.valueOf(set.getYear()));
         holder.vSeason.setText(set.getSeason());
 
-        File localFile = null;
-        try {
-            localFile = File.createTempFile("images", "jpg");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Glide.with(ctx).load(set.getImg_path()).into(holder.vImage);
 
-        StorageReference ref = FirebaseStorage.getInstance().getReference().child(set.getImg_path());
-        ref.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                // Successfully downloaded data to local file
-                // ...
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle failed download
-                // ...
-            }
-        });
-
-        if(localFile.exists()){
-            Bitmap myBitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
-            holder.vImage.setImageBitmap(myBitmap);
-        }
     }
 
     @Override

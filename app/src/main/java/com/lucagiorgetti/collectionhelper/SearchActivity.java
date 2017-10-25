@@ -49,7 +49,7 @@ public class SearchActivity extends AppCompatActivity{
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new SetRecyclerAdapter(setsList);
+        mAdapter = new SetRecyclerAdapter(this, setsList);
         mRecyclerView.setAdapter(mAdapter);
 
         setsSearchView = (SearchView) findViewById(R.id.set_search);
