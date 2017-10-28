@@ -37,6 +37,7 @@ public class SearchActivity extends AppCompatActivity{
     private RecyclerView.LayoutManager mLayoutManager;
     public static SearchView setsSearchView;
     public static ArrayList<Set> setsList = new ArrayList<>();
+    public static ArrayList<Set> fullSets = new ArrayList<>();
     private static DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
 
     @Override
@@ -70,6 +71,8 @@ public class SearchActivity extends AppCompatActivity{
 
     public void getDataFromServer(){
         setsList.clear();
+        fullSets.clear();
+
         dbRef.child("sets").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -77,6 +80,7 @@ public class SearchActivity extends AppCompatActivity{
                     for(DataSnapshot d : dataSnapshot.getChildren()){
                         Set s = d.getValue(Set.class);
                         setsList.add(s);
+                        fullSets.add(s);
                         mAdapter.notifyDataSetChanged();
                     }
                 }
@@ -87,5 +91,9 @@ public class SearchActivity extends AppCompatActivity{
 
             }
         });
+    }
+
+    public static ArrayList<Set> getFullSets() {
+        return fullSets;
     }
 }

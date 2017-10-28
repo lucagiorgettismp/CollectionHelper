@@ -74,6 +74,7 @@ public class SetRecyclerAdapter extends RecyclerView.Adapter<SetRecyclerAdapter.
             protected FilterResults performFiltering(CharSequence charSequence) {
 
                 String charString = charSequence.toString();
+                sets = SearchActivity.getFullSets();
 
                 if (charString.isEmpty()) {
 
@@ -100,7 +101,7 @@ public class SetRecyclerAdapter extends RecyclerView.Adapter<SetRecyclerAdapter.
             @Override
             protected void publishResults(CharSequence constraint,
                                           FilterResults results) {
-                mStringFilterList = (ArrayList) results.values;
+                sets = (ArrayList) results.values;
                 notifyDataSetChanged();
             }
         };

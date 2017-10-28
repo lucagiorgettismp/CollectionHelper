@@ -2,11 +2,9 @@ package com.lucagiorgetti.collectionhelper;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -25,7 +23,6 @@ import com.lucagiorgetti.collectionhelper.Db.DbManager;
 import com.lucagiorgetti.collectionhelper.model.Producer;
 import com.lucagiorgetti.collectionhelper.model.Set;
 import com.lucagiorgetti.collectionhelper.model.Surprise;
-import com.lucagiorgetti.collectionhelper.model.User;
 
 import java.util.ArrayList;
 
@@ -184,5 +181,8 @@ public class MainActivity extends AppCompatActivity {
 
         Set puffi2 = new Set("Puffi2", 2016, kinder, "Merendero", "Italia", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/19145.jpg?alt=media&token=430ba17c-820e-4ebd-9577-4be99ec6bd78");
         sets.child("2016puffi2").setValue(puffi2);
+
+        Set puffi21 = new Set("Puffi21", 2016, kinder, "Culo", "Francia", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/19145.jpg?alt=media&token=430ba17c-820e-4ebd-9577-4be99ec6bd78");
+        sets.child("2016puffi21").setValue(puffi21);
     }
 }
