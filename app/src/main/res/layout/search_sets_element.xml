@@ -11,7 +11,7 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="@color/common_google_signin_btn_text_dark_disabled"
+        app:cardBackgroundColor="@color/card_list_background"
         app:cardCornerRadius="1dp"
         app:cardElevation="2dp"><![CDATA[>
 
@@ -24,18 +24,17 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="33dp"
+                android:layout_height="32dp"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/txv_setname"
+                    android:id="@+id/txv_set_elem_name"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@android:color/holo_blue_dark"
                     android:gravity="left|center_vertical"
                     android:paddingLeft="10dp"
                     android:text="NOME"
-                    android:textAlignment="textStart"
                     android:textAllCaps="true"
                     android:textColor="@color/common_google_signin_btn_text_dark_default"
                     android:textColorHighlight="@android:color/black"
@@ -53,9 +52,9 @@
                     android:id="@+id/lbl_prod"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="25"
+                    android:layout_weight="20"
                     android:gravity="center_vertical|center"
-                    android:paddingLeft="10dp"
+                    android:paddingLeft="8dp"
                     android:text="PRODUTTORE"
                     android:textSize="10sp" />
 
@@ -65,7 +64,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="35"
                     android:gravity="center_vertical|center"
-                    android:paddingLeft="10dp"
+                    android:paddingLeft="8dp"
                     android:text="PERIODO"
                     android:textSize="10sp" />
 
@@ -75,7 +74,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="20"
                     android:gravity="center_vertical|center"
-                    android:paddingLeft="10dp"
+                    android:paddingLeft="8dp"
                     android:text="ANNO"
                     android:textSize="10sp" />
 
@@ -83,10 +82,10 @@
                     android:id="@+id/lbl_setnation"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="20"
+                    android:layout_weight="25"
                     android:gravity="center_vertical|center"
-                    android:paddingLeft="10dp"
-                    android:text="NAZIONE"
+                    android:paddingLeft="8dp"
+                    android:text="PROVENIENZA"
                     android:textSize="10sp" />
 
             </LinearLayout>
@@ -97,17 +96,17 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/txv_producer"
+                    android:id="@+id/txv_set_elem_producer"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="25"
+                    android:layout_weight="20"
                     android:gravity="center_vertical|center"
                     android:paddingLeft="10dp"
                     android:text="PRODUTTORE"
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/txv_season"
+                    android:id="@+id/txv_set_elem_season"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="35"
@@ -117,7 +116,7 @@
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/txv_setyear"
+                    android:id="@+id/txv_set_elem_year"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="20"
@@ -127,10 +126,10 @@
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/txv_setnation"
+                    android:id="@+id/txv_set_elem_nation"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="20"
+                    android:layout_weight="25"
                     android:gravity="center_vertical|center"
                     android:paddingLeft="10dp"
                     android:text="NAZIONE"

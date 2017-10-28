@@ -10,6 +10,13 @@ public class Surprise {
     private String code;
     private Set set;
 
+    public Surprise(){
+        description = null;
+        img_path = null;
+        code = null;
+        set = null;
+    }
+
     public Surprise(String description, String img_path, String code, Set set) {
         this.description = description;
         this.img_path = img_path;

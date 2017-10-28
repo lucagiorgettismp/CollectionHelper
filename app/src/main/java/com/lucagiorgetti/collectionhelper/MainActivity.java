@@ -7,6 +7,8 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -14,11 +16,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SearchView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.lucagiorgetti.collectionhelper.Db.DbManager;
 import com.lucagiorgetti.collectionhelper.model.Producer;
 import com.lucagiorgetti.collectionhelper.model.Set;
@@ -28,18 +34,48 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static ListView listView;
-    public static ArrayList<Surprise> surpriseList = null;
-    private static DbManager dbManager;
+    private RecyclerView mRecyclerView;
+    private SurpRecyclerAdapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+    public static SearchView searchView;
+    public static ArrayList<Surprise> surpriseList = new ArrayList<>();
+    public static ArrayList<Surprise> allSurpriseList = new ArrayList<>();
+    private static DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
     private FirebaseAuth fireAuth;
     private FirebaseAuth.AuthStateListener fireAuthStateListener;
+
+    public static ArrayList<Surprise> getAllSurpriseList() {
+        return allSurpriseList;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.insertData();
         setContentView(R.layout.activity_main);
-        listView = (ListView) findViewById(R.id.surprise_list);
+        mRecyclerView = (RecyclerView) findViewById(R.id.search_surp_recycler);
+        mRecyclerView.setHasFixedSize(true);
+
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        mAdapter = new SurpRecyclerAdapter(this, surpriseList);
+        mRecyclerView.setAdapter(mAdapter);
+
+        searchView = (SearchView) findViewById(R.id.surprise_search);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+
         fireAuth = FirebaseAuth.getInstance();
         fireAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -60,65 +96,43 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        dbManager = new DbManager(this);
+        getMissingsFromServer();
 
-        listView = (ListView) findViewById(R.id.surprise_list);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        if (fireAuth.getCurrentUser() != null) {
-            this.surpriseList = dbManager.getMissings(fireAuth.getCurrentUser().getEmail());
-            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-            setSupportActionBar(toolbar);
-
-            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-            fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent i = new Intent(MainActivity.this, SearchActivity.class);
                     startActivity(i);
                 }
-            });
+        });
+    }
 
-            if (surpriseList != null) {
-                final ArrayAdapter adapt = new SurpriseAdapter(MainActivity.this, R.layout.list_element, surpriseList, dbManager);
+    private void getMissingsFromServer() {
+        surpriseList.clear();
+        allSurpriseList.clear();
 
-                SwipeDismissListViewTouchListener touchListener =
-                        new SwipeDismissListViewTouchListener(listView,
-                                new SwipeDismissListViewTouchListener.DismissCallbacks() {
-                                    @Override
-                                    public boolean canDismiss(int position) {
-                                        return true;
-                                    }
-
-                                    @Override
-                                    public void onDismiss(ListView listView, int[] reverseSortedPositions) {
-                                        for (int position : reverseSortedPositions) {
-                                            final Surprise itemClicked = (Surprise) listView.getItemAtPosition(position);
-                                            new AlertDialog.Builder(MainActivity.this)
-                                                    .setTitle("Rimozione")
-                                                    .setMessage("Eliminare " + itemClicked.getCode() + " - " + itemClicked.getDescription() + "?")
-                                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(DialogInterface dialog, int which) {
-                                                            surpriseList.remove(itemClicked);
-                                                            dbManager.deleteMissing(itemClicked);
-                                                            adapt.notifyDataSetChanged();
-                                                        }
-                                                    })
-                                                    .setNegativeButton("Annulla", new DialogInterface.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(DialogInterface dialog, int which) {
-                                                            dialog.dismiss();
-                                                        }
-                                                    })
-                                                    .show();
-                                        }
-                                    }
-                                });
-                listView.setOnTouchListener(touchListener);
-
-                listView.setAdapter(adapt);
+        dbRef.child("surprises").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    for (DataSnapshot d : dataSnapshot.getChildren()){
+                        Surprise s = d.getValue(Surprise.class);
+                        surpriseList.add(s);
+                        allSurpriseList.add(s);
+                        mAdapter.notifyDataSetChanged();
+                    }
+                }
             }
-        }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override
@@ -184,5 +198,8 @@ public class MainActivity extends AppCompatActivity {
 
         Set puffi21 = new Set("Puffi21", 2016, kinder, "Culo", "Francia", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/19145.jpg?alt=media&token=430ba17c-820e-4ebd-9577-4be99ec6bd78");
         sets.child("2016puffi21").setValue(puffi21);
+
+        Surprise SD324 = new Surprise("Puffetta", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/SD324.jpg?alt=media&token=2fa2a745-4079-4ae3-8482-4b7272fa207a","SD 324", puffi);
+        surprises.child(SD324.getCode()).setValue(SD324);
     }
 }

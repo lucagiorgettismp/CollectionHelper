@@ -30,6 +30,6 @@
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@drawable/ic_add_btn" />
 
-    <include layout="@layout/content_main" />
+    <include layout="@layout/missing_surprises" />
 
 </android.support.design.widget.CoordinatorLayout>

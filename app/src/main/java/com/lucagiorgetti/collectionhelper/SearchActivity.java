@@ -1,33 +1,17 @@
 package com.lucagiorgetti.collectionhelper;
 
-import android.app.FragmentManager;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Point;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.Display;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.PopupWindow;
 import android.widget.SearchView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.lucagiorgetti.collectionhelper.Db.DbManager;
 import com.lucagiorgetti.collectionhelper.model.Set;
-import com.lucagiorgetti.collectionhelper.model.Surprise;
 
 import java.util.ArrayList;
 
@@ -37,7 +21,7 @@ public class SearchActivity extends AppCompatActivity{
     private RecyclerView.LayoutManager mLayoutManager;
     public static SearchView setsSearchView;
     public static ArrayList<Set> setsList = new ArrayList<>();
-    public static ArrayList<Set> fullSets = new ArrayList<>();
+    public static ArrayList<Set> allSetsList = new ArrayList<>();
     private static DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
 
     @Override
@@ -71,7 +55,7 @@ public class SearchActivity extends AppCompatActivity{
 
     public void getDataFromServer(){
         setsList.clear();
-        fullSets.clear();
+        allSetsList.clear();
 
         dbRef.child("sets").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -80,7 +64,7 @@ public class SearchActivity extends AppCompatActivity{
                     for(DataSnapshot d : dataSnapshot.getChildren()){
                         Set s = d.getValue(Set.class);
                         setsList.add(s);
-                        fullSets.add(s);
+                        allSetsList.add(s);
                         mAdapter.notifyDataSetChanged();
                     }
                 }
@@ -93,7 +77,7 @@ public class SearchActivity extends AppCompatActivity{
         });
     }
 
-    public static ArrayList<Set> getFullSets() {
-        return fullSets;
+    public static ArrayList<Set> getAllSetsList() {
+        return allSetsList;
     }
 }

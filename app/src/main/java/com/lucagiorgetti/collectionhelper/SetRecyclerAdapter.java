@@ -1,11 +1,7 @@
 package com.lucagiorgetti.collectionhelper;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,18 +11,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.FileDownloadTask;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.lucagiorgetti.collectionhelper.model.Producer;
 import com.lucagiorgetti.collectionhelper.model.Set;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Luca on 24/10/2017.
@@ -63,7 +50,7 @@ public class SetRecyclerAdapter extends RecyclerView.Adapter<SetRecyclerAdapter.
 
     @Override
     public SetViewHolder onCreateViewHolder(ViewGroup parent, int i) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.sets_element, parent,  false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.search_sets_element, parent,  false);
         return new SetViewHolder(v);
     }
 
@@ -74,7 +61,7 @@ public class SetRecyclerAdapter extends RecyclerView.Adapter<SetRecyclerAdapter.
             protected FilterResults performFiltering(CharSequence charSequence) {
 
                 String charString = charSequence.toString();
-                sets = SearchActivity.getFullSets();
+                sets = SearchActivity.getAllSetsList();
 
                 if (charString.isEmpty()) {
 
@@ -118,12 +105,12 @@ public class SetRecyclerAdapter extends RecyclerView.Adapter<SetRecyclerAdapter.
 
         public SetViewHolder(View v) {
             super(v);
-            vName =  (TextView) v.findViewById(R.id.txv_setname);
-            vSeason = (TextView)  v.findViewById(R.id.txv_season);
-            vYear = (TextView)  v.findViewById(R.id.txv_setyear);
-            vProducer = (TextView) v.findViewById(R.id.txv_producer);
+            vName =  (TextView) v.findViewById(R.id.txv_set_elem_name);
+            vSeason = (TextView)  v.findViewById(R.id.txv_set_elem_season);
+            vYear = (TextView)  v.findViewById(R.id.txv_set_elem_year);
+            vProducer = (TextView) v.findViewById(R.id.txv_set_elem_producer);
             vImage = (ImageView) v.findViewById(R.id.imgSet);
-            vNation = (TextView) v.findViewById(R.id.txv_setnation);
+            vNation = (TextView) v.findViewById(R.id.txv_set_elem_nation);
         }
     }
 }
