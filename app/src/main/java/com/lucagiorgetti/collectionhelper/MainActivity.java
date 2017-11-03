@@ -1,72 +1,140 @@
 package com.lucagiorgetti.collectionhelper;
 
-import android.content.DialogInterface;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
+import android.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.view.View;
+import android.widget.TextView;
 
-import com.lucagiorgetti.collectionhelper.Db.DbInitializer;
-import com.lucagiorgetti.collectionhelper.Db.DbManager;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.lucagiorgetti.collectionhelper.model.Surprise;
+import com.lucagiorgetti.collectionhelper.model.User;
 
-import java.util.ArrayList;
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    private Fragment fragment = null;
+    private FragmentManager fragmentManager;
+    private FirebaseAuth fireAuth;
+    private FirebaseAuth.AuthStateListener fireAuthStateListener;
+    private User user = null;
+    private TextView nav_user;
+    private FloatingActionButton fab;
 
-public class MainActivity extends AppCompatActivity {
-
-    public static ListView listView;
-    public static ArrayList<Surprise> surpriseList;
-    private static DbManager manager;
-    private static DbInitializer init;
-    public static final String LOGGED = "logged";
-    public static int userId = -1;
+    private static DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        //this.deleteDatabase("database.db");
-        manager = new DbManager(this);
-        //init = new DbInitializer(manager);
-        //init.AddSurprises();
-
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        fireAuth = FirebaseAuth.getInstance();
+        fireAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
-            public void onClick(View view) {
-                Intent i = new Intent(MainActivity.this, SearchActivity.class);
-                startActivity(i);
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if(user == null) {
+                    // User is logged out
+                    Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                    // Closing all the Activities
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                    // Add new Flag to start new Activity
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                    // Staring Login Activity
+                    getApplicationContext().startActivity(i);
+                }
+            }
+        };
+
+        if(fireAuth.getCurrentUser() != null){
+            setContentView(R.layout.activity_main);
+            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
+
+            fab = (FloatingActionButton) findViewById(R.id.fab);
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    displayView(4, true);
+                }
+            });
+
+            fab.hide();
+
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+            drawer.setDrawerListener(toggle);
+            toggle.syncState();
+
+            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            navigationView.setNavigationItemSelectedListener(this);
+            View hView =  navigationView.getHeaderView(0);
+            nav_user = (TextView)hView.findViewById(R.id.navbar_title);
+
+            getCurrentUser(fireAuth);
+            displayView(0, false); // call search fragment.
+        }
+    }
+
+    private void getCurrentUser(FirebaseAuth fireAuth) {
+        dbRef.child("users").orderByChild("email").equalTo(fireAuth.getCurrentUser().getEmail()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    user = dataSnapshot.getValue(User.class);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
 
-        if(getUserLogged() == -1){
-            Intent login = new Intent(this, LoginActivity.class);
-            startActivity(login);
-        } else {
-            userId = getUserLogged();
-        }
+    }
 
-        listView = (ListView) findViewById(R.id.list);
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            fragmentManager = getFragmentManager();
+            int count = fragmentManager.getBackStackEntryCount();
+            if (count == 0) {
+                super.onBackPressed();
+
+            } else {
+                String fragmentTag = fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount() - 1).getName();
+                Fragment currentFragment = fragmentManager.findFragmentByTag(fragmentTag);
+                fragmentManager.popBackStack();
+                fab.show();
+            }
+        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+       // getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
@@ -85,71 +153,84 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public int getUserLogged() {
-        SharedPreferences prefs = getSharedPreferences(LOGGED, MODE_PRIVATE);
-        int userId = prefs.getInt("userId", -1);
-        return userId;
-    }
-
-    public void logOutUser(){
-        SharedPreferences.Editor editor = getSharedPreferences(MainActivity.LOGGED, MODE_PRIVATE).edit();
-        editor.putInt("userId", -1);
-        editor.commit();
-    }
-
+    @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    protected void onDestroy() {
-        Log.w("MAIN","Destroy");
-        logOutUser();
-        super.onDestroy();
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_missings) {
+            displayView(0, false);
+        } else if (id == R.id.nav_doubles) {
+            displayView(1, true);
+        } else if (id == R.id.nav_collectors) {
+            displayView(2, true);
+        } else if (id == R.id.nav_logout) {
+            logout();
+        } else if (id == R.id.nav_settings) {
+        }
+
+        displayView(0, false); // call search fragment.
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        this.userId = getUserLogged();
-        Log.w("MAIN", "Start id= " + this.userId);
-        if(this.userId != -1){
-             // surpriseList = manager.getSurprises();
-             surpriseList = manager.getMissings(this.userId);
+    private void logout() {
+        this.fireAuth.signOut();
+    }
 
-            final ArrayAdapter adapt = new SurpriseAdapter(this, R.layout.list_element, surpriseList, manager);
-            SwipeDismissListViewTouchListener touchListener =
-                    new SwipeDismissListViewTouchListener(listView,
-                            new SwipeDismissListViewTouchListener.DismissCallbacks() {
-                                @Override
-                                public boolean canDismiss(int position) {
-                                    return true;
-                                }
+    private void displayView(int position, boolean backable) {
+        fragment = null;
+        String fragmentTags = "";
+        switch (position) {
+            case 0:
+                fragment = new MissingFragment();
+                fab.show();
+                break;
 
-                                @Override
-                                public void onDismiss(ListView listView, int[] reverseSortedPositions) {
-                                    for (int position : reverseSortedPositions) {
-                                        final Surprise itemClicked = (Surprise) listView.getItemAtPosition(position);
-                                        new AlertDialog.Builder(MainActivity.this)
-                                                .setTitle("Rimozione")
-                                                .setMessage("Eliminare " + itemClicked.getCode() + " - " + itemClicked.getDesc() + "?")
-                                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialog, int which) {
-                                                        surpriseList.remove(itemClicked);
-                                                        manager.deleteMissing(itemClicked);
-                                                        adapt.notifyDataSetChanged();
-                                                    }
-                                                })
-                                                .setNegativeButton("Annulla", new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialog, int which) {
-                                                        dialog.dismiss();
-                                                    }
-                                                })
-                                                .show();
-                                    }
-                                }
-                            });
+            case 1:
+                fragment = new MissingFragment();
+                break;
 
-            listView.setOnTouchListener(touchListener);
-            listView.setAdapter(adapt);
+            case 2:
+                fragment = new MissingFragment();
+                break;
+
+            case 4:
+                fragment = new SearchSetsFragment();
+                fab.hide();
+                break;
+
+            default:
+                break;
+        }
+
+        if (fragment != null) {
+            fragmentManager = getFragmentManager();
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            transaction.replace(R.id.content_frame, fragment, fragmentTags);
+            if(backable){
+                transaction.addToBackStack(null);
             }
+            transaction.commit();
+        }
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        fireAuth.addAuthStateListener(fireAuthStateListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (fireAuthStateListener != null) {
+            fireAuth.removeAuthStateListener(fireAuthStateListener);
+        }
+    }
+
+
 }
