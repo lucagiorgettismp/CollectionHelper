@@ -15,28 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".LoginActivity"
-            android:label="@string/title_activity_login" />
-        <activity
-        android:name=".MissingActivity"
-        android:label="@string/title_activy_missing"
+        android:name=".MainActivity"
         android:windowSoftInputMode="adjustPan" />
 
-        <activity
-            android:name=".RegistrateActivity"
-            android:label="@string/title_activity_registration"
-            android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".SearchActivity"></activity>
     </application>
 
 </manifest>

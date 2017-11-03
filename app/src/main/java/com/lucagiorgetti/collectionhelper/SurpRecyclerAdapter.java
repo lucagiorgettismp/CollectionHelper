@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.lucagiorgetti.collectionhelper.model.Set;
 import com.lucagiorgetti.collectionhelper.model.Surprise;
 
 import java.util.ArrayList;
@@ -31,13 +30,13 @@ class SurpRecyclerAdapter extends RecyclerView.Adapter<SurpRecyclerAdapter.SurpV
     }
 
     @Override
-    public SurpRecyclerAdapter.SurpViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public SurpViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.missing_surprise_element, parent, false);
         return new SurpViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(SurpRecyclerAdapter.SurpViewHolder holder, int position) {
+    public void onBindViewHolder(SurpViewHolder holder, int position) {
         Surprise surp = surprises.get(position);
         holder.vCode.setText(surp.getCode());
         holder.vSetName.setText(surp.getSet().getName());
@@ -61,7 +60,7 @@ class SurpRecyclerAdapter extends RecyclerView.Adapter<SurpRecyclerAdapter.SurpV
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 String charString = constraint.toString();
-                surprises = MainActivity.getAllSurpriseList();
+                surprises = null;
 
                 if (charString.isEmpty()){
                     mStringFilterList = surprises;
