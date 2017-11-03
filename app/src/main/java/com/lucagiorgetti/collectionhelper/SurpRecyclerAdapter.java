@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.lucagiorgetti.collectionhelper.model.Set;
 import com.lucagiorgetti.collectionhelper.model.Surprise;
 
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ import java.util.ArrayList;
  * Created by Luca on 28/10/2017.
  */
 
-class SurpRecyclerAdapter extends RecyclerView.Adapter<SurpRecyclerAdapter.SurpViewHolder> implements Filterable{
+class SurpRecyclerAdapter extends RecyclerView.Adapter<SurpRecyclerAdapter.SurpViewHolder>{
     private ArrayList<Surprise> surprises = new ArrayList<>();
     ArrayList<Surprise> mStringFilterList;
     Context ctx;
@@ -51,39 +52,7 @@ class SurpRecyclerAdapter extends RecyclerView.Adapter<SurpRecyclerAdapter.SurpV
 
     @Override
     public int getItemCount() {
-        return mStringFilterList.size();
-    }
-
-    @Override
-    public Filter getFilter() {
-        return new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
-                String charString = constraint.toString();
-                surprises = null;
-
-                if (charString.isEmpty()){
-                    mStringFilterList = surprises;
-                } else {
-                    ArrayList<Surprise> filteredList = new ArrayList<>();
-                    for (Surprise surprise: surprises){
-                        if (surprise.getCode().toLowerCase().contains(charString) || surprise.getDescription().toLowerCase().contains(charString)){
-                            filteredList.add(surprise);
-                        }
-                    }
-                    mStringFilterList = filteredList;
-                }
-                FilterResults filterResults = new FilterResults();
-                filterResults.values = mStringFilterList;
-                return filterResults;
-            }
-
-            @Override
-            protected void publishResults(CharSequence constraint, FilterResults results) {
-                surprises = (ArrayList) results.values;
-                notifyDataSetChanged();
-            }
-        };
+        return surprises.size();
     }
 
     public class SurpViewHolder extends RecyclerView.ViewHolder {
@@ -107,9 +76,6 @@ class SurpRecyclerAdapter extends RecyclerView.Adapter<SurpRecyclerAdapter.SurpV
             vProducer = (TextView) v.findViewById(R.id.txv_surp_elem_producer);
             vNation = (TextView) v.findViewById(R.id.txv_surp_elem_nation);
             vImage = (ImageView) v.findViewById(R.id.img_surp_elem);
-
-
-
         }
     }
 }

@@ -8,5 +8,4 @@
         myapp:showAsAction="always"
         myapp:actionViewClass="android.widget.SearchView"
         android:title="Search" />
-
 </menu>

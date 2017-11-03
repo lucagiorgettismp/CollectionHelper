@@ -25,6 +25,16 @@ public class User {
     private List<Surprise> missings = new ArrayList<Surprise>();
     private List<Surprise> doubles = new ArrayList<Surprise>();
 
+    public User() {
+        this.name = null;
+        this.surname = null;
+        this.email = null;
+        this.username = null;
+        this.password = null;
+        this.address = null;
+        this.birth_date = null;
+    }
+
     public User(String name, String surname, String email, String username, String password, Date birth_date, Address address) {
         this.name = name;
         this.surname = surname;
