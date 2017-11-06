@@ -56,6 +56,21 @@ public class SurpRecyclerAdapter extends RecyclerView.Adapter<SurpRecyclerAdapte
         return surprises.size();
     }
 
+    public void addItem(Surprise surprise) {
+        surprises.add(surprise);
+        notifyItemInserted(surprises.size());
+    }
+
+    public Surprise getItemAtPosition(int position) {
+        return this.surprises.get(position);
+    }
+
+    public void removeItem(int position) {
+        surprises.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, surprises.size());
+    }
+
     public class SurpViewHolder extends RecyclerView.ViewHolder {
         protected TextView vCode;
         protected TextView vSetName;
