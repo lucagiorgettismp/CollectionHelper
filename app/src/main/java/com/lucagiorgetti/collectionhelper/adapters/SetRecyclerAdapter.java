@@ -56,6 +56,10 @@ public class SetRecyclerAdapter extends RecyclerView.Adapter<SetRecyclerAdapter.
         return mStringFilterList.size();
     }
 
+    public Set getItemAtPosition(int position) {
+        return this.sets.get(position);
+    }
+
     public static class SetViewHolder extends RecyclerView.ViewHolder {
         protected TextView vName;
         protected TextView vProduct;

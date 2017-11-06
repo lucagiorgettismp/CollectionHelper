@@ -1,16 +1,21 @@
 package com.lucagiorgetti.collectionhelper.fragments;
 
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -19,6 +24,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.lucagiorgetti.collectionhelper.R;
+import com.lucagiorgetti.collectionhelper.RecyclerItemClickListener;
 import com.lucagiorgetti.collectionhelper.adapters.SetRecyclerAdapter;
 import com.lucagiorgetti.collectionhelper.model.Set;
 
@@ -30,17 +36,58 @@ public class SearchSetsFragment extends Fragment implements SearchView.OnQueryTe
     private SetRecyclerAdapter mAdapter;
     private RecyclerView recyclerView;
     private Context mContext;
+    private ProgressBar progress;
     private static DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.set_search_fragment, container, false);
+        progress = (ProgressBar) layout.findViewById(R.id.search_set_loading);
         recyclerView = (RecyclerView) layout.findViewById(R.id.set_search_recycler);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mContext);
         recyclerView.setLayoutManager(layoutManager);
         mAdapter = new SetRecyclerAdapter(mContext, sets);
         recyclerView.setAdapter(mAdapter);
+        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(mContext, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Set set = mAdapter.getItemAtPosition(position);
+                Snackbar.make(view, "Cliccato " + set.getName(), Snackbar.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onLongItemClick(View view, int position) {
+                Set set = mAdapter.getItemAtPosition(position);
+                Snackbar.make(view, "Cliccato a lungo" + set.getName(), Snackbar.LENGTH_SHORT).show();
+
+            }
+        })
+        );
+        getDataFromServer(new OnGetDataListener() {
+            @Override
+            public void onSuccess(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    for (DataSnapshot d : dataSnapshot.getChildren()){
+                        Set s = d.getValue(Set.class);
+                        sets.add(s);
+                        mAdapter = new SetRecyclerAdapter(mContext, sets);
+                        recyclerView.setAdapter(mAdapter);
+                        progress.setVisibility(View.GONE);
+                    }
+                }
+            }
+
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onFailure() {
+
+            }
+        });
         return layout;
     }
 
@@ -49,7 +96,6 @@ public class SearchSetsFragment extends Fragment implements SearchView.OnQueryTe
         super.onCreate(savedInstanceState);
         mContext = getActivity();
         setHasOptionsMenu(true);
-        getDataFromServer();
     }
 
     @Override
@@ -104,26 +150,29 @@ public class SearchSetsFragment extends Fragment implements SearchView.OnQueryTe
         return true;
     }
 
-    private void getDataFromServer() {
+    public interface OnGetDataListener {
+        //this is for callbacks
+        void onSuccess(DataSnapshot dataSnapshot);
+        void onStart();
+        void onFailure();
+    }
+
+    private void getDataFromServer(final OnGetDataListener listen) {
+        progress.setVisibility(View.VISIBLE);
+        listen.onStart();
         sets.clear();
         dbRef.child("sets").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
-                    for (DataSnapshot d : dataSnapshot.getChildren()){
-                        Set s = d.getValue(Set.class);
-                        sets.add(s);
-                        mAdapter = new SetRecyclerAdapter(mContext, sets);
-                        recyclerView.setAdapter(mAdapter);
-                    }
-                }
+                listen.onSuccess(dataSnapshot);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                listen.onFailure();
             }
         });
     }
-
 }
+
+
