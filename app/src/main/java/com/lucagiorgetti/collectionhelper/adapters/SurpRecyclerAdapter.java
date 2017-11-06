@@ -1,26 +1,25 @@
-package com.lucagiorgetti.collectionhelper;
+package com.lucagiorgetti.collectionhelper.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.lucagiorgetti.collectionhelper.model.Set;
+import com.lucagiorgetti.collectionhelper.R;
 import com.lucagiorgetti.collectionhelper.model.Surprise;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Created by Luca on 28/10/2017.
  */
 
-class SurpRecyclerAdapter extends RecyclerView.Adapter<SurpRecyclerAdapter.SurpViewHolder>{
+public class SurpRecyclerAdapter extends RecyclerView.Adapter<SurpRecyclerAdapter.SurpViewHolder>{
     private ArrayList<Surprise> surprises = new ArrayList<>();
     ArrayList<Surprise> mStringFilterList;
     Context ctx;
@@ -40,12 +39,14 @@ class SurpRecyclerAdapter extends RecyclerView.Adapter<SurpRecyclerAdapter.SurpV
     public void onBindViewHolder(SurpViewHolder holder, int position) {
         Surprise surp = surprises.get(position);
         holder.vCode.setText(surp.getCode());
-        holder.vSetName.setText(surp.getSet().getName());
+        holder.vSetName.setText(surp.getSet_name());
         holder.vDescription.setText(surp.getDescription());
-        holder.vSeason.setText(surp.getSet().getSeason());
-        holder.vYear.setText(String.valueOf(surp.getSet().getYear()));
-        holder.vProducer.setText(surp.getSet().getProducer().getName());
-        holder.vNation.setText(surp.getSet().getNation());
+        holder.vProduct.setText(surp.getSet_product_name());
+        holder.vYear.setText(String.valueOf(surp.getSet_year()));
+        holder.vProducer.setText(surp.getSet_producer_name());
+
+        Locale l = new Locale("", surp.getSet_nation());
+        holder.vNation.setText(l.getDisplayCountry());
 
         Glide.with(ctx).load(surp.getImg_path()).into(holder.vImage);
     }
@@ -59,7 +60,7 @@ class SurpRecyclerAdapter extends RecyclerView.Adapter<SurpRecyclerAdapter.SurpV
         protected TextView vCode;
         protected TextView vSetName;
         protected TextView vDescription;
-        protected TextView vSeason;
+        protected TextView vProduct;
         protected TextView vYear;
         protected TextView vProducer;
         protected TextView vNation;
@@ -72,7 +73,7 @@ class SurpRecyclerAdapter extends RecyclerView.Adapter<SurpRecyclerAdapter.SurpV
             vSetName = (TextView) v.findViewById(R.id.txv_surp_elem_set);
             vDescription = (TextView) v.findViewById(R.id.txv_surp_elem_desc);
             vYear = (TextView) v.findViewById(R.id.txv_surp_elem_year);
-            vSeason = (TextView) v.findViewById(R.id.txv_surp_elem_season);
+            vProduct = (TextView) v.findViewById(R.id.txv_surp_elem_product);
             vProducer = (TextView) v.findViewById(R.id.txv_surp_elem_producer);
             vNation = (TextView) v.findViewById(R.id.txv_surp_elem_nation);
             vImage = (ImageView) v.findViewById(R.id.img_surp_elem);

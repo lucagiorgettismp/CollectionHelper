@@ -11,29 +11,27 @@ import java.io.Serializable;
  */
 
 public class Set {
-    private String name;
-    private int year;
-    private Producer producer;
-    private String season;
-    private String nation;
-    private String img_path;
+    private String id = null;
+    private String name = null;
+    private int year = -1;
+    private String product = null;
+    private String producer = null;
+    private String nation = null;
+    private String img_path = null;
+    private String color = null;
 
-    public Set(String name, int year, Producer producer, String season, String nation, String img_path) {
+    public Set(String name, int year, Product product, String nation, String img_path, String color) {
         this.name = name;
         this.year = year;
-        this.producer = producer;
-        this.season = season;
+        this.product = product.getName();
+        this.producer = product.getProducer().getName();
         this.nation = nation;
         this.img_path = img_path;
+        this.color = color;
+        this.id = name.replaceAll("\\s+","") + "_" + year;
     }
 
     public Set() {
-          name = null;
-          year = 0;
-          producer = null;
-          season = null;
-          nation = null;
-          img_path = null;
     }
 
     public String getName() {
@@ -44,12 +42,12 @@ public class Set {
         return year;
     }
 
-    public Producer getProducer() {
-        return producer;
+    public String getProduct() {
+        return product;
     }
 
-    public String getSeason() {
-        return season;
+    public String getProducer() {
+        return producer;
     }
 
     public String getNation() {
@@ -58,5 +56,13 @@ public class Set {
 
     public String getImg_path() {
         return img_path;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public String getId() {
+        return id;
     }
 }

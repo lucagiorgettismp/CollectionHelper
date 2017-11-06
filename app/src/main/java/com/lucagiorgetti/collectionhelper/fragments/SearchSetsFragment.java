@@ -1,6 +1,6 @@
-package com.lucagiorgetti.collectionhelper;
+package com.lucagiorgetti.collectionhelper.fragments;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,26 +18,28 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.lucagiorgetti.collectionhelper.model.Surprise;
+import com.lucagiorgetti.collectionhelper.R;
+import com.lucagiorgetti.collectionhelper.adapters.SetRecyclerAdapter;
+import com.lucagiorgetti.collectionhelper.model.Set;
 
 import java.util.ArrayList;
 
-public class MissingFragment extends Fragment implements SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener {
+public class SearchSetsFragment extends Fragment implements SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener {
 
-    ArrayList<Surprise> missings = new ArrayList<>();
-    private SurpRecyclerAdapter mAdapter;
+    ArrayList<Set> sets = new ArrayList<>();
+    private SetRecyclerAdapter mAdapter;
     private RecyclerView recyclerView;
     private Context mContext;
     private static DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View layout = inflater.inflate(R.layout.missings_fragment, container, false);
-        recyclerView = (RecyclerView) layout.findViewById(R.id.missings_recycler);
+        View layout = inflater.inflate(R.layout.set_search_fragment, container, false);
+        recyclerView = (RecyclerView) layout.findViewById(R.id.set_search_recycler);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mContext);
         recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new SurpRecyclerAdapter(mContext, missings);
+        mAdapter = new SetRecyclerAdapter(mContext, sets);
         recyclerView.setAdapter(mAdapter);
         return layout;
     }
@@ -76,19 +78,19 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
             resetSearch();
             return false;
         }
-        ArrayList<Surprise> filteredValues = new ArrayList<Surprise>(missings);
-        for (Surprise value : missings) {
-            if (!value.getDescription().toLowerCase().contains(newText.toLowerCase())) {
+        ArrayList<Set> filteredValues = new ArrayList<>(sets);
+        for (Set value : sets) {
+            if (!value.getName().toLowerCase().contains(newText.toLowerCase())) {
                 filteredValues.remove(value);
             }
         }
-        mAdapter = new SurpRecyclerAdapter(mContext, filteredValues);
+        mAdapter = new SetRecyclerAdapter(mContext, filteredValues);
         recyclerView.setAdapter(mAdapter);
         return false;
     }
 
     public void resetSearch() {
-        mAdapter = new SurpRecyclerAdapter(mContext, missings);
+        mAdapter = new SetRecyclerAdapter(mContext, sets);
         recyclerView.setAdapter(mAdapter);
     }
 
@@ -103,15 +105,15 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
     }
 
     private void getDataFromServer() {
-        missings.clear();
-        dbRef.child("surprises").addListenerForSingleValueEvent(new ValueEventListener() {
+        sets.clear();
+        dbRef.child("sets").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
                     for (DataSnapshot d : dataSnapshot.getChildren()){
-                        Surprise s = d.getValue(Surprise.class);
-                        missings.add(s);
-                        mAdapter = new SurpRecyclerAdapter(mContext, missings);
+                        Set s = d.getValue(Set.class);
+                        sets.add(s);
+                        mAdapter = new SetRecyclerAdapter(mContext, sets);
                         recyclerView.setAdapter(mAdapter);
                     }
                 }

@@ -40,6 +40,40 @@
         android:hint="Username"
         android:inputType="textPersonName" />
 
+    <EditText
+        android:id="@+id/edit_reg_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Name"
+        android:inputType="textCapWords" />
+
+    <EditText
+        android:id="@+id/edit_reg_surname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Surname"
+        android:inputType="textCapWords" />
+
+    <EditText
+        android:id="@+id/edit_reg_birthdate"
+        android:clickable="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:focusable="true"
+        android:hint="Birthday" />
+
+    <EditText
+        android:id="@+id/edit_reg_nation"
+        android:clickable="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:focusable="true"
+        android:hint="Nation" />
+
     <Button
         android:id="@+id/btn_reg_submit"
         style="@style/Widget.AppCompat.Button"

@@ -59,13 +59,13 @@
                     android:textSize="10sp" />
 
                 <TextView
-                    android:id="@+id/lbl_season"
+                    android:id="@+id/lbl_product"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="35"
                     android:gravity="center_vertical|center"
                     android:paddingLeft="8dp"
-                    android:text="PERIODO"
+                    android:text="PRODOTTO"
                     android:textSize="10sp" />
 
                 <TextView
@@ -106,7 +106,7 @@
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/txv_set_elem_season"
+                    android:id="@+id/txv_set_elem_product"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="35"

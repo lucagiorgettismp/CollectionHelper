@@ -22,11 +22,9 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.lucagiorgetti.collectionhelper.Db.DbManager;
 
 /**
  * Created by Luca Giorgetti on 27/06/2017.
@@ -39,7 +37,6 @@ public class LoginActivity extends AppCompatActivity {
     private String email;
     private String pwd;
     private FirebaseAuth fireAuth;
-    public static DbManager manager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -87,8 +84,6 @@ public class LoginActivity extends AppCompatActivity {
                 getApplicationContext().startActivity(i);
             }
         });
-
-        this.manager = new DbManager(this);
     }
 
     private void openLogingDialog() {

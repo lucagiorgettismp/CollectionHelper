@@ -5,23 +5,37 @@ package com.lucagiorgetti.collectionhelper.model;
  */
 
 public class Surprise {
-    private String description;
-    private String img_path;
-    private String code;
-    private Set set;
+    private String id = null;
+    private String description = null;
+    private String img_path = null;
+    private String code = null;
+    private String set_name = null;
+    private int set_year = -1;
+    private String set_producer_name = null;
+    private String set_product_name = null;
+    private String set_color = null;
+    private String set_nation = null;
+    private String set_id = null;
 
     public Surprise(){
-        description = null;
-        img_path = null;
-        code = null;
-        set = null;
     }
 
     public Surprise(String description, String img_path, String code, Set set) {
         this.description = description;
         this.img_path = img_path;
         this.code = code;
-        this.set = set;
+        this.set_name = set.getName();
+        this.set_year = set.getYear();
+        this.set_producer_name = set.getProducer();
+        this.set_product_name = set.getProduct();
+        this.set_color = set.getColor();
+        this.set_nation = set.getNation();
+        this.id = code + "_" + set_year;
+        this.set_id = set.getId();
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getDescription() {
@@ -36,8 +50,32 @@ public class Surprise {
         return code;
     }
 
-    public Set getSet() {
-        return set;
+    public String getSet_name() {
+        return set_name;
+    }
+
+    public int getSet_year() {
+        return set_year;
+    }
+
+    public String getSet_producer_name() {
+        return set_producer_name;
+    }
+
+    public String getSet_product_name() {
+        return set_product_name;
+    }
+
+    public String getSet_color() {
+        return set_color;
+    }
+
+    public String getSet_nation() {
+        return set_nation;
+    }
+
+    public String getSet_id() {
+        return set_id;
     }
 }
 

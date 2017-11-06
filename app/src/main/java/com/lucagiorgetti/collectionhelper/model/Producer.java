@@ -11,14 +11,14 @@ import java.io.Serializable;
  */
 
 public class Producer {
-    private String name;
+    private String name = null;
 
     public Producer(String name){
         this.name = name;
     }
 
     public Producer(){
-        this.name = null;
+
     }
 
     public String getName() {
