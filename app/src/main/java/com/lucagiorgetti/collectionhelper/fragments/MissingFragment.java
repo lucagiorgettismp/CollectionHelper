@@ -20,6 +20,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -47,6 +48,7 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
     private RecyclerView recyclerView;
     private Context mContext;
     private FloatingActionButton fab;
+    private ProgressBar progress;
     private static DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
     private int edit_position;
     private Paint p = new Paint();
@@ -63,6 +65,7 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.missings_fragment, container, false);
+        progress = (ProgressBar) layout.findViewById(R.id.missing_loading);
         recyclerView = (RecyclerView) layout.findViewById(R.id.missings_recycler);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mContext);
@@ -72,6 +75,28 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
         fab = (FloatingActionButton) layout.findViewById(R.id.fab);
         fab.setOnClickListener(this);
         initSwipe(layout);
+        getDataFromServer(new OnGetDataListener() {
+            @Override
+            public void onSuccess(DataSnapshot dataSnapshot) {
+                for (DataSnapshot d : dataSnapshot.getChildren()){
+                    Surprise s = d.getValue(Surprise.class);
+                    missings.add(s);
+                    mAdapter = new SurpRecyclerAdapter(mContext, missings);
+                    recyclerView.setAdapter(mAdapter);
+                    progress.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onStart() {
+            }
+
+            @Override
+            public void onFailure() {
+
+            }
+        });
+
         return layout;
     }
 
@@ -134,7 +159,6 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
         super.onCreate(savedInstanceState);
         mContext = getActivity();
         setHasOptionsMenu(true);
-        getDataFromServer();
     }
 
     @Override
@@ -184,28 +208,6 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
         return true;
     }
 
-    private void getDataFromServer() {
-        missings.clear();
-        dbRef.child("surprises").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
-                    for (DataSnapshot d : dataSnapshot.getChildren()){
-                        Surprise s = d.getValue(Surprise.class);
-                        missings.add(s);
-                        mAdapter = new SurpRecyclerAdapter(mContext, missings);
-                        recyclerView.setAdapter(mAdapter);
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
     @Override
     public void onAttach(Context context){
         super.onAttach(context);
@@ -219,4 +221,31 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
         super.onDetach();
         listener = null;
     }
+
+    public interface OnGetDataListener {
+        //this is for callbacks
+        void onSuccess(DataSnapshot dataSnapshot);
+        void onStart();
+        void onFailure();
+    }
+
+    private void getDataFromServer(final OnGetDataListener listen) {
+        listen.onStart();
+        progress.setVisibility(View.VISIBLE);
+        missings.clear();
+        dbRef.child("surprises").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    listen.onSuccess(dataSnapshot);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                listen.onFailure();
+            }
+        });
+    }
+
 }
