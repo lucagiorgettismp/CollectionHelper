@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -28,13 +29,17 @@ import com.lucagiorgetti.collectionhelper.fragments.MissingFragment;
 import com.lucagiorgetti.collectionhelper.fragments.SearchSetsFragment;
 import com.lucagiorgetti.collectionhelper.model.User;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener , MissingFragment.MissingListener{
     private static Fragment fragment = null;
     private static FragmentManager fragmentManager;
     private FirebaseAuth fireAuth;
+    private LoginManager facebookLogin;
     private FirebaseAuth.AuthStateListener fireAuthStateListener;
     private User user = null;
     private TextView nav_user;
+    private TextView nav_email;
     private Initializer init = new Initializer();
 
     private static DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
@@ -43,6 +48,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         fireAuth = FirebaseAuth.getInstance();
+        facebookLogin = LoginManager.getInstance();
+
         fireAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -61,43 +68,81 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
             }
         };
-        init.insertData();
+
+        // init.insertData();
         if(fireAuth.getCurrentUser() != null){
             setContentView(R.layout.activity_main);
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
-
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                     this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
             drawer.setDrawerListener(toggle);
             toggle.syncState();
-
             NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
             navigationView.setNavigationItemSelectedListener(this);
             View hView =  navigationView.getHeaderView(0);
             nav_user = (TextView)hView.findViewById(R.id.navbar_title);
+            nav_email = (TextView) hView.findViewById(R.id.navbar_subtitle);
 
-            getCurrentUser(fireAuth);
+            getCurrentUser(new OnGetDataListener() {
+                @Override
+                public void onSuccess(DataSnapshot dataSnapshot) {
+                    user = dataSnapshot.getValue(User.class);
+                    nav_user.setText(user.getUsername());
+                    nav_email.setText(user.getEmail().replaceAll(",","\\."));
+                }
+
+                @Override
+                public void onStart() {
+
+                }
+
+                @Override
+                public void onFailure() {
+
+                }
+            });
+
             displayView(0, false); // call search fragment.
         }
     }
 
-    private void getCurrentUser(FirebaseAuth fireAuth) {
-        dbRef.child("users").orderByChild("email").equalTo(fireAuth.getCurrentUser().getEmail()).addListenerForSingleValueEvent(new ValueEventListener() {
+    public interface OnGetDataListener {
+        //this is for callbacks
+        void onSuccess(DataSnapshot dataSnapshot);
+        void onStart();
+        void onFailure();
+    }
+
+    private void getCurrentUser(final OnGetDataListener listen) {
+        listen.onStart();
+        String emailCod = fireAuth.getCurrentUser().getEmail().replaceAll("\\.", ",");
+        final String[] username = {null};
+        dbRef.child("emails").child(emailCod).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
-                    user = dataSnapshot.getValue(User.class);
+                for(DataSnapshot d : dataSnapshot.getChildren()){
+                    username[0] = d.getKey();
                 }
+                dbRef.child("users").child(username[0]).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        listen.onSuccess(dataSnapshot);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                listen.onFailure();
             }
         });
-
     }
 
     @Override
@@ -167,6 +212,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void logout() {
         this.fireAuth.signOut();
+        this.facebookLogin.logOut();
     }
 
     public void displayView(int position, boolean backable) {

@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -69,9 +70,64 @@ public class RegistrateActivity extends AppCompatActivity{
         edtName = (EditText) findViewById(R.id.edit_reg_name);
         edtBirthdate =(EditText) findViewById(R.id.edit_reg_birthdate);
         edtNation =(EditText) findViewById(R.id.edit_reg_nation);
-
-
+        TextView lblInfoFacebook = (TextView) findViewById(R.id.lbl_reg_info_facebook);
+        TextView lblInfoFirstLogin = (TextView) findViewById(R.id.lbl_reg_info_firstlogin);
+        Button btnAccountCompleteFacebook = (Button) findViewById(R.id.btn_reg_complete_account);
         submit = (Button) findViewById(R.id.btn_reg_submit);
+
+        Bundle b = getIntent().getExtras();
+        int facebook = 0;
+        String facebook_name = null;
+        String facebook_surname = null;
+        String facebook_email = null;
+
+
+        if(b != null){
+            facebook = b.getInt("facebook");
+            facebook_name = b.getString("name");
+            facebook_surname = b.getString("surname");
+            facebook_email = b.getString("email");
+        }
+
+        if (facebook == 1){
+            /*aperto da facebook*/
+            submit.setVisibility(View.GONE);
+            lblInfoFirstLogin.setVisibility(View.GONE);
+            edtPassword.setVisibility(View.GONE);
+
+            btnAccountCompleteFacebook.setVisibility(View.VISIBLE);
+            lblInfoFacebook.setVisibility(View.VISIBLE);
+            edtName.setText(facebook_name);
+            edtSurname.setText(facebook_surname);
+            edtEmail.setText(facebook_email);
+        }
+
+        btnAccountCompleteFacebook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String email = edtEmail.getText().toString().trim();
+                final String username = edtUsername.getText().toString().trim();
+                final String name = edtName.getText().toString().trim();
+                final String surname = edtSurname.getText().toString().trim();
+                Date birthDate = null;
+                try {
+                    birthDate = sdf.parse(edtBirthdate.getText().toString());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                final String nation = edtNation.getText().toString();
+                generateUser(name, surname, email, username, birthDate, nation);
+                Intent i = new Intent(RegistrateActivity.this, MainActivity.class);
+                // Closing all the Activities
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                // Add new Flag to start new Activity
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                // Staring Login Activity
+                getApplicationContext().startActivity(i);
+
+                finish();
+            }
+        });
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -170,12 +226,14 @@ public class RegistrateActivity extends AppCompatActivity{
 
     private void generateUser(String name, String surname, String email, String username, Date birthDate, String nation){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
+        String emailCod = email.replaceAll("\\.", ",");
+
         DatabaseReference users = database.getReference("users"); //users is a node in your Firebase Database.
-        User user = new User(name, surname, email, username, sdf.format(birthDate), nation); //ObjectClass for Users
+        User user = new User(name, surname, emailCod, username, sdf.format(birthDate), nation); //ObjectClass for Users
 
         DatabaseReference emails = database.getReference("emails"); //users is a node in your Firebase Database.
-        String emailCod = email.replaceAll("\\.", ",");
         emails.child(emailCod).child(username).setValue(true);
+
         users.child(username).setValue(user);
         // users.push().setValue(user);
     }
