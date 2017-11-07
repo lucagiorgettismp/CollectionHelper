@@ -29,18 +29,15 @@ import com.lucagiorgetti.collectionhelper.fragments.MissingFragment;
 import com.lucagiorgetti.collectionhelper.fragments.SearchSetsFragment;
 import com.lucagiorgetti.collectionhelper.model.User;
 
-import java.util.List;
-
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener , MissingFragment.MissingListener{
     private static Fragment fragment = null;
     private static FragmentManager fragmentManager;
     private FirebaseAuth fireAuth;
     private LoginManager facebookLogin;
     private FirebaseAuth.AuthStateListener fireAuthStateListener;
-    private User user = null;
+    private User currentUser = null;
     private TextView nav_user;
     private TextView nav_email;
-    private Initializer init = new Initializer();
 
     private static DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
 
@@ -69,7 +66,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         };
 
-        // init.insertData();
         if(fireAuth.getCurrentUser() != null){
             setContentView(R.layout.activity_main);
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -88,9 +84,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             getCurrentUser(new OnGetDataListener() {
                 @Override
                 public void onSuccess(DataSnapshot dataSnapshot) {
-                    user = dataSnapshot.getValue(User.class);
-                    nav_user.setText(user.getUsername());
-                    nav_email.setText(user.getEmail().replaceAll(",","\\."));
+                    currentUser = dataSnapshot.getValue(User.class);
+                    Initializer init = new Initializer(currentUser);
+                    init.insertData();
+                    nav_user.setText(currentUser.getUsername());
+                    nav_email.setText(currentUser.getEmail().replaceAll(",","\\."));
                 }
 
                 @Override
@@ -103,7 +101,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 }
             });
-
             displayView(0, false); // call search fragment.
         }
     }

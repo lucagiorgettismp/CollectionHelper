@@ -7,6 +7,7 @@ import com.lucagiorgetti.collectionhelper.model.Producer;
 import com.lucagiorgetti.collectionhelper.model.Product;
 import com.lucagiorgetti.collectionhelper.model.Set;
 import com.lucagiorgetti.collectionhelper.model.Surprise;
+import com.lucagiorgetti.collectionhelper.model.User;
 
 import java.util.Locale;
 
@@ -18,6 +19,12 @@ public class Initializer {
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference surprises = database.getReference("surprises");
     DatabaseReference sets = database.getReference("sets");
+    DatabaseReference missings = database.getReference("missings");
+    User user = null;
+
+    public Initializer(User currentUser){
+        this.user = currentUser;
+    }
 
     public void insertData(){
         Producer kinder = new Producer("Kinder");
@@ -33,7 +40,12 @@ public class Initializer {
         Surprise SD325 = new Surprise("Gargamella", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/SD325.jpg?alt=media&token=fb1ec363-7edd-48c4-9414-f98d085838aa", "SD325", puffi3);
         insertSurprise(SD325);
 
+        insertMissing(SD324);
+        insertMissing(SD325);
+    }
 
+    private void insertMissing(Surprise surp) {
+        missings.child(user.getUsername()).child(surp.getId()).setValue(true);
     }
 
     private void insertSurprise(Surprise surp){
