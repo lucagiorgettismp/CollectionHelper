@@ -27,9 +27,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.lucagiorgetti.collectionhelper.fragments.MissingFragment;
 import com.lucagiorgetti.collectionhelper.fragments.SearchSetsFragment;
+import com.lucagiorgetti.collectionhelper.fragments.SetItemsFragment;
 import com.lucagiorgetti.collectionhelper.model.User;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener , MissingFragment.MissingListener{
+public class MainActivity extends AppCompatActivity implements
+        NavigationView.OnNavigationItemSelectedListener ,
+        MissingFragment.MissingListener,
+        SearchSetsFragment.SetListener,
+        SetItemsFragment.SetItemListener {
     private static Fragment fragment = null;
     private static FragmentManager fragmentManager;
     private FirebaseAuth fireAuth;
@@ -38,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private User currentUser = null;
     private TextView nav_user;
     private TextView nav_email;
+    private String clickedSetId = null;
 
     private static DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
 
@@ -51,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                if(user == null) {
+                if (user == null) {
                     // User is logged out
                     Intent i = new Intent(getApplicationContext(), LoginActivity.class);
                     // Closing all the Activities
@@ -66,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         };
 
-        if(fireAuth.getCurrentUser() != null){
+        if (fireAuth.getCurrentUser() != null) {
             setContentView(R.layout.activity_main);
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
@@ -77,8 +83,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             toggle.syncState();
             NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
             navigationView.setNavigationItemSelectedListener(this);
-            View hView =  navigationView.getHeaderView(0);
-            nav_user = (TextView)hView.findViewById(R.id.navbar_title);
+            View hView = navigationView.getHeaderView(0);
+            nav_user = (TextView) hView.findViewById(R.id.navbar_title);
             nav_email = (TextView) hView.findViewById(R.id.navbar_subtitle);
 
             getCurrentUser(new OnGetDataListener() {
@@ -86,9 +92,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 public void onSuccess(DataSnapshot dataSnapshot) {
                     currentUser = dataSnapshot.getValue(User.class);
                     Initializer init = new Initializer(currentUser);
-                    init.insertData();
+                    //init.insertData();
                     nav_user.setText(currentUser.getUsername());
-                    nav_email.setText(currentUser.getEmail().replaceAll(",","\\."));
+                    nav_email.setText(currentUser.getEmail().replaceAll(",", "\\."));
+                    displayView(0, false);
                 }
 
                 @Override
@@ -101,15 +108,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 }
             });
-            displayView(0, false); // call search fragment.
         }
+    }
+
+    @Override
+    public void onSetShortClick(String setId) {
+        this.clickedSetId = setId;
+        displayView(3, true);
     }
 
     public interface OnGetDataListener {
         //this is for callbacks
         void onSuccess(DataSnapshot dataSnapshot);
+
         void onStart();
+
         void onFailure();
+    }
+
+    @Override
+    public void onItemAddMissings(String surpId) {
+        String username = currentUser.getUsername();
+        dbRef.child("missings").child(username).child(surpId).setValue(true);
+    }
+
+    @Override
+    public void onItemAddDoubles(String surpId) {
+        String username = currentUser.getUsername();
+        dbRef.child("doubles").child(username).child(surpId).setValue(true);
     }
 
     private void getCurrentUser(final OnGetDataListener listen) {
@@ -119,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         dbRef.child("emails").child(emailCod).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot d : dataSnapshot.getChildren()){
+                for (DataSnapshot d : dataSnapshot.getChildren()) {
                     username[0] = d.getKey();
                 }
                 dbRef.child("users").child(username[0]).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -164,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-       // getMenuInflater().inflate(R.menu.main, menu);
+        // getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
@@ -218,14 +244,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (position) {
             case 0:
                 fragment = new MissingFragment();
+                Bundle b = new Bundle();
+                b.putString("username", currentUser.getUsername());
+                fragment.setArguments(b);
                 break;
 
             case 1:
-                fragment = new MissingFragment();
+                //fragment = new DoubleFragment();
                 break;
 
             case 2:
-                fragment = new MissingFragment();
+                //fragment = new CollectorsFragment();
+                break;
+
+            case 3:
+                fragment = new SetItemsFragment();
+                Bundle e = new Bundle();
+                e.putString("set", this.clickedSetId);
+                fragment.setArguments(e);
                 break;
 
             case 4:
@@ -240,7 +276,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fragmentManager = getSupportFragmentManager();
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             transaction.replace(R.id.content_frame, fragment, fragmentTags);
-            if(backable){
+            if (backable) {
                 transaction.addToBackStack(null);
             }
             transaction.commit();
@@ -262,8 +298,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void onClickOpenSetFragment() {
+    public void onClickOpenSearchSetFragment() {
         this.displayView(4, true);
+    }
+
+    @Override
+    public void onSwipeRemoveMissing(String surpId) {
+        String username = currentUser.getUsername();
+        dbRef.child("missings").child(username).child(surpId).setValue(null);
     }
 }
 

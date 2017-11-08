@@ -31,6 +31,11 @@ import com.lucagiorgetti.collectionhelper.model.Set;
 import java.util.ArrayList;
 
 public class SearchSetsFragment extends Fragment implements SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener {
+    private SetListener listener;
+
+    public interface SetListener{
+        void onSetShortClick(String setId);
+    }
 
     ArrayList<Set> sets = new ArrayList<>();
     private SetRecyclerAdapter mAdapter;
@@ -53,7 +58,7 @@ public class SearchSetsFragment extends Fragment implements SearchView.OnQueryTe
             @Override
             public void onItemClick(View view, int position) {
                 Set set = mAdapter.getItemAtPosition(position);
-                Snackbar.make(view, "Cliccato " + set.getName(), Snackbar.LENGTH_SHORT).show();
+                listener.onSetShortClick(set.getId());
             }
 
             @Override
@@ -96,11 +101,6 @@ public class SearchSetsFragment extends Fragment implements SearchView.OnQueryTe
         super.onCreate(savedInstanceState);
         mContext = getActivity();
         setHasOptionsMenu(true);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
     }
 
     @Override
@@ -172,6 +172,20 @@ public class SearchSetsFragment extends Fragment implements SearchView.OnQueryTe
                 listen.onFailure();
             }
         });
+    }
+
+    @Override
+    public void onAttach(Context context){
+        super.onAttach(context);
+        if (context instanceof SetListener){
+            this.listener = (SetListener) context;
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        listener = null;
+        super.onDetach();
     }
 }
 
