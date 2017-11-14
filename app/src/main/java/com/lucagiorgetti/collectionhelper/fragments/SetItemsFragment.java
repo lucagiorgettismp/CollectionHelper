@@ -33,6 +33,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.lucagiorgetti.collectionhelper.DatabaseUtility;
 import com.lucagiorgetti.collectionhelper.R;
 import com.lucagiorgetti.collectionhelper.adapters.SetItemAdapter;
 import com.lucagiorgetti.collectionhelper.adapters.SurpRecyclerAdapter;
@@ -54,7 +55,7 @@ public class SetItemsFragment extends Fragment implements View.OnClickListener{
     private GridView gridView;
     private Context mContext;
     private ProgressBar progress;
-    private static DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
+    private static DatabaseReference dbRef = DatabaseUtility.getDatabase().getReference();
 
     @Override
     public void onClick(View v) {

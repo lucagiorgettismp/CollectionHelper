@@ -120,6 +120,8 @@ public class LoginActivity extends AppCompatActivity {
 
                 // Staring Login Activity
                 getApplicationContext().startActivity(i);
+
+                finish();
             }
         });
     }
@@ -178,6 +180,7 @@ public class LoginActivity extends AppCompatActivity {
                             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             // Staring Login Activity
                             getApplicationContext().startActivity(i);
+                            finish();
                         }
                     }
                 });
@@ -217,7 +220,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
      private void checkUserExisting(final String email, String nameSurname) {
-         FirebaseDatabase database = FirebaseDatabase.getInstance();
+         FirebaseDatabase database = DatabaseUtility.getDatabase();
          DatabaseReference emails = database.getReference("emails"); //users is a node in your Firebase Database.
          final String emailCod = email.replaceAll("\\.", ",");
 
@@ -254,6 +257,8 @@ public class LoginActivity extends AppCompatActivity {
 
                      // Staring Login Activity
                      getApplicationContext().startActivity(i);
+
+                     finish();
                  }
              }
 

@@ -28,6 +28,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.lucagiorgetti.collectionhelper.DatabaseUtility;
 import com.lucagiorgetti.collectionhelper.MainActivity;
 import com.lucagiorgetti.collectionhelper.R;
 import com.lucagiorgetti.collectionhelper.adapters.SurpRecyclerAdapter;
@@ -50,7 +51,7 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
     private Context mContext;
     private FloatingActionButton fab;
     private ProgressBar progress;
-    private static DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
+    private static DatabaseReference dbRef = DatabaseUtility.getDatabase().getReference();
     private int edit_position;
     private Paint p = new Paint();
 

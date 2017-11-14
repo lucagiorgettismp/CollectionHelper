@@ -23,7 +23,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.lucagiorgetti.collectionhelper.fragments.MissingFragment;
 import com.lucagiorgetti.collectionhelper.fragments.SearchSetsFragment;
@@ -45,10 +44,11 @@ public class MainActivity extends AppCompatActivity implements
     private TextView nav_email;
     private String clickedSetId = null;
 
-    private static DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
+    private static DatabaseReference dbRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        dbRef = DatabaseUtility.getDatabase().getReference();
         super.onCreate(savedInstanceState);
         fireAuth = FirebaseAuth.getInstance();
         facebookLogin = LoginManager.getInstance();
@@ -68,6 +68,8 @@ public class MainActivity extends AppCompatActivity implements
 
                     // Staring Login Activity
                     getApplicationContext().startActivity(i);
+
+                    finish();
                 }
             }
         };
@@ -148,7 +150,8 @@ public class MainActivity extends AppCompatActivity implements
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
                     username[0] = d.getKey();
                 }
-                dbRef.child("users").child(username[0]).addListenerForSingleValueEvent(new ValueEventListener() {
+                if(username[0] != null){
+                    dbRef.child("users").child(username[0]).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         listen.onSuccess(dataSnapshot);
@@ -159,6 +162,7 @@ public class MainActivity extends AppCompatActivity implements
 
                     }
                 });
+                }
             }
 
             @Override
@@ -237,6 +241,8 @@ public class MainActivity extends AppCompatActivity implements
         this.fireAuth.signOut();
         this.facebookLogin.logOut();
     }
+
+
 
     public void displayView(int position, boolean backable) {
         fragment = null;

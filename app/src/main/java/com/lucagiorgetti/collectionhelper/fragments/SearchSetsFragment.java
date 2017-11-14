@@ -1,5 +1,6 @@
 package com.lucagiorgetti.collectionhelper.fragments;
 
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.content.Context;
@@ -23,6 +24,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.lucagiorgetti.collectionhelper.DatabaseUtility;
 import com.lucagiorgetti.collectionhelper.R;
 import com.lucagiorgetti.collectionhelper.RecyclerItemClickListener;
 import com.lucagiorgetti.collectionhelper.adapters.SetRecyclerAdapter;
@@ -42,7 +44,8 @@ public class SearchSetsFragment extends Fragment implements SearchView.OnQueryTe
     private RecyclerView recyclerView;
     private Context mContext;
     private ProgressBar progress;
-    private static DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
+    private SearchView searchView;
+    private static DatabaseReference dbRef = DatabaseUtility.getDatabase().getReference();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -107,7 +110,7 @@ public class SearchSetsFragment extends Fragment implements SearchView.OnQueryTe
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.search_menu, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView = (SearchView) searchItem.getActionView();
         searchView.setOnQueryTextListener(this);
         searchView.setQueryHint("Cerca");
         super.onCreateOptionsMenu(menu, inflater);

@@ -21,9 +21,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -47,6 +49,7 @@ public class RegistrateActivity extends AppCompatActivity{
     private EditText edtNation;
     private Button submit;
     private FirebaseAuth fireAuth;
+    private LoginManager facebookLogin;
     private SimpleDateFormat sdf = null;
     CountryPickerDialog countryPicker = null;
 
@@ -55,6 +58,8 @@ public class RegistrateActivity extends AppCompatActivity{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        this.facebookLogin = LoginManager.getInstance();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -225,7 +230,7 @@ public class RegistrateActivity extends AppCompatActivity{
     }
 
     private void generateUser(String name, String surname, String email, String username, Date birthDate, String nation){
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        FirebaseDatabase database = DatabaseUtility.getDatabase();
         String emailCod = email.replaceAll("\\.", ",");
 
         DatabaseReference users = database.getReference("users"); //users is a node in your Firebase Database.
@@ -237,4 +242,13 @@ public class RegistrateActivity extends AppCompatActivity{
         users.child(username).setValue(user);
         // users.push().setValue(user);
     }
+
+    @Override
+    public void onBackPressed() {
+        facebookLogin.logOut();
+        fireAuth.signOut();
+        super.onBackPressed();
+    }
+
+
 }
