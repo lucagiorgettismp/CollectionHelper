@@ -6,5 +6,17 @@
     <color name="accent_material_light">#0297cf</color>
     <color name="facebookColor">#001fb9</color>
     <color name="cardBackground">#f9f9f9</color>
+    <color name="GreySet">#c2c1bb</color>
+    <color name="LightBluSet">#39acdd</color>
+    <color name="BlueSet">#1919ff</color>
+    <color name="RedSet">#f73b3b</color>
+    <color name="OrangeSet">#ffb326</color>
+    <color name="PurpleSet">#9212ca</color>
+    <color name="PinkSet">#ffa5fa</color>
+    <color name="YellowSet">#f9ea5e</color>
+    <color name="GreenSet">#219123</color>
+    <color name="LightGreenSet">#60ff70</color>
+    <color name="BrownSet">#c15e28</color>
+
 </resources>
 

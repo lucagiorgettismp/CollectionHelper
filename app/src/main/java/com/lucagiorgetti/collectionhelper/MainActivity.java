@@ -27,6 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.lucagiorgetti.collectionhelper.fragments.MissingFragment;
 import com.lucagiorgetti.collectionhelper.fragments.SearchSetsFragment;
 import com.lucagiorgetti.collectionhelper.fragments.SetItemsFragment;
+import com.lucagiorgetti.collectionhelper.model.Fragments;
 import com.lucagiorgetti.collectionhelper.model.User;
 
 public class MainActivity extends AppCompatActivity implements
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements
     private TextView nav_user;
     private TextView nav_email;
     private String clickedSetId = null;
+    private String clickedSetName = null;
 
     private static DatabaseReference dbRef;
 
@@ -97,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements
                     //init.insertData();
                     nav_user.setText(currentUser.getUsername());
                     nav_email.setText(currentUser.getEmail().replaceAll(",", "\\."));
-                    displayView(0, false);
+                    displayView(Fragments.MISSINGS, false);
                 }
 
                 @Override
@@ -114,9 +116,10 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onSetShortClick(String setId) {
+    public void onSetShortClick(String setId, String setName) {
         this.clickedSetId = setId;
-        displayView(3, true);
+        this.clickedSetName = setName;
+        displayView(Fragments.SETITEMS, true);
     }
 
     public interface OnGetDataListener {
@@ -220,17 +223,17 @@ public class MainActivity extends AppCompatActivity implements
         int id = item.getItemId();
 
         if (id == R.id.nav_missings) {
-            displayView(0, false);
+            displayView(Fragments.MISSINGS, false);
         } else if (id == R.id.nav_doubles) {
-            displayView(1, true);
+            displayView(Fragments.DOUBLES, false);
         } else if (id == R.id.nav_collectors) {
-            displayView(2, true);
+            displayView(Fragments.COLLECTORS, false);
         } else if (id == R.id.nav_logout) {
             logout();
         } else if (id == R.id.nav_settings) {
         }
 
-        displayView(0, false); // call search fragment.
+        displayView(Fragments.MISSINGS, false); // call search fragment.
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -242,38 +245,29 @@ public class MainActivity extends AppCompatActivity implements
         this.facebookLogin.logOut();
     }
 
-
-
-    public void displayView(int position, boolean backable) {
+    public void displayView(Fragments frag, boolean backable) {
         fragment = null;
         String fragmentTags = "";
-        switch (position) {
-            case 0:
+        switch (frag) {
+            case MISSINGS:
                 fragment = new MissingFragment();
                 Bundle b = new Bundle();
                 b.putString("username", currentUser.getUsername());
                 fragment.setArguments(b);
                 break;
-
-            case 1:
-                //fragment = new DoubleFragment();
+            case DOUBLES:
                 break;
-
-            case 2:
-                //fragment = new CollectorsFragment();
+            case COLLECTORS:
                 break;
-
-            case 3:
+            case SETSEARCH:
+                fragment = new SearchSetsFragment();
+                break;
+            case SETITEMS:
                 fragment = new SetItemsFragment();
                 Bundle e = new Bundle();
                 e.putString("set", this.clickedSetId);
                 fragment.setArguments(e);
                 break;
-
-            case 4:
-                fragment = new SearchSetsFragment();
-                break;
-
             default:
                 break;
         }
@@ -305,7 +299,7 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onClickOpenSearchSetFragment() {
-        this.displayView(4, true);
+        this.displayView(Fragments.SETSEARCH, true);
     }
 
     @Override
@@ -313,5 +307,21 @@ public class MainActivity extends AppCompatActivity implements
         String username = currentUser.getUsername();
         dbRef.child("missings").child(username).child(surpId).setValue(null);
     }
+
+    @Override
+    public void setMissingsTitle() {
+        getSupportActionBar().setTitle("Mancanti");
+    }
+
+    @Override
+    public void setSearchTitle() {
+        getSupportActionBar().setTitle("Serie");
+    }
+
+    @Override
+    public void setItemsTitle() {
+        getSupportActionBar().setTitle(this.clickedSetName);
+    }
+
 }
 

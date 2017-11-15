@@ -1,6 +1,7 @@
 package com.lucagiorgetti.collectionhelper.adapters;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.lucagiorgetti.collectionhelper.R;
+import com.lucagiorgetti.collectionhelper.model.Colors;
 import com.lucagiorgetti.collectionhelper.model.Surprise;
 
 import java.util.ArrayList;
@@ -48,6 +50,8 @@ public class SurpRecyclerAdapter extends RecyclerView.Adapter<SurpRecyclerAdapte
         Locale l = new Locale("", surp.getSet_nation());
         holder.vNation.setText(l.getDisplayCountry());
 
+        holder.vLayout.setBackgroundColor(ContextCompat.getColor(ctx, Colors.getHexColor(surp.getSet_color())));
+
         Glide.with(ctx).load(surp.getImg_path()).into(holder.vImage);
     }
 
@@ -69,6 +73,7 @@ public class SurpRecyclerAdapter extends RecyclerView.Adapter<SurpRecyclerAdapte
         surprises.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, surprises.size());
+        notifyDataSetChanged();
     }
 
     public class SurpViewHolder extends RecyclerView.ViewHolder {
@@ -80,6 +85,7 @@ public class SurpRecyclerAdapter extends RecyclerView.Adapter<SurpRecyclerAdapte
         protected TextView vProducer;
         protected TextView vNation;
         protected ImageView vImage;
+        protected View vLayout;
 
 
         public SurpViewHolder(View v) {
@@ -92,6 +98,7 @@ public class SurpRecyclerAdapter extends RecyclerView.Adapter<SurpRecyclerAdapte
             vProducer = (TextView) v.findViewById(R.id.txv_surp_elem_producer);
             vNation = (TextView) v.findViewById(R.id.txv_surp_elem_nation);
             vImage = (ImageView) v.findViewById(R.id.img_surp_elem);
+            vLayout = (View) v.findViewById(R.id.layout_surp_elem_titlebar);
         }
     }
 }

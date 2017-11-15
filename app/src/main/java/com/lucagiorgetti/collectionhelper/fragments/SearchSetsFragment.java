@@ -36,7 +36,9 @@ public class SearchSetsFragment extends Fragment implements SearchView.OnQueryTe
     private SetListener listener;
 
     public interface SetListener{
-        void onSetShortClick(String setId);
+        void onSetShortClick(String setId, String setName);
+
+        void setSearchTitle();
     }
 
     ArrayList<Set> sets = new ArrayList<>();
@@ -61,7 +63,7 @@ public class SearchSetsFragment extends Fragment implements SearchView.OnQueryTe
             @Override
             public void onItemClick(View view, int position) {
                 Set set = mAdapter.getItemAtPosition(position);
-                listener.onSetShortClick(set.getId());
+                listener.onSetShortClick(set.getId(), set.getName());
             }
 
             @Override
@@ -190,6 +192,13 @@ public class SearchSetsFragment extends Fragment implements SearchView.OnQueryTe
         listener = null;
         super.onDetach();
     }
+
+    @Override
+    public void onResume() {
+        listener.setSearchTitle();
+        super.onResume();
+    }
+
 }
 
 

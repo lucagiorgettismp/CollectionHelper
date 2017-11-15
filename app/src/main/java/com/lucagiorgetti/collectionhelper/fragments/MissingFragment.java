@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -42,6 +43,7 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
     public interface MissingListener{
         void onClickOpenSearchSetFragment();
         void onSwipeRemoveMissing(String surpId);
+        void setMissingsTitle();
     }
 
     ArrayList<Surprise> missings = new ArrayList<>();
@@ -116,6 +118,8 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
                     Surprise s = mAdapter.getItemAtPosition(position);
                     listener.onSwipeRemoveMissing(s.getId());
                     mAdapter.removeItem(position);
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.detach(MissingFragment.this).attach(MissingFragment.this).commit();
                 } else {
                     Surprise asd = mAdapter.getItemAtPosition(position);
                     Snackbar.make(v, "Apri" + asd.getCode() , Snackbar.LENGTH_SHORT).show();
@@ -229,6 +233,12 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
         void onSuccess();
         void onStart();
         void onFailure();
+    }
+
+    @Override
+    public void onResume() {
+        listener.setMissingsTitle();
+        super.onResume();
     }
 
     private void getDataFromServer(final OnGetDataListener listen) {
