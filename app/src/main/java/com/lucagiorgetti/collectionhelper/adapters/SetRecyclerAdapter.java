@@ -1,6 +1,7 @@
 package com.lucagiorgetti.collectionhelper.adapters;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.lucagiorgetti.collectionhelper.R;
+import com.lucagiorgetti.collectionhelper.model.Colors;
 import com.lucagiorgetti.collectionhelper.model.Set;
 
 import java.util.ArrayList;
@@ -47,6 +49,8 @@ public class SetRecyclerAdapter extends RecyclerView.Adapter<SetRecyclerAdapter.
         Locale l = new Locale("", set.getNation());
         holder.vNation.setText(l.getDisplayCountry());
 
+        holder.vLayout.setBackgroundColor(ContextCompat.getColor(ctx, Colors.getHexColor(set.getColor())));
+
         Glide.with(ctx).load(set.getImg_path()).into(holder.vImage);
 
     }
@@ -67,6 +71,7 @@ public class SetRecyclerAdapter extends RecyclerView.Adapter<SetRecyclerAdapter.
         protected TextView vProducer;
         protected TextView vNation;
         protected ImageView vImage;
+        protected View vLayout;
 
         public SetViewHolder(View v) {
             super(v);
@@ -76,6 +81,7 @@ public class SetRecyclerAdapter extends RecyclerView.Adapter<SetRecyclerAdapter.
             vProducer = (TextView) v.findViewById(R.id.txv_set_elem_producer);
             vImage = (ImageView) v.findViewById(R.id.imgSet);
             vNation = (TextView) v.findViewById(R.id.txv_set_elem_nation);
+            vLayout = (View) v.findViewById(R.id.layout_set_elem_titlebar);
         }
     }
 }

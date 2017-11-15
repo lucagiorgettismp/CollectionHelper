@@ -23,6 +23,7 @@
             android:weightSum="1">
 
             <LinearLayout
+                android:id="@+id/layout_surp_elem_titlebar"
                 android:layout_width="match_parent"
                 android:layout_height="32dp"
                 android:background="@android:color/holo_blue_dark"

@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements
     private TextView nav_user;
     private TextView nav_email;
     private String clickedSetId = null;
+    private String clickedSetName = null;
 
     private static DatabaseReference dbRef;
 
@@ -115,8 +116,9 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onSetShortClick(String setId) {
+    public void onSetShortClick(String setId, String setName) {
         this.clickedSetId = setId;
+        this.clickedSetName = setName;
         displayView(Fragments.SETITEMS, true);
     }
 
@@ -305,5 +307,21 @@ public class MainActivity extends AppCompatActivity implements
         String username = currentUser.getUsername();
         dbRef.child("missings").child(username).child(surpId).setValue(null);
     }
+
+    @Override
+    public void setMissingsTitle() {
+        getSupportActionBar().setTitle("Mancanti");
+    }
+
+    @Override
+    public void setSearchTitle() {
+        getSupportActionBar().setTitle("Serie");
+    }
+
+    @Override
+    public void setItemsTitle() {
+        getSupportActionBar().setTitle(this.clickedSetName);
+    }
+
 }
 

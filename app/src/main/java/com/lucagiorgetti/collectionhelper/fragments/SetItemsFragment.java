@@ -48,6 +48,7 @@ public class SetItemsFragment extends Fragment implements View.OnClickListener{
         void onItemAddMissings(String surpId);
         void onItemAddDoubles(String surpId);
 
+        void setItemsTitle();
     }
     ArrayList<Surprise> surprises = new ArrayList<>();
     private SetItemAdapter mAdapter;
@@ -175,4 +176,9 @@ public class SetItemsFragment extends Fragment implements View.OnClickListener{
         super.onDetach();
     }
 
+    @Override
+    public void onResume() {
+        listener.setItemsTitle();
+        super.onResume();
+    }
 }
