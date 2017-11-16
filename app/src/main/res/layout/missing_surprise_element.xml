@@ -72,7 +72,7 @@
                     <ImageView
                         android:id="@+id/img_surp_elem"
                         android:layout_width="wrap_content"
-                        android:layout_height="80dp"
+                        android:layout_height="match_parent"
                         android:layout_weight="20"
                         android:adjustViewBounds="true"
                         android:scaleType="fitXY"

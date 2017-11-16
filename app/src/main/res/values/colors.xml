@@ -17,6 +17,7 @@
     <color name="GreenSet">#219123</color>
     <color name="LightGreenSet">#60ff70</color>
     <color name="BrownSet">#c15e28</color>
+    <color name="AppBackground">#dbd9d9</color>
 
 </resources>
 

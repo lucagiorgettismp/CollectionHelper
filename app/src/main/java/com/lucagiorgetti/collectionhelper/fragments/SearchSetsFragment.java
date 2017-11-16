@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
@@ -64,6 +65,8 @@ public class SearchSetsFragment extends Fragment implements SearchView.OnQueryTe
             public void onItemClick(View view, int position) {
                 Set set = mAdapter.getItemAtPosition(position);
                 listener.onSetShortClick(set.getId(), set.getName());
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
             }
 
             @Override
@@ -166,7 +169,7 @@ public class SearchSetsFragment extends Fragment implements SearchView.OnQueryTe
         progress.setVisibility(View.VISIBLE);
         listen.onStart();
         sets.clear();
-        dbRef.child("sets").addListenerForSingleValueEvent(new ValueEventListener() {
+        dbRef.child("sets").orderByChild("year").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 listen.onSuccess(dataSnapshot);

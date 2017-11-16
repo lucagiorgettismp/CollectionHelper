@@ -21,6 +21,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 
@@ -53,6 +54,7 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
     private Context mContext;
     private FloatingActionButton fab;
     private ProgressBar progress;
+    private SearchView searchView;
     private static DatabaseReference dbRef = DatabaseUtility.getDatabase().getReference();
     private int edit_position;
     private Paint p = new Paint();
@@ -118,8 +120,13 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
                     Surprise s = mAdapter.getItemAtPosition(position);
                     listener.onSwipeRemoveMissing(s.getId());
                     mAdapter.removeItem(position);
-                    FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    ft.detach(MissingFragment.this).attach(MissingFragment.this).commit();
+                    String asd = searchView.getQuery().toString();
+                    if(!asd.isEmpty()) {
+                        FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        ft.detach(MissingFragment.this).attach(MissingFragment.this).commit();
+                        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+                    }
                 } else {
                     Surprise asd = mAdapter.getItemAtPosition(position);
                     Snackbar.make(v, "Apri" + asd.getCode() , Snackbar.LENGTH_SHORT).show();
@@ -171,7 +178,7 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.search_menu, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView = (SearchView) searchItem.getActionView();
         searchView.setOnQueryTextListener(this);
         searchView.setQueryHint("Cerca");
         super.onCreateOptionsMenu(menu, inflater);
@@ -190,7 +197,8 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
         }
         ArrayList<Surprise> filteredValues = new ArrayList<Surprise>(missings);
         for (Surprise value : missings) {
-            if (!value.getDescription().toLowerCase().contains(newText.toLowerCase())) {
+            if (!(value.getDescription().toLowerCase().contains(newText.toLowerCase()) ||
+                    value.getCode().toLowerCase().contains(newText.toLowerCase()))) {
                 filteredValues.remove(value);
             }
         }
@@ -251,7 +259,7 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
                 for (DataSnapshot d : dataSnapshot.getChildren()){
-                    dbRef.child("surprises").child(d.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    dbRef.child("surprises").child(d.getKey()).orderByChild("code").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot snapshot) {
                             if(snapshot.exists()){
