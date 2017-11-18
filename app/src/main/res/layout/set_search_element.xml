@@ -33,15 +33,26 @@
                     android:id="@+id/txv_set_elem_name"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="90"
+                    android:layout_weight="65"
                     android:gravity="left|center_vertical"
                     android:paddingLeft="10dp"
                     android:text="NOME"
                     android:textAllCaps="false"
-                    android:textColor="@color/common_google_signin_btn_text_dark_default"
+                    android:textColor="@android:color/white"
                     android:textColorHighlight="@android:color/black"
-                    android:textSize="18sp"
+                    android:textSize="15sp"
                     android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txv_set_elem_nation"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="25"
+                    android:gravity="center_vertical|center"
+                    android:paddingLeft="10dp"
+                    android:text="NAZIONE"
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -68,118 +79,6 @@
                 android:paddingTop="2dp"
                 android:scaleType="fitCenter"
                 app:srcCompat="@android:drawable/ic_menu_gallery" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="100">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="25"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/lbl_setyear"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical|center"
-                        android:paddingLeft="8dp"
-                        android:text="ANNO"
-                        android:textSize="10sp" />
-
-                    <TextView
-                        android:id="@+id/txv_set_elem_year"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical|center"
-                        android:paddingLeft="10dp"
-                        android:text="ANNO"
-                        android:textSize="15sp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="25"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/lbl_prod"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical|center"
-                        android:paddingLeft="8dp"
-                        android:text="PRODUTTORE"
-                        android:textSize="10sp" />
-
-                    <TextView
-                        android:id="@+id/txv_set_elem_producer"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical|center"
-                        android:paddingLeft="10dp"
-                        android:text="PRODUTTORE"
-                        android:textSize="15sp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="25"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/lbl_product"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical|center"
-                        android:paddingLeft="8dp"
-                        android:text="PRODOTTO"
-                        android:textSize="10sp" />
-
-                    <TextView
-                        android:id="@+id/txv_set_elem_product"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical|center"
-                        android:paddingLeft="10dp"
-                        android:text="STAG."
-                        android:textSize="15sp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="25"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/lbl_setnation"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical|center"
-                        android:paddingLeft="8dp"
-                        android:text="PAESE"
-                        android:textSize="10sp" />
-
-                    <TextView
-                        android:id="@+id/txv_set_elem_nation"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical|center"
-                        android:paddingLeft="10dp"
-                        android:text="NAZIONE"
-                        android:textSize="15sp" />
-
-                </LinearLayout>
-
-            </LinearLayout>
 
         </LinearLayout>
 

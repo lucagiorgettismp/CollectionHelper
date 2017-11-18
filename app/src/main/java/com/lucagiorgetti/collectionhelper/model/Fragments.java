@@ -5,5 +5,5 @@ package com.lucagiorgetti.collectionhelper.model;
  */
 
 public enum Fragments {
-    MISSINGS, DOUBLES, COLLECTORS, SETSEARCH, SETITEMS
+    MISSINGS, DOUBLES, COLLECTORS, SETSEARCH, PRODUCERS, YEARS, SETITEMS
 }

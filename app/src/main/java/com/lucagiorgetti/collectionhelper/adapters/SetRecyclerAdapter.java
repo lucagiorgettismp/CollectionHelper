@@ -42,15 +42,9 @@ public class SetRecyclerAdapter extends RecyclerView.Adapter<SetRecyclerAdapter.
     public void onBindViewHolder(SetViewHolder holder, int position) {
         Set set = sets.get(position);
         holder.vName.setText(set.getName());
-        holder.vProducer.setText(set.getProducer());
-        holder.vYear.setText(String.valueOf(set.getYear()));
-        holder.vProduct.setText(set.getProduct());
-
         Locale l = new Locale("", set.getNation());
         holder.vNation.setText(l.getDisplayCountry());
-
-        holder.vLayout.setBackgroundColor(ContextCompat.getColor(ctx, Colors.getHexColor(set.getColor())));
-
+        holder.vLayout.setBackgroundColor(ContextCompat.getColor(ctx, Colors.getHexColor(set.getProducer_color())));
         Glide.with(ctx).load(set.getImg_path()).into(holder.vImage);
 
     }
@@ -66,9 +60,6 @@ public class SetRecyclerAdapter extends RecyclerView.Adapter<SetRecyclerAdapter.
 
     public static class SetViewHolder extends RecyclerView.ViewHolder {
         protected TextView vName;
-        protected TextView vProduct;
-        protected TextView vYear;
-        protected TextView vProducer;
         protected TextView vNation;
         protected ImageView vImage;
         protected View vLayout;
@@ -76,9 +67,6 @@ public class SetRecyclerAdapter extends RecyclerView.Adapter<SetRecyclerAdapter.
         public SetViewHolder(View v) {
             super(v);
             vName =  (TextView) v.findViewById(R.id.txv_set_elem_name);
-            vProduct = (TextView)  v.findViewById(R.id.txv_set_elem_product);
-            vYear = (TextView)  v.findViewById(R.id.txv_set_elem_year);
-            vProducer = (TextView) v.findViewById(R.id.txv_set_elem_producer);
             vImage = (ImageView) v.findViewById(R.id.imgSet);
             vNation = (TextView) v.findViewById(R.id.txv_set_elem_nation);
             vLayout = (View) v.findViewById(R.id.layout_set_elem_titlebar);

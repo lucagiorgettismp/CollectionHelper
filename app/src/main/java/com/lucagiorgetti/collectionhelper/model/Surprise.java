@@ -14,6 +14,7 @@ public class Surprise {
     private String set_producer_name = null;
     private String set_product_name = null;
     private String set_color = null;
+    private String set_producer_color = null;
     private String set_nation = null;
     private String set_id = null;
 
@@ -26,11 +27,12 @@ public class Surprise {
         this.code = code;
         this.set_name = set.getName();
         this.set_year = set.getYear();
-        this.set_producer_name = set.getProducer();
+        this.set_producer_color = set.getProducer_color();
+        this.set_producer_name = set.getProducer_name();
         this.set_product_name = set.getProduct();
         this.set_color = set.getColor();
         this.set_nation = set.getNation();
-        this.id = code + "_" + set_year;
+        this.id =  set_producer_name + "_" + set_year + "_" + code;
         this.set_id = set.getId();
     }
 
@@ -76,6 +78,10 @@ public class Surprise {
 
     public String getSet_id() {
         return set_id;
+    }
+
+    public String getSet_producer_color() {
+        return set_producer_color;
     }
 }
 
