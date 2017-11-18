@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="4dp"
     android:orientation="vertical"
     android:weightSum="1">
 
@@ -11,16 +10,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="2dp"
-        app:cardElevation="3dp"
-        app:cardUseCompatPadding="true"><![CDATA[>
+        app:cardElevation="3dp"><![CDATA[>
 
         ]]>
 
         <LinearLayout
             android:id="@+id/layout_year_select"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="80dp"
             android:background="@color/RedSet"
+            android:gravity="center_vertical"
             android:orientation="vertical"
             android:paddingBottom="10dp"
             android:paddingTop="10dp">
@@ -32,7 +31,7 @@
                 android:text="Anno"
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
-                android:textSize="18sp"
+                android:textSize="30sp"
                 android:textStyle="bold" />
 
         </LinearLayout>

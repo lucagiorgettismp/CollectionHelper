@@ -7,11 +7,13 @@ package com.lucagiorgetti.collectionhelper.model;
 public class Year {
     private String id;
     private int year = -1;
-    private String producerId = null;
+    private String producer_id = null;
+    private String producer_color = null;
 
     public Year(int year, Producer producer) {
         this.year = year;
-        this.producerId = producer.getId();
+        this.producer_id = producer.getId();
+        this.producer_color = producer.getColor();
         this.id = producer.getId() + "_" + String.valueOf(year);
     }
 
@@ -24,10 +26,14 @@ public class Year {
     }
 
     public String getProducerId() {
-        return producerId;
+        return producer_id;
     }
 
     public String getId() {
         return id;
+    }
+
+    public String getProducer_color() {
+        return producer_color;
     }
 }

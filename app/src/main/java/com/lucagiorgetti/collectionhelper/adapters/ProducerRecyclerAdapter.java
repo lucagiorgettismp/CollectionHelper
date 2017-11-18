@@ -45,25 +45,7 @@ public class ProducerRecyclerAdapter extends RecyclerView.Adapter<ProducerRecycl
         holder.vName.setText(producer.getName());
         holder.vProduct.setText(producer.getProduct());
 
-        String color = null;
-        switch (position % 5){
-            case 0:
-                color = Colors.BLUE;
-                break;
-            case 1:
-                color = Colors.GREEN;
-                break;
-            case 2:
-                color = Colors.ORANGE;
-                break;
-            case 3:
-                color = Colors.RED;
-                break;
-            case 4:
-                color = Colors.PURPLE;
-                break;
-        }
-        holder.vLayout.setBackgroundColor(ContextCompat.getColor(ctx, Colors.getHexColor(color)));
+        holder.vLayout.setBackgroundColor(ContextCompat.getColor(ctx, Colors.getHexColor(producer.getColor())));
     }
 
     @Override

@@ -35,26 +35,7 @@ public class YearRecyclerAdapter extends RecyclerView.Adapter<YearRecyclerAdapte
     public void onBindViewHolder(SetViewHolder holder, int position) {
         Year year = years.get(position);
         holder.vName.setText(String.valueOf(year.getYear()));
-
-        String color = null;
-        switch (position % 5){
-            case 0:
-                color = Colors.BLUE;
-                break;
-            case 1:
-                color = Colors.GREEN;
-                break;
-            case 2:
-                color = Colors.ORANGE;
-                break;
-            case 3:
-                color = Colors.RED;
-                break;
-            case 4:
-                color = Colors.PURPLE;
-                break;
-        }
-        holder.vLayout.setBackgroundColor(ContextCompat.getColor(ctx, Colors.getHexColor(color)));
+        holder.vLayout.setBackgroundColor(ContextCompat.getColor(ctx, Colors.getHexColor(year.getProducer_color())));
     }
 
     @Override

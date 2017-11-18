@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.lucagiorgetti.collectionhelper.R;
 import com.lucagiorgetti.collectionhelper.model.Colors;
+import com.lucagiorgetti.collectionhelper.model.ExtraLocales;
 import com.lucagiorgetti.collectionhelper.model.Surprise;
 
 import java.util.ArrayList;
@@ -43,12 +44,18 @@ public class SurpRecyclerAdapter extends RecyclerView.Adapter<SurpRecyclerAdapte
         holder.vCode.setText(surp.getCode());
         holder.vSetName.setText(surp.getSet_name());
         holder.vDescription.setText(surp.getDescription());
-        holder.vProduct.setText(surp.getSet_product_name());
         holder.vYear.setText(String.valueOf(surp.getSet_year()));
-        holder.vProducer.setText(surp.getSet_producer_name());
+        holder.vProducer.setText(surp.getSet_producer_name() + " " + surp.getSet_product_name());
 
-        Locale l = new Locale("", surp.getSet_nation());
-        holder.vNation.setText(l.getDisplayCountry());
+        String nation = null;
+        if (ExtraLocales.isExtraLocale(surp.getSet_nation())) {
+           nation = ExtraLocales.getDisplayName(surp.getSet_nation());
+        } else {
+            Locale l = new Locale("", surp.getSet_nation());
+            nation = l.getDisplayCountry();
+        }
+
+        holder.vNation.setText(nation);
 
         holder.vLayout.setBackgroundColor(ContextCompat.getColor(ctx, Colors.getHexColor(surp.getSet_producer_color())));
 
@@ -80,7 +87,6 @@ public class SurpRecyclerAdapter extends RecyclerView.Adapter<SurpRecyclerAdapte
         protected TextView vCode;
         protected TextView vSetName;
         protected TextView vDescription;
-        protected TextView vProduct;
         protected TextView vYear;
         protected TextView vProducer;
         protected TextView vNation;
@@ -94,7 +100,6 @@ public class SurpRecyclerAdapter extends RecyclerView.Adapter<SurpRecyclerAdapte
             vSetName = (TextView) v.findViewById(R.id.txv_surp_elem_set);
             vDescription = (TextView) v.findViewById(R.id.txv_surp_elem_desc);
             vYear = (TextView) v.findViewById(R.id.txv_surp_elem_year);
-            vProduct = (TextView) v.findViewById(R.id.txv_surp_elem_product);
             vProducer = (TextView) v.findViewById(R.id.txv_surp_elem_producer);
             vNation = (TextView) v.findViewById(R.id.txv_surp_elem_nation);
             vImage = (ImageView) v.findViewById(R.id.img_surp_elem);

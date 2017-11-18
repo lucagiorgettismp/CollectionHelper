@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.lucagiorgetti.collectionhelper.R;
 import com.lucagiorgetti.collectionhelper.model.Colors;
+import com.lucagiorgetti.collectionhelper.model.ExtraLocales;
 import com.lucagiorgetti.collectionhelper.model.Set;
 
 import java.util.ArrayList;
@@ -42,8 +43,15 @@ public class SetRecyclerAdapter extends RecyclerView.Adapter<SetRecyclerAdapter.
     public void onBindViewHolder(SetViewHolder holder, int position) {
         Set set = sets.get(position);
         holder.vName.setText(set.getName());
-        Locale l = new Locale("", set.getNation());
-        holder.vNation.setText(l.getDisplayCountry());
+
+        String nation = null;
+        if (ExtraLocales.isExtraLocale(set.getNation())) {
+            nation = ExtraLocales.getDisplayName(set.getNation());
+        } else {
+            Locale l = new Locale("", set.getNation());
+            nation = l.getDisplayCountry();
+        }
+        holder.vNation.setText(nation);
         holder.vLayout.setBackgroundColor(ContextCompat.getColor(ctx, Colors.getHexColor(set.getProducer_color())));
         Glide.with(ctx).load(set.getImg_path()).into(holder.vImage);
 

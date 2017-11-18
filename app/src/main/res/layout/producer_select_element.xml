@@ -3,27 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="4dp"
     android:orientation="vertical"
     android:weightSum="1">
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="2dp"
-        app:cardElevation="3dp"
-        app:cardUseCompatPadding="true"><![CDATA[>
+        app:cardElevation="3dp"><![CDATA[>
 
         ]]>
 
         <LinearLayout
             android:id="@+id/layout_prd_select"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="80dp"
             android:background="@color/RedSet"
-            android:orientation="vertical"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
+            android:gravity="center_vertical|center"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/txv_title_prd_select"
@@ -32,7 +28,7 @@
                 android:text="Nome"
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
-                android:textSize="18sp"
+                android:textSize="26sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -42,7 +38,9 @@
                 android:text="Prodotto"
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
+                android:textSize="22sp"
                 android:textStyle="bold" />
+
         </LinearLayout>
 
     </android.support.v7.widget.CardView>

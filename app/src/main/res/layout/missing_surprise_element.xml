@@ -152,7 +152,7 @@
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="30"
+                            android:layout_weight="60"
                             android:orientation="vertical">
 
                             <TextView
@@ -170,30 +170,6 @@
                                 android:paddingLeft="10dp"
                                 android:text="PROD"
                                 android:textSize="15sp" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="30"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/lbl_surp_elem_product"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:paddingLeft="10dp"
-                                android:text="PRODOTTO"
-                                android:textSize="10sp" />
-
-                            <TextView
-                                android:id="@+id/txv_surp_elem_product"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:paddingLeft="10dp"
-                                android:text="STAGIONE"
-                                android:textSize="15sp" />
-
                         </LinearLayout>
 
                         <LinearLayout
