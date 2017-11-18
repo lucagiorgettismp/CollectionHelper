@@ -50,7 +50,7 @@ public class SurpRecyclerAdapter extends RecyclerView.Adapter<SurpRecyclerAdapte
         Locale l = new Locale("", surp.getSet_nation());
         holder.vNation.setText(l.getDisplayCountry());
 
-        holder.vLayout.setBackgroundColor(ContextCompat.getColor(ctx, Colors.getHexColor(surp.getSet_color())));
+        holder.vLayout.setBackgroundColor(ContextCompat.getColor(ctx, Colors.getHexColor(surp.getSet_producer_color())));
 
         Glide.with(ctx).load(surp.getImg_path()).into(holder.vImage);
     }

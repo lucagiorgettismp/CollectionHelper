@@ -25,8 +25,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.lucagiorgetti.collectionhelper.fragments.MissingFragment;
+import com.lucagiorgetti.collectionhelper.fragments.ProducersFragment;
 import com.lucagiorgetti.collectionhelper.fragments.SearchSetsFragment;
 import com.lucagiorgetti.collectionhelper.fragments.SetItemsFragment;
+import com.lucagiorgetti.collectionhelper.fragments.YearsFragment;
 import com.lucagiorgetti.collectionhelper.model.Fragments;
 import com.lucagiorgetti.collectionhelper.model.User;
 
@@ -34,7 +36,9 @@ public class MainActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener ,
         MissingFragment.MissingListener,
         SearchSetsFragment.SetListener,
-        SetItemsFragment.SetItemListener {
+        SetItemsFragment.SetItemListener,
+        ProducersFragment.ProducerListener,
+        YearsFragment.YearListener{
     private static Fragment fragment = null;
     private static FragmentManager fragmentManager;
     private FirebaseAuth fireAuth;
@@ -45,8 +49,12 @@ public class MainActivity extends AppCompatActivity implements
     private TextView nav_email;
     private String clickedSetId = null;
     private String clickedSetName = null;
+    private String clickedProducerName = null;
+    private String clickedProducerId = null;
 
     private static DatabaseReference dbRef;
+    private String clickedYearId = null;
+    private int clickedYearNumber = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -261,12 +269,25 @@ public class MainActivity extends AppCompatActivity implements
                 break;
             case SETSEARCH:
                 fragment = new SearchSetsFragment();
+                Bundle c = new Bundle();
+                c.putString("yearId", this.clickedYearId);
+                fragment.setArguments(c);
                 break;
             case SETITEMS:
                 fragment = new SetItemsFragment();
                 Bundle e = new Bundle();
                 e.putString("set", this.clickedSetId);
                 fragment.setArguments(e);
+                break;
+            case PRODUCERS:
+                fragment = new ProducersFragment();
+                break;
+            case YEARS:
+                fragment = new YearsFragment();
+                Bundle a = new Bundle();
+                a.putString("producer_name", this.clickedProducerName);
+                a.putString("producer_id", this.clickedProducerId);
+                fragment.setArguments(a);
                 break;
             default:
                 break;
@@ -298,11 +319,6 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onClickOpenSearchSetFragment() {
-        this.displayView(Fragments.SETSEARCH, true);
-    }
-
-    @Override
     public void onSwipeRemoveMissing(String surpId) {
         String username = currentUser.getUsername();
         dbRef.child("missings").child(username).child(surpId).setValue(null);
@@ -314,13 +330,42 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
+    public void onClickOpenProducersFragment() {
+        this.displayView(Fragments.PRODUCERS, true);
+    }
+
+    @Override
     public void setSearchTitle() {
-        getSupportActionBar().setTitle("Serie");
+        getSupportActionBar().setTitle(this.clickedProducerName + " - "+ this.clickedYearNumber);
     }
 
     @Override
     public void setItemsTitle() {
         getSupportActionBar().setTitle(this.clickedSetName);
+    }
+
+    @Override
+    public void onProducerClick(String id, String name) {
+        this.clickedProducerName = name;
+        this.clickedProducerId = id;
+        this.displayView(Fragments.YEARS, true);
+    }
+
+    @Override
+    public void setProducerTitle() {
+        getSupportActionBar().setTitle("Produttore");
+    }
+
+    @Override
+    public void onYearClicked(String year, int num) {
+        this.clickedYearId = year;
+        this.clickedYearNumber = num;
+        this.displayView(Fragments.SETSEARCH, true);
+    }
+
+    @Override
+    public void setYearTitle() {
+        getSupportActionBar().setTitle(this.clickedProducerName);
     }
 
 }

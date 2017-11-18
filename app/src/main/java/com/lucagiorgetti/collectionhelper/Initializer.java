@@ -5,10 +5,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.lucagiorgetti.collectionhelper.model.Categories;
 import com.lucagiorgetti.collectionhelper.model.Colors;
 import com.lucagiorgetti.collectionhelper.model.Producer;
-import com.lucagiorgetti.collectionhelper.model.Product;
 import com.lucagiorgetti.collectionhelper.model.Set;
 import com.lucagiorgetti.collectionhelper.model.Surprise;
 import com.lucagiorgetti.collectionhelper.model.User;
+import com.lucagiorgetti.collectionhelper.model.Year;
 
 import java.util.Locale;
 
@@ -21,6 +21,8 @@ public class Initializer {
     DatabaseReference surprises = database.getReference("surprises");
     DatabaseReference sets = database.getReference("sets");
     DatabaseReference missings = database.getReference("missings");
+    DatabaseReference producers = database.getReference("producers");
+    DatabaseReference years = database.getReference("years");
     User user = null;
 
     public Initializer(User currentUser){
@@ -28,16 +30,18 @@ public class Initializer {
     }
 
     public void insertData(){
-        Producer kinder = new Producer("Kinder");
-        Product kinder_sorpresa = new Product("Sorpresa", kinder);
-        Product kinder_merendero = new Product("Merendero", kinder);
-        //insertMissing(SD324);
-        //insertMissing(SD325);
+        Producer kinderSorpresa = new Producer("Kinder", "Sorpresa", 1, Colors.LIGHT_BLUE);
+        insertProducer(kinderSorpresa);
+        Producer kinderMerendero = new Producer("Kinder", "Merendero", 2, Colors.ORANGE);
+        insertProducer(kinderMerendero);
 
-        /*2017*/
+        Year kinSorp2017 = new Year(2017, kinderSorpresa);
+        insertYear(kinSorp2017);
+        Year kinMer2017 = new Year(2017, kinderMerendero);
+        insertYear(kinMer2017);
 
         //region CattivissimoMe3
-        Set catMe3 = new Set("Cattivissimo Me 3", 2017, kinder_sorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FCattivissimoMe3%2FBPZ_CattivissimoMe3_2017.jpg?alt=media&token=4b9069ac-cf8a-4a2d-b7d4-6780e61eb89a", Colors.LIGHT_BLUE, Categories.HANDPAINTED);
+        Set catMe3 = new Set("Cattivissimo Me 3", kinSorp2017, kinderSorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FCattivissimoMe3%2FBPZ_CattivissimoMe3_2017.jpg?alt=media&token=4b9069ac-cf8a-4a2d-b7d4-6780e61eb89a", Colors.LIGHT_BLUE, Categories.HANDPAINTED);
 
         Surprise SD697 = new Surprise("Gru", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FCattivissimoMe3%2FSD697.jpg?alt=media&token=5e9e86c0-c965-44d0-b3a0-cb70dc0e8dbf", "SD697", catMe3);
         Surprise SD698 = new Surprise("Agnes", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FCattivissimoMe3%2FSD698.jpg?alt=media&token=adb8a3a0-4a53-4e3b-8869-205b5e279589", "SD698", catMe3);
@@ -64,7 +68,7 @@ public class Initializer {
         //endregion
 
         //region Natale
-        Set natale = new Set("Natale", 2017, kinder_sorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FNatale%2FBPZ_Natale_2017.jpg?alt=media&token=ec51d752-ab7e-4f35-a6cc-ba412c075e0a", Colors.LIGHT_BLUE, Categories.HANDPAINTED);
+        Set natale = new Set("Natale", kinSorp2017, kinderSorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FNatale%2FBPZ_Natale_2017.jpg?alt=media&token=ec51d752-ab7e-4f35-a6cc-ba412c075e0a", Colors.LIGHT_BLUE, Categories.HANDPAINTED);
 
         Surprise SE269 = new Surprise("Orso Polare", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FNatale%2FSD269.jpg?alt=media&token=d81f00bc-8561-4038-8bae-0e03a4ed9c32", "SE269", natale);
         Surprise SE270 = new Surprise("Renna", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FNatale%2FSD270.jpg?alt=media&token=e9a14865-7afb-4811-bff6-70dfe0d1ad5c", "SE270", natale);
@@ -87,7 +91,7 @@ public class Initializer {
         //endregion
 
         //region DoraEsploratrice
-        Set dora = new Set("Dora l'esploratrice", 2017, kinder_sorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FDora%2FBPZ_Dora_2017.jpg?alt=media&token=42a23a43-e8c4-49f6-9223-145c33b94665", Colors.LIGHT_BLUE, Categories.HANDPAINTED);
+        Set dora = new Set("Dora l'esploratrice", kinSorp2017, kinderSorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FDora%2FBPZ_Dora_2017.jpg?alt=media&token=42a23a43-e8c4-49f6-9223-145c33b94665", Colors.LIGHT_BLUE, Categories.HANDPAINTED);
 
         Surprise SE332 = new Surprise("Boots", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FDora%2FSE332.jpg?alt=media&token=45c35463-15c3-4283-a485-2e822983fc56", "SE332", dora);
         Surprise SE333 = new Surprise("Diego Marquez", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FDora%2FSE333.jpg?alt=media&token=3cfa4253-2b39-4f40-8365-2a9791523557", "SE333", dora);
@@ -106,7 +110,7 @@ public class Initializer {
         //endregion
 
         //region SuperHeroGirls
-        Set supher = new Set("Super Hero Girls", 2017, kinder_sorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSuperHeroGirls%2FBPZ_SuperHeroGirls_2017.jpg?alt=media&token=ad13b0d9-5e4f-4030-bd7e-834142e5121d", Colors.LIGHT_BLUE, Categories.HANDPAINTED);
+        Set supher = new Set("Super Hero Girls", kinSorp2017, kinderSorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSuperHeroGirls%2FBPZ_SuperHeroGirls_2017.jpg?alt=media&token=ad13b0d9-5e4f-4030-bd7e-834142e5121d", Colors.LIGHT_BLUE, Categories.HANDPAINTED);
 
         Surprise SE268 = new Surprise("Bumblebee", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSuperHeroGirls%2FSE268.jpg?alt=media&token=8ede04ee-a96c-48b3-bc29-b91087e5cf51", "SE268", supher);
         Surprise SE277 = new Surprise("Catwomen", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSuperHeroGirls%2FSE277.jpg?alt=media&token=dba10b67-3a2e-4eaa-86ff-b09d54536acb", "SE277", supher);
@@ -127,7 +131,7 @@ public class Initializer {
         //endregion
 
         //region BraccialettiSuperHeroGirl
-        Set bracsup = new Set("Braccialetti Super Hero Girl", 2017, kinder_sorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBraccialettiSuperHeroGirls%2FBPZ_AccessoriSuperHeroGirl_2017.jpg?alt=media&token=8b502d56-e15b-4ae0-bc0e-efb7f8077530", Colors.LIGHT_BLUE, Categories.HANDPAINTED);
+        Set bracsup = new Set("Braccialetti Super Hero Girl", kinSorp2017, kinderSorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBraccialettiSuperHeroGirls%2FBPZ_AccessoriSuperHeroGirl_2017.jpg?alt=media&token=8b502d56-e15b-4ae0-bc0e-efb7f8077530", Colors.LIGHT_BLUE, Categories.HANDPAINTED);
 
         Surprise SE359 = new Surprise("Harley Quinn", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBraccialettiSuperHeroGirls%2FSE359.jpg?alt=media&token=6daf7143-7e7b-455a-99c5-1a7262583727", "SE359", bracsup);
         Surprise SE360 = new Surprise("Katana", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBraccialettiSuperHeroGirls%2FSE360.jpg?alt=media&token=9ac0c8dd-bb93-4bd5-9f40-a827aff41bdd", "SE360", bracsup);
@@ -142,7 +146,7 @@ public class Initializer {
         //endregion
 
         //region AccessoriCattivissimoMe3
-        Set acccatt = new Set("Accessori Cattivissimo Me 3", 2017, kinder_merendero, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Merendero%2F2017%2FAccessoCattivissimoMe3%2FBPZ_AccessoriCattivissimoMe_2017.jpg?alt=media&token=55dc61dc-b37b-421c-87d1-7eff9a381eef", Colors.LIGHT_BLUE, Categories.COMPO);
+        Set acccatt = new Set("Accessori Cattivissimo Me 3", kinMer2017, kinderMerendero, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Merendero%2F2017%2FAccessoCattivissimoMe3%2FBPZ_AccessoriCattivissimoMe_2017.jpg?alt=media&token=55dc61dc-b37b-421c-87d1-7eff9a381eef", Colors.LIGHT_BLUE, Categories.COMPO);
 
         Surprise SE528B = new Surprise("Frisbee", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Merendero%2F2017%2FAccessoCattivissimoMe3%2FSE528B.jpg?alt=media&token=28e96ea0-4c1d-415b-8e3d-d0537b36b921", "SE528B", acccatt);
         Surprise SE552B = new Surprise("Componi Minions", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Merendero%2F2017%2FAccessoCattivissimoMe3%2FSE552B.jpg?alt=media&token=4be0b73f-8871-4bba-a71e-985aa7a9a335", "SE552B", acccatt);
@@ -162,7 +166,7 @@ public class Initializer {
         //endregion
 
         //region Farfalle
-        Set farf = new Set("Farfalle", 2017, kinder_sorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_Farfalle_2017.jpg?alt=media&token=731610d2-0990-45c4-beaa-6eb1e3fd43ef", Colors.PURPLE, Categories.COMPO);
+        Set farf = new Set("Farfalle", kinSorp2017, kinderSorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_Farfalle_2017.jpg?alt=media&token=731610d2-0990-45c4-beaa-6eb1e3fd43ef", Colors.PURPLE, Categories.COMPO);
 
         Surprise SD040D = new Surprise("Farfalla Gialla", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSD040D.jpg?alt=media&token=79ef5019-95dc-482b-9bc3-9829f98fe9f3", "SD040D", farf);
         Surprise SD040E = new Surprise("Farfalla Rosa", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSD040E.jpg?alt=media&token=e1597e35-041a-4469-b737-6ba5a88af8c8", "SD040E", farf);
@@ -175,7 +179,7 @@ public class Initializer {
         //endregion
 
         //region AutoInPista
-        Set autpis = new Set("Auto in pista", 2017, kinder_sorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_AutoInPista_2017.jpg?alt=media&token=12dfac6c-0aec-4d65-97cf-e637ad3c3ad0", Colors.RED, Categories.COMPO);
+        Set autpis = new Set("Auto in pista", kinSorp2017, kinderSorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_AutoInPista_2017.jpg?alt=media&token=12dfac6c-0aec-4d65-97cf-e637ad3c3ad0", Colors.RED, Categories.COMPO);
 
         Surprise SD262A = new Surprise("Auto Verde", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSD262A.jpg?alt=media&token=69a7eb41-2821-45e6-85a8-7c99875a9993", "SD262A", autpis);
         Surprise SD263A = new Surprise("Auto Rossa", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSD263A.jpg?alt=media&token=5e682810-5f0b-4965-a266-9cee0f470e00", "SD263A", autpis);
@@ -195,7 +199,7 @@ public class Initializer {
         //endregion
 
         //region CuccioliDelBosco
-        Set cucbos = new Set("Cuccioli Del Bosco", 2017, kinder_sorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_CuccioliDelBosco_2017.jpg?alt=media&token=ec5981f6-da75-4c98-8e04-5a5604be43a4", Colors.GREEN, Categories.COMPO);
+        Set cucbos = new Set("Cuccioli Del Bosco", kinSorp2017, kinderSorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_CuccioliDelBosco_2017.jpg?alt=media&token=ec5981f6-da75-4c98-8e04-5a5604be43a4", Colors.GREEN, Categories.COMPO);
 
         Surprise SE001 = new Surprise("Orso", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE001.jpg?alt=media&token=9df27ac9-89fc-4977-9881-55c1737f9f94", "SE001", cucbos);
         Surprise SE002 = new Surprise("Coniglio", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE002.jpg?alt=media&token=af1e8197-34d3-48e4-a016-67b94dc30a47", "SE002", cucbos);
@@ -208,7 +212,7 @@ public class Initializer {
         //endregion
 
         //region CiondoliConAnelli
-        Set cionanell = new Set("Ciondoli con anelli", 2017, kinder_sorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_CiondoliConAnelli_2017.jpg?alt=media&token=e23a1eb8-18c2-40f2-8a88-b8dc7920ab91", Colors.PURPLE, Categories.COMPO);
+        Set cionanell = new Set("Ciondoli con anelli", kinSorp2017, kinderSorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_CiondoliConAnelli_2017.jpg?alt=media&token=e23a1eb8-18c2-40f2-8a88-b8dc7920ab91", Colors.PURPLE, Categories.COMPO);
 
         Surprise SE019 = new Surprise("Anello Verde", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE019.jpg?alt=media&token=2a76df00-4a34-4d07-9767-edd49c7705dc", "SE019", cionanell);
         Surprise SE020 = new Surprise("Anello Rosa", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE020.jpg?alt=media&token=16cf4d84-6f98-4b29-8a8a-116684927c52", "SE020", cionanell);
@@ -221,7 +225,7 @@ public class Initializer {
         //endregion
 
         //region AutoVolanti
-        Set autvol = new Set("Auto volanti", 2017, kinder_sorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_MacchineVolanti_2017.jpg?alt=media&token=e8094d93-76ff-43d9-9b84-e52735f6f980", Colors.RED, Categories.COMPO);
+        Set autvol = new Set("Auto volanti", kinSorp2017, kinderSorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_MacchineVolanti_2017.jpg?alt=media&token=e8094d93-76ff-43d9-9b84-e52735f6f980", Colors.RED, Categories.COMPO);
 
         Surprise SE034 = new Surprise("Auto Verde Acqua", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE034.jpg?alt=media&token=56927c91-ec2b-4cb6-a421-7c9a315f3fe7", "SE034", autvol);
         Surprise SE035 = new Surprise("Auto Blu", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE035.jpg?alt=media&token=ff824123-129d-49d5-be08-4f2b08c0497b", "SE035", autvol);
@@ -236,7 +240,7 @@ public class Initializer {
         //endregion
 
         //region Fate
-        Set fate = new Set("Fate", 2017, kinder_sorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_Fate_2017.jpg?alt=media&token=caec2a2c-203f-4126-be56-bc760908668f", Colors.PURPLE, Categories.COMPO);
+        Set fate = new Set("Fate", kinSorp2017, kinderSorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_Fate_2017.jpg?alt=media&token=caec2a2c-203f-4126-be56-bc760908668f", Colors.PURPLE, Categories.COMPO);
 
         Surprise SE042 = new Surprise("Fata Azzurra", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE042.jpg?alt=media&token=dba162ff-91a2-4a11-8121-bde4635834ff", "SE042", fate);
         Surprise SE043 = new Surprise("Fata Rosa", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE043.jpg?alt=media&token=80cf29b3-613e-4057-a973-d74f43554e9f", "SE043", fate);
@@ -251,7 +255,7 @@ public class Initializer {
         //endregion
 
         //region AnelliDelleFate
-        Set anellifate = new Set("Anelli delle Fate", 2017, kinder_sorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_AnelliDelleFate_2017.jpg?alt=media&token=73d9852f-53e2-4baa-81ae-50f1a4fd7485", Colors.PURPLE, Categories.COMPO);
+        Set anellifate = new Set("Anelli delle Fate", kinSorp2017, kinderSorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_AnelliDelleFate_2017.jpg?alt=media&token=73d9852f-53e2-4baa-81ae-50f1a4fd7485", Colors.PURPLE, Categories.COMPO);
 
         Surprise SE048 = new Surprise("Anello Viola", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE048.jpg?alt=media&token=82ebbf4f-1bf9-4f2e-967e-0de27e7ea736", "SE048", anellifate);
         Surprise SE110 = new Surprise("Anello Rosa", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE110.jpg?alt=media&token=586775c5-cc65-435d-bb65-d4b5e6b362f7", "SE110", anellifate);
@@ -264,7 +268,7 @@ public class Initializer {
         //endregion
 
         //region AutoGirevoli
-        Set autgir = new Set("Auto girevoli", 2017, kinder_sorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_AutoGirevoli_2017.jpg?alt=media&token=f9bcca4c-924d-4529-8e7f-7d1ea816e255", Colors.RED, Categories.COMPO);
+        Set autgir = new Set("Auto girevoli", kinSorp2017, kinderSorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_AutoGirevoli_2017.jpg?alt=media&token=f9bcca4c-924d-4529-8e7f-7d1ea816e255", Colors.RED, Categories.COMPO);
 
         Surprise SE050 = new Surprise("Auto Arancione/Bianca", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE050.jpg?alt=media&token=2ec1f6a9-2bc3-406f-8e5e-4689576bf944", "SE050", autgir);
         Surprise SE229 = new Surprise("Auto Arancione/Verde", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE229.jpg?alt=media&token=8fbd31e8-0ee7-41c0-8ed0-ddd7b3f731e3", "SE229", autgir);
@@ -279,7 +283,7 @@ public class Initializer {
         //endregion
 
         //region Moto
-        Set moto = new Set("Moto", 2017, kinder_sorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_Moto_2017.jpg?alt=media&token=5f1489be-c4e0-420b-b3f8-bb78b9a561cf", Colors.BLUE, Categories.COMPO);
+        Set moto = new Set("Moto", kinSorp2017, kinderSorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_Moto_2017.jpg?alt=media&token=5f1489be-c4e0-420b-b3f8-bb78b9a561cf", Colors.BLUE, Categories.COMPO);
 
         Surprise SE051 = new Surprise("Moto Verde/Azzurra", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE051.jpg?alt=media&token=9e1fd2dd-7464-4c84-87d8-18c2c83d0086", "SE051", moto);
         Surprise SE052 = new Surprise("Moto Arancione/Nera", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE052.jpg?alt=media&token=a0534fbb-0e2e-4e11-bf78-0f23a76b6c7e", "SE052", moto);
@@ -294,7 +298,7 @@ public class Initializer {
         //endregion
 
         //region Felini
-        Set felini = new Set("Felini", 2017, kinder_sorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_Felini_2017.jpg?alt=media&token=a470370f-2a45-468f-bd7d-cb3bfa8b1afc", Colors.GREEN, Categories.COMPO);
+        Set felini = new Set("Felini", kinSorp2017, kinderSorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_Felini_2017.jpg?alt=media&token=a470370f-2a45-468f-bd7d-cb3bfa8b1afc", Colors.GREEN, Categories.COMPO);
 
         Surprise SE056 = new Surprise("Pantera", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE056.jpg?alt=media&token=43ac442c-91b2-45f7-909b-ade3103ee50f", "SE056", felini);
         Surprise SE173 = new Surprise("Leopardo", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE173.jpg?alt=media&token=07922164-db30-4c6a-b01c-b817a6d2cb09", "SE173", felini);
@@ -309,7 +313,7 @@ public class Initializer {
         //endregion
 
         //region AutoMostrose
-        Set autmost = new Set("Auto mostrose", 2017, kinder_sorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_Auto%20Mostruose_2017.jpg?alt=media&token=a05a2c6b-fb3a-43d2-9963-0df289c920fc", Colors.RED, Categories.COMPO);
+        Set autmost = new Set("Auto mostrose", kinSorp2017, kinderSorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_Auto%20Mostruose_2017.jpg?alt=media&token=a05a2c6b-fb3a-43d2-9963-0df289c920fc", Colors.RED, Categories.COMPO);
 
         Surprise SE059 = new Surprise("Auto Blu", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE059.jpg?alt=media&token=465fbd2e-c9e2-4f73-bf37-5fab1c6b039c", "SE059", autmost);
         Surprise SE060 = new Surprise("Auto Gialla", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE060.jpg?alt=media&token=259a8d1f-238b-4cf5-8ae6-67c54819502f", "SE060", autmost);
@@ -324,7 +328,7 @@ public class Initializer {
         //endregion
 
         //region AmiciAnimali
-        Set amiani = new Set("Amici animali", 2017, kinder_sorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_AmiciAnimali_2017.jpg?alt=media&token=86ac3e08-91a3-40c2-af72-55c7601715d7", Colors.GREEN, Categories.COMPO);
+        Set amiani = new Set("Amici animali", kinSorp2017, kinderSorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_AmiciAnimali_2017.jpg?alt=media&token=86ac3e08-91a3-40c2-af72-55c7601715d7", Colors.GREEN, Categories.COMPO);
 
         Surprise SE069 = new Surprise("Tartaruga/Riccio", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE069.jpg?alt=media&token=82072a33-06b6-4e95-b585-952ba148911d", "SE069", amiani);
         Surprise SE152 = new Surprise("Pesci", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE152.jpg?alt=media&token=e6764859-6a3d-4e52-a906-c084b2d0c8fe", "SE152", amiani);
@@ -339,7 +343,7 @@ public class Initializer {
         //endregion
 
         //region Dinosauri
-        Set dinos = new Set("Dinosauri", 2017, kinder_sorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_Dinosauri_2017.jpg?alt=media&token=a5a45f62-b1f8-485c-8d89-1f4b36523480", Colors.GREEN, Categories.COMPO);
+        Set dinos = new Set("Dinosauri", kinSorp2017, kinderSorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_Dinosauri_2017.jpg?alt=media&token=a5a45f62-b1f8-485c-8d89-1f4b36523480", Colors.GREEN, Categories.COMPO);
 
         Surprise SE079 = new Surprise("Dinosauro Viola", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE079.jpg?alt=media&token=95d636ae-0056-4335-82c7-f0e1427a081c", "SE079", dinos);
         Surprise SE116 = new Surprise("Dinosauro Verde Acqua", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE116.jpg?alt=media&token=4edb9b43-762a-4387-b36e-6eb7f82a011a", "SE116", dinos);
@@ -354,7 +358,7 @@ public class Initializer {
         //endregion
 
         //region TrottoleGambeLunghe
-        Set trotgamb = new Set("Trottole gambe lunghe", 2017, kinder_sorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_TrottoleGambeLunghe_2017.jpg?alt=media&token=9654b56e-12a8-4825-bfb1-3aae101acd97", Colors.BLUE, Categories.COMPO);
+        Set trotgamb = new Set("Trottole gambe lunghe", kinSorp2017, kinderSorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_TrottoleGambeLunghe_2017.jpg?alt=media&token=9654b56e-12a8-4825-bfb1-3aae101acd97", Colors.BLUE, Categories.COMPO);
 
         Surprise SE088 = new Surprise("Trottola Arancione", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE088.jpg?alt=media&token=7e84fbf8-a7f0-48d3-af34-fdcf534603e2", "SE088", trotgamb);
         Surprise SE089 = new Surprise("Trottola Azzurra", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE089.jpg?alt=media&token=533c094c-8310-4ba1-a9fb-d315f667c75e", "SE089", trotgamb);
@@ -369,7 +373,7 @@ public class Initializer {
         //endregion
 
         //region Cestini
-        Set cest = new Set("Cestini", 2017, kinder_sorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_CestiniDellaDifferenziata_2017.jpg?alt=media&token=40695841-d946-436b-a5f5-fbe19129a532", Colors.ORANGE, Categories.COMPO);
+        Set cest = new Set("Cestini", kinSorp2017, kinderSorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_CestiniDellaDifferenziata_2017.jpg?alt=media&token=40695841-d946-436b-a5f5-fbe19129a532", Colors.ORANGE, Categories.COMPO);
 
         Surprise SE094 = new Surprise("Cestino Azzurro", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE094.jpg?alt=media&token=01d83b21-bc29-4a4a-94f6-c1b7fd0f07ec", "SE094", cest);
         Surprise SE094A = new Surprise("Cestino Giallo", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE094A.jpg?alt=media&token=27065528-105a-4cb5-a898-4657e76fc034", "SE094A", cest);
@@ -384,7 +388,7 @@ public class Initializer {
         //endregion
 
         //region MezziDiTrasporto
-        Set mezzi = new Set("Mezzi di trasporto", 2017, kinder_sorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_MezziDiTrasporto_2017.jpg?alt=media&token=4e359a02-6f3e-45af-95f0-2a47c743181a", Colors.RED, Categories.COMPO);
+        Set mezzi = new Set("Mezzi di trasporto", kinSorp2017, kinderSorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_MezziDiTrasporto_2017.jpg?alt=media&token=4e359a02-6f3e-45af-95f0-2a47c743181a", Colors.RED, Categories.COMPO);
 
         Surprise SE098A = new Surprise("Camion Verde", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE098A.jpg?alt=media&token=4774eb50-a953-4eeb-bf46-6ee7cc46352f", "SE098A", mezzi);
         Surprise SE099 = new Surprise("Camion Azzurro", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE099.jpg?alt=media&token=5aa3f292-8970-4777-aa1f-d3a8b08596ad", "SE099", mezzi);
@@ -397,7 +401,7 @@ public class Initializer {
         //endregion
 
         //region FamiglieArtiche
-        Set famart = new Set("Famiglie artiche", 2017, kinder_sorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_FamiglieArtiche_2017.jpg?alt=media&token=b7135e2a-a259-4af3-90fb-cf2d5f7d93df", Colors.GREEN, Categories.COMPO);
+        Set famart = new Set("Famiglie artiche", kinSorp2017, kinderSorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_FamiglieArtiche_2017.jpg?alt=media&token=b7135e2a-a259-4af3-90fb-cf2d5f7d93df", Colors.GREEN, Categories.COMPO);
 
         Surprise SE102 = new Surprise("Renne", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE102.jpg?alt=media&token=8d30f4f9-be67-44db-bcaf-ac1abe654870", "SE102", famart);
         Surprise SE121 = new Surprise("Orsi", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE121.jpg?alt=media&token=844de5e0-2c6f-4fcc-9209-3548cb8d140f", "SE121", famart);
@@ -410,7 +414,7 @@ public class Initializer {
         //endregion
 
         //region TrottoleConLanciatore
-        Set trottlan = new Set("Trottole con lanciatore", 2017, kinder_sorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_TrottoleConLanciatore_2017.jpg?alt=media&token=a14a968a-ecae-4828-a781-a8c9296c5a3a", Colors.BLUE, Categories.COMPO);
+        Set trottlan = new Set("Trottole con lanciatore", kinSorp2017, kinderSorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_TrottoleConLanciatore_2017.jpg?alt=media&token=a14a968a-ecae-4828-a781-a8c9296c5a3a", Colors.BLUE, Categories.COMPO);
 
         Surprise SE108 = new Surprise("Trottola Verde", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE108.jpg?alt=media&token=2f314c79-8d0c-40ef-9bec-9dd8646ad611", "SE108", trottlan);
         Surprise SE108A = new Surprise("Trottola Arancione", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE108A.jpg?alt=media&token=dd9c8f2d-7a2b-42a7-805d-bf5a6a2f04a1", "SE108A", trottlan);
@@ -425,7 +429,7 @@ public class Initializer {
         //endregion
 
         //region CuccioliDellaSavana
-        Set cuccsav = new Set("Cuccioli della savana", 2017, kinder_sorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_CuccioliDellaSavana_2017.jpg?alt=media&token=66468b75-8ec6-45c7-9b9e-55b82cd58f86", Colors.GREEN, Categories.COMPO);
+        Set cuccsav = new Set("Cuccioli della savana", kinSorp2017, kinderSorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_CuccioliDellaSavana_2017.jpg?alt=media&token=66468b75-8ec6-45c7-9b9e-55b82cd58f86", Colors.GREEN, Categories.COMPO);
 
         Surprise SE112 = new Surprise("Leone", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE112.jpg?alt=media&token=08325377-94e0-4385-9ef7-601b4fd13adb", "SE112", cuccsav);
         Surprise SE113 = new Surprise("Scimmia", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE113.jpg?alt=media&token=1fbeba92-8f87-49f8-adb3-0105a04d8d9c", "SE113", cuccsav);
@@ -440,7 +444,7 @@ public class Initializer {
         //endregion
 
         //region Maghi
-        Set maghi = new Set("Maghi", 2017, kinder_sorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_Maghi_2017.jpg?alt=media&token=f23491c2-93ed-486a-b2c2-6e8a6121ff9a", Colors.ORANGE, Categories.COMPO);
+        Set maghi = new Set("Maghi", kinSorp2017, kinderSorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_Maghi_2017.jpg?alt=media&token=f23491c2-93ed-486a-b2c2-6e8a6121ff9a", Colors.ORANGE, Categories.COMPO);
 
         Surprise SE123 = new Surprise("Mago Cappello Verde", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE123.jpg?alt=media&token=3ebd21a6-0ef8-4b42-b104-1a6b540f806d", "SE123", maghi);
         Surprise SE129 = new Surprise("Mago Cappello Arancione", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE129.jpg?alt=media&token=52fc378c-dcb9-40d4-8ea4-b3fe6c715ef1", "SE129", maghi);
@@ -455,7 +459,7 @@ public class Initializer {
         //endregion
 
         //region StreetPenGang
-        Set strpen = new Set("Street pen gang", 2017, kinder_sorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_StreetPenGang_2017.jpg?alt=media&token=1c939a03-29ea-44b6-af97-8dfb6be034f4", Colors.ORANGE, Categories.COMPO);
+        Set strpen = new Set("Street pen gang", kinSorp2017, kinderSorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_StreetPenGang_2017.jpg?alt=media&token=1c939a03-29ea-44b6-af97-8dfb6be034f4", Colors.ORANGE, Categories.COMPO);
 
         Surprise SE124 = new Surprise("Cappello Verde", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE124.jpg?alt=media&token=725f38a2-dc35-4624-bc16-0e3e9d6642a3", "SE124", strpen);
         Surprise SE125 = new Surprise("Cappello Rosso", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE125.jpg?alt=media&token=9d77f466-513a-4849-a8ce-c2a05d664491", "SE125", strpen);
@@ -470,7 +474,7 @@ public class Initializer {
         //endregion
 
         //region AnelliSplendenti
-        Set ansplen = new Set("Anelli splendenti", 2017, kinder_sorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_AnelliSplendenti_2017.jpg?alt=media&token=048ce84f-2343-475e-88e2-87e63fb1d1ec", Colors.PURPLE, Categories.COMPO);
+        Set ansplen = new Set("Anelli splendenti", kinSorp2017, kinderSorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_AnelliSplendenti_2017.jpg?alt=media&token=048ce84f-2343-475e-88e2-87e63fb1d1ec", Colors.PURPLE, Categories.COMPO);
 
         Surprise SE131 = new Surprise("Anello Viola", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE131.jpg?alt=media&token=f32b5887-f859-40a3-ae47-f80f79b31d5b", "SE131", ansplen);
         Surprise SE132 = new Surprise("Anello Giallo", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE132.jpg?alt=media&token=17a4eea9-4d9f-48f3-82a5-1f08b88a47c2", "SE132", ansplen);
@@ -485,7 +489,7 @@ public class Initializer {
         //endregion
 
         //region UccelliPittori
-        Set uccpit = new Set("Uccelli pittori", 2017, kinder_sorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_UccelliPittori_2017.jpg?alt=media&token=07c30391-6277-4c26-b66e-b40289716940", Colors.ORANGE, Categories.COMPO);
+        Set uccpit = new Set("Uccelli pittori", kinSorp2017, kinderSorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_UccelliPittori_2017.jpg?alt=media&token=07c30391-6277-4c26-b66e-b40289716940", Colors.ORANGE, Categories.COMPO);
 
         Surprise SE136 = new Surprise("Uccello Blu", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE136.jpg?alt=media&token=585feea9-b5a9-4c6c-800e-6f8fea17ef5c", "SE136", uccpit);
         Surprise SE138 = new Surprise("Uccello Verde", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE138.jpg?alt=media&token=b83a6ccf-be48-4f28-b85a-bb5abd18d4a6", "SE138", uccpit);
@@ -500,7 +504,7 @@ public class Initializer {
         //endregion
 
         //region TimbriDellaSavana
-        Set timsav = new Set("Timbri della Savana", 2017, kinder_sorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_TimbriDellaSavana_2017.jpg?alt=media&token=7ff7f103-0cb7-4421-95b4-4f1f5dd6f595", Colors.ORANGE, Categories.COMPO);
+        Set timsav = new Set("Timbri della Savana", kinSorp2017, kinderSorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_TimbriDellaSavana_2017.jpg?alt=media&token=7ff7f103-0cb7-4421-95b4-4f1f5dd6f595", Colors.ORANGE, Categories.COMPO);
 
         Surprise SE142 = new Surprise("Elefante", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE142.jpg?alt=media&token=62be96cb-5371-4654-9651-0498b1afe2d1", "SE142", timsav);
         Surprise SE142A = new Surprise("Giraffa", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE142A.jpg?alt=media&token=edc45394-8ad7-4ec0-9e5c-08c603ff0c55", "SE142A", timsav);
@@ -515,7 +519,7 @@ public class Initializer {
         //endregion
 
         //region Safiras
-        Set safiras = new Set("Safiras", 2017, kinder_sorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_Safiras_2017.jpg?alt=media&token=182e11c5-17d2-4916-96b4-47dc29b6d1bf", Colors.PURPLE, Categories.COMPO);
+        Set safiras = new Set("Safiras", kinSorp2017, kinderSorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_Safiras_2017.jpg?alt=media&token=182e11c5-17d2-4916-96b4-47dc29b6d1bf", Colors.PURPLE, Categories.COMPO);
 
         Surprise SE143 = new Surprise("Draghetto Verde", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE143.jpg?alt=media&token=30566768-c504-4cc0-ac0a-8ddce6924622", "SE143", safiras);
         Surprise SE144 = new Surprise("Draghetto Azzurro", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE144.jpg?alt=media&token=ff2d7b87-5c63-4ae8-90c4-7f559f3d17ad", "SE144", safiras);
@@ -530,7 +534,7 @@ public class Initializer {
         //endregion
 
         //region Oddbods
-        Set oddbods = new Set("Oddbods", 2017, kinder_sorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_Oddbods_2017.jpg?alt=media&token=1c29b5b4-0f8f-4e2c-88dc-d5d17e7da302", Colors.BLUE, Categories.COMPO);
+        Set oddbods = new Set("Oddbods", kinSorp2017, kinderSorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_Oddbods_2017.jpg?alt=media&token=1c29b5b4-0f8f-4e2c-88dc-d5d17e7da302", Colors.BLUE, Categories.COMPO);
 
         Surprise SE148 = new Surprise("Blu", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE148.jpg?alt=media&token=7ea02503-1fc5-4c08-8ff4-cc8eaaedc1b5", "SE148", oddbods);
         Surprise SE149 = new Surprise("Giallo", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE149.jpg?alt=media&token=80b9d5a1-4c48-4ec3-a9ad-ef857b98bab1", "SE149", oddbods);
@@ -545,7 +549,7 @@ public class Initializer {
         //endregion
 
         //region AnelliDellaFortuna
-        Set anefort = new Set("Anelli della fortuna", 2017, kinder_sorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_AnelliPortaFortuna_2017.jpg?alt=media&token=3c685c8a-ffdb-461e-96cb-642c2a86ccb6", Colors.PURPLE, Categories.COMPO);
+        Set anefort = new Set("Anelli della fortuna", kinSorp2017, kinderSorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_AnelliPortaFortuna_2017.jpg?alt=media&token=3c685c8a-ffdb-461e-96cb-642c2a86ccb6", Colors.PURPLE, Categories.COMPO);
 
         Surprise SE157 = new Surprise("Anello Verde Acqua", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE157.jpg?alt=media&token=bcee10f2-227c-4660-8347-bfef22ba888b", "SE157", anefort);
         Surprise SE157A = new Surprise("Anello Rosa", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE157A.jpg?alt=media&token=2d641b2d-62c2-41d6-8e56-9ac91b24aa9b", "SE157A", anefort);
@@ -558,7 +562,7 @@ public class Initializer {
         //endregion
 
         //region AnimaliDellaForesta
-        Set animfor = new Set("Animali della foresta", 2017, kinder_sorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_AnimaliDellaForesta_2017.jpg?alt=media&token=a7c449e6-d0c3-458a-9836-c533d92bfcd8", Colors.GREEN, Categories.COMPO);
+        Set animfor = new Set("Animali della foresta", kinSorp2017, kinderSorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_AnimaliDellaForesta_2017.jpg?alt=media&token=a7c449e6-d0c3-458a-9836-c533d92bfcd8", Colors.GREEN, Categories.COMPO);
 
         Surprise SE158 = new Surprise("Formichieri", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE158.jpg?alt=media&token=28341be8-885d-4944-be3e-1606a52445eb", "SE158", animfor);
         Surprise SE160 = new Surprise("Uccelli", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE160.jpg?alt=media&token=61ede8f8-27af-4d7f-b3d5-47c88e3d0df7", "SE160", animfor);
@@ -573,7 +577,7 @@ public class Initializer {
         //endregion
 
         //region AutoScattanti
-        Set autscat = new Set("Auto scattanti", 2017, kinder_sorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_AutoScattanti_2017.jpg?alt=media&token=a848a4fc-1794-4227-bdd2-6ec6cfc7f719", Colors.RED, Categories.COMPO);
+        Set autscat = new Set("Auto scattanti", kinSorp2017, kinderSorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_AutoScattanti_2017.jpg?alt=media&token=a848a4fc-1794-4227-bdd2-6ec6cfc7f719", Colors.RED, Categories.COMPO);
 
         Surprise SE164 = new Surprise("Auto Bianca", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE164.jpg?alt=media&token=ef606c59-fd90-4c2d-8080-c707b7982ee5", "SE164", autscat);
         Surprise SE165 = new Surprise("Auto Arancione", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE165.jpg?alt=media&token=d90fbd08-478f-4100-84a5-151a555a88fb", "SE165", autscat);
@@ -586,7 +590,7 @@ public class Initializer {
         //endregion
 
         //region MolleAliene
-        Set molalie = new Set("Molle aliene", 2017, kinder_sorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_MolleAliene_2017.jpg?alt=media&token=67fcea28-9ab1-4b20-a59a-d0944e0daf2c", Colors.BLUE, Categories.COMPO);
+        Set molalie = new Set("Molle aliene", kinSorp2017, kinderSorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_MolleAliene_2017.jpg?alt=media&token=67fcea28-9ab1-4b20-a59a-d0944e0daf2c", Colors.BLUE, Categories.COMPO);
 
         Surprise SE179 = new Surprise("Alieno base Rosa", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE179.jpg?alt=media&token=614e95de-7660-4d0d-9d77-58617e7deafb", "SE179", molalie);
         Surprise SE180 = new Surprise("Alieno base Blu", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE180.jpg?alt=media&token=18812460-bae7-4958-9a8b-12b9dd8abc65", "SE180", molalie);
@@ -601,7 +605,7 @@ public class Initializer {
         //endregion
 
         //region InsettiConLente
-        Set inslen = new Set("Insetti con lente", 2017, kinder_sorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_InsettiConLente_2017.jpg?alt=media&token=3558c430-ee1e-48fa-a446-74956456e8ff", Colors.ORANGE, Categories.COMPO);
+        Set inslen = new Set("Insetti con lente", kinSorp2017, kinderSorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_InsettiConLente_2017.jpg?alt=media&token=3558c430-ee1e-48fa-a446-74956456e8ff", Colors.ORANGE, Categories.COMPO);
 
         Surprise SE201 = new Surprise("Lente Gialla", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE201.jpg?alt=media&token=5b93722b-2926-4e8c-a9d9-b4211bdec25d", "SE201", inslen);
         Surprise SE202 = new Surprise("Lente Verde", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE202.jpg?alt=media&token=cee7414f-75c0-4be5-8a45-6ba503f06015", "SE202", inslen);
@@ -616,7 +620,7 @@ public class Initializer {
         //endregion
 
         //region CuccioliConAli
-        Set cuccali = new Set("Cuccioli con ali", 2017, kinder_sorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_CuccioliConAli_2017.jpg?alt=media&token=a6c4add1-743e-4cf9-b7a1-4ed9791f307b", Colors.GREEN, Categories.COMPO);
+        Set cuccali = new Set("Cuccioli con ali", kinSorp2017, kinderSorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_CuccioliConAli_2017.jpg?alt=media&token=a6c4add1-743e-4cf9-b7a1-4ed9791f307b", Colors.GREEN, Categories.COMPO);
 
         Surprise SE205 = new Surprise("Cervo", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE205.jpg?alt=media&token=1b4e9fb6-c70b-4841-b252-17765c8f8d77", "SE205", cuccali);
         Surprise SE206 = new Surprise("Cavallo", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE206.jpg?alt=media&token=9c2342b8-7ae1-4d1c-8b75-ea4ce982bc60", "SE206", cuccali);
@@ -631,7 +635,7 @@ public class Initializer {
         //endregion
 
         //region FateDelBosco
-        Set fatebosc = new Set("Fate del bosco", 2017, kinder_sorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_FateDelBosco_2017.jpg?alt=media&token=e3fb252a-b0c2-4d97-b5af-81c7b547caf3", Colors.PURPLE, Categories.COMPO);
+        Set fatebosc = new Set("Fate del bosco", kinSorp2017, kinderSorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_FateDelBosco_2017.jpg?alt=media&token=e3fb252a-b0c2-4d97-b5af-81c7b547caf3", Colors.PURPLE, Categories.COMPO);
 
         Surprise SE209 = new Surprise("Fata Azzurra", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE209.jpg?alt=media&token=9a374cc6-9b38-4743-bf15-ba2bb33f4b4c", "SE209", fatebosc);
         Surprise SE210 = new Surprise("Fata Rosa", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE210.jpg?alt=media&token=dd726289-0eb9-4aab-a663-036d85a07116", "SE210", fatebosc);
@@ -644,7 +648,7 @@ public class Initializer {
         //endregion
 
         //region BamboleAllaModa
-        Set bammod = new Set("Bambole alla moda", 2017, kinder_sorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_BamboleAllaModa_2017.jpg?alt=media&token=b6f1e50d-df6f-494a-80ed-d485c8af9dea", Colors.PURPLE, Categories.COMPO);
+        Set bammod = new Set("Bambole alla moda", kinSorp2017, kinderSorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_BamboleAllaModa_2017.jpg?alt=media&token=b6f1e50d-df6f-494a-80ed-d485c8af9dea", Colors.PURPLE, Categories.COMPO);
 
         Surprise SE212 = new Surprise("Capelli Neri", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE212.jpg?alt=media&token=29f1325b-9d41-4083-8a62-310d04e4f2ae", "SE212", bammod);
         Surprise SE212A = new Surprise("Capelli Castani", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE212A.jpg?alt=media&token=567d4cbb-3980-44a4-929d-6117bc1faf87", "SE212A", bammod);
@@ -659,7 +663,7 @@ public class Initializer {
         //endregion
 
         //region AutoACoppie
-        Set autcop = new Set("Auto a coppie", 2017, kinder_sorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_AutoACoppie_2017.jpg?alt=media&token=52a79e55-d746-4aff-8abc-8df4f619a897", Colors.RED, Categories.COMPO);
+        Set autcop = new Set("Auto a coppie", kinSorp2017, kinderSorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_AutoACoppie_2017.jpg?alt=media&token=52a79e55-d746-4aff-8abc-8df4f619a897", Colors.RED, Categories.COMPO);
 
         Surprise SE216 = new Surprise("Auto Blu/Verde", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE216.jpg?alt=media&token=a34da429-0a77-4dc0-a94d-5d0cfe824cb0", "SE216", autcop);
         Surprise SE216A = new Surprise("Auto Blu/Gialla", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE216A.jpg?alt=media&token=ea783e50-0167-4925-956e-765e59a811fb", "SE216A", autcop);
@@ -674,7 +678,7 @@ public class Initializer {
         //endregion
 
         //region PredatoriACaccia
-        Set predcac = new Set("Predatori a caccia", 2017, kinder_sorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_PredatoriACaccia_2017.jpg?alt=media&token=762f6471-94e1-4e4c-a486-7a2596cda5f9", Colors.BLUE, Categories.COMPO);
+        Set predcac = new Set("Predatori a caccia", kinSorp2017, kinderSorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_PredatoriACaccia_2017.jpg?alt=media&token=762f6471-94e1-4e4c-a486-7a2596cda5f9", Colors.BLUE, Categories.COMPO);
 
         Surprise SE235 = new Surprise("Gatto", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE235.jpg?alt=media&token=aa351298-920d-4e1e-bfaa-50ef0f0988b7", "SE235", predcac);
         Surprise SE235A = new Surprise("Camaleonte", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE235A.jpg?alt=media&token=a9418cae-db61-4c94-a587-c2003f97cb6a", "SE235A", predcac);
@@ -689,7 +693,7 @@ public class Initializer {
         //endregion
 
         //region BraccialiDalMondo
-        Set bracmon = new Set("Bracciali dal mondo ", 2017, kinder_sorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_BraccialiDalMondo_2017.jpg?alt=media&token=bf20cebb-ea55-4d1c-ace4-74fe053c7edb", Colors.PURPLE, Categories.COMPO);
+        Set bracmon = new Set("Bracciali dal mondo ", kinSorp2017, kinderSorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_BraccialiDalMondo_2017.jpg?alt=media&token=bf20cebb-ea55-4d1c-ace4-74fe053c7edb", Colors.PURPLE, Categories.COMPO);
 
         Surprise SE241 = new Surprise("Circolo Polare", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE241.jpg?alt=media&token=1e2c1c3f-5768-44a6-8167-5f7bb73c8ce8", "SE241", bracmon);
         Surprise SE241A = new Surprise("Africa", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE241A.jpg?alt=media&token=e82903b1-331d-4473-9172-15b9651f4426", "SE241A", bracmon);
@@ -702,7 +706,7 @@ public class Initializer {
         //endregion
 
         //region MostriciattoliSalterini
-        Set mossal = new Set("Mostriciattoli salterini", 2017, kinder_sorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_MostriciattoliSalterini_2017.jpg?alt=media&token=53fa108e-2348-4b33-9baa-7b9170557b5b", Colors.BLUE, Categories.COMPO);
+        Set mossal = new Set("Mostriciattoli salterini", kinSorp2017, kinderSorpresa, Locale.ITALIAN.toString(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_MostriciattoliSalterini_2017.jpg?alt=media&token=53fa108e-2348-4b33-9baa-7b9170557b5b", Colors.BLUE, Categories.COMPO);
 
         Surprise SE522 = new Surprise("Mostriciattolo Verde", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE522.jpg?alt=media&token=b30510d0-5322-4408-91cd-d1ec841e59f8", "SE522", mossal);
         Surprise SE524 = new Surprise("Mostriciattolo Giallo", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE524.jpg?alt=media&token=c59d41e8-023d-4da5-b764-d2e094362668", "SE524", mossal);
@@ -727,6 +731,16 @@ public class Initializer {
     }
 
     private void insertSet(Set set){
+        years.child(set.getYear_id()).child("sets").child(set.getId()).setValue(true);
         sets.child(set.getId()).setValue(set);
+    }
+
+    private void insertYear(Year year){
+        years.child(year.getId()).setValue(year);
+        producers.child(year.getProducerId()).child("years").child(year.getId()).setValue(true);
+    }
+
+    private void insertProducer(Producer producer){
+        producers.child(producer.getId()).setValue(producer);
     }
 }

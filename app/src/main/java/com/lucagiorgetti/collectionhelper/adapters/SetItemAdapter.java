@@ -67,7 +67,7 @@ public class SetItemAdapter extends BaseAdapter {
         vDescription.setText(s.getDescription());
         Glide.with(ctx).load(s.getImg_path()).into(vImage);
 
-        vLayout.setBackgroundColor(ContextCompat.getColor(ctx, Colors.getHexColor(s.getSet_color())));
+        vLayout.setBackgroundColor(ContextCompat.getColor(ctx, Colors.getHexColor(s.getSet_producer_color())));
         final GridView gv = (GridView) parent;
 
         btnAddMissing.setOnClickListener(new View.OnClickListener() {

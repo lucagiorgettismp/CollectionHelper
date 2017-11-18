@@ -42,9 +42,9 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
     private  MissingListener listener;
 
     public interface MissingListener{
-        void onClickOpenSearchSetFragment();
         void onSwipeRemoveMissing(String surpId);
         void setMissingsTitle();
+        void onClickOpenProducersFragment();
     }
 
     ArrayList<Surprise> missings = new ArrayList<>();
@@ -63,7 +63,7 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fab:
-                listener.onClickOpenSearchSetFragment();
+                listener.onClickOpenProducersFragment();
                 break;
         }
     }
