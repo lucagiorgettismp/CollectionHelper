@@ -233,8 +233,10 @@ public class MainActivity extends AppCompatActivity implements
         int id = item.getItemId();
 
         if (id == R.id.nav_missings) {
+            this.clearBackStack();
             displayView(Fragments.MISSINGS, false);
         } else if (id == R.id.nav_doubles) {
+            this.clearBackStack();
             displayView(Fragments.DOUBLES, false);
 /*        } else if (id == R.id.nav_collectors) {
             displayView(Fragments.COLLECTORS, false);*/
@@ -448,6 +450,17 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void setItemsTitle() {
         getSupportActionBar().setTitle(this.clickedSetName);
+    }
+
+    @Override
+    public void onHomeClick() {
+        this.clearBackStack();
+        this.displayView(Fragments.MISSINGS, false);
+    }
+
+    private void clearBackStack() {
+        fragmentManager = getSupportFragmentManager();
+        fragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 
     @Override

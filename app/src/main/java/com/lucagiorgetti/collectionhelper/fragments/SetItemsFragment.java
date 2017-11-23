@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -27,8 +30,8 @@ public class SetItemsFragment extends Fragment implements View.OnClickListener{
     public interface SetItemListener{
         void onItemAddMissings(String surpId);
         void onItemAddDoubles(String surpId);
-
         void setItemsTitle();
+        void onHomeClick();
     }
     ArrayList<Surprise> surprises = new ArrayList<>();
     private SetItemAdapter mAdapter;
@@ -96,6 +99,22 @@ public class SetItemsFragment extends Fragment implements View.OnClickListener{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = getActivity();
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        MenuItem item=menu.add("Home"); //your desired title here
+        item.setIcon(R.drawable.ic_home); //your desired icon here
+        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                listener.onHomeClick();
+                return false;
+            }
+        });
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     public interface OnGetDataListener {

@@ -153,7 +153,7 @@ public class LoginActivity extends AppCompatActivity {
                         if (!task.isSuccessful())
                         {
                             Log.w("LOGIN", "Errore:(");
-                            Toast.makeText(LoginActivity.this, "Errore :(",
+                            Toast.makeText(LoginActivity.this, "Email o Password errati.",
                                     Toast.LENGTH_SHORT).show();
                         } else {
                             Intent i = new Intent(getApplicationContext(), MainActivity.class);
@@ -208,11 +208,11 @@ public class LoginActivity extends AppCompatActivity {
              public void onDataChange(DataSnapshot snapshot) {
                  if (snapshot.hasChild(emailCod)) {
                      // utente già registrato
-
                      Intent i = new Intent(getApplicationContext(), MainActivity.class);
                      i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                      i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                      getApplicationContext().startActivity(i);
+                     finish();
 
                  } else {
                      Intent i = new Intent(getApplicationContext(), RegistrateActivity.class);
@@ -232,7 +232,6 @@ public class LoginActivity extends AppCompatActivity {
 
                      // Staring Login Activity
                      getApplicationContext().startActivity(i);
-
                      finish();
                  }
              }
