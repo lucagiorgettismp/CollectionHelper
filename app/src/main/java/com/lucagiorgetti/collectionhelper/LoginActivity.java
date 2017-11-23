@@ -43,9 +43,6 @@ import com.google.firebase.database.ValueEventListener;
  */
 
 public class LoginActivity extends AppCompatActivity {
-    private Button login;
-    private Button registrate;
-    private Button facebookLogin;
     private ProgressBar progressBar;
     private FirebaseAuth fireAuth;
     private CallbackManager callbackManager;
@@ -61,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
         callbackManager = CallbackManager.Factory.create();
-        facebookLogin = (Button) findViewById(R.id.btn_start_facebook);
+        Button facebookLogin = (Button) findViewById(R.id.btn_start_facebook);
 
         final LoginButton loginButton = (LoginButton) findViewById(R.id.btn_facebook_login);
         loginButton.setReadPermissions("email", "public_profile");
@@ -93,20 +90,17 @@ public class LoginActivity extends AppCompatActivity {
 
         fireAuth = FirebaseAuth.getInstance();
 
-        login = (Button) findViewById(R.id.btn_start_login);
-        registrate  = (Button) findViewById(R.id.btn_start_registration);
+        Button login = (Button) findViewById(R.id.btn_start_login);
+        Button registrate = (Button) findViewById(R.id.btn_start_registration);
 
-        this.login = (Button) findViewById(R.id.btn_start_login);
-        this.registrate = (Button) findViewById(R.id.btn_start_registration);
-
-        this.login.setOnClickListener(new View.OnClickListener() {
+        login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openLogingDialog();
             }
         });
 
-        this.registrate.setOnClickListener(new View.OnClickListener() {
+        registrate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), RegistrateActivity.class);
@@ -140,12 +134,11 @@ public class LoginActivity extends AppCompatActivity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String input = inEmail.getText().toString().trim();
-                Log.w("LOGIN", "input email : " + input);
+                String email = inEmail.getText().toString().trim();
+                Log.w("LOGIN", "input email : " + email);
                 String pwd = inPassword.getText().toString().trim();
                 Log.w("LOGIN", "input pwd : " + pwd);
 
-                String email = input;
                 fireAuth.signInWithEmailAndPassword(email, pwd).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {

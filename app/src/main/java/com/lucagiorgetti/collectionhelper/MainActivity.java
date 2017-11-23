@@ -15,7 +15,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -38,12 +37,10 @@ import com.lucagiorgetti.collectionhelper.fragments.SetItemsFragment;
 import com.lucagiorgetti.collectionhelper.fragments.YearsFragment;
 import com.lucagiorgetti.collectionhelper.model.Colors;
 import com.lucagiorgetti.collectionhelper.model.Fragments;
-import com.lucagiorgetti.collectionhelper.model.Set;
 import com.lucagiorgetti.collectionhelper.model.Surprise;
 import com.lucagiorgetti.collectionhelper.model.User;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener ,
@@ -53,7 +50,6 @@ public class MainActivity extends AppCompatActivity implements
         ProducersFragment.ProducerListener,
         YearsFragment.YearListener,
         DoublesFragment.DoubleListener{
-    private static Fragment fragment = null;
     private static FragmentManager fragmentManager;
     private FirebaseAuth fireAuth;
     private LoginManager facebookLogin;
@@ -107,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                     this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-            drawer.setDrawerListener(toggle);
+            drawer.addDrawerListener(toggle);
             toggle.syncState();
             NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
             navigationView.setNavigationItemSelectedListener(this);
@@ -119,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements
                 @Override
                 public void onSuccess(DataSnapshot dataSnapshot) {
                     currentUser = dataSnapshot.getValue(User.class);
-                    Initializer init = new Initializer(currentUser);
+                    //Initializer init = new Initializer(currentUser);
                     //init.insertData();
                     nav_user.setText(currentUser.getUsername());
                     nav_email.setText(currentUser.getEmail().replaceAll(",", "\\."));
@@ -151,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements
         displayView(Fragments.SETITEMS, true);
     }
 
-    public interface OnGetDataListener {
+    private interface OnGetDataListener {
         //this is for callbacks
         void onSuccess(DataSnapshot dataSnapshot);
 
@@ -219,8 +215,6 @@ public class MainActivity extends AppCompatActivity implements
                 super.onBackPressed();
 
             } else {
-                String fragmentTag = fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount() - 1).getName();
-                Fragment currentFragment = fragmentManager.findFragmentByTag(fragmentTag);
                 fragmentManager.popBackStack();
             }
         }
@@ -228,7 +222,7 @@ public class MainActivity extends AppCompatActivity implements
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
@@ -256,7 +250,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     public void displayView(Fragments frag, boolean backable) {
-        fragment = null;
+        Fragment fragment = null;
         String fragmentTags = "";
         switch (frag) {
             case MISSINGS:
@@ -332,7 +326,9 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void setMissingsTitle() {
-        getSupportActionBar().setTitle("Mancanti");
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setTitle("Mancanti");
+        }
     }
 
     @Override
@@ -344,8 +340,9 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void setDoublesTitle() {
-        getSupportActionBar().setTitle("Doppi");
-    }
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setTitle("Doppi");
+        }    }
 
     @Override
     public void onClickOpenProducersFragment() {
@@ -444,12 +441,14 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void setSearchTitle() {
-        getSupportActionBar().setTitle(this.clickedProducerName + " - "+ this.clickedYearNumber);
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setTitle(this.clickedProducerName + " - "+ this.clickedYearNumber);
+        }
     }
 
     @Override
     public void setItemsTitle() {
-        getSupportActionBar().setTitle(this.clickedSetName);
+        setTitle(this.clickedSetName);
     }
 
     @Override
@@ -472,7 +471,9 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void setProducerTitle() {
-        getSupportActionBar().setTitle("Produttore");
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setTitle("Produttore");
+        }
     }
 
     @Override
@@ -484,6 +485,8 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void setYearTitle() {
-        getSupportActionBar().setTitle(this.clickedProducerName);
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setTitle(this.clickedProducerName);
+        }
     }
 }
