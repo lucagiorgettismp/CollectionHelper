@@ -1,7 +1,5 @@
 package com.lucagiorgetti.collectionhelper.model;
 
-import android.graphics.Color;
-
 import com.lucagiorgetti.collectionhelper.R;
 
 /**
@@ -9,17 +7,17 @@ import com.lucagiorgetti.collectionhelper.R;
  */
 
 public final class Colors {
-    public static final String LIGHT_BLUE = "Light_blue";
-    public static final String BLUE = "Blue";
+    private static final String LIGHT_BLUE = "Light_blue";
+    private static final String BLUE = "Blue";
     public static final String RED = "Red";
     public static final String ORANGE = "Orange";
-    public static final String PURPLE = "Purple";
-    public static final String PINK = "Pink";
-    public static final String YELLOW = "Yellow";
-    public static final String GREEN = "Green";
-    public static final String LIGHT_GREEN = "Light_green";
-    public static final String BROWN = "Brown";
-    public static final String GREY = "Grey";
+    private static final String PURPLE = "Purple";
+    private static final String PINK = "Pink";
+    private static final String YELLOW = "Yellow";
+    private static final String GREEN = "Green";
+    private static final String LIGHT_GREEN = "Light_green";
+    private static final String BROWN = "Brown";
+    private static final String GREY = "Grey";
 
     private Colors(){}
 
@@ -36,7 +34,7 @@ public final class Colors {
                 c = R.color.RedSet;
                 break;
             case ORANGE:
-                c = R.color.OrangeSet;;
+                c = R.color.OrangeSet;
                 break;
             case PURPLE:
                 c = R.color.PurpleSet;
@@ -59,9 +57,7 @@ public final class Colors {
             case BROWN:
                 c = R.color.BrownSet;
                 break;
-
         }
-
         return c;
     }
 }

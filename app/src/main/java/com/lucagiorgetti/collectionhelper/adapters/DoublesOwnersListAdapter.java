@@ -1,20 +1,13 @@
 package com.lucagiorgetti.collectionhelper.adapters;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.lucagiorgetti.collectionhelper.R;
-import com.lucagiorgetti.collectionhelper.model.Colors;
-import com.lucagiorgetti.collectionhelper.model.Surprise;
 import com.lucagiorgetti.collectionhelper.model.User;
 
 import java.util.ArrayList;
@@ -27,7 +20,7 @@ public class DoublesOwnersListAdapter extends BaseAdapter {
 
     private ArrayList<User> collectors;
     private LayoutInflater inflater;
-    Context ctx;
+    private Context ctx;
 
     public DoublesOwnersListAdapter(Context context, ArrayList<User> collectors) {
         this.collectors = collectors;
@@ -58,5 +51,5 @@ public class DoublesOwnersListAdapter extends BaseAdapter {
 
         vUsername.setText(user.getUsername());
         return v;
-    };
+    }
 }

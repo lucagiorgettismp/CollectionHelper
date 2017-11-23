@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.lucagiorgetti.collectionhelper.R;
 import com.lucagiorgetti.collectionhelper.model.Colors;
-import com.lucagiorgetti.collectionhelper.model.Producer;
 import com.lucagiorgetti.collectionhelper.model.Year;
 import java.util.ArrayList;
 /**
@@ -18,7 +17,7 @@ import java.util.ArrayList;
 
 public class YearRecyclerAdapter extends RecyclerView.Adapter<YearRecyclerAdapter.SetViewHolder>{
     private ArrayList<Year> years = new ArrayList<>();
-    Context ctx;
+    private Context ctx;
 
     public YearRecyclerAdapter(Context context, ArrayList<Year> yearsList) {
         years = yearsList;
@@ -48,15 +47,14 @@ public class YearRecyclerAdapter extends RecyclerView.Adapter<YearRecyclerAdapte
         return this.years.get(position);
     }
 
-    public static class SetViewHolder extends RecyclerView.ViewHolder {
-        protected TextView vName;
-        protected View vLayout;
+    static class SetViewHolder extends RecyclerView.ViewHolder {
+        TextView vName;
+        View vLayout;
 
-        public SetViewHolder(View v) {
+        SetViewHolder(View v) {
             super(v);
             vName =  (TextView) v.findViewById(R.id.txv_year_number);
-            vLayout = (View) v.findViewById(R.id.layout_year_select);
-
+            vLayout = v.findViewById(R.id.layout_year_select);
         }
     }
 }

@@ -24,8 +24,8 @@ import java.util.Locale;
 
 public class SetRecyclerAdapter extends RecyclerView.Adapter<SetRecyclerAdapter.SetViewHolder>{
     private ArrayList<Set> sets = new ArrayList<>();
-    ArrayList<Set> mStringFilterList;
-    Context ctx;
+    private ArrayList<Set> mStringFilterList;
+    private Context ctx;
 
     public SetRecyclerAdapter(Context context, ArrayList<Set> setsList) {
         sets = setsList;
@@ -44,7 +44,7 @@ public class SetRecyclerAdapter extends RecyclerView.Adapter<SetRecyclerAdapter.
         Set set = sets.get(position);
         holder.vName.setText(set.getName());
 
-        String nation = null;
+        String nation;
         if (ExtraLocales.isExtraLocale(set.getNation())) {
             nation = ExtraLocales.getDisplayName(set.getNation());
         } else {
@@ -66,18 +66,18 @@ public class SetRecyclerAdapter extends RecyclerView.Adapter<SetRecyclerAdapter.
         return this.sets.get(position);
     }
 
-    public static class SetViewHolder extends RecyclerView.ViewHolder {
-        protected TextView vName;
-        protected TextView vNation;
-        protected ImageView vImage;
-        protected View vLayout;
+    static class SetViewHolder extends RecyclerView.ViewHolder {
+        TextView vName;
+        TextView vNation;
+        ImageView vImage;
+        View vLayout;
 
-        public SetViewHolder(View v) {
+        SetViewHolder(View v) {
             super(v);
             vName =  (TextView) v.findViewById(R.id.txv_set_elem_name);
             vImage = (ImageView) v.findViewById(R.id.imgSet);
             vNation = (TextView) v.findViewById(R.id.txv_set_elem_nation);
-            vLayout = (View) v.findViewById(R.id.layout_set_elem_titlebar);
+            vLayout = v.findViewById(R.id.layout_set_elem_titlebar);
         }
     }
 }

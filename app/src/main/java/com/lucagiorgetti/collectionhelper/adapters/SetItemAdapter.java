@@ -1,9 +1,7 @@
 package com.lucagiorgetti.collectionhelper.adapters;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +26,7 @@ public class SetItemAdapter extends BaseAdapter {
 
     private ArrayList<Surprise> items;
     private LayoutInflater inflater;
-    Context ctx;
+    private Context ctx;
 
     public SetItemAdapter(Context context, ArrayList<Surprise> surpList) {
         items = surpList;
@@ -85,5 +83,5 @@ public class SetItemAdapter extends BaseAdapter {
         });
 
         return v;
-    };
+    }
 }

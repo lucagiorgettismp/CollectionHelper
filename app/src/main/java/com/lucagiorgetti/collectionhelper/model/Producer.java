@@ -30,10 +30,6 @@ public class Producer {
 
     }
 
-    public int getOrder() {
-        return order;
-    }
-
     public String getName() {
         return name;
     }

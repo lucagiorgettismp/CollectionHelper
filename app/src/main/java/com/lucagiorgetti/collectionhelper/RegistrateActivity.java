@@ -25,7 +25,6 @@ import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -47,7 +46,6 @@ public class RegistrateActivity extends AppCompatActivity{
     private EditText edtSurname;
     private EditText edtBirthdate;
     private EditText edtNation;
-    private Button submit;
     private FirebaseAuth fireAuth;
     private LoginManager facebookLogin;
     private SimpleDateFormat sdf = null;
@@ -78,7 +76,7 @@ public class RegistrateActivity extends AppCompatActivity{
         TextView lblInfoFacebook = (TextView) findViewById(R.id.lbl_reg_info_facebook);
         TextView lblInfoFirstLogin = (TextView) findViewById(R.id.lbl_reg_info_firstlogin);
         Button btnAccountCompleteFacebook = (Button) findViewById(R.id.btn_reg_complete_account);
-        submit = (Button) findViewById(R.id.btn_reg_submit);
+        Button submit = (Button) findViewById(R.id.btn_reg_submit);
 
         Bundle b = getIntent().getExtras();
         int facebook = 0;

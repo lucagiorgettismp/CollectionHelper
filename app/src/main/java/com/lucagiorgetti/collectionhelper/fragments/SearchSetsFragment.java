@@ -15,36 +15,31 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.lucagiorgetti.collectionhelper.DatabaseUtility;
+import com.lucagiorgetti.collectionhelper.FragmentListenerInterface;
+import com.lucagiorgetti.collectionhelper.OnGetDataListener;
 import com.lucagiorgetti.collectionhelper.R;
 import com.lucagiorgetti.collectionhelper.RecyclerItemClickListener;
 import com.lucagiorgetti.collectionhelper.adapters.SetRecyclerAdapter;
 import com.lucagiorgetti.collectionhelper.model.Set;
-import com.lucagiorgetti.collectionhelper.model.Year;
 
 import java.util.ArrayList;
 
 public class SearchSetsFragment extends Fragment implements SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener {
-    private SetListener listener;
+    private FragmentListenerInterface listener;
+
     private String yearId = null;
-
-    public interface SetListener{
-        void onSetShortClick(String setId, String setName);
-
-        void setSearchTitle();
-    }
-
     ArrayList<Set> sets = new ArrayList<>();
     private SetRecyclerAdapter mAdapter;
     private RecyclerView recyclerView;
     private Context mContext;
     private ProgressBar progress;
-    private SearchView searchView;
     private static DatabaseReference dbRef = DatabaseUtility.getDatabase().getReference();
 
     @Override
@@ -71,12 +66,16 @@ public class SearchSetsFragment extends Fragment implements SearchView.OnQueryTe
             @Override
             public void onLongItemClick(View view, int position) {
                 Set set = mAdapter.getItemAtPosition(position);
-                Snackbar.make(view, "Cliccato a lungo" + set.getName(), Snackbar.LENGTH_SHORT).show();
-
+                Snackbar.make(view, "Cliccato a lungo " + set.getName(), Snackbar.LENGTH_SHORT).show();
             }
         })
         );
         getDataFromServer(new OnGetDataListener() {
+            @Override
+            public void onSuccess(DataSnapshot dataSnapshot) {
+
+            }
+
             @Override
             public void onSuccess() {
                 mAdapter = new SetRecyclerAdapter(mContext, sets);
@@ -86,12 +85,13 @@ public class SearchSetsFragment extends Fragment implements SearchView.OnQueryTe
 
             @Override
             public void onStart() {
-
+                progress.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onFailure() {
-
+                progress.setVisibility(View.GONE);
+                Toast.makeText(mContext, "Errore nella sincronizzazione dei dati", Toast.LENGTH_SHORT).show();
             }
         });
         return layout;
@@ -108,7 +108,7 @@ public class SearchSetsFragment extends Fragment implements SearchView.OnQueryTe
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.search_menu, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
-        searchView = (SearchView) searchItem.getActionView();
+        SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setOnQueryTextListener(this);
         searchView.setQueryHint("Cerca");
         super.onCreateOptionsMenu(menu, inflater);
@@ -151,15 +151,7 @@ public class SearchSetsFragment extends Fragment implements SearchView.OnQueryTe
         return true;
     }
 
-    public interface OnGetDataListener {
-        //this is for callbacks
-        void onSuccess();
-        void onStart();
-        void onFailure();
-    }
-
     private void getDataFromServer(final OnGetDataListener listen) {
-        progress.setVisibility(View.VISIBLE);
         listen.onStart();
         sets.clear();
 
@@ -200,8 +192,8 @@ public class SearchSetsFragment extends Fragment implements SearchView.OnQueryTe
     @Override
     public void onAttach(Context context){
         super.onAttach(context);
-        if (context instanceof SetListener){
-            this.listener = (SetListener) context;
+        if (context instanceof FragmentListenerInterface){
+            this.listener = (FragmentListenerInterface) context;
         }
     }
 

@@ -13,11 +13,15 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.lucagiorgetti.collectionhelper.DatabaseUtility;
+import com.lucagiorgetti.collectionhelper.FragmentListenerInterface;
+import com.lucagiorgetti.collectionhelper.OnGetDataListener;
 import com.lucagiorgetti.collectionhelper.R;
 import com.lucagiorgetti.collectionhelper.adapters.SetItemAdapter;
 import com.lucagiorgetti.collectionhelper.model.Surprise;
@@ -25,14 +29,8 @@ import com.lucagiorgetti.collectionhelper.model.Surprise;
 import java.util.ArrayList;
 
 public class SetItemsFragment extends Fragment implements View.OnClickListener{
-    private SetItemListener listener;
+    private FragmentListenerInterface listener;
 
-    public interface SetItemListener{
-        void onItemAddMissings(String surpId);
-        void onItemAddDoubles(String surpId);
-        void setItemsTitle();
-        void onHomeClick();
-    }
     ArrayList<Surprise> surprises = new ArrayList<>();
     private SetItemAdapter mAdapter;
     private String setClicked = null;
@@ -77,6 +75,11 @@ public class SetItemsFragment extends Fragment implements View.OnClickListener{
 
         getDataFromServer(new OnGetDataListener() {
             @Override
+            public void onSuccess(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
             public void onSuccess( ) {
                 mAdapter = new SetItemAdapter(mContext, surprises);
                 gridView.setAdapter(mAdapter);
@@ -85,11 +88,13 @@ public class SetItemsFragment extends Fragment implements View.OnClickListener{
 
             @Override
             public void onStart() {
+                progress.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onFailure() {
-
+                progress.setVisibility(View.GONE);
+                Toast.makeText(mContext, "Errore nella sincronizzazione dei dati", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -117,16 +122,8 @@ public class SetItemsFragment extends Fragment implements View.OnClickListener{
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    public interface OnGetDataListener {
-        //this is for callbacks
-        void onSuccess();
-        void onStart();
-        void onFailure();
-    }
-
     private void getDataFromServer(final OnGetDataListener listen) {
         listen.onStart();
-        progress.setVisibility(View.VISIBLE);
         surprises.clear();
 
         dbRef.child("sets").child(this.setClicked).child("surprises").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -164,8 +161,8 @@ public class SetItemsFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onAttach(Context context){
         super.onAttach(context);
-        if (context instanceof SetItemListener){
-            this.listener = (SetItemListener) context;
+        if (context instanceof FragmentListenerInterface){
+            this.listener = (FragmentListenerInterface) context;
         }
     }
 

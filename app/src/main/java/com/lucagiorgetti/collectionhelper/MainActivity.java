@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
@@ -44,12 +45,8 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener ,
-        MissingFragment.MissingListener,
-        SearchSetsFragment.SetListener,
-        SetItemsFragment.SetItemListener,
-        ProducersFragment.ProducerListener,
-        YearsFragment.YearListener,
-        DoublesFragment.DoubleListener{
+        FragmentListenerInterface {
+
     private static FragmentManager fragmentManager;
     private FirebaseAuth fireAuth;
     private LoginManager facebookLogin;
@@ -134,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements
 
                 @Override
                 public void onFailure() {
-
+                    Toast.makeText(MainActivity.this, "Errore nella sincronizzazione dei dati", Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -145,17 +142,6 @@ public class MainActivity extends AppCompatActivity implements
         this.clickedSetId = setId;
         this.clickedSetName = setName;
         displayView(Fragments.SETITEMS, true);
-    }
-
-    private interface OnGetDataListener {
-        //this is for callbacks
-        void onSuccess(DataSnapshot dataSnapshot);
-
-        void onSuccess();
-
-        void onStart();
-
-        void onFailure();
     }
 
     @Override
@@ -190,7 +176,7 @@ public class MainActivity extends AppCompatActivity implements
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-
+                        listen.onFailure();
                     }
                 });
                 }
@@ -325,24 +311,11 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void setMissingsTitle() {
-        if (getSupportActionBar() != null){
-            getSupportActionBar().setTitle("Mancanti");
-        }
-    }
-
-    @Override
     public void onSwipeRemoveDouble(String surpId) {
         String username = currentUser.getUsername();
         dbRef.child("user_doubles").child(username).child(surpId).setValue(null);
         dbRef.child("surprise_doubles").child(surpId).child(username).setValue(null);
     }
-
-    @Override
-    public void setDoublesTitle() {
-        if (getSupportActionBar() != null){
-            getSupportActionBar().setTitle("Doppi");
-        }    }
 
     @Override
     public void onClickOpenProducersFragment() {
@@ -440,18 +413,6 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void setSearchTitle() {
-        if (getSupportActionBar() != null){
-            getSupportActionBar().setTitle(this.clickedProducerName + " - "+ this.clickedYearNumber);
-        }
-    }
-
-    @Override
-    public void setItemsTitle() {
-        setTitle(this.clickedSetName);
-    }
-
-    @Override
     public void onHomeClick() {
         this.clearBackStack();
         this.displayView(Fragments.MISSINGS, false);
@@ -470,6 +431,14 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
+    public void onYearClicked(String year, int num) {
+        this.clickedYearId = year;
+        this.clickedYearNumber = num;
+        this.displayView(Fragments.SETSEARCH, true);
+    }
+
+    // region ActionBarTitle
+    @Override
     public void setProducerTitle() {
         if (getSupportActionBar() != null){
             getSupportActionBar().setTitle("Produttore");
@@ -477,10 +446,31 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onYearClicked(String year, int num) {
-        this.clickedYearId = year;
-        this.clickedYearNumber = num;
-        this.displayView(Fragments.SETSEARCH, true);
+    public void setSearchTitle() {
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setTitle(this.clickedProducerName + " - "+ this.clickedYearNumber);
+        }
+    }
+
+    @Override
+    public void setItemsTitle() {
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setTitle(this.clickedSetName);
+        }
+    }
+
+    @Override
+    public void setDoublesTitle() {
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setTitle("Doppi");
+        }
+    }
+
+    @Override
+    public void setMissingsTitle() {
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setTitle("Mancanti");
+        }
     }
 
     @Override
@@ -489,4 +479,5 @@ public class MainActivity extends AppCompatActivity implements
             getSupportActionBar().setTitle(this.clickedProducerName);
         }
     }
+    // endregion
 }

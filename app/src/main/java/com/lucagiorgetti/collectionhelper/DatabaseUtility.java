@@ -13,8 +13,6 @@ public class DatabaseUtility {
             mDatabase = FirebaseDatabase.getInstance();
             mDatabase.setPersistenceEnabled(true);
         }
-
         return mDatabase;
     }
-
 }

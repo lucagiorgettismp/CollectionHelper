@@ -10,12 +10,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.lucagiorgetti.collectionhelper.DatabaseUtility;
+import com.lucagiorgetti.collectionhelper.FragmentListenerInterface;
+import com.lucagiorgetti.collectionhelper.OnGetDataListener;
 import com.lucagiorgetti.collectionhelper.R;
 import com.lucagiorgetti.collectionhelper.RecyclerItemClickListener;
 import com.lucagiorgetti.collectionhelper.adapters.ProducerRecyclerAdapter;
@@ -26,12 +29,7 @@ import com.lucagiorgetti.collectionhelper.model.Year;
 import java.util.ArrayList;
 
 public class YearsFragment extends Fragment{
-    private YearListener listener;
-
-    public interface YearListener{
-        void onYearClicked(String year_id, int year_number);
-        void setYearTitle();
-    }
+    private FragmentListenerInterface listener;
 
     ArrayList<Year> years = new ArrayList<>();
     private YearRecyclerAdapter mAdapter;
@@ -69,6 +67,11 @@ public class YearsFragment extends Fragment{
         );
         getDataFromServer(new OnGetDataListener() {
             @Override
+            public void onSuccess(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
             public void onSuccess() {
                 mAdapter = new YearRecyclerAdapter(mContext, years);
                 recyclerView.setAdapter(mAdapter);
@@ -77,10 +80,13 @@ public class YearsFragment extends Fragment{
 
             @Override
             public void onStart() {
+                progress.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onFailure() {
+                progress.setVisibility(View.GONE);
+                Toast.makeText(mContext, "Errore nella sincronizzazione dei dati", Toast.LENGTH_SHORT).show();
             }
         });
         return layout;
@@ -93,15 +99,7 @@ public class YearsFragment extends Fragment{
         setHasOptionsMenu(true);
     }
 
-    public interface OnGetDataListener {
-        //this is for callbacks
-        void onSuccess();
-        void onStart();
-        void onFailure();
-    }
-
     private void getDataFromServer(final OnGetDataListener listen) {
-        progress.setVisibility(View.VISIBLE);
         listen.onStart();
         years.clear();
 
@@ -140,8 +138,8 @@ public class YearsFragment extends Fragment{
     @Override
     public void onAttach(Context context){
         super.onAttach(context);
-        if (context instanceof YearListener){
-            this.listener = (YearListener) context;
+        if (context instanceof FragmentListenerInterface){
+            this.listener = (FragmentListenerInterface) context;
         }
     }
 

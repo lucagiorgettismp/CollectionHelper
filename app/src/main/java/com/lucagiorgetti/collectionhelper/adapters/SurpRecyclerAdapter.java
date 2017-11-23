@@ -24,11 +24,9 @@ import java.util.Locale;
 
 public class SurpRecyclerAdapter extends RecyclerView.Adapter<SurpRecyclerAdapter.SurpViewHolder>{
     private ArrayList<Surprise> surprises = new ArrayList<>();
-    ArrayList<Surprise> mStringFilterList;
-    Context ctx;
+    private Context ctx;
     public SurpRecyclerAdapter(Context context, ArrayList<Surprise> surpList){
         surprises = surpList;
-        mStringFilterList = surpList;
         ctx = context;
     }
 
@@ -47,7 +45,7 @@ public class SurpRecyclerAdapter extends RecyclerView.Adapter<SurpRecyclerAdapte
         holder.vYear.setText(String.valueOf(surp.getSet_year()));
         holder.vProducer.setText(surp.getSet_producer_name() + " " + surp.getSet_product_name());
 
-        String nation = null;
+        String nation;
         if (ExtraLocales.isExtraLocale(surp.getSet_nation())) {
            nation = ExtraLocales.getDisplayName(surp.getSet_nation());
         } else {
@@ -67,11 +65,6 @@ public class SurpRecyclerAdapter extends RecyclerView.Adapter<SurpRecyclerAdapte
         return surprises.size();
     }
 
-    public void addItem(Surprise surprise) {
-        surprises.add(surprise);
-        notifyItemInserted(surprises.size());
-    }
-
     public Surprise getItemAtPosition(int position) {
         return this.surprises.get(position);
     }
@@ -83,18 +76,18 @@ public class SurpRecyclerAdapter extends RecyclerView.Adapter<SurpRecyclerAdapte
         notifyDataSetChanged();
     }
 
-    public class SurpViewHolder extends RecyclerView.ViewHolder {
-        protected TextView vCode;
-        protected TextView vSetName;
-        protected TextView vDescription;
-        protected TextView vYear;
-        protected TextView vProducer;
-        protected TextView vNation;
-        protected ImageView vImage;
-        protected View vLayout;
+    class SurpViewHolder extends RecyclerView.ViewHolder {
+        TextView vCode;
+        TextView vSetName;
+        TextView vDescription;
+        TextView vYear;
+        TextView vProducer;
+        TextView vNation;
+        ImageView vImage;
+        View vLayout;
 
 
-        public SurpViewHolder(View v) {
+        SurpViewHolder(View v) {
             super(v);
             vCode = (TextView) v.findViewById(R.id.txv_surp_elem_code);
             vSetName = (TextView) v.findViewById(R.id.txv_surp_elem_set);
@@ -103,7 +96,7 @@ public class SurpRecyclerAdapter extends RecyclerView.Adapter<SurpRecyclerAdapte
             vProducer = (TextView) v.findViewById(R.id.txv_surp_elem_producer);
             vNation = (TextView) v.findViewById(R.id.txv_surp_elem_nation);
             vImage = (ImageView) v.findViewById(R.id.img_surp_elem);
-            vLayout = (View) v.findViewById(R.id.layout_surp_elem_titlebar);
+            vLayout = v.findViewById(R.id.layout_surp_elem_titlebar);
         }
     }
 }

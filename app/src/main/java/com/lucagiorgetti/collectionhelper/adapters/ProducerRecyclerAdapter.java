@@ -6,17 +6,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.lucagiorgetti.collectionhelper.R;
 import com.lucagiorgetti.collectionhelper.model.Colors;
 import com.lucagiorgetti.collectionhelper.model.Producer;
-import com.lucagiorgetti.collectionhelper.model.Set;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 /**
  * Created by Luca on 24/10/2017.
@@ -24,8 +20,8 @@ import java.util.Locale;
 
 public class ProducerRecyclerAdapter extends RecyclerView.Adapter<ProducerRecyclerAdapter.SetViewHolder>{
     private ArrayList<Producer> producers = new ArrayList<>();
-    ArrayList<Producer> mFilterList;
-    Context ctx;
+    private ArrayList<Producer> mFilterList;
+    private Context ctx;
 
     public ProducerRecyclerAdapter(Context context, ArrayList<Producer> producersList) {
         producers = producersList;
@@ -57,17 +53,16 @@ public class ProducerRecyclerAdapter extends RecyclerView.Adapter<ProducerRecycl
         return this.producers.get(position);
     }
 
-    public static class SetViewHolder extends RecyclerView.ViewHolder {
-        protected TextView vName;
-        protected TextView vProduct;
-        protected View vLayout;
+    static class SetViewHolder extends RecyclerView.ViewHolder {
+        TextView vName;
+        TextView vProduct;
+        View vLayout;
 
-        public SetViewHolder(View v) {
+        SetViewHolder(View v) {
             super(v);
             vName =  (TextView) v.findViewById(R.id.txv_title_prd_select);
             vProduct = (TextView)  v.findViewById(R.id.txv_subtitle_prd_select);
-            vLayout = (View) v.findViewById(R.id.layout_prd_select);
-
+            vLayout = v.findViewById(R.id.layout_prd_select);
         }
     }
 }

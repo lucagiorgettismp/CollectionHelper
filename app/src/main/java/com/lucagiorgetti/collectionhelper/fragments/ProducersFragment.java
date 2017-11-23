@@ -10,12 +10,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.lucagiorgetti.collectionhelper.DatabaseUtility;
+import com.lucagiorgetti.collectionhelper.FragmentListenerInterface;
+import com.lucagiorgetti.collectionhelper.OnGetDataListener;
 import com.lucagiorgetti.collectionhelper.R;
 import com.lucagiorgetti.collectionhelper.RecyclerItemClickListener;
 import com.lucagiorgetti.collectionhelper.adapters.ProducerRecyclerAdapter;
@@ -24,12 +27,7 @@ import com.lucagiorgetti.collectionhelper.model.Producer;
 import java.util.ArrayList;
 
 public class ProducersFragment extends Fragment{
-    private ProducerListener listener;
-
-    public interface ProducerListener{
-        void onProducerClick(String id, String name);
-        void setProducerTitle();
-    }
+    private FragmentListenerInterface listener;
 
     ArrayList<Producer> producers = new ArrayList<>();
     private ProducerRecyclerAdapter mAdapter;
@@ -82,13 +80,19 @@ public class ProducersFragment extends Fragment{
             }
 
             @Override
-            public void onStart() {
+            public void onSuccess() {
 
             }
 
             @Override
-            public void onFailure() {
+            public void onStart() {
+                progress.setVisibility(View.VISIBLE);
+            }
 
+            @Override
+            public void onFailure() {
+                progress.setVisibility(View.GONE);
+                Toast.makeText(mContext, "Errore nella sincronizzazione dei dati", Toast.LENGTH_SHORT).show();
             }
         });
         return layout;
@@ -101,20 +105,7 @@ public class ProducersFragment extends Fragment{
         setHasOptionsMenu(true);
     }
 
-    public void resetSearch() {
-        mAdapter = new ProducerRecyclerAdapter(mContext, producers);
-        recyclerView.setAdapter(mAdapter);
-    }
-
-    public interface OnGetDataListener {
-        //this is for callbacks
-        void onSuccess(DataSnapshot dataSnapshot);
-        void onStart();
-        void onFailure();
-    }
-
     private void getDataFromServer(final OnGetDataListener listen) {
-        progress.setVisibility(View.VISIBLE);
         listen.onStart();
         producers.clear();
         dbRef.child("producers").orderByChild("order").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -133,8 +124,8 @@ public class ProducersFragment extends Fragment{
     @Override
     public void onAttach(Context context){
         super.onAttach(context);
-        if (context instanceof ProducerListener){
-            this.listener = (ProducerListener) context;
+        if (context instanceof FragmentListenerInterface){
+            this.listener = (FragmentListenerInterface) context;
         }
     }
 
