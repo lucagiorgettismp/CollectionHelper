@@ -30,6 +30,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.lucagiorgetti.collectionhelper.adapters.DoublesOwnersListAdapter;
+import com.lucagiorgetti.collectionhelper.fragments.DoublesFragment;
 import com.lucagiorgetti.collectionhelper.fragments.MissingFragment;
 import com.lucagiorgetti.collectionhelper.fragments.ProducersFragment;
 import com.lucagiorgetti.collectionhelper.fragments.SearchSetsFragment;
@@ -50,7 +51,8 @@ public class MainActivity extends AppCompatActivity implements
         SearchSetsFragment.SetListener,
         SetItemsFragment.SetItemListener,
         ProducersFragment.ProducerListener,
-        YearsFragment.YearListener{
+        YearsFragment.YearListener,
+        DoublesFragment.DoubleListener{
     private static Fragment fragment = null;
     private static FragmentManager fragmentManager;
     private FirebaseAuth fireAuth;
@@ -224,28 +226,6 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        // getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -256,14 +236,12 @@ public class MainActivity extends AppCompatActivity implements
             displayView(Fragments.MISSINGS, false);
         } else if (id == R.id.nav_doubles) {
             displayView(Fragments.DOUBLES, false);
-        } else if (id == R.id.nav_collectors) {
-            displayView(Fragments.COLLECTORS, false);
+/*        } else if (id == R.id.nav_collectors) {
+            displayView(Fragments.COLLECTORS, false);*/
         } else if (id == R.id.nav_logout) {
             logout();
         } else if (id == R.id.nav_settings) {
         }
-
-        displayView(Fragments.MISSINGS, false); // call search fragment.
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -286,6 +264,10 @@ public class MainActivity extends AppCompatActivity implements
                 fragment.setArguments(b);
                 break;
             case DOUBLES:
+                fragment = new DoublesFragment();
+                Bundle d = new Bundle();
+                d.putString("username", currentUser.getUsername());
+                fragment.setArguments(d);
                 break;
             case COLLECTORS:
                 break;
@@ -349,6 +331,18 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void setMissingsTitle() {
         getSupportActionBar().setTitle("Mancanti");
+    }
+
+    @Override
+    public void onSwipeRemoveDouble(String surpId) {
+        String username = currentUser.getUsername();
+        dbRef.child("user_doubles").child(username).child(surpId).setValue(null);
+        dbRef.child("surprise_doubles").child(surpId).child(username).setValue(null);
+    }
+
+    @Override
+    public void setDoublesTitle() {
+        getSupportActionBar().setTitle("Doppi");
     }
 
     @Override
@@ -480,4 +474,3 @@ public class MainActivity extends AppCompatActivity implements
         getSupportActionBar().setTitle(this.clickedProducerName);
     }
 }
-

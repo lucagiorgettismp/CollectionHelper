@@ -5,19 +5,22 @@
     <color name="colorAccent">@android:color/holo_blue_light</color>
     <color name="accent_material_light">#0297cf</color>
     <color name="facebookColor">#001fb9</color>
-    <color name="cardBackground">#f9f9f9</color>
-    <color name="GreySet">#c2c1bb</color>
+    <color name="cardBackground">#ffffff</color>
+    <color name="GreySet">#bdbdbd</color>
     <color name="LightBluSet">#39acdd</color>
-    <color name="BlueSet">#1919ff</color>
+    <color name="BlueSet">#003dd9</color>
     <color name="RedSet">#f73b3b</color>
-    <color name="OrangeSet">#ffb326</color>
-    <color name="PurpleSet">#9212ca</color>
-    <color name="PinkSet">#ffa5fa</color>
-    <color name="YellowSet">#f9ea5e</color>
-    <color name="GreenSet">#219123</color>
-    <color name="LightGreenSet">#60ff70</color>
-    <color name="BrownSet">#c15e28</color>
-    <color name="AppBackground">#dbd9d9</color>
+    <color name="OrangeSet">@android:color/holo_orange_light</color>
+    <color name="PurpleSet">@android:color/holo_purple</color>
+    <color name="PinkSet">#f8bbd0</color>
+    <color name="YellowSet">#ffee58</color>
+    <color name="GreenSet">#388e3c</color>
+    <color name="LightGreenSet">#0be407</color>
+    <color name="BrownSet">#d84315</color>
+    <color name="AppBackground">#e0e0e0</color>
+
+    <color name="SwipeRed">#ff0000</color>
+    <color name="SwipeGreen">#04ba01</color>
 
 </resources>
 

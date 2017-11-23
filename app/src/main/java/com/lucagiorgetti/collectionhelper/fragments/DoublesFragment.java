@@ -9,7 +9,6 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -29,27 +28,24 @@ import android.widget.SearchView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.lucagiorgetti.collectionhelper.DatabaseUtility;
-import com.lucagiorgetti.collectionhelper.MainActivity;
 import com.lucagiorgetti.collectionhelper.R;
 import com.lucagiorgetti.collectionhelper.adapters.SurpRecyclerAdapter;
 import com.lucagiorgetti.collectionhelper.model.Surprise;
 
 import java.util.ArrayList;
 
-public class MissingFragment extends Fragment implements SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener, View.OnClickListener{
-    private  MissingListener listener;
+public class DoublesFragment extends Fragment implements SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener, View.OnClickListener{
+    private  DoubleListener listener;
 
-    public interface MissingListener{
-        void onSwipeRemoveMissing(String surpId);
-        void setMissingsTitle();
+    public interface DoubleListener{
+        void onSwipeRemoveDouble(String surpId);
+        void setDoublesTitle();
         void onClickOpenProducersFragment();
-        void onSwipeShowDoublesOwner(Surprise surprise);
     }
 
-    ArrayList<Surprise> missings = new ArrayList<>();
+    ArrayList<Surprise> doubles = new ArrayList<>();
     private SurpRecyclerAdapter mAdapter;
     private String username = null;
     private RecyclerView recyclerView;
@@ -58,7 +54,6 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
     private ProgressBar progress;
     private SearchView searchView;
     private static DatabaseReference dbRef = DatabaseUtility.getDatabase().getReference();
-    private int edit_position;
     private Paint p = new Paint();
 
     @Override
@@ -80,7 +75,7 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mContext);
         recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new SurpRecyclerAdapter(mContext, missings);
+        mAdapter = new SurpRecyclerAdapter(mContext, doubles);
         recyclerView.setAdapter(mAdapter);
         fab = (FloatingActionButton) layout.findViewById(R.id.fab);
         fab.setOnClickListener(this);
@@ -88,7 +83,7 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
         getDataFromServer(new OnGetDataListener() {
             @Override
             public void onSuccess( ) {
-                mAdapter = new SurpRecyclerAdapter(mContext, missings);
+                mAdapter = new SurpRecyclerAdapter(mContext, doubles);
                 recyclerView.setAdapter(mAdapter);
                 progress.setVisibility(View.GONE);
             }
@@ -118,19 +113,14 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getAdapterPosition();
                 Surprise s = mAdapter.getItemAtPosition(position);
-                if (direction == ItemTouchHelper.LEFT){
-                    listener.onSwipeRemoveMissing(s.getId());
-                    mAdapter.removeItem(position);
-                    String asd = searchView.getQuery().toString();
-                    if(!asd.isEmpty()) {
-                        FragmentTransaction ft = getFragmentManager().beginTransaction();
-                        ft.detach(MissingFragment.this).attach(MissingFragment.this).commit();
-                        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
-                    }
-                } else {
-                    listener.onSwipeShowDoublesOwner(s);
-                    mAdapter.notifyDataSetChanged();
+                listener.onSwipeRemoveDouble(s.getId());
+                mAdapter.removeItem(position);
+                String asd = searchView.getQuery().toString();
+                if(!asd.isEmpty()) {
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.detach(DoublesFragment.this).attach(DoublesFragment.this).commit();
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
                 }
             }
 
@@ -145,13 +135,14 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
                     float width = height / 3;
 
                     if(dX > 0){
-                        p.setColor(ContextCompat.getColor(mContext, R.color.SwipeGreen));
+                        p.setColor(ContextCompat.getColor(mContext, R.color.SwipeRed));
                         RectF background = new RectF((float) itemView.getLeft(), (float) itemView.getTop(), dX,(float) itemView.getBottom());
                         c.drawRect(background,p);
-                        icon = BitmapFactory.decodeResource(getResources(), R.drawable.ic_person);
+                        icon = BitmapFactory.decodeResource(getResources(), R.drawable.ic_delete_white);
                         RectF icon_dest = new RectF((float) itemView.getLeft() + width ,(float) itemView.getTop() + width,(float) itemView.getLeft()+ 2*width,(float)itemView.getBottom() - width);
                         c.drawBitmap(icon,null,icon_dest,p);
-                    } else {
+                    }
+                    else {
                         p.setColor(ContextCompat.getColor(mContext, R.color.SwipeRed));
                         RectF background = new RectF((float) itemView.getRight() + dX, (float) itemView.getTop(),(float) itemView.getRight(), (float) itemView.getBottom());
                         c.drawRect(background,p);
@@ -195,8 +186,8 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
             resetSearch();
             return false;
         }
-        ArrayList<Surprise> filteredValues = new ArrayList<Surprise>(missings);
-        for (Surprise value : missings) {
+        ArrayList<Surprise> filteredValues = new ArrayList<Surprise>(doubles);
+        for (Surprise value : doubles) {
             if (!(value.getDescription().toLowerCase().contains(newText.toLowerCase()) ||
                     value.getCode().toLowerCase().contains(newText.toLowerCase()))) {
                 filteredValues.remove(value);
@@ -208,7 +199,7 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
     }
 
     public void resetSearch() {
-        mAdapter = new SurpRecyclerAdapter(mContext, missings);
+        mAdapter = new SurpRecyclerAdapter(mContext, doubles);
         recyclerView.setAdapter(mAdapter);
     }
 
@@ -225,8 +216,8 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
     @Override
     public void onAttach(Context context){
         super.onAttach(context);
-        if (context instanceof MissingListener){
-            listener = (MissingListener) context;
+        if (context instanceof DoubleListener){
+            listener = (DoubleListener) context;
         }
     }
 
@@ -245,16 +236,16 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
 
     @Override
     public void onResume() {
-        listener.setMissingsTitle();
+        listener.setDoublesTitle();
         super.onResume();
     }
 
     private void getDataFromServer(final OnGetDataListener listen) {
         listen.onStart();
         progress.setVisibility(View.VISIBLE);
-        missings.clear();
+        doubles.clear();
 
-        dbRef.child("missings").child(this.username).addListenerForSingleValueEvent(new ValueEventListener() {
+        dbRef.child("user_doubles").child(this.username).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
@@ -264,7 +255,7 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
                         public void onDataChange(DataSnapshot snapshot) {
                             if(snapshot.exists()){
                                 Surprise s = snapshot.getValue(Surprise.class);
-                                missings.add(s);
+                                doubles.add(s);
                             }
                             listen.onSuccess();
                         }
