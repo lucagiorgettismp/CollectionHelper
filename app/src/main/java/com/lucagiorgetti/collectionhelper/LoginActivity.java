@@ -145,13 +145,7 @@ public class LoginActivity extends AppCompatActivity {
                 String pwd = inPassword.getText().toString().trim();
                 Log.w("LOGIN", "input pwd : " + pwd);
 
-                String email = null;
-
-                if(input.contains("@")){
-                    email = input;
-                } else {
-                    email = getEmailFromUsername();
-                }
+                String email = input;
                 fireAuth.signInWithEmailAndPassword(email, pwd).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
