@@ -37,6 +37,7 @@
                     android:gravity="left|center_vertical"
                     android:paddingLeft="10dp"
                     android:text="CODICE"
+                    android:textAlignment="center"
                     android:textColor="@android:color/white"
                     android:textSize="18sp"
                     android:textStyle="bold" />

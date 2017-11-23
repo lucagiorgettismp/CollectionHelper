@@ -45,6 +45,7 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
         void onSwipeRemoveMissing(String surpId);
         void setMissingsTitle();
         void onClickOpenProducersFragment();
+        void onSwipeShowDoublesOwner(Surprise surprise);
     }
 
     ArrayList<Surprise> missings = new ArrayList<>();
@@ -115,9 +116,8 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getAdapterPosition();
-
+                Surprise s = mAdapter.getItemAtPosition(position);
                 if (direction == ItemTouchHelper.LEFT){
-                    Surprise s = mAdapter.getItemAtPosition(position);
                     listener.onSwipeRemoveMissing(s.getId());
                     mAdapter.removeItem(position);
                     String asd = searchView.getQuery().toString();
@@ -128,8 +128,7 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
                         imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
                     }
                 } else {
-                    Surprise asd = mAdapter.getItemAtPosition(position);
-                    Snackbar.make(v, "Apri" + asd.getCode() , Snackbar.LENGTH_SHORT).show();
+                    listener.onSwipeShowDoublesOwner(s);
                     mAdapter.notifyDataSetChanged();
                 }
             }

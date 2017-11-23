@@ -20,10 +20,9 @@ public class Set {
     private String producer_color = null;
     private String nation = null;
     private String img_path = null;
-    private String color = null;
     private String category = null;
 
-    public Set(String name, Year year, Producer producer, String nation, String img_path, String color, String category) {
+    public Set(String name, Year year, Producer producer, String nation, String img_path, String category) {
         this.name = name;
         this.year = year.getYear();
         this.product = producer.getProduct();
@@ -32,7 +31,6 @@ public class Set {
         this.year_id = year.getId();
         this.nation = nation;
         this.img_path = img_path;
-        this.color = color;
         this.category = category;
         this.id = name.replaceAll("\\s+","") + "_" + year.getYear();
     }
@@ -58,10 +56,6 @@ public class Set {
 
     public String getImg_path() {
         return img_path;
-    }
-
-    public String getColor() {
-        return color;
     }
 
     public String getId() {

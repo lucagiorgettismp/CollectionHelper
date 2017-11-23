@@ -1,5 +1,6 @@
 package com.lucagiorgetti.collectionhelper;
 
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.content.Intent;
@@ -7,14 +8,18 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.facebook.login.LoginManager;
@@ -24,13 +29,20 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.lucagiorgetti.collectionhelper.adapters.DoublesOwnersListAdapter;
 import com.lucagiorgetti.collectionhelper.fragments.MissingFragment;
 import com.lucagiorgetti.collectionhelper.fragments.ProducersFragment;
 import com.lucagiorgetti.collectionhelper.fragments.SearchSetsFragment;
 import com.lucagiorgetti.collectionhelper.fragments.SetItemsFragment;
 import com.lucagiorgetti.collectionhelper.fragments.YearsFragment;
+import com.lucagiorgetti.collectionhelper.model.Colors;
 import com.lucagiorgetti.collectionhelper.model.Fragments;
+import com.lucagiorgetti.collectionhelper.model.Set;
+import com.lucagiorgetti.collectionhelper.model.Surprise;
 import com.lucagiorgetti.collectionhelper.model.User;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener ,
@@ -51,6 +63,8 @@ public class MainActivity extends AppCompatActivity implements
     private String clickedSetName = null;
     private String clickedProducerName = null;
     private String clickedProducerId = null;
+    private ArrayList<User> doubleOwners = new ArrayList<>();
+    private DoublesOwnersListAdapter mAdapter;
 
     private static DatabaseReference dbRef;
     private String clickedYearId = null;
@@ -111,6 +125,11 @@ public class MainActivity extends AppCompatActivity implements
                 }
 
                 @Override
+                public void onSuccess() {
+
+                }
+
+                @Override
                 public void onStart() {
 
                 }
@@ -134,6 +153,8 @@ public class MainActivity extends AppCompatActivity implements
         //this is for callbacks
         void onSuccess(DataSnapshot dataSnapshot);
 
+        void onSuccess();
+
         void onStart();
 
         void onFailure();
@@ -148,7 +169,8 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onItemAddDoubles(String surpId) {
         String username = currentUser.getUsername();
-        dbRef.child("doubles").child(username).child(surpId).setValue(true);
+        dbRef.child("user_doubles").child(username).child(surpId).setValue(true);
+        dbRef.child("surprise_doubles").child(surpId).child(currentUser.getUsername()).setValue(true);
     }
 
     private void getCurrentUser(final OnGetDataListener listen) {
@@ -335,6 +357,96 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
+    public void onSwipeShowDoublesOwner(final Surprise missing) {
+        final View view = getLayoutInflater().inflate(R.layout.doubles_dialog, null);
+        TextView dialogTitle = (TextView) view.findViewById(R.id.doubles_dialog_title);
+        final TextView infoTxv = (TextView) view.findViewById(R.id.doubles_dialog_info);
+        final TextView emptyListTxv = (TextView) view.findViewById(R.id.doubles_dialog_empty_list);
+        dialogTitle.setBackgroundColor(ContextCompat.getColor(MainActivity.this, Colors.getHexColor(missing.getSet_producer_color())));
+        dialogTitle.setText(missing.getCode() + " - " + missing.getDescription());
+        mAdapter = new DoublesOwnersListAdapter(MainActivity.this, doubleOwners);
+        final ListView listView = (ListView) view.findViewById(R.id.doubles_dialog_list);
+        listView.setAdapter(mAdapter);
+        getDoubleOwners(missing.getId(), new OnGetDataListener() {
+            @Override
+            public void onSuccess(DataSnapshot dataSnapshot) {  }
+
+            @Override
+            public void onSuccess() {
+                mAdapter = new DoublesOwnersListAdapter(MainActivity.this, doubleOwners);
+                emptyListTxv.setVisibility(View.GONE);
+                infoTxv.setVisibility(View.VISIBLE);
+                listView.setAdapter(mAdapter);
+            }
+
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onFailure() {
+
+            }
+        });
+        if(doubleOwners.isEmpty()){
+            infoTxv.setVisibility(View.GONE);
+            emptyListTxv.setVisibility(View.VISIBLE);
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(view);
+        final AlertDialog alert = builder.create();
+        alert.show();
+
+        final View ac = this.findViewById(android.R.id.content);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                alert.dismiss();
+                Snackbar.make(ac , "Cliccato: " + mAdapter.getItem(position).getUsername(), Snackbar.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void getDoubleOwners(String surpId, final OnGetDataListener listen) {
+        listen.onStart();
+        doubleOwners.clear();
+        dbRef.child("surprise_doubles").child(surpId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot d : dataSnapshot.getChildren()) {
+                        dbRef.child("users").child(d.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot snapshot) {
+                                if(snapshot.exists()){
+                                    User u = snapshot.getValue(User.class);
+                                    doubleOwners.add(u);
+                                }
+                                listen.onSuccess();
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                listen.onFailure();
+                            }
+                        });
+                    }
+                } else {
+                    listen.onSuccess(null);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    @Override
     public void setSearchTitle() {
         getSupportActionBar().setTitle(this.clickedProducerName + " - "+ this.clickedYearNumber);
     }
@@ -367,6 +479,5 @@ public class MainActivity extends AppCompatActivity implements
     public void setYearTitle() {
         getSupportActionBar().setTitle(this.clickedProducerName);
     }
-
 }
 

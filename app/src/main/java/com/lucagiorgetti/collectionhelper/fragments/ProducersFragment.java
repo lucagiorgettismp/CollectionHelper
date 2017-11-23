@@ -117,7 +117,7 @@ public class ProducersFragment extends Fragment{
         progress.setVisibility(View.VISIBLE);
         listen.onStart();
         producers.clear();
-        dbRef.child("producers").addListenerForSingleValueEvent(new ValueEventListener() {
+        dbRef.child("producers").orderByChild("order").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 listen.onSuccess(dataSnapshot);

@@ -163,8 +163,6 @@ public class SearchSetsFragment extends Fragment implements SearchView.OnQueryTe
         listen.onStart();
         sets.clear();
 
-
-
         dbRef.child("years").child(this.yearId).child("sets").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

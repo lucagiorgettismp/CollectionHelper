@@ -38,7 +38,6 @@ public class YearsFragment extends Fragment{
     private RecyclerView recyclerView;
     private Context mContext;
     private ProgressBar progress;
-    private String producer_name = null;
     private String producer_id = null;
     private static DatabaseReference dbRef = DatabaseUtility.getDatabase().getReference();
 
@@ -46,7 +45,6 @@ public class YearsFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.year_select_fragment, container, false);
         this.producer_id = this.getArguments().getString("producer_id");
-        this.producer_name = getArguments().getString("producer_name");
         progress = (ProgressBar) layout.findViewById(R.id.year_loading);
         recyclerView = (RecyclerView) layout.findViewById(R.id.year_recycler);
         recyclerView.setHasFixedSize(true);
@@ -107,7 +105,7 @@ public class YearsFragment extends Fragment{
         listen.onStart();
         years.clear();
 
-        dbRef.child("producers").child(this.producer_id).child("years").addListenerForSingleValueEvent(new ValueEventListener() {
+        dbRef.child("producers").child(this.producer_id).child("years").orderByChild("year").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){

@@ -47,8 +47,6 @@ public class LoginActivity extends AppCompatActivity {
     private Button registrate;
     private Button facebookLogin;
     private ProgressBar progressBar;
-    private String email;
-    private String pwd;
     private FirebaseAuth fireAuth;
     private CallbackManager callbackManager;
 
@@ -127,42 +125,33 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void openLogingDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final View view = getLayoutInflater().inflate(R.layout.login_dialog, null);
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(view);
         builder.setTitle("Login");
-        LinearLayout layout = new LinearLayout(this);
-        layout.setOrientation(LinearLayout.VERTICAL);
 
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
-        );
+        final EditText inEmail = (EditText) view.findViewById(R.id.login_dialog_email);
+        final EditText inPassword = (EditText) view.findViewById(R.id.login_dialog_pwd);
+        Button loginBtn = (Button) view.findViewById(R.id.login_dialog_submit);
 
-        params.setMargins(40, 0, 40, 0);
-
-        final EditText inEmail = new EditText(this);
-        inEmail.setHint("Email");
-        inEmail.setLayoutParams(params);
-        layout.addView(inEmail);
-
-        final EditText inPassword = new EditText(this);
-        inPassword.setHint("Password");
-        inPassword.setLayoutParams(params);
-        layout.addView(inPassword);
-
-        inEmail.setInputType(InputType.TYPE_CLASS_TEXT);
-        inEmail.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-        inPassword.setInputType(InputType.TYPE_CLASS_TEXT);
-        inPassword.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        inPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
-
-        builder.setView(layout);
-
-        builder.setPositiveButton("LOGIN", new DialogInterface.OnClickListener() {
+        final AlertDialog login = builder.create();
+        login.show();
+        loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                email = inEmail.getText().toString().trim();
-                Log.w("LOGIN", "input email : " + email);
-                pwd = inPassword.getText().toString().trim();
+            public void onClick(View v) {
+                String input = inEmail.getText().toString().trim();
+                Log.w("LOGIN", "input email : " + input);
+                String pwd = inPassword.getText().toString().trim();
                 Log.w("LOGIN", "input pwd : " + pwd);
+
+                String email = null;
+
+                if(input.contains("@")){
+                    email = input;
+                } else {
+                    email = getEmailFromUsername();
+                }
                 fireAuth.signInWithEmailAndPassword(email, pwd).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -184,17 +173,9 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     }
                 });
-                dialog.dismiss();
+                login.dismiss();
             }
         });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-
-        builder.show();
     }
 
     private void signInWithFacebook(AccessToken token) {
@@ -273,5 +254,9 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public String getEmailFromUsername() {
+        return "ciao";
     }
 }
