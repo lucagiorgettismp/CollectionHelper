@@ -38,8 +38,12 @@ public class Initializer {
 
         Year kinSorp2017 = new Year(2017, kinderSorpresa);
         insertYear(kinSorp2017);
+        Year kinSorp2016 = new Year(2016, kinderSorpresa);
+        insertYear(kinSorp2016);
         Year kinMer2017 = new Year(2017, kinderMerendero);
         insertYear(kinMer2017);
+        Year kinMer2016 = new Year(2016, kinderMerendero);
+        insertYear(kinMer2016);
 
         //region CattivissimoMe3
         Set catMe3 = new Set("Cattivissimo Me 3", kinSorp2017, kinderSorpresa, ExtraLocales.EUROPE, "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FCattivissimoMe3%2FBPZ_CattivissimoMe3_2017.jpg?alt=media&token=4b9069ac-cf8a-4a2d-b7d4-6780e61eb89a", Categories.HANDPAINTED);
@@ -720,6 +724,48 @@ public class Initializer {
         insertSurprise(SE526);
         insertSurprise(SE527);
         //endregion
+
+
+        Set spong = new Set("Spongebob", kinMer2016, kinderMerendero, Locale.ITALIAN.getCountry(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Merendero%2F2016%2FSpongebob%2FBPZ_Spongebob_2016.png?alt=media&token=b0cdf56c-1bed-439e-b09b-9e078a070385", Categories.HANDPAINTED);
+        Surprise SD366 = new Surprise("Spongebob", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Merendero%2F2016%2FSpongebob%2FSD366.jpg?alt=media&token=e4f47151-c10f-4ca9-a0b2-061932d7f515", "SD366", spong);
+        Surprise SD367 = new Surprise("Plankton", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Merendero%2F2016%2FSpongebob%2FSD367.jpg?alt=media&token=25eee6fa-de01-4220-8a76-41e5525f1024", "SD367", spong);
+        Surprise SD368 = new Surprise("Gary", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Merendero%2F2016%2FSpongebob%2FSD368.jpg?alt=media&token=3afdd8f8-bd7a-4bd2-8726-4a7acc5bff85", "SD368", spong);
+        Surprise FF352U  = new Surprise("Patrick con molla", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Merendero%2F2016%2FSpongebob%2FFF352U.jpg?alt=media&token=85e6aca2-a737-4e41-834a-66777a233fb0", "FF352U", spong);
+        Surprise FF352V  = new Surprise("Plankton con molla", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Merendero%2F2016%2FSpongebob%2FFF352V.jpg?alt=media&token=eef9396e-ecdc-4bc2-a1dc-d6a96d6f9503", "FF352V", spong);
+        Surprise FF352W  = new Surprise("Spongebob con molla", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Merendero%2F2016%2FSpongebob%2FFF352W.jpg?alt=media&token=abbb8e93-dbc9-426c-8267-8ddf4b28299b", "FF352W", spong);
+        Surprise FF352X  = new Surprise("Mr. Krabbs con molla", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Merendero%2F2016%2FSpongebob%2FFF352X.jpg?alt=media&token=3ff2c892-c1e0-4c30-8acc-3c28a01624d4", "FF352X", spong);
+        Surprise FF352Y  = new Surprise("Sandy con molla", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Merendero%2F2016%2FSpongebob%2FFF352Y.jpg?alt=media&token=35274d5d-d10c-4271-bbad-7d4f366e4321", "FF352Y", spong);
+        insertSet(spong);
+        insertSurprise(SD366);
+        insertSurprise(SD367);
+        insertSurprise(SD368);
+        insertSurprise(FF352U);
+        insertSurprise(FF352V);
+        insertSurprise(FF352W);
+        insertSurprise(FF352X);
+        insertSurprise(FF352Y);
+
+        Set gattmod = new Set("Gatti alla moda", kinSorp2016, kinderSorpresa, ExtraLocales.EUROPE, "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2016%2FBPZ_GattiFaschion_2016.jpg?alt=media&token=46dfde4f-9def-4033-846a-6ea71ccec97f", Categories.COMPO);
+        Surprise SD046 = new Surprise("Gatto cappello Rosso", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2016%2FSD046.jpg?alt=media&token=e3de2076-fa3a-4108-b656-2ef9964f8a1f", "SD046", gattmod);
+        Surprise SD047 = new Surprise("Gatto cappello Azzurro", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2016%2FSD047.jpg?alt=media&token=cf19c790-11c8-4e71-b4e3-ada3c96c3078", "SD047", gattmod);
+        Surprise SD048 = new Surprise("Gatto cappello Viola", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2016%2FSD048.jpg?alt=media&token=e690c1b0-a3d8-45e0-949d-ab695d15f510", "SD048", gattmod);
+        Surprise SD049  = new Surprise("Gatto cappello Rosa ", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2016%2FSD049.jpg?alt=media&token=61d2a933-b5d1-4840-960e-8f7c074ab76f", "SD049", gattmod);
+        insertSet(gattmod);
+        insertSurprise(SD046);
+        insertSurprise(SD047);
+        insertSurprise(SD048);
+        insertSurprise(SD049);
+
+        Set cuccpan = new Set("Cuccioli con pannolino", kinSorp2016, kinderSorpresa, ExtraLocales.EUROPE, "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2016%2FBPZ_CuccioliConPannolino_2016.jpg?alt=media&token=3237ffe8-40fe-468b-8c15-4e0665d3679d", Categories.COMPO);
+        Surprise SD054 = new Surprise("Riccio", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2016%2FSD054.jpg?alt=media&token=6512a87a-dc6b-4666-b9bd-ff8fd2c95fdc", "SD054", cuccpan);
+        Surprise SD096 = new Surprise("Coniglio", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2016%2FSD096.jpg?alt=media&token=abdea0cb-80a4-44b0-b707-7560054b0f19", "SD096", cuccpan);
+        Surprise SD097 = new Surprise("Volpe", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2016%2FSD097.jpg?alt=media&token=0c027974-a6c3-4a1d-a461-f3626644ce69", "SD097", cuccpan);
+        Surprise SD098  = new Surprise("Gufo", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2016%2FSD098.jpg?alt=media&token=c0ae8873-ca07-477f-a837-642baa73f0ed", "SD098", cuccpan);
+        insertSet(cuccpan);
+        insertSurprise(SD054);
+        insertSurprise(SD096);
+        insertSurprise(SD097);
+        insertSurprise(SD098);
     }
 
     private void insertMissing(Surprise surp) {

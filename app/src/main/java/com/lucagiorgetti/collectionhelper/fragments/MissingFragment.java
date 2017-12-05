@@ -1,19 +1,23 @@
 package com.lucagiorgetti.collectionhelper.fragments;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,12 +35,22 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.lucagiorgetti.collectionhelper.DatabaseUtility;
 import com.lucagiorgetti.collectionhelper.FragmentListenerInterface;
+import com.lucagiorgetti.collectionhelper.MainActivity;
+import com.lucagiorgetti.collectionhelper.Manifest;
 import com.lucagiorgetti.collectionhelper.OnGetDataListener;
 import com.lucagiorgetti.collectionhelper.R;
 import com.lucagiorgetti.collectionhelper.adapters.SurpRecyclerAdapter;
 import com.lucagiorgetti.collectionhelper.model.Surprise;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class MissingFragment extends Fragment implements SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener, View.OnClickListener{
     private FragmentListenerInterface listener;
@@ -195,7 +209,8 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
         ArrayList<Surprise> filteredValues = new ArrayList<>(missings);
         for (Surprise value : missings) {
             if (!(value.getDescription().toLowerCase().contains(newText.toLowerCase()) ||
-                    value.getCode().toLowerCase().contains(newText.toLowerCase()))) {
+                    value.getCode().toLowerCase().contains(newText.toLowerCase()) ||
+                    value.getSet_name().toLowerCase().contains(newText.toLowerCase()))) {
                 filteredValues.remove(value);
             }
         }
@@ -256,6 +271,7 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
                                 missings.add(s);
                             }
                             listen.onSuccess();
+
                         }
 
                         @Override
@@ -276,3 +292,25 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
     }
 
 }
+
+/*
+*
+try {
+File root = new File(Environment.getExternalStorageDirectory(), "Documents");
+if (!root.exists()) {
+    root.mkdirs();
+}
+File gpxfile = new File(root, "Mancanti.txt");
+FileWriter writer = new FileWriter(gpxfile);
+
+writer.write("Mancanti al 04/12/2017" + String.format("%n") + String.format("%n"));
+for(Surprise s : missings){
+    writer.write(s.getSet_name() + " -> " + s.getCode() + " - " +s.getDescription() + String.format("%n"));
+}
+writer.flush();
+writer.close();
+Toast.makeText(mContext, "Saved" + Environment.getExternalStorageDirectory(), Toast.LENGTH_SHORT).show();
+} catch (IOException e) {
+e.printStackTrace();
+}
+*/

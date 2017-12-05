@@ -61,7 +61,10 @@ public class YearsFragment extends Fragment{
 
             @Override
             public void onLongItemClick(View view, int position) {
-
+                Year year = mAdapter.getItemAtPosition(position);
+                //listener.onLongYearClicked(year.getId(), year.getYear());
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
             }
         })
         );
