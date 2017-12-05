@@ -13,12 +13,10 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
 import com.lucagiorgetti.collectionhelper.DatabaseUtility;
 import com.lucagiorgetti.collectionhelper.FragmentListenerInterface;
-import com.lucagiorgetti.collectionhelper.OnGetDataListener;
+import com.lucagiorgetti.collectionhelper.listenerInterfaces.OnGetDataListener;
 import com.lucagiorgetti.collectionhelper.R;
 import com.lucagiorgetti.collectionhelper.RecyclerItemClickListener;
 import com.lucagiorgetti.collectionhelper.adapters.ProducerRecyclerAdapter;
@@ -65,7 +63,7 @@ public class ProducersFragment extends Fragment{
             }
         })
         );
-        getDataFromServer(new OnGetDataListener() {
+        DatabaseUtility.getProducers(new OnGetDataListener() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
@@ -80,12 +78,8 @@ public class ProducersFragment extends Fragment{
             }
 
             @Override
-            public void onSuccess() {
-
-            }
-
-            @Override
             public void onStart() {
+                producers.clear();
                 progress.setVisibility(View.VISIBLE);
             }
 
@@ -103,22 +97,6 @@ public class ProducersFragment extends Fragment{
         super.onCreate(savedInstanceState);
         mContext = getActivity();
         setHasOptionsMenu(true);
-    }
-
-    private void getDataFromServer(final OnGetDataListener listen) {
-        listen.onStart();
-        producers.clear();
-        dbRef.child("producers").orderByChild("order").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                listen.onSuccess(dataSnapshot);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                listen.onFailure();
-            }
-        });
     }
 
     @Override

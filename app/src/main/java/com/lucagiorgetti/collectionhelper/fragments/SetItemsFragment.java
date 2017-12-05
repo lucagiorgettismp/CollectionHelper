@@ -15,13 +15,10 @@ import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
 import com.lucagiorgetti.collectionhelper.DatabaseUtility;
 import com.lucagiorgetti.collectionhelper.FragmentListenerInterface;
-import com.lucagiorgetti.collectionhelper.OnGetDataListener;
+import com.lucagiorgetti.collectionhelper.listenerInterfaces.OnGetListListener;
 import com.lucagiorgetti.collectionhelper.R;
 import com.lucagiorgetti.collectionhelper.adapters.SetItemAdapter;
 import com.lucagiorgetti.collectionhelper.model.Surprise;
@@ -73,14 +70,9 @@ public class SetItemsFragment extends Fragment implements View.OnClickListener{
         });
 
 
-        getDataFromServer(new OnGetDataListener() {
+        DatabaseUtility.getSurprisesBySet(setClicked, new OnGetListListener<Surprise>() {
             @Override
-            public void onSuccess(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onSuccess( ) {
+            public void onSuccess(ArrayList<Surprise> surprises) {
                 mAdapter = new SetItemAdapter(mContext, surprises);
                 gridView.setAdapter(mAdapter);
                 progress.setVisibility(View.GONE);
@@ -120,42 +112,6 @@ public class SetItemsFragment extends Fragment implements View.OnClickListener{
             }
         });
         super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    private void getDataFromServer(final OnGetDataListener listen) {
-        listen.onStart();
-        surprises.clear();
-
-        dbRef.child("sets").child(this.setClicked).child("surprises").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
-                for (DataSnapshot d : dataSnapshot.getChildren()){
-                    dbRef.child("surprises").child(d.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot snapshot) {
-                            if(snapshot.exists()){
-                                Surprise s = snapshot.getValue(Surprise.class);
-                                surprises.add(s);
-                            }
-                            listen.onSuccess();
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-                            listen.onFailure();
-                        }
-                    });
-                    }
-                } else {
-                    listen.onSuccess();
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
     }
 
     @Override

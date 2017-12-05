@@ -17,13 +17,10 @@ import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.Toast;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
 import com.lucagiorgetti.collectionhelper.DatabaseUtility;
 import com.lucagiorgetti.collectionhelper.FragmentListenerInterface;
-import com.lucagiorgetti.collectionhelper.OnGetDataListener;
+import com.lucagiorgetti.collectionhelper.listenerInterfaces.OnGetListListener;
 import com.lucagiorgetti.collectionhelper.R;
 import com.lucagiorgetti.collectionhelper.RecyclerItemClickListener;
 import com.lucagiorgetti.collectionhelper.adapters.SetRecyclerAdapter;
@@ -70,14 +67,10 @@ public class SearchSetsFragment extends Fragment implements SearchView.OnQueryTe
             }
         })
         );
-        getDataFromServer(new OnGetDataListener() {
+        DatabaseUtility.getSetsFromYear(yearId, new OnGetListListener<Set>() {
             @Override
-            public void onSuccess(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onSuccess() {
+            public void onSuccess(ArrayList<Set> setsList) {
+                sets = setsList;
                 mAdapter = new SetRecyclerAdapter(mContext, sets);
                 recyclerView.setAdapter(mAdapter);
                 progress.setVisibility(View.GONE);
@@ -151,44 +144,6 @@ public class SearchSetsFragment extends Fragment implements SearchView.OnQueryTe
         return true;
     }
 
-    private void getDataFromServer(final OnGetDataListener listen) {
-        listen.onStart();
-        sets.clear();
-
-        dbRef.child("years").child(this.yearId).child("sets").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    for (DataSnapshot d : dataSnapshot.getChildren()) {
-
-                        dbRef.child("sets").child(d.getKey()).orderByChild("year").addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot snapshot) {
-                                if (snapshot.exists()) {
-                                    Set s = snapshot.getValue(Set.class);
-                                    sets.add(s);
-                                }
-                                listen.onSuccess();
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-                                listen.onFailure();
-                            }
-                        });
-                    }
-                } else {
-                    listen.onSuccess();
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
     @Override
     public void onAttach(Context context){
         super.onAttach(context);
@@ -208,7 +163,4 @@ public class SearchSetsFragment extends Fragment implements SearchView.OnQueryTe
         listener.setSearchTitle();
         super.onResume();
     }
-
 }
-
-

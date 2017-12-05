@@ -12,18 +12,12 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
 import com.lucagiorgetti.collectionhelper.DatabaseUtility;
 import com.lucagiorgetti.collectionhelper.FragmentListenerInterface;
-import com.lucagiorgetti.collectionhelper.OnGetDataListener;
+import com.lucagiorgetti.collectionhelper.listenerInterfaces.OnGetListListener;
 import com.lucagiorgetti.collectionhelper.R;
 import com.lucagiorgetti.collectionhelper.RecyclerItemClickListener;
-import com.lucagiorgetti.collectionhelper.adapters.ProducerRecyclerAdapter;
 import com.lucagiorgetti.collectionhelper.adapters.YearRecyclerAdapter;
-import com.lucagiorgetti.collectionhelper.model.Producer;
 import com.lucagiorgetti.collectionhelper.model.Year;
 
 import java.util.ArrayList;
@@ -37,7 +31,6 @@ public class YearsFragment extends Fragment{
     private Context mContext;
     private ProgressBar progress;
     private String producer_id = null;
-    private static DatabaseReference dbRef = DatabaseUtility.getDatabase().getReference();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -68,15 +61,10 @@ public class YearsFragment extends Fragment{
             }
         })
         );
-        getDataFromServer(new OnGetDataListener() {
+        DatabaseUtility.getYearsFromProducer(producer_id, new OnGetListListener<Year>() {
             @Override
-            public void onSuccess(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onSuccess() {
-                mAdapter = new YearRecyclerAdapter(mContext, years);
+            public void onSuccess(ArrayList<Year> yearsList) {
+                mAdapter = new YearRecyclerAdapter(mContext, yearsList);
                 recyclerView.setAdapter(mAdapter);
                 progress.setVisibility(View.GONE);
             }
@@ -100,42 +88,6 @@ public class YearsFragment extends Fragment{
         super.onCreate(savedInstanceState);
         mContext = getActivity();
         setHasOptionsMenu(true);
-    }
-
-    private void getDataFromServer(final OnGetDataListener listen) {
-        listen.onStart();
-        years.clear();
-
-        dbRef.child("producers").child(this.producer_id).child("years").orderByChild("year").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
-                    for (DataSnapshot d : dataSnapshot.getChildren()){
-                        dbRef.child("years").child(d.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot snapshot) {
-                                if(snapshot.exists()){
-                                    Year y = snapshot.getValue(Year.class);
-                                    years.add(y);
-                                }
-                                listen.onSuccess();
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-                                listen.onFailure();
-                            }
-                        });
-                    }
-                } else {
-                    listen.onSuccess();
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
     }
 
     @Override

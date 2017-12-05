@@ -26,9 +26,8 @@ import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
+import com.lucagiorgetti.collectionhelper.listenerInterfaces.OnGetListListener;
+import com.lucagiorgetti.collectionhelper.listenerInterfaces.OnGetDataListener;
 import com.lucagiorgetti.collectionhelper.adapters.DoublesOwnersListAdapter;
 import com.lucagiorgetti.collectionhelper.fragments.DoublesFragment;
 import com.lucagiorgetti.collectionhelper.fragments.MissingFragment;
@@ -61,13 +60,11 @@ public class MainActivity extends AppCompatActivity implements
     private ArrayList<User> doubleOwners = new ArrayList<>();
     private DoublesOwnersListAdapter mAdapter;
 
-    private static DatabaseReference dbRef;
     private String clickedYearId = null;
     private int clickedYearNumber = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        dbRef = DatabaseUtility.getDatabase().getReference();
         super.onCreate(savedInstanceState);
         fireAuth = FirebaseAuth.getInstance();
         facebookLogin = LoginManager.getInstance();
@@ -108,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements
             nav_user = (TextView) hView.findViewById(R.id.navbar_title);
             nav_email = (TextView) hView.findViewById(R.id.navbar_subtitle);
 
-            getCurrentUser(new OnGetDataListener() {
+            DatabaseUtility.getCurrentUser(new OnGetDataListener() {
                 @Override
                 public void onSuccess(DataSnapshot dataSnapshot) {
                     currentUser = dataSnapshot.getValue(User.class);
@@ -120,11 +117,6 @@ public class MainActivity extends AppCompatActivity implements
                 }
 
                 @Override
-                public void onSuccess() {
-
-                }
-
-                @Override
                 public void onStart() {
 
                 }
@@ -133,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements
                 public void onFailure() {
                     Toast.makeText(MainActivity.this, "Errore nella sincronizzazione dei dati", Toast.LENGTH_SHORT).show();
                 }
-            });
+            }, fireAuth);
         }
     }
 
@@ -147,46 +139,13 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onItemAddMissings(String surpId) {
         String username = currentUser.getUsername();
-        dbRef.child("missings").child(username).child(surpId).setValue(true);
+        DatabaseUtility.addMissing(username, surpId);
     }
 
     @Override
     public void onItemAddDoubles(String surpId) {
         String username = currentUser.getUsername();
-        dbRef.child("user_doubles").child(username).child(surpId).setValue(true);
-        dbRef.child("surprise_doubles").child(surpId).child(currentUser.getUsername()).setValue(true);
-    }
-
-    private void getCurrentUser(final OnGetDataListener listen) {
-        listen.onStart();
-        String emailCod = fireAuth.getCurrentUser().getEmail().replaceAll("\\.", ",");
-        final String[] username = {null};
-        dbRef.child("emails").child(emailCod).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot d : dataSnapshot.getChildren()) {
-                    username[0] = d.getKey();
-                }
-                if(username[0] != null){
-                    dbRef.child("users").child(username[0]).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        listen.onSuccess(dataSnapshot);
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        listen.onFailure();
-                    }
-                });
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                listen.onFailure();
-            }
-        });
+        DatabaseUtility.addDouble(username, surpId);
     }
 
     @Override
@@ -307,14 +266,13 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onSwipeRemoveMissing(String surpId) {
         String username = currentUser.getUsername();
-        dbRef.child("missings").child(username).child(surpId).setValue(null);
+        DatabaseUtility.removeMissing(username, surpId);
     }
 
     @Override
     public void onSwipeRemoveDouble(String surpId) {
         String username = currentUser.getUsername();
-        dbRef.child("user_doubles").child(username).child(surpId).setValue(null);
-        dbRef.child("surprise_doubles").child(surpId).child(username).setValue(null);
+        DatabaseUtility.removeDouble(username, surpId);
     }
 
     @Override
@@ -333,13 +291,10 @@ public class MainActivity extends AppCompatActivity implements
         mAdapter = new DoublesOwnersListAdapter(MainActivity.this, doubleOwners);
         final ListView listView = (ListView) view.findViewById(R.id.doubles_dialog_list);
         listView.setAdapter(mAdapter);
-        getDoubleOwners(missing.getId(), new OnGetDataListener() {
+        DatabaseUtility.getDoubleOwners(missing.getId(), new OnGetListListener<User>() {
             @Override
-            public void onSuccess(DataSnapshot dataSnapshot) {  }
-
-            @Override
-            public void onSuccess() {
-                mAdapter = new DoublesOwnersListAdapter(MainActivity.this, doubleOwners);
+            public void onSuccess(ArrayList<User> users) {
+                mAdapter = new DoublesOwnersListAdapter(MainActivity.this, users);
                 emptyListTxv.setVisibility(View.GONE);
                 infoTxv.setVisibility(View.VISIBLE);
                 listView.setAdapter(mAdapter);
@@ -347,7 +302,7 @@ public class MainActivity extends AppCompatActivity implements
 
             @Override
             public void onStart() {
-
+                doubleOwners.clear();
             }
 
             @Override
@@ -373,43 +328,6 @@ public class MainActivity extends AppCompatActivity implements
                 Snackbar.make(ac , "Cliccato: " + mAdapter.getItem(position).getUsername(), Snackbar.LENGTH_SHORT).show();
             }
         });
-    }
-
-    private void getDoubleOwners(String surpId, final OnGetDataListener listen) {
-        listen.onStart();
-        doubleOwners.clear();
-        dbRef.child("surprise_doubles").child(surpId).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    for (DataSnapshot d : dataSnapshot.getChildren()) {
-                        dbRef.child("users").child(d.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot snapshot) {
-                                if(snapshot.exists()){
-                                    User u = snapshot.getValue(User.class);
-                                    doubleOwners.add(u);
-                                }
-                                listen.onSuccess();
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-                                listen.onFailure();
-                            }
-                        });
-                    }
-                } else {
-                    listen.onSuccess(null);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
     }
 
     @Override

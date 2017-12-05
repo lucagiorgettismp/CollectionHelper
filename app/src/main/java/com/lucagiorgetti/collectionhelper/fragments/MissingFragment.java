@@ -1,23 +1,19 @@
 package com.lucagiorgetti.collectionhelper.fragments;
 
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,28 +25,14 @@ import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.Toast;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
 import com.lucagiorgetti.collectionhelper.DatabaseUtility;
 import com.lucagiorgetti.collectionhelper.FragmentListenerInterface;
-import com.lucagiorgetti.collectionhelper.MainActivity;
-import com.lucagiorgetti.collectionhelper.Manifest;
-import com.lucagiorgetti.collectionhelper.OnGetDataListener;
+import com.lucagiorgetti.collectionhelper.listenerInterfaces.OnGetListListener;
 import com.lucagiorgetti.collectionhelper.R;
 import com.lucagiorgetti.collectionhelper.adapters.SurpRecyclerAdapter;
 import com.lucagiorgetti.collectionhelper.model.Surprise;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class MissingFragment extends Fragment implements SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener, View.OnClickListener{
     private FragmentListenerInterface listener;
@@ -62,7 +44,6 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
     private Context mContext;
     private ProgressBar progress;
     private SearchView searchView;
-    private static DatabaseReference dbRef = DatabaseUtility.getDatabase().getReference();
     private Paint p = new Paint();
 
     @Override
@@ -89,14 +70,11 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
         FloatingActionButton fab = (FloatingActionButton) layout.findViewById(R.id.fab);
         fab.setOnClickListener(this);
         initSwipe();
-        getDataFromServer(new OnGetDataListener() {
-            @Override
-            public void onSuccess(DataSnapshot dataSnapshot) {
-
-            }
+        DatabaseUtility.getMissingsForUsername(this.username, new OnGetListListener<Surprise>() {
 
             @Override
-            public void onSuccess( ) {
+            public void onSuccess(ArrayList<Surprise> surprises) {
+                missings = surprises;
                 mAdapter = new SurpRecyclerAdapter(mContext, missings);
                 recyclerView.setAdapter(mAdapter);
                 progress.setVisibility(View.GONE);
@@ -253,44 +231,6 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
         listener.setMissingsTitle();
         super.onResume();
     }
-
-    private void getDataFromServer(final OnGetDataListener listen) {
-        listen.onStart();
-        missings.clear();
-
-        dbRef.child("missings").child(this.username).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
-                for (DataSnapshot d : dataSnapshot.getChildren()){
-                    dbRef.child("surprises").child(d.getKey()).orderByChild("code").addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot snapshot) {
-                            if(snapshot.exists()){
-                                Surprise s = snapshot.getValue(Surprise.class);
-                                missings.add(s);
-                            }
-                            listen.onSuccess();
-
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-                            listen.onFailure();
-                        }
-                    });
-                    }
-                } else {
-                    listen.onSuccess();
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
-    }
-
 }
 
 /*

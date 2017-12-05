@@ -25,12 +25,8 @@ import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.Toast;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
 import com.lucagiorgetti.collectionhelper.DatabaseUtility;
-import com.lucagiorgetti.collectionhelper.OnGetDataListener;
+import com.lucagiorgetti.collectionhelper.listenerInterfaces.OnGetListListener;
 import com.lucagiorgetti.collectionhelper.R;
 import com.lucagiorgetti.collectionhelper.FragmentListenerInterface;
 import com.lucagiorgetti.collectionhelper.adapters.SurpRecyclerAdapter;
@@ -48,7 +44,6 @@ public class DoublesFragment extends Fragment implements SearchView.OnQueryTextL
     private Context mContext;
     private ProgressBar progress;
     private SearchView searchView;
-    private static DatabaseReference dbRef = DatabaseUtility.getDatabase().getReference();
     private Paint p = new Paint();
 
     @Override
@@ -75,17 +70,12 @@ public class DoublesFragment extends Fragment implements SearchView.OnQueryTextL
         FloatingActionButton fab = (FloatingActionButton) layout.findViewById(R.id.fab);
         fab.setOnClickListener(this);
         initSwipe();
-        getDataFromServer(new OnGetDataListener() {
+        DatabaseUtility.getDoublesForUsername(this.username, new OnGetListListener<Surprise>() {
             @Override
-            public void onSuccess( ) {
-                mAdapter = new SurpRecyclerAdapter(mContext, doubles);
+            public void onSuccess(ArrayList<Surprise> surprises) {
+                mAdapter = new SurpRecyclerAdapter(mContext, surprises);
                 recyclerView.setAdapter(mAdapter);
                 progress.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onSuccess(DataSnapshot dataSnapshot) {
-
             }
 
             @Override
@@ -235,40 +225,6 @@ public class DoublesFragment extends Fragment implements SearchView.OnQueryTextL
         super.onResume();
     }
 
-    private void getDataFromServer(final OnGetDataListener listen) {
-        listen.onStart();
-        doubles.clear();
 
-        dbRef.child("user_doubles").child(this.username).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
-                for (DataSnapshot d : dataSnapshot.getChildren()){
-                    dbRef.child("surprises").child(d.getKey()).orderByChild("code").addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot snapshot) {
-                            if(snapshot.exists()){
-                                Surprise s = snapshot.getValue(Surprise.class);
-                                doubles.add(s);
-                            }
-                            listen.onSuccess();
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-                            listen.onFailure();
-                        }
-                    });
-                    }
-                } else {
-                    listen.onSuccess();
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
-    }
 
 }
