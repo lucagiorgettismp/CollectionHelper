@@ -1,5 +1,6 @@
 package com.lucagiorgetti.collectionhelper;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -123,8 +125,17 @@ public class LoginActivity extends AppCompatActivity {
         final EditText inEmail = (EditText) view.findViewById(R.id.login_dialog_email);
         final EditText inPassword = (EditText) view.findViewById(R.id.login_dialog_pwd);
         Button loginBtn = (Button) view.findViewById(R.id.login_dialog_submit);
+        TextView forgetPwd = (TextView) view.findViewById(R.id.lbl_login_forgotten_pwd);
 
         final AlertDialog login = builder.create();
+        forgetPwd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openResetPwdDialog();
+                login.dismiss();
+            }
+        });
+
         login.show();
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,6 +169,40 @@ public class LoginActivity extends AppCompatActivity {
                 login.dismiss();
             }
         });
+    }
+
+    private void openResetPwdDialog() {
+        final View view = getLayoutInflater().inflate(R.layout.reset_password, null);
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(view);
+        builder.setTitle("Password dimenticata");
+
+        final EditText inEmail = (EditText) view.findViewById(R.id.login_reset_pwd_email);
+        Button resetBtn = (Button) view.findViewById(R.id.login_reset_pwd_submit);
+
+        final AlertDialog resetDialog = builder.create();
+        resetDialog.show();
+
+        resetBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendPasswordResetEmail(inEmail.getText().toString().trim());
+                resetDialog.dismiss();
+            }
+        });
+    }
+
+    private void sendPasswordResetEmail(String email) {
+        FirebaseAuth.getInstance().sendPasswordResetEmail(email)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(LoginActivity.this, "Mail inviata con successo", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
     private void signInWithFacebook(AccessToken token) {
