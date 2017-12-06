@@ -1,6 +1,7 @@
 package com.lucagiorgetti.collectionhelper;
 
 import com.lucagiorgetti.collectionhelper.model.Surprise;
+import com.lucagiorgetti.collectionhelper.model.User;
 
 /**
  * Created by Luca on 23/11/2017.
@@ -42,4 +43,10 @@ public interface FragmentListenerInterface {
     void setYearTitle();
 
     void onSetLongClick(String id, String name);
+
+    User getCurrentRetrievedUser();
+
+    void refreshUser();
+
+    void setSettingsTitle();
 }

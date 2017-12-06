@@ -30,6 +30,7 @@ import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
+import com.lucagiorgetti.collectionhelper.fragments.UserSettingsFragment;
 import com.lucagiorgetti.collectionhelper.listenerInterfaces.OnGetListListener;
 import com.lucagiorgetti.collectionhelper.listenerInterfaces.OnGetDataListener;
 import com.lucagiorgetti.collectionhelper.adapters.DoublesOwnersListAdapter;
@@ -163,6 +164,31 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
+    public User getCurrentRetrievedUser() {
+        return currentUser;
+    }
+
+    @Override
+    public void refreshUser() {
+        DatabaseUtility.getCurrentUser(new OnGetDataListener() {
+            @Override
+            public void onSuccess(DataSnapshot data) {
+                currentUser = data.getValue(User.class);
+            }
+
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onFailure() {
+
+            }
+        }, fireAuth);
+    }
+
+    @Override
     public void onItemAddMissings(String surpId) {
         String username = currentUser.getUsername();
         DatabaseUtility.addMissing(username, surpId);
@@ -208,6 +234,7 @@ public class MainActivity extends AppCompatActivity implements
         } else if (id == R.id.nav_logout) {
             logout();
         } else if (id == R.id.nav_settings) {
+            displayView(Fragments.USER_SETTINGS, true);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -259,6 +286,9 @@ public class MainActivity extends AppCompatActivity implements
                 a.putString("producer_name", this.clickedProducerName);
                 a.putString("producer_id", this.clickedProducerId);
                 fragment.setArguments(a);
+                break;
+            case USER_SETTINGS:
+                fragment = new UserSettingsFragment();
                 break;
             default:
                 break;
@@ -360,12 +390,13 @@ public class MainActivity extends AppCompatActivity implements
             }
         });
     }
+
     @SuppressWarnings("deprecation")
     private void sendEmail(User owner, Surprise missing) {
         String to = owner.getEmail().replaceAll(",", "\\.");
         String subject = "Scambio con " + currentUser.getUsername();
 
-        Intent intent = new Intent(Intent.ACTION_SENDTO); // it's not ACTION_SEND
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_SUBJECT, subject);
 
@@ -476,6 +507,13 @@ public class MainActivity extends AppCompatActivity implements
     public void setYearTitle() {
         if (getSupportActionBar() != null){
             getSupportActionBar().setTitle(this.clickedProducerName);
+        }
+    }
+
+    @Override
+    public void setSettingsTitle() {
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setTitle("Impostazioni");
         }
     }
 

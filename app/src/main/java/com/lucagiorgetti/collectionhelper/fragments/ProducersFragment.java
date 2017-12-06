@@ -32,7 +32,6 @@ public class ProducersFragment extends Fragment{
     private RecyclerView recyclerView;
     private Context mContext;
     private ProgressBar progress;
-    private static DatabaseReference dbRef = DatabaseUtility.getDatabase().getReference();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

@@ -70,7 +70,6 @@ public class RegistrateActivity extends AppCompatActivity{
         edtUsername = (EditText) findViewById(R.id.edit_reg_username);
         edtName = (EditText) findViewById(R.id.edit_reg_name);
         edtSurname = (EditText) findViewById(R.id.edit_reg_surname);
-        edtName = (EditText) findViewById(R.id.edit_reg_name);
         edtBirthdate =(EditText) findViewById(R.id.edit_reg_birthdate);
         edtNation =(EditText) findViewById(R.id.edit_reg_nation);
         TextView lblInfoFacebook = (TextView) findViewById(R.id.lbl_reg_info_facebook);
@@ -103,6 +102,7 @@ public class RegistrateActivity extends AppCompatActivity{
             edtName.setText(facebook_name);
             edtSurname.setText(facebook_surname);
             edtEmail.setText(facebook_email);
+            edtEmail.setEnabled(false);
         }
 
         btnAccountCompleteFacebook.setOnClickListener(new View.OnClickListener() {
@@ -119,7 +119,7 @@ public class RegistrateActivity extends AppCompatActivity{
                     e.printStackTrace();
                 }
                 final String nation = edtNation.getText().toString();
-                generateUser(name, surname, email, username, birthDate, nation);
+                DatabaseUtility.generateUser(name, surname, email, username, birthDate, nation);
                 Intent i = new Intent(RegistrateActivity.this, MainActivity.class);
                 // Closing all the Activities
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -155,7 +155,7 @@ public class RegistrateActivity extends AppCompatActivity{
                         .addOnCompleteListener(RegistrateActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
-                                generateUser(name, surname, email, username, finalBirthDate, nation);
+                                DatabaseUtility.generateUser(name, surname, email, username, finalBirthDate, nation);
                                 if (!task.isSuccessful()) {
                                     Toast.makeText(RegistrateActivity.this, "Authentication failed." + task.getException(),
                                             Toast.LENGTH_SHORT).show();
@@ -203,6 +203,7 @@ public class RegistrateActivity extends AppCompatActivity{
         edtNation.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
+            if(hasFocus){
                 countryPicker = new CountryPickerDialog(RegistrateActivity.this, new CountryPickerCallbacks() {
                     @Override
                     public void onCountrySelected(Country country, int flagResId) {
@@ -218,6 +219,7 @@ public class RegistrateActivity extends AppCompatActivity{
                 }, false, 0);
                 countryPicker.show();
             }
+            }
         });
     }
 
@@ -225,20 +227,6 @@ public class RegistrateActivity extends AppCompatActivity{
         String myFormat = "dd/MM/yyyy";
         sdf = new SimpleDateFormat(myFormat, Locale.ITALIAN);
         edtBirthdate.setText(sdf.format(myCalendar.getTime()));
-    }
-
-    private void generateUser(String name, String surname, String email, String username, Date birthDate, String nation){
-        FirebaseDatabase database = DatabaseUtility.getDatabase();
-        String emailCod = email.replaceAll("\\.", ",");
-
-        DatabaseReference users = database.getReference("users"); //users is a node in your Firebase Database.
-        User user = new User(name, surname, emailCod, username, sdf.format(birthDate), nation); //ObjectClass for Users
-
-        DatabaseReference emails = database.getReference("emails"); //users is a node in your Firebase Database.
-        emails.child(emailCod).child(username).setValue(true);
-
-        users.child(username).setValue(user);
-        // users.push().setValue(user);
     }
 
     @Override

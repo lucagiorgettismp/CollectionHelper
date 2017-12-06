@@ -42,6 +42,5 @@
         android:padding="5dp"
         android:text="Password dimenticata"
         android:textColor="@color/facebookColor"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textSize="18sp" />
 </LinearLayout>

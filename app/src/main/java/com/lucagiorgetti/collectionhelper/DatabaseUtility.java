@@ -14,7 +14,10 @@ import com.lucagiorgetti.collectionhelper.model.Surprise;
 import com.lucagiorgetti.collectionhelper.model.User;
 import com.lucagiorgetti.collectionhelper.model.Year;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by Luca on 13/11/2017.
@@ -375,6 +378,7 @@ public class DatabaseUtility {
     }
 
     public static void addMissingsFromSet(final String username, String setId) {
+        dbRef = getDatabase().getReference();
         dbRef.child("sets").child(setId).child("surprises").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -402,5 +406,28 @@ public class DatabaseUtility {
             public void onCancelled(DatabaseError databaseError) {
             }
         });
+    }
+
+    public static void generateUser(String name, String surname, String email, String username, Date birthDate, String nation) {
+        dbRef = getDatabase().getReference();
+        String emailCod = email.replaceAll("\\.", ",");
+        String myFormat = "dd/MM/yyyy";
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ITALIAN);
+
+        User user = new User(name, surname, emailCod, username, sdf.format(birthDate), nation); //ObjectClass for Users
+
+        dbRef.child("users").child(username).setValue(user);
+        dbRef.child("emails").child(emailCod).child(username).setValue(true);
+    }
+
+    public static void updateUser(String username, String name, String surname, Date birthDate, String nation) {
+        dbRef = getDatabase().getReference();
+        String myFormat = "dd/MM/yyyy";
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ITALIAN);
+
+        dbRef.child("users").child(username).child("name").setValue(name);
+        dbRef.child("users").child(username).child("surname").setValue(surname);
+        dbRef.child("users").child(username).child("birthday").setValue(sdf.format(birthDate));
+        dbRef.child("users").child(username).child("country").setValue(nation);
     }
 }
