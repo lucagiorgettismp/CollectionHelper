@@ -63,7 +63,7 @@ public class SearchSetsFragment extends Fragment implements SearchView.OnQueryTe
             @Override
             public void onLongItemClick(View view, int position) {
                 Set set = mAdapter.getItemAtPosition(position);
-                Snackbar.make(view, "Cliccato a lungo " + set.getName(), Snackbar.LENGTH_SHORT).show();
+                listener.onSetLongClick(set.getId(), set.getName());
             }
         })
         );

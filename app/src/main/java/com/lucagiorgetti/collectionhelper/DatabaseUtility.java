@@ -124,6 +124,7 @@ public class DatabaseUtility {
 
     public static void getDoublesForUsername(String username, final OnGetListListener listen) {
         listen.onStart();
+        dbRef = getDatabase().getReference();
         final ArrayList<Surprise> doubles = new ArrayList<>();
 
         dbRef.child("user_doubles").child(username).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -327,4 +328,79 @@ public class DatabaseUtility {
         });
     }
 
+    public static void addMissingsFromYear(final String username, String yearId) {
+        dbRef = getDatabase().getReference();
+        dbRef.child("years").child(yearId).child("sets").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot d : dataSnapshot.getChildren()) {
+                        dbRef.child("sets").child(d.getKey()).child("surprises").addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.exists()) {
+                                    for (DataSnapshot d : dataSnapshot.getChildren()) {
+                                        dbRef.child("surprises").child(d.getKey()).child("id").addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot snapshot) {
+                                                if (snapshot.exists()) {
+                                                    String surpId = snapshot.getValue(String.class);
+                                                    addMissing(username, surpId);
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
+                                            }
+                                        });
+                                    }
+                                } else {
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                            }
+                        });
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public static void addMissingsFromSet(final String username, String setId) {
+        dbRef.child("sets").child(setId).child("surprises").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot d : dataSnapshot.getChildren()) {
+                        dbRef.child("surprises").child(d.getKey()).child("id").addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot snapshot) {
+                                if (snapshot.exists()) {
+                                    String surpId = snapshot.getValue(String.class);
+                                    addMissing(username, surpId);
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                            }
+                        });
+                    }
+                } else {
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+    }
 }

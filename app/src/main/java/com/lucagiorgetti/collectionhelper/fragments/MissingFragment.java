@@ -75,8 +75,12 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
             @Override
             public void onSuccess(ArrayList<Surprise> surprises) {
                 missings = surprises;
-                mAdapter = new SurpRecyclerAdapter(mContext, missings);
-                recyclerView.setAdapter(mAdapter);
+
+                if(missings != null){
+                    mAdapter = new SurpRecyclerAdapter(mContext, missings);
+                    recyclerView.setAdapter(mAdapter);
+                }
+                
                 progress.setVisibility(View.GONE);
             }
 

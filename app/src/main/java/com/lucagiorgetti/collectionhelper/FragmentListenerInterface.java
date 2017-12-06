@@ -37,5 +37,9 @@ public interface FragmentListenerInterface {
 
     void onYearClicked(String id, int year);
 
+    void onLongYearClicked(String id, int year);
+
     void setYearTitle();
+
+    void onSetLongClick(String id, String name);
 }

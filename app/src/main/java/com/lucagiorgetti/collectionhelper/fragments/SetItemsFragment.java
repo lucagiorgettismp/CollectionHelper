@@ -72,7 +72,8 @@ public class SetItemsFragment extends Fragment implements View.OnClickListener{
 
         DatabaseUtility.getSurprisesBySet(setClicked, new OnGetListListener<Surprise>() {
             @Override
-            public void onSuccess(ArrayList<Surprise> surprises) {
+            public void onSuccess(ArrayList<Surprise> surprisesList) {
+                surprises = surprisesList;
                 mAdapter = new SetItemAdapter(mContext, surprises);
                 gridView.setAdapter(mAdapter);
                 progress.setVisibility(View.GONE);

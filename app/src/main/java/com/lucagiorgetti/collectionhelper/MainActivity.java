@@ -1,5 +1,6 @@
 package com.lucagiorgetti.collectionhelper;
 
+import android.content.DialogInterface;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -134,6 +135,28 @@ public class MainActivity extends AppCompatActivity implements
         this.clickedSetId = setId;
         this.clickedSetName = setName;
         displayView(Fragments.SETITEMS, true);
+    }
+
+    @Override
+    public void onSetLongClick(final String setId, String setName) {
+        final AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+        alertDialog.setTitle("Aggiungi serie");
+        alertDialog.setMessage("Vuoi aggiungere tutta la serie " + setName + "?");
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        String username = currentUser.getUsername();
+                        DatabaseUtility.addMissingsFromSet(currentUser.getUsername(), setId);
+                        alertDialog.dismiss();
+                    }
+                });
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "ANNULLA",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        alertDialog.dismiss();
+                    }
+                });
+        alertDialog.show();
     }
 
     @Override
@@ -294,10 +317,14 @@ public class MainActivity extends AppCompatActivity implements
         DatabaseUtility.getDoubleOwners(missing.getId(), new OnGetListListener<User>() {
             @Override
             public void onSuccess(ArrayList<User> users) {
-                mAdapter = new DoublesOwnersListAdapter(MainActivity.this, users);
-                emptyListTxv.setVisibility(View.GONE);
-                infoTxv.setVisibility(View.VISIBLE);
-                listView.setAdapter(mAdapter);
+                if(users != null){
+                    if(!users.isEmpty()){
+                        mAdapter = new DoublesOwnersListAdapter(MainActivity.this, users);
+                        emptyListTxv.setVisibility(View.GONE);
+                        infoTxv.setVisibility(View.VISIBLE);
+                        listView.setAdapter(mAdapter);
+                    }
+                }
             }
 
             @Override
@@ -355,6 +382,28 @@ public class MainActivity extends AppCompatActivity implements
         this.displayView(Fragments.SETSEARCH, true);
     }
 
+    @Override
+    public void onLongYearClicked(final String yearId, int year) {
+        final AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+        alertDialog.setTitle("Aggiungi Annata");
+        alertDialog.setMessage("Vuoi aggiungere tutta la annata " + year + "?");
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        String username = currentUser.getUsername();
+                        DatabaseUtility.addMissingsFromYear(username, yearId);
+                        alertDialog.dismiss();
+                    }
+                });
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "ANNULLA",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        alertDialog.dismiss();
+                    }
+                });
+        alertDialog.show();
+    }
+
     // region ActionBarTitle
     @Override
     public void setProducerTitle() {
@@ -397,5 +446,6 @@ public class MainActivity extends AppCompatActivity implements
             getSupportActionBar().setTitle(this.clickedProducerName);
         }
     }
+
     // endregion
 }
