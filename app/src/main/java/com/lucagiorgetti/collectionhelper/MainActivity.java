@@ -356,25 +356,7 @@ public class MainActivity extends AppCompatActivity implements
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 alert.dismiss();
                 final User owner = mAdapter.getItem(position);
-                Snackbar.make(ac , "Cliccato: " + mAdapter.getItem(position).getUsername(), Snackbar.LENGTH_SHORT).show();
-
-                final AlertDialog confirmEmail = new AlertDialog.Builder(MainActivity.this).create();
-                confirmEmail.setTitle("Invio email");
-                confirmEmail.setMessage("Vuoi inviare una mail per scambiare con " + owner.getUsername() + "?");
-                confirmEmail.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                confirmEmail.dismiss();
-                                sendEmail(owner, missing);
-                            }
-                        });
-                confirmEmail.setButton(AlertDialog.BUTTON_NEGATIVE, "ANNULLA",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                confirmEmail.dismiss();
-                            }
-                        });
-                confirmEmail.show();
+                sendEmail(owner, missing);
             }
         });
     }
