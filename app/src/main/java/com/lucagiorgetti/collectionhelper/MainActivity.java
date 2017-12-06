@@ -1,6 +1,7 @@
 package com.lucagiorgetti.collectionhelper;
 
 import android.content.DialogInterface;
+import android.net.Uri;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -16,6 +17,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
+import android.text.Spanned;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -352,9 +355,56 @@ public class MainActivity extends AppCompatActivity implements
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 alert.dismiss();
+                final User owner = mAdapter.getItem(position);
                 Snackbar.make(ac , "Cliccato: " + mAdapter.getItem(position).getUsername(), Snackbar.LENGTH_SHORT).show();
+
+                final AlertDialog confirmEmail = new AlertDialog.Builder(MainActivity.this).create();
+                confirmEmail.setTitle("Invio email");
+                confirmEmail.setMessage("Vuoi inviare una mail per scambiare con " + owner.getUsername() + "?");
+                confirmEmail.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                confirmEmail.dismiss();
+                                sendEmail(owner, missing);
+                            }
+                        });
+                confirmEmail.setButton(AlertDialog.BUTTON_NEGATIVE, "ANNULLA",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                confirmEmail.dismiss();
+                            }
+                        });
+                confirmEmail.show();
             }
         });
+    }
+    @SuppressWarnings("deprecation")
+    private void sendEmail(User owner, Surprise missing) {
+        String to = owner.getEmail().replaceAll(",", "\\.");
+        String subject = "Scambio con " + currentUser.getUsername();
+
+        Intent intent = new Intent(Intent.ACTION_SENDTO); // it's not ACTION_SEND
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+
+        String html = new StringBuilder()
+                .append("Ciao,")
+                .append("<div>Sono " + currentUser.getUsername() + ", e tramite Surprix ho visto che trai doppi hai " + missing.getCode() + " - " + missing.getDescription() + ", a cui sono interessato.</div>")
+                .append("<div>Ti andrebbe di scambiare?</div>")
+                .append("<div><br></div>")
+                .append("<div>[Mail inviata grazie a Surprix]</div>")
+                .toString();
+        Spanned body;
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            body = Html.fromHtml(html,Html.FROM_HTML_MODE_LEGACY);
+        } else {
+            body = Html.fromHtml(html);
+        }
+        intent.putExtra(Intent.EXTRA_TEXT, body);
+        intent.setData(Uri.parse("mailto:" + to)); // or just "mailto:" for blank
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // this will make such that when user returns to your app, your app is displayed, instead of the email app.
+        startActivity(intent);
     }
 
     @Override

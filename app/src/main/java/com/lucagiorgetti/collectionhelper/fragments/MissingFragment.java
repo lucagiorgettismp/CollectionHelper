@@ -80,7 +80,7 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
                     mAdapter = new SurpRecyclerAdapter(mContext, missings);
                     recyclerView.setAdapter(mAdapter);
                 }
-                
+
                 progress.setVisibility(View.GONE);
             }
 
@@ -114,8 +114,8 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
                 if (direction == ItemTouchHelper.LEFT){
                     listener.onSwipeRemoveMissing(s.getId());
                     mAdapter.removeItem(position);
-                    String asd = searchView.getQuery().toString();
-                    if(!asd.isEmpty()) {
+                    String queryTxt = searchView.getQuery().toString();
+                    if(!queryTxt.isEmpty()) {
                         FragmentTransaction ft = getFragmentManager().beginTransaction();
                         ft.detach(MissingFragment.this).attach(MissingFragment.this).commit();
                         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
