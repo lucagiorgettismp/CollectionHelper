@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
-        android:text="SURPRISE"
+        android:text="@string/surprise"
         android:textAlignment="center"
         android:textColor="@android:color/white"
         android:textSize="18sp"
@@ -20,7 +20,7 @@
         android:id="@+id/doubles_dialog_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Ecco chi ha il pezzo che ti manca:"
+        android:text="@string/who_have_what_you_miss"
         android:textAlignment="center"
         android:textSize="18sp" />
 
@@ -29,7 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:text="Nessuno ha il pezzo che cerchi"
+        android:text="@string/nobody_have_what_you_miss"
         android:textAlignment="center"
         android:textSize="18sp"
         android:visibility="gone" />

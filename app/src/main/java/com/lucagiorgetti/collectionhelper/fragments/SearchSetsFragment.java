@@ -1,9 +1,8 @@
 package com.lucagiorgetti.collectionhelper.fragments;
 
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,13 +16,12 @@ import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.Toast;
 
-import com.google.firebase.database.DatabaseReference;
 import com.lucagiorgetti.collectionhelper.DatabaseUtility;
-import com.lucagiorgetti.collectionhelper.FragmentListenerInterface;
-import com.lucagiorgetti.collectionhelper.listenerInterfaces.OnGetListListener;
+import com.lucagiorgetti.collectionhelper.listenerInterfaces.FragmentListenerInterface;
 import com.lucagiorgetti.collectionhelper.R;
 import com.lucagiorgetti.collectionhelper.RecyclerItemClickListener;
 import com.lucagiorgetti.collectionhelper.adapters.SetRecyclerAdapter;
+import com.lucagiorgetti.collectionhelper.listenerInterfaces.OnGetListListener;
 import com.lucagiorgetti.collectionhelper.model.Set;
 
 import java.util.ArrayList;
@@ -31,18 +29,16 @@ import java.util.ArrayList;
 public class SearchSetsFragment extends Fragment implements SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener {
     private FragmentListenerInterface listener;
 
-    private String yearId = null;
     ArrayList<Set> sets = new ArrayList<>();
     private SetRecyclerAdapter mAdapter;
     private RecyclerView recyclerView;
     private Context mContext;
     private ProgressBar progress;
-    private static DatabaseReference dbRef = DatabaseUtility.getDatabase().getReference();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        this.yearId = getArguments().getString("yearId");
+        String yearId = getArguments().getString("yearId");
         View layout = inflater.inflate(R.layout.set_search_fragment, container, false);
         progress = (ProgressBar) layout.findViewById(R.id.search_set_loading);
         recyclerView = (RecyclerView) layout.findViewById(R.id.set_search_recycler);
@@ -84,7 +80,7 @@ public class SearchSetsFragment extends Fragment implements SearchView.OnQueryTe
             @Override
             public void onFailure() {
                 progress.setVisibility(View.GONE);
-                Toast.makeText(mContext, "Errore nella sincronizzazione dei dati", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, R.string.data_sync_error, Toast.LENGTH_SHORT).show();
             }
         });
         return layout;

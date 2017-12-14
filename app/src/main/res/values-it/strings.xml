@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Surprix</string>
+    <string name="action_settings">Impostazioni</string>
+    <string name="added_to_doubles">Aggiungi ai doppi</string>
+    <string name="added_to_missings">Aggiungi ai mancanti</string>
+    <string name="auth_failed">Errore di autenticazione</string>
+    <string name="birthday">Data di nascita</string>
+    <string name="change_password">Cambia passord</string>
+    <string name="code">Codice</string>
+    <string name="complete_account">Completa il tuo account</string>
+    <string name="country">Nazione</string>
+    <string name="create_your_account">Crea il tuo account ed entra in Surprix!</string>
+    <string name="data_sync_error">Errore di sincronizzazione dei dati</string>
+    <string name="description">Descrizione</string>
+    <string name="doubles">Doppi</string>
+    <string name="forgot_yout_password">Password dimenticata?</string>
+    <string name="login_with_facebook">Login con Facebook</string>
+    <string name="mail_successfully_sent">E-mail invita correttamente</string>
+    <string name="missings">Mancanti</string>
+    <string name="name">Nome</string>
+    <string name="new_password">Nuova Password</string>
+    <string name="next">Avanti</string>
+    <string name="nobody_have_what_you_miss">Nessuno ha il pezzo che cerchi</string>
+    <string name="old_password">Vecchia password</string>
+    <string name="old_password_wrong">Vecchia password errata</string>
+    <string name="password_changed">Password cambiata</string>
+    <string name="producer">Marca</string>
+    <string name="product">Prodotto</string>
+    <string name="search">Cerca</string>
+    <string name="send_email">Invia e-mail</string>
+    <string name="set">Serie</string>
+    <string name="settings">Impostazioni</string>
+    <string name="sign_in">Registrati</string>
+    <string name="something_went_wrong">Ci sono stati errori</string>
+    <string name="surname">Cognome</string>
+    <string name="surprise">Sorpresina</string>
+    <string name="user_added">Utente aggiornato</string>
+    <string name="user_group">Utente</string>
+    <string name="who_have_what_you_miss">Utenti che hanno quello che stai cercando</string>
+    <string name="wrong_email_or_password">E-mail o Password errata</string>
+    <string name="year">Anno</string>
+</resources>

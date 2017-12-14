@@ -12,6 +12,8 @@ import com.lucagiorgetti.collectionhelper.model.Colors;
 import com.lucagiorgetti.collectionhelper.model.Year;
 import java.util.ArrayList;
 /**
+ * Adapter for showing a list of Years.
+ *
  * Created by Luca on 24/10/2017.
  */
 

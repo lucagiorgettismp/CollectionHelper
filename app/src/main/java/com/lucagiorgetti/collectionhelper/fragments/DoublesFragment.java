@@ -28,7 +28,7 @@ import android.widget.Toast;
 import com.lucagiorgetti.collectionhelper.DatabaseUtility;
 import com.lucagiorgetti.collectionhelper.listenerInterfaces.OnGetListListener;
 import com.lucagiorgetti.collectionhelper.R;
-import com.lucagiorgetti.collectionhelper.FragmentListenerInterface;
+import com.lucagiorgetti.collectionhelper.listenerInterfaces.FragmentListenerInterface;
 import com.lucagiorgetti.collectionhelper.adapters.SurpRecyclerAdapter;
 import com.lucagiorgetti.collectionhelper.model.Surprise;
 
@@ -39,7 +39,6 @@ public class DoublesFragment extends Fragment implements SearchView.OnQueryTextL
 
     ArrayList<Surprise> doubles = new ArrayList<>();
     private SurpRecyclerAdapter mAdapter;
-    private String username = null;
     private RecyclerView recyclerView;
     private Context mContext;
     private ProgressBar progress;
@@ -59,7 +58,7 @@ public class DoublesFragment extends Fragment implements SearchView.OnQueryTextL
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.missings_fragment, container, false);
 
-        this.username = getArguments().getString("username");
+        String username = getArguments().getString("username");
         progress = (ProgressBar) layout.findViewById(R.id.missing_loading);
         recyclerView = (RecyclerView) layout.findViewById(R.id.missings_recycler);
         recyclerView.setHasFixedSize(true);
@@ -70,7 +69,7 @@ public class DoublesFragment extends Fragment implements SearchView.OnQueryTextL
         FloatingActionButton fab = (FloatingActionButton) layout.findViewById(R.id.fab);
         fab.setOnClickListener(this);
         initSwipe();
-        DatabaseUtility.getDoublesForUsername(this.username, new OnGetListListener<Surprise>() {
+        DatabaseUtility.getDoublesForUsername(username, new OnGetListListener<Surprise>() {
             @Override
             public void onSuccess(ArrayList<Surprise> surprises) {
                 doubles = surprises;
@@ -91,7 +90,7 @@ public class DoublesFragment extends Fragment implements SearchView.OnQueryTextL
             @Override
             public void onFailure() {
                 progress.setVisibility(View.GONE);
-                Toast.makeText(mContext, "Errore nella sincronizzazione dei dati", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, R.string.data_sync_error, Toast.LENGTH_SHORT).show();
             }
         });
 

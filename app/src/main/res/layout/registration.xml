@@ -11,18 +11,18 @@
         android:id="@+id/lbl_reg_info_firstlogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Crea il tuo account, ed entra in Surprix!"
+        android:text="@string/create_your_account"
         android:textAlignment="center"
-        android:textSize="22sp"
+        android:textSize="18sp"
         android:textStyle="bold" />
 
     <TextView
         android:id="@+id/lbl_reg_info_facebook"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Completa il tuo account"
+        android:text="@string/complete_account"
         android:textAlignment="center"
-        android:textSize="22sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         android:visibility="gone" />
 
@@ -31,7 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Email"
+        android:hint="@string/email"
         android:inputType="textEmailAddress" />
 
     <EditText
@@ -39,7 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Password"
+        android:hint="@string/password"
         android:inputType="textPassword" />
 
     <EditText
@@ -47,7 +47,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Username"
+        android:hint="@string/username"
         android:inputType="textPersonName" />
 
     <EditText
@@ -55,7 +55,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Name"
+        android:hint="@string/name"
         android:inputType="textCapWords" />
 
     <EditText
@@ -63,7 +63,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Surname"
+        android:hint="@string/surname"
         android:inputType="textCapWords" />
 
     <EditText
@@ -73,7 +73,7 @@
         android:clickable="true"
         android:ems="10"
         android:focusable="true"
-        android:hint="Birthday" />
+        android:hint="@string/birthday" />
 
     <EditText
         android:id="@+id/edit_reg_nation"
@@ -82,7 +82,22 @@
         android:clickable="true"
         android:ems="10"
         android:focusable="true"
-        android:hint="Nation" />
+        android:hint="@string/country" />
+
+    <Button
+        android:id="@+id/btn_reg_change_pwd"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_column="0"
+        android:layout_marginBottom="5dp"
+        android:layout_row="16"
+        android:background="@color/colorPrimary"
+        android:elevation="2dp"
+        android:text="@string/change_password"
+        android:textColor="@android:color/background_light"
+        android:textSize="18sp"
+        android:visibility="gone" />
 
     <Button
         android:id="@+id/btn_reg_submit"
@@ -91,10 +106,10 @@
         android:layout_height="wrap_content"
         android:layout_column="0"
         android:layout_row="16"
-        android:background="@android:color/holo_green_dark"
+        android:background="@color/colorPrimary"
         android:elevation="2dp"
         android:text="REGISTRATI"
-        android:textColor="@android:color/background_light"
+        android:textColor="@android:color/white"
         android:textSize="18sp" />
 
     <Button

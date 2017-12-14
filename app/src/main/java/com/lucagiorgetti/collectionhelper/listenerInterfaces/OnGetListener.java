@@ -1,11 +1,12 @@
 package com.lucagiorgetti.collectionhelper.listenerInterfaces;
 
 /**
+ * Interface which contains common methods. To be extended with OnSuccess();
+ *
  * Created by Luca on 23/11/2017.
  */
 
 public interface OnGetListener {
-    //this is for callbacks
     void onStart();
 
     void onFailure();

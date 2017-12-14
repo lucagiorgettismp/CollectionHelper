@@ -15,12 +15,11 @@ import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.google.firebase.database.DatabaseReference;
 import com.lucagiorgetti.collectionhelper.DatabaseUtility;
-import com.lucagiorgetti.collectionhelper.FragmentListenerInterface;
-import com.lucagiorgetti.collectionhelper.listenerInterfaces.OnGetListListener;
+import com.lucagiorgetti.collectionhelper.listenerInterfaces.FragmentListenerInterface;
 import com.lucagiorgetti.collectionhelper.R;
 import com.lucagiorgetti.collectionhelper.adapters.SetItemAdapter;
+import com.lucagiorgetti.collectionhelper.listenerInterfaces.OnGetListListener;
 import com.lucagiorgetti.collectionhelper.model.Surprise;
 
 import java.util.ArrayList;
@@ -30,11 +29,9 @@ public class SetItemsFragment extends Fragment implements View.OnClickListener{
 
     ArrayList<Surprise> surprises = new ArrayList<>();
     private SetItemAdapter mAdapter;
-    private String setClicked = null;
     private GridView gridView;
     private Context mContext;
     private ProgressBar progress;
-    private static DatabaseReference dbRef = DatabaseUtility.getDatabase().getReference();
 
     @Override
     public void onClick(View v) {
@@ -48,7 +45,7 @@ public class SetItemsFragment extends Fragment implements View.OnClickListener{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View layout = inflater.inflate(R.layout.set_items_fragment, container, false);
 
-        this.setClicked = getArguments().getString("set");
+        String setClicked = getArguments().getString("set");
         progress = (ProgressBar) layout.findViewById(R.id.items_loading);
 
         mAdapter = new SetItemAdapter(mContext, surprises);
@@ -61,10 +58,10 @@ public class SetItemsFragment extends Fragment implements View.OnClickListener{
                 long viewId = view.getId();
                 if (viewId == R.id.btn_item_add_missing){
                     listener.onItemAddMissings(surprises.get(position).getId());
-                    Snackbar.make(layout, "Aggiunto a mancanti: " + surprises.get(position).getDescription() , Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(layout, getString(R.string.added_to_missings)+ ": " + surprises.get(position).getDescription() , Snackbar.LENGTH_SHORT).show();
                 } else if (viewId == R.id.btn_item_add_double){
                     listener.onItemAddDoubles(surprises.get(position).getId());
-                    Snackbar.make(layout, "Aggiunto a doppi: " + surprises.get(position).getDescription() , Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(layout, getString(R.string.added_to_doubles) + ": " + surprises.get(position).getDescription() , Snackbar.LENGTH_SHORT).show();
                 }
             }
         });
@@ -87,7 +84,7 @@ public class SetItemsFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onFailure() {
                 progress.setVisibility(View.GONE);
-                Toast.makeText(mContext, "Errore nella sincronizzazione dei dati", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, R.string.data_sync_error, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -102,7 +99,7 @@ public class SetItemsFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        MenuItem item=menu.add("Home"); //your desired title here
+        MenuItem item=menu.add(R.string.home); //your desired title here
         item.setIcon(R.drawable.ic_home); //your desired icon here
         item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {

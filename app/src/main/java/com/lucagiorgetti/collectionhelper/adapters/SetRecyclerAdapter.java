@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 /**
+ * Adapter for showing a list of Sets.
+ *
  * Created by Luca on 24/10/2017.
  */
 

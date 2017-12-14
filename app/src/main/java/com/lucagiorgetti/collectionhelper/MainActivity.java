@@ -1,8 +1,9 @@
 package com.lucagiorgetti.collectionhelper;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.net.Uri;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.content.Intent;
@@ -21,16 +22,24 @@ import android.text.Html;
 import android.text.Spanned;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.lucagiorgetti.collectionhelper.fragments.UserSettingsFragment;
+import com.lucagiorgetti.collectionhelper.listenerInterfaces.FragmentListenerInterface;
 import com.lucagiorgetti.collectionhelper.listenerInterfaces.OnGetListListener;
 import com.lucagiorgetti.collectionhelper.listenerInterfaces.OnGetDataListener;
 import com.lucagiorgetti.collectionhelper.adapters.DoublesOwnersListAdapter;
@@ -101,7 +110,14 @@ public class MainActivity extends AppCompatActivity implements
             setSupportActionBar(toolbar);
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
+                @Override
+                public void onDrawerOpened(View drawerView) {
+                    super.onDrawerOpened(drawerView);
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                }
+            };
             drawer.addDrawerListener(toggle);
             toggle.syncState();
             NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -134,6 +150,7 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
+
     @Override
     public void onSetShortClick(String setId, String setName) {
         this.clickedSetId = setId;
@@ -149,7 +166,6 @@ public class MainActivity extends AppCompatActivity implements
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        String username = currentUser.getUsername();
                         DatabaseUtility.addMissingsFromSet(currentUser.getUsername(), setId);
                         alertDialog.dismiss();
                     }
@@ -336,6 +352,7 @@ public class MainActivity extends AppCompatActivity implements
         this.displayView(Fragments.PRODUCERS, true);
     }
 
+    @SuppressLint("InflateParams")
     @Override
     public void onSwipeShowDoublesOwner(final Surprise missing) {
         final View view = getLayoutInflater().inflate(R.layout.doubles_dialog, null);
@@ -380,7 +397,6 @@ public class MainActivity extends AppCompatActivity implements
         final AlertDialog alert = builder.create();
         alert.show();
 
-        final View ac = this.findViewById(android.R.id.content);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
@@ -400,13 +416,11 @@ public class MainActivity extends AppCompatActivity implements
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_SUBJECT, subject);
 
-        String html = new StringBuilder()
-                .append("Ciao,")
-                .append("<div>Sono " + currentUser.getUsername() + ", e tramite Surprix ho visto che trai doppi hai " + missing.getCode() + " - " + missing.getDescription() + ", a cui sono interessato.</div>")
-                .append("<div>Ti andrebbe di scambiare?</div>")
-                .append("<div><br></div>")
-                .append("<div>[Mail inviata grazie a Surprix]</div>")
-                .toString();
+        String html = "Ciao," +
+                "<div>Sono " + currentUser.getUsername() + ", e tramite Surprix ho visto che trai doppi hai " + missing.getCode() + " - " + missing.getDescription() + ", a cui sono interessato.</div>" +
+                "<div>Ti andrebbe di scambiare?</div>" +
+                "<div><br></div>" +
+                "<div>[Mail inviata grazie a Surprix]</div>";
         Spanned body;
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
@@ -471,7 +485,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void setProducerTitle() {
         if (getSupportActionBar() != null){
-            getSupportActionBar().setTitle("Produttore");
+            getSupportActionBar().setTitle(R.string.producer);
         }
     }
 
@@ -492,14 +506,14 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void setDoublesTitle() {
         if (getSupportActionBar() != null){
-            getSupportActionBar().setTitle("Doppi");
+            getSupportActionBar().setTitle(R.string.doubles);
         }
     }
 
     @Override
     public void setMissingsTitle() {
         if (getSupportActionBar() != null){
-            getSupportActionBar().setTitle("Mancanti");
+            getSupportActionBar().setTitle(R.string.missings);
         }
     }
 
@@ -513,8 +527,63 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void setSettingsTitle() {
         if (getSupportActionBar() != null){
-            getSupportActionBar().setTitle("Impostazioni");
+            getSupportActionBar().setTitle(R.string.settings);
         }
+    }
+
+    @SuppressLint("InflateParams")
+    @Override
+    public void openChangePwdDialog() {
+        final View view = getLayoutInflater().inflate(R.layout.change_password, null);
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setView(view);
+        builder.setTitle(R.string.change_password);
+
+        final EditText oldPassword = (EditText) view.findViewById(R.id.edt_dialog_old_pwd);
+        final EditText newPassword = (EditText) view.findViewById(R.id.edt_dialog_new_pwd);
+        Button btnChangePwd = (Button) view.findViewById(R.id.btn_dialog_submit);
+
+        final AlertDialog changePwd = builder.create();
+
+        changePwd.show();
+        btnChangePwd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                String oldPwd = oldPassword.getText().toString().trim();
+                final String newPwd = newPassword.getText().toString().trim();
+
+                final FirebaseUser user;
+                user = FirebaseAuth.getInstance().getCurrentUser();
+
+                final String email = user.getEmail();
+                if (email != null){
+
+                    AuthCredential credential = EmailAuthProvider.getCredential(email, oldPwd);
+
+                    user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful()){
+                                user.updatePassword(newPwd).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if(!task.isSuccessful()){
+                                            Toast.makeText(MainActivity.this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
+                                        }else {
+                                            Toast.makeText(MainActivity.this, R.string.password_changed, Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
+                            }else {
+                                Toast.makeText(MainActivity.this, R.string.old_password_wrong, Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
+                changePwd.dismiss();
+            }
+        });
     }
 
     // endregion

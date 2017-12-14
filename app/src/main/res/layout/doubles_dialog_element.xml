@@ -20,7 +20,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="75"
             android:paddingLeft="10dp"
-            android:text="username"
+            android:paddingRight="10dp"
+            android:text="@string/username"
             android:textAlignment="viewStart"
             android:textSize="18sp" />
 

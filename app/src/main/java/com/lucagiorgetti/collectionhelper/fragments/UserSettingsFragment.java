@@ -5,29 +5,17 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseReference;
 import com.lucagiorgetti.collectionhelper.DatabaseUtility;
-import com.lucagiorgetti.collectionhelper.FragmentListenerInterface;
+import com.lucagiorgetti.collectionhelper.listenerInterfaces.FragmentListenerInterface;
 import com.lucagiorgetti.collectionhelper.R;
-import com.lucagiorgetti.collectionhelper.RecyclerItemClickListener;
-import com.lucagiorgetti.collectionhelper.RegistrateActivity;
-import com.lucagiorgetti.collectionhelper.adapters.ProducerRecyclerAdapter;
-import com.lucagiorgetti.collectionhelper.listenerInterfaces.OnGetDataListener;
-import com.lucagiorgetti.collectionhelper.model.Producer;
 import com.lucagiorgetti.collectionhelper.model.User;
 import com.mikelau.countrypickerx.Country;
 import com.mikelau.countrypickerx.CountryPickerCallbacks;
@@ -35,7 +23,6 @@ import com.mikelau.countrypickerx.CountryPickerDialog;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -46,14 +33,10 @@ public class UserSettingsFragment extends Fragment{
     private FragmentListenerInterface listener;
     private User currentUser;
     private Context mContext;
-    private EditText edtEmail;
-    private EditText edtPassword;
-    private EditText edtUsername;
     private EditText edtName;
     private EditText edtSurname;
     private EditText edtBirthdate;
     private EditText edtNation;
-    private Button submit;
     final Calendar myCalendar = Calendar.getInstance();
     CountryPickerDialog countryPicker = null;
 
@@ -61,15 +44,17 @@ public class UserSettingsFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.registration, container, false);
         currentUser = listener.getCurrentRetrievedUser();
-        edtEmail = (EditText) layout.findViewById(R.id.edit_reg_email);
-        edtPassword = (EditText) layout.findViewById(R.id.edit_reg_password);
-        edtUsername = (EditText) layout.findViewById(R.id.edit_reg_username);
+        EditText edtEmail = (EditText) layout.findViewById(R.id.edit_reg_email);
+        EditText edtPassword = (EditText) layout.findViewById(R.id.edit_reg_password);
+        EditText edtUsername = (EditText) layout.findViewById(R.id.edit_reg_username);
         edtUsername.setEnabled(false);
         edtName = (EditText) layout.findViewById(R.id.edit_reg_name);
         edtSurname = (EditText) layout.findViewById(R.id.edit_reg_surname);
         edtBirthdate =(EditText) layout.findViewById(R.id.edit_reg_birthdate);
         edtNation =(EditText) layout.findViewById(R.id.edit_reg_nation);
-        submit = (Button) layout.findViewById(R.id.btn_reg_submit);
+
+        Button changePwd = (Button) layout.findViewById(R.id.btn_reg_change_pwd);
+        Button submit = (Button) layout.findViewById(R.id.btn_reg_submit);
 
         String[] dateArray = new String[0];
         try {
@@ -81,14 +66,13 @@ public class UserSettingsFragment extends Fragment{
         myCalendar.set(Integer.parseInt(dateArray[2]),Integer.parseInt(dateArray[1]) - 1,Integer.parseInt(dateArray[0]));
         edtEmail.setEnabled(false);
         edtPassword.setVisibility(View.GONE);
+        changePwd.setVisibility(View.VISIBLE);
 
         edtEmail.setText(currentUser.getEmail().replaceAll(",", "\\."));
         edtUsername.setText(currentUser.getUsername());
         edtName.setText(currentUser.getName());
         edtSurname.setText(currentUser.getSurname());
         edtUsername.setText(currentUser.getUsername());
-        String myFormat = "dd/MM/yyyy";
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ITALIAN);
         try {
             edtBirthdate.setText(currentUser.getBirthday());
         } catch (ParseException e) {
@@ -163,7 +147,14 @@ public class UserSettingsFragment extends Fragment{
                 DatabaseUtility.updateUser(currentUser.getUsername(), name, surname, birthDate, nation);
                 listener.refreshUser();
                 currentUser = listener.getCurrentRetrievedUser();
-                Snackbar.make(v, "Utente aggiornato", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(v, R.string.user_added, Snackbar.LENGTH_SHORT).show();
+            }
+        });
+
+        changePwd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.openChangePwdDialog();
             }
         });
         return layout;

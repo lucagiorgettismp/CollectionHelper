@@ -19,6 +19,8 @@ import com.lucagiorgetti.collectionhelper.model.Surprise;
 import java.util.ArrayList;
 
 /**
+ * Adapter for showing a list of Surprises from a selected set.
+ *
  * Created by Luca on 28/10/2017.
  */
 

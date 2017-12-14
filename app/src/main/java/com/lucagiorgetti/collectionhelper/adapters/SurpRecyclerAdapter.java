@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 /**
+ * Adapter for showing a list of Surprises.
+ *
  * Created by Luca on 28/10/2017.
  */
 

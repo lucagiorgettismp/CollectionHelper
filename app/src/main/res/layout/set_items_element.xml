@@ -34,7 +34,7 @@
                     android:layout_height="38dp"
                     android:gravity="center_vertical"
                     android:paddingLeft="4dp"
-                    android:text="DESCRIZIONE"
+                    android:text="@string/description"
                     android:textColor="@color/com_facebook_button_background_color_focused"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -50,7 +50,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:paddingLeft="4dp"
-                    android:text="CODICE"
+                    android:text="@string/code"
                     android:textColor="@color/com_facebook_button_background_color_focused"
                     android:textSize="12sp"
                     android:textStyle="bold" />

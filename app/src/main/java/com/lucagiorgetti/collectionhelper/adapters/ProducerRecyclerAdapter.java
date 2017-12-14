@@ -15,6 +15,8 @@ import com.lucagiorgetti.collectionhelper.model.Producer;
 import java.util.ArrayList;
 
 /**
+ * Adapter for showing a list of Producers.
+ *
  * Created by Luca on 24/10/2017.
  */
 

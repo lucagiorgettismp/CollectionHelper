@@ -13,6 +13,8 @@ import com.lucagiorgetti.collectionhelper.model.User;
 import java.util.ArrayList;
 
 /**
+ * Adapter for showing a list of User which owns a selected surprise.
+ *
  * Created by Luca on 28/10/2017.
  */
 
@@ -20,11 +22,9 @@ public class DoublesOwnersListAdapter extends BaseAdapter {
 
     private ArrayList<User> collectors;
     private LayoutInflater inflater;
-    private Context ctx;
 
     public DoublesOwnersListAdapter(Context context, ArrayList<User> collectors) {
         this.collectors = collectors;
-        this.ctx = context;
         this.inflater = LayoutInflater.from(context);
     }
 
@@ -44,7 +44,7 @@ public class DoublesOwnersListAdapter extends BaseAdapter {
     }
 
     public View getView(final int position, View v, final ViewGroup parent) {
-        v = inflater.inflate(R.layout.doubles_dialog_element, null);
+        v = inflater.inflate(R.layout.doubles_dialog_element, parent, false);
 
         TextView vUsername = (TextView) v.findViewById(R.id.txv_collector_username);
         User user = getItem(position);

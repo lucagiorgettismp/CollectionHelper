@@ -26,7 +26,7 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.lucagiorgetti.collectionhelper.DatabaseUtility;
-import com.lucagiorgetti.collectionhelper.FragmentListenerInterface;
+import com.lucagiorgetti.collectionhelper.listenerInterfaces.FragmentListenerInterface;
 import com.lucagiorgetti.collectionhelper.listenerInterfaces.OnGetListListener;
 import com.lucagiorgetti.collectionhelper.R;
 import com.lucagiorgetti.collectionhelper.adapters.SurpRecyclerAdapter;
@@ -92,7 +92,7 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
             @Override
             public void onFailure() {
                 progress.setVisibility(View.GONE);
-                Toast.makeText(mContext, "Errore nella sincronizzazione dei dati", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, R.string.data_sync_error, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -173,7 +173,7 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
         MenuItem searchItem = menu.findItem(R.id.action_search);
         searchView = (SearchView) searchItem.getActionView();
         searchView.setOnQueryTextListener(this);
-        searchView.setQueryHint("Cerca");
+        searchView.setQueryHint(getString(R.string.search));
         super.onCreateOptionsMenu(menu, inflater);
     }
 

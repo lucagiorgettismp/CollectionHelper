@@ -25,8 +25,8 @@
             <LinearLayout
                 android:id="@+id/layout_surp_elem_titlebar"
                 android:layout_width="match_parent"
-                android:layout_height="32dp"
-                android:background="@android:color/holo_blue_dark"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
                 android:orientation="horizontal">
 
                 <TextView
@@ -34,9 +34,8 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="25"
-                    android:gravity="left|center_vertical"
-                    android:paddingLeft="10dp"
-                    android:text="CODICE"
+                    android:gravity="start|center_vertical"
+                    android:text="@string/code"
                     android:textAlignment="center"
                     android:textColor="@android:color/white"
                     android:textSize="18sp"
@@ -47,9 +46,9 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="75"
-                    android:gravity="left|center_vertical"
+                    android:gravity="start|center_vertical"
                     android:paddingLeft="10dp"
-                    android:text="DESC"
+                    android:text="@string/description"
                     android:textColor="@android:color/white"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -104,7 +103,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:paddingLeft="10dp"
-                                android:text="SERIE"
+                                android:text="@string/set"
                                 android:textSize="10sp" />
 
                             <TextView
@@ -112,7 +111,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:paddingLeft="10dp"
-                                android:text="SET"
+                                android:text="@string/set"
                                 android:textSize="15sp"
                                 android:textStyle="bold" />
 
@@ -129,7 +128,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:paddingLeft="10dp"
-                                android:text="ANNO"
+                                android:text="@string/year"
                                 android:textSize="10sp" />
 
                             <TextView
@@ -137,7 +136,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:paddingLeft="10dp"
-                                android:text="ANNO"
+                                android:text="@string/year"
                                 android:textSize="15sp"
                                 android:textStyle="bold" />
                         </LinearLayout>
@@ -161,7 +160,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:paddingLeft="10dp"
-                                android:text="PRODUTTORE"
+                                android:text="@string/producer"
                                 android:textSize="10sp" />
 
                             <TextView
@@ -169,7 +168,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:paddingLeft="10dp"
-                                android:text="PROD"
+                                android:text="@string/producer"
                                 android:textSize="15sp" />
                         </LinearLayout>
 
@@ -184,7 +183,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:paddingLeft="10dp"
-                                android:text="PAESE"
+                                android:text="@string/country"
                                 android:textSize="10sp" />
 
                             <TextView
@@ -192,7 +191,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:paddingLeft="10dp"
-                                android:text="NAZIONE"
+                                android:text="@string/country"
                                 android:textSize="15sp" />
 
                         </LinearLayout>

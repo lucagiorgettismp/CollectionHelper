@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Email"
+        android:hint="@string/email"
         android:inputType="textEmailAddress" />
 
     <EditText
@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Password"
+        android:hint="@string/password"
         android:inputType="textPassword" />
 
     <Button
@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         android:elevation="2dp"
-        android:text="Login"
+        android:text="@string/login"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
         android:textSize="18sp" />
@@ -40,7 +40,7 @@
         android:layout_marginTop="20dp"
         android:elegantTextHeight="false"
         android:padding="5dp"
-        android:text="Password dimenticata"
+        android:text="@string/forgot_yout_password"
         android:textColor="@color/facebookColor"
         android:textSize="18sp" />
 </LinearLayout>

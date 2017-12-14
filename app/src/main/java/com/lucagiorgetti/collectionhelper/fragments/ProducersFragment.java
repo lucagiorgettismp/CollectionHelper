@@ -13,9 +13,8 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseReference;
 import com.lucagiorgetti.collectionhelper.DatabaseUtility;
-import com.lucagiorgetti.collectionhelper.FragmentListenerInterface;
+import com.lucagiorgetti.collectionhelper.listenerInterfaces.FragmentListenerInterface;
 import com.lucagiorgetti.collectionhelper.listenerInterfaces.OnGetDataListener;
 import com.lucagiorgetti.collectionhelper.R;
 import com.lucagiorgetti.collectionhelper.RecyclerItemClickListener;
@@ -85,7 +84,7 @@ public class ProducersFragment extends Fragment{
             @Override
             public void onFailure() {
                 progress.setVisibility(View.GONE);
-                Toast.makeText(mContext, "Errore nella sincronizzazione dei dati", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, R.string.data_sync_error, Toast.LENGTH_SHORT).show();
             }
         });
         return layout;

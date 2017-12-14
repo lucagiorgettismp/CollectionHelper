@@ -7,6 +7,8 @@ import android.view.MotionEvent;
 import android.view.View;
 
 /**
+ * Implements method for items clicked in RecyclerView.
+ *
  * Created by Luca on 06/11/2017.
  */
 

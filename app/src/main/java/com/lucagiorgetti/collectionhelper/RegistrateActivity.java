@@ -34,6 +34,8 @@ import com.mikelau.countrypickerx.CountryPickerCallbacks;
 import com.mikelau.countrypickerx.CountryPickerDialog;
 
 /**
+ * Allows user to get registered.
+ *
  * Created by Luca on 18/10/2017.
  */
 
@@ -56,6 +58,10 @@ public class RegistrateActivity extends AppCompatActivity{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        View decorView = getWindow().getDecorView();
+        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+        decorView.setSystemUiVisibility(uiOptions);
 
         this.facebookLogin = LoginManager.getInstance();
 
@@ -157,7 +163,8 @@ public class RegistrateActivity extends AppCompatActivity{
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 DatabaseUtility.generateUser(name, surname, email, username, finalBirthDate, nation);
                                 if (!task.isSuccessful()) {
-                                    Toast.makeText(RegistrateActivity.this, "Authentication failed." + task.getException(),
+                                    //noinspection ThrowableResultOfMethodCallIgnored
+                                    Toast.makeText(RegistrateActivity.this, getString(R.string.auth_failed) + task.getException(),
                                             Toast.LENGTH_SHORT).show();
                                 } else {
                                     fireAuth.signInWithEmailAndPassword(email, password);
@@ -235,6 +242,4 @@ public class RegistrateActivity extends AppCompatActivity{
         fireAuth.signOut();
         super.onBackPressed();
     }
-
-
 }

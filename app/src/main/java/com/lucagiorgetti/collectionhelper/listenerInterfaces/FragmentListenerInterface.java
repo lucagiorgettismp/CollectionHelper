@@ -1,9 +1,11 @@
-package com.lucagiorgetti.collectionhelper;
+package com.lucagiorgetti.collectionhelper.listenerInterfaces;
 
 import com.lucagiorgetti.collectionhelper.model.Surprise;
 import com.lucagiorgetti.collectionhelper.model.User;
 
 /**
+ * Interface which contains all methods called from fragments.
+ *
  * Created by Luca on 23/11/2017.
  */
 
@@ -49,4 +51,6 @@ public interface FragmentListenerInterface {
     void refreshUser();
 
     void setSettingsTitle();
+
+    void openChangePwdDialog();
 }

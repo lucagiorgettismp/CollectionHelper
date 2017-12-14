@@ -20,8 +20,11 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
+ * Utility which contain all the implementations of methods which needs a connection with Firebase Database.
+ *
  * Created by Luca on 13/11/2017.
  */
+
 public class DatabaseUtility {
     private static FirebaseDatabase mDatabase;
     private static DatabaseReference dbRef;
@@ -34,7 +37,7 @@ public class DatabaseUtility {
         return mDatabase;
     }
 
-    public static void getCurrentUser(final OnGetDataListener listen, FirebaseAuth fireAuth) {
+    static void getCurrentUser(final OnGetDataListener listen, FirebaseAuth fireAuth) {
         listen.onStart();
         dbRef = getDatabase().getReference();
         String emailCod = fireAuth.getCurrentUser().getEmail().replaceAll("\\.", ",");
@@ -67,28 +70,28 @@ public class DatabaseUtility {
         });
     }
 
-    public static void addMissing(String username, String surpId) {
+    static void addMissing(String username, String surpId) {
         dbRef.child("missings").child(username).child(surpId).setValue(true);
     }
 
-    public static void addDouble(String username, String surpId) {
+    static void addDouble(String username, String surpId) {
         dbRef = getDatabase().getReference();
         dbRef.child("user_doubles").child(username).child(surpId).setValue(true);
         dbRef.child("surprise_doubles").child(surpId).child(username).setValue(true);
     }
 
-    public static void removeMissing(String username, String surpId) {
+    static void removeMissing(String username, String surpId) {
         dbRef = getDatabase().getReference();
         dbRef.child("missings").child(username).child(surpId).setValue(null);
     }
 
-    public static void removeDouble(String username, String surpId) {
+    static void removeDouble(String username, String surpId) {
         dbRef = getDatabase().getReference();
         dbRef.child("user_doubles").child(username).child(surpId).setValue(null);
         dbRef.child("surprise_doubles").child(surpId).child(username).setValue(null);
     }
 
-    public static void getDoubleOwners(String surpId, final OnGetListListener listen){
+    static void getDoubleOwners(String surpId, final OnGetListListener<User> listen){
         listen.onStart();
         dbRef = getDatabase().getReference();
         final ArrayList<User> owners = new ArrayList<>();
@@ -125,7 +128,7 @@ public class DatabaseUtility {
         });
     }
 
-    public static void getDoublesForUsername(String username, final OnGetListListener listen) {
+    public static void getDoublesForUsername(String username, final OnGetListListener<Surprise> listen) {
         listen.onStart();
         dbRef = getDatabase().getReference();
         final ArrayList<Surprise> doubles = new ArrayList<>();
@@ -162,7 +165,7 @@ public class DatabaseUtility {
         });
     }
 
-    public static void getYearsFromProducer (String producerId, final OnGetListListener listen) {
+    public static void getYearsFromProducer (String producerId, final OnGetListListener<Year> listen) {
         listen.onStart();
         dbRef = getDatabase().getReference();
 
@@ -203,7 +206,6 @@ public class DatabaseUtility {
     public static void getProducers(final OnGetDataListener listen) {
         listen.onStart();
         dbRef = getDatabase().getReference();
-        ArrayList<Producer> producers = new ArrayList<>();
         dbRef.child("producers").orderByChild("order").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -217,7 +219,7 @@ public class DatabaseUtility {
         });
     }
 
-    public static void getMissingsForUsername(String username, final OnGetListListener listen) {
+    public static void getMissingsForUsername(String username, final OnGetListListener<Surprise> listen) {
         listen.onStart();
         dbRef = getDatabase().getReference();
         final ArrayList<Surprise> missings = new ArrayList<>();
@@ -254,7 +256,7 @@ public class DatabaseUtility {
         });
     }
 
-    public static void getSetsFromYear(String yearId, final OnGetListListener listen) {
+    public static void getSetsFromYear(String yearId, final OnGetListListener<Set> listen) {
         listen.onStart();
         dbRef = getDatabase().getReference();
 
@@ -294,7 +296,7 @@ public class DatabaseUtility {
         });
     }
 
-    public static void getSurprisesBySet(String setClicked, final OnGetListListener listen) {
+    public static void getSurprisesBySet(String setClicked, final OnGetListListener<Surprise> listen) {
         listen.onStart();
         final ArrayList<Surprise> surprises = new ArrayList<>();
         dbRef = getDatabase().getReference();
@@ -331,7 +333,7 @@ public class DatabaseUtility {
         });
     }
 
-    public static void addMissingsFromYear(final String username, String yearId) {
+    static void addMissingsFromYear(final String username, String yearId) {
         dbRef = getDatabase().getReference();
         dbRef.child("years").child(yearId).child("sets").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -357,7 +359,6 @@ public class DatabaseUtility {
                                             }
                                         });
                                     }
-                                } else {
                                 }
                             }
 
@@ -377,7 +378,7 @@ public class DatabaseUtility {
         });
     }
 
-    public static void addMissingsFromSet(final String username, String setId) {
+    static void addMissingsFromSet(final String username, String setId) {
         dbRef = getDatabase().getReference();
         dbRef.child("sets").child(setId).child("surprises").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -398,7 +399,6 @@ public class DatabaseUtility {
                             }
                         });
                     }
-                } else {
                 }
             }
 
@@ -408,7 +408,7 @@ public class DatabaseUtility {
         });
     }
 
-    public static void generateUser(String name, String surname, String email, String username, Date birthDate, String nation) {
+    static void generateUser(String name, String surname, String email, String username, Date birthDate, String nation) {
         dbRef = getDatabase().getReference();
         String emailCod = email.replaceAll("\\.", ",");
         String myFormat = "dd/MM/yyyy";

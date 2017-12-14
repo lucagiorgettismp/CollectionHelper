@@ -1,6 +1,6 @@
 package com.lucagiorgetti.collectionhelper;
 
-import android.content.DialogInterface;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -36,6 +36,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 /**
+ * Activity for loggin user into App.
+ *
  * Created by Luca Giorgetti on 27/06/2017.
  */
 
@@ -46,6 +48,10 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        View decorView = getWindow().getDecorView();
+        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+        decorView.setSystemUiVisibility(uiOptions);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
 
@@ -115,6 +121,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    @SuppressLint("InflateParams")
     private void openLogingDialog() {
         final View view = getLayoutInflater().inflate(R.layout.login_dialog, null);
 
@@ -152,7 +159,7 @@ public class LoginActivity extends AppCompatActivity {
                         if (!task.isSuccessful())
                         {
                             Log.w("LOGIN", "Errore:(");
-                            Toast.makeText(LoginActivity.this, "Email o Password errati.",
+                            Toast.makeText(LoginActivity.this, R.string.wrong_email_or_password,
                                     Toast.LENGTH_SHORT).show();
                         } else {
                             Intent i = new Intent(getApplicationContext(), MainActivity.class);
@@ -171,12 +178,13 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    @SuppressLint("InflateParams")
     private void openResetPwdDialog() {
         final View view = getLayoutInflater().inflate(R.layout.reset_password, null);
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(view);
-        builder.setTitle("Password dimenticata");
+        builder.setTitle(R.string.forgot_yout_password);
 
         final EditText inEmail = (EditText) view.findViewById(R.id.login_reset_pwd_email);
         Button resetBtn = (Button) view.findViewById(R.id.login_reset_pwd_submit);
@@ -199,7 +207,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(LoginActivity.this, "Mail inviata con successo", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, R.string.mail_successfully_sent, Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -214,7 +222,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (!task.isSuccessful()) {
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
+                            Toast.makeText(LoginActivity.this, R.string.auth_failed,
                                     Toast.LENGTH_SHORT).show();
                         }else{
                             String name=task.getResult().getUser().getDisplayName();
