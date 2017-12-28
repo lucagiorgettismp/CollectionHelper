@@ -53,7 +53,8 @@ public class UserSettingsFragment extends Fragment{
         edtBirthdate =(EditText) layout.findViewById(R.id.edit_reg_birthdate);
         edtNation =(EditText) layout.findViewById(R.id.edit_reg_nation);
 
-        Button changePwd = (Button) layout.findViewById(R.id.btn_reg_change_pwd);
+        TextView changePwd = (TextView) layout.findViewById(R.id.btn_reg_change_pwd);
+        TextView deleteUser = (TextView) layout.findViewById(R.id.btn_reg_delete_account);
         Button submit = (Button) layout.findViewById(R.id.btn_reg_submit);
 
         String[] dateArray = new String[0];
@@ -67,6 +68,7 @@ public class UserSettingsFragment extends Fragment{
         edtEmail.setEnabled(false);
         edtPassword.setVisibility(View.GONE);
         changePwd.setVisibility(View.VISIBLE);
+        deleteUser.setVisibility(View.VISIBLE);
 
         edtEmail.setText(currentUser.getEmail().replaceAll(",", "\\."));
         edtUsername.setText(currentUser.getUsername());
@@ -111,13 +113,7 @@ public class UserSettingsFragment extends Fragment{
                         public void onCountrySelected(Country country, int flagResId) {
                             edtNation.setText(country.getCountryName(getApplicationContext()));
                             countryPicker.dismiss();
-                /* Get Country Name: country.getCountryName(context); */
-                /* Call countryPicker.dismiss(); to prevent memory leaks */
                         }
-
-          /* Set to false if you want to disable Dial Code in the results and true if you want to show it
-             Set to zero if you don't have a custom JSON list of countries in your raw file otherwise use
-             resourceId for your customly available countries */
                     }, false, 0);
                     countryPicker.show();
                 }
@@ -131,18 +127,12 @@ public class UserSettingsFragment extends Fragment{
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String myFormat = "dd/MM/yyyy";
-                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ITALIAN);
+                SimpleDateFormat sdf = new SimpleDateFormat(getString(R.string.dateFormat), Locale.ITALIAN);
 
                 String name = edtName.getText().toString().trim();
                 String surname = edtSurname.getText().toString().trim();
                 String nation = edtNation.getText().toString();
-                Date birthDate = null;
-                try {
-                    birthDate = sdf.parse(edtBirthdate.getText().toString());
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                String birthDate = edtBirthdate.getText().toString();
 
                 DatabaseUtility.updateUser(currentUser.getUsername(), name, surname, birthDate, nation);
                 listener.refreshUser();
@@ -157,12 +147,18 @@ public class UserSettingsFragment extends Fragment{
                 listener.openChangePwdDialog();
             }
         });
+
+        deleteUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.openDeleteUserDialog();
+            }
+        });
         return layout;
     }
 
     private void updateLabel(){
-        String myFormat = "dd/MM/yyyy";
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ITALIAN);
+        SimpleDateFormat sdf = new SimpleDateFormat(getString(R.string.dateFormat), Locale.ITALIAN);
         edtBirthdate.setText(sdf.format(myCalendar.getTime()));
     }
 

@@ -53,4 +53,6 @@ public interface FragmentListenerInterface {
     void setSettingsTitle();
 
     void openChangePwdDialog();
+
+    void openDeleteUserDialog();
 }

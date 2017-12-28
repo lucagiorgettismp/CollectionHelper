@@ -26,8 +26,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.lucagiorgetti.collectionhelper.listenerInterfaces.OnGetDataListener;
 import com.lucagiorgetti.collectionhelper.model.User;
 import com.mikelau.countrypickerx.Country;
 import com.mikelau.countrypickerx.CountryPickerCallbacks;
@@ -118,12 +120,7 @@ public class RegistrateActivity extends AppCompatActivity{
                 final String username = edtUsername.getText().toString().trim();
                 final String name = edtName.getText().toString().trim();
                 final String surname = edtSurname.getText().toString().trim();
-                Date birthDate = null;
-                try {
-                    birthDate = sdf.parse(edtBirthdate.getText().toString());
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                final String birthDate = edtBirthdate.getText().toString();
                 final String nation = edtNation.getText().toString();
                 DatabaseUtility.generateUser(name, surname, email, username, birthDate, nation);
                 Intent i = new Intent(RegistrateActivity.this, MainActivity.class);
@@ -141,46 +138,62 @@ public class RegistrateActivity extends AppCompatActivity{
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 final String email = edtEmail.getText().toString().trim();
                 final String password = edtPassword.getText().toString().trim();
                 final String username = edtUsername.getText().toString().trim();
                 final String name = edtName.getText().toString().trim();
                 final String surname = edtSurname.getText().toString().trim();
-                Date birthDate = null;
-                try {
-                    birthDate = sdf.parse(edtBirthdate.getText().toString());
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
                 final String nation = edtNation.getText().toString();
+                final String birthDate= edtBirthdate.getText().toString();
 
+                if (email.isEmpty() || password.isEmpty() || username.isEmpty() ||
+                        name.isEmpty() || surname.isEmpty() || nation.isEmpty() ||
+                        birthDate.isEmpty()){
+                    Toast.makeText(RegistrateActivity.this, R.string.complete_all_fields, Toast.LENGTH_SHORT).show();
+                } else if (password.length() < 6){
+                    Toast.makeText(RegistrateActivity.this, R.string.password_lenght, Toast.LENGTH_SHORT).show();
+                } else {
 
-                final Date finalBirthDate = birthDate;
-                fireAuth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(RegistrateActivity.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                DatabaseUtility.generateUser(name, surname, email, username, finalBirthDate, nation);
-                                if (!task.isSuccessful()) {
-                                    //noinspection ThrowableResultOfMethodCallIgnored
-                                    Toast.makeText(RegistrateActivity.this, getString(R.string.auth_failed) + task.getException(),
-                                            Toast.LENGTH_SHORT).show();
-                                } else {
-                                    fireAuth.signInWithEmailAndPassword(email, password);
+                    DatabaseUtility.checkUsernameExist(username, new OnGetDataListener() {
+                        @Override
+                        public void onSuccess(DataSnapshot data) {
+                            fireAuth.createUserWithEmailAndPassword(email, password)
+                                    .addOnCompleteListener(RegistrateActivity.this, new OnCompleteListener<AuthResult>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<AuthResult> task) {
+                                            DatabaseUtility.generateUser(name, surname, email, username, birthDate, nation);
+                                            if (!task.isSuccessful()) {
+                                                //noinspection ThrowableResultOfMethodCallIgnored
+                                                Toast.makeText(RegistrateActivity.this, getString(R.string.auth_failed) + task.getException(),
+                                                        Toast.LENGTH_SHORT).show();
+                                            } else {
+                                                fireAuth.signInWithEmailAndPassword(email, password);
 
-                                    Intent i = new Intent(RegistrateActivity.this, MainActivity.class);
-                                    // Closing all the Activities
-                                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                    // Add new Flag to start new Activity
-                                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    // Staring Login Activity
-                                    getApplicationContext().startActivity(i);
+                                                Intent i = new Intent(RegistrateActivity.this, MainActivity.class);
+                                                // Closing all the Activities
+                                                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                // Add new Flag to start new Activity
+                                                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                // Staring Login Activity
+                                                getApplicationContext().startActivity(i);
 
-                                    finish();
-                                }
-                            }
-                        });
+                                                finish();
+                                            }
+                                        }
+                                    });
+                        }
+
+                        @Override
+                        public void onStart() {
+
+                        }
+
+                        @Override
+                        public void onFailure() {
+                            Toast.makeText(RegistrateActivity.this, "Username existing", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
             }
         });
 
@@ -231,8 +244,7 @@ public class RegistrateActivity extends AppCompatActivity{
     }
 
     private void updateLabel() {
-        String myFormat = "dd/MM/yyyy";
-        sdf = new SimpleDateFormat(myFormat, Locale.ITALIAN);
+        SimpleDateFormat sdf = new SimpleDateFormat(getString(R.string.dateFormat), Locale.ITALIAN);
         edtBirthdate.setText(sdf.format(myCalendar.getTime()));
     }
 

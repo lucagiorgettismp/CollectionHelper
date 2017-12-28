@@ -1,6 +1,11 @@
 package com.lucagiorgetti.collectionhelper;
 
+import android.support.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -408,26 +413,79 @@ public class DatabaseUtility {
         });
     }
 
-    static void generateUser(String name, String surname, String email, String username, Date birthDate, String nation) {
+    static void generateUser(String name, String surname, String email, String username, String birthDate, String nation) {
         dbRef = getDatabase().getReference();
         String emailCod = email.replaceAll("\\.", ",");
-        String myFormat = "dd/MM/yyyy";
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ITALIAN);
 
-        User user = new User(name, surname, emailCod, username, sdf.format(birthDate), nation); //ObjectClass for Users
+        User user = new User(name, surname, emailCod, username, birthDate, nation); //ObjectClass for Users
 
         dbRef.child("users").child(username).setValue(user);
         dbRef.child("emails").child(emailCod).child(username).setValue(true);
     }
 
-    public static void updateUser(String username, String name, String surname, Date birthDate, String nation) {
+    public static void updateUser(String username, String name, String surname, String birthDate, String nation) {
         dbRef = getDatabase().getReference();
-        String myFormat = "dd/MM/yyyy";
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ITALIAN);
 
         dbRef.child("users").child(username).child("name").setValue(name);
         dbRef.child("users").child(username).child("surname").setValue(surname);
-        dbRef.child("users").child(username).child("birthday").setValue(sdf.format(birthDate));
+        dbRef.child("users").child(username).child("birthday").setValue(birthDate);
         dbRef.child("users").child(username).child("country").setValue(nation);
+    }
+
+    public static void checkUsernameExist(String username, final OnGetDataListener listener) {
+        dbRef = getDatabase().getReference();
+        dbRef.child("users").child(username).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if( dataSnapshot.exists()){
+                    listener.onFailure();
+                } else {
+                    listener.onSuccess(null);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                listener.onFailure();
+            }
+        });
+    }
+
+    public static void deleteUser(final OnGetDataListener listener, FirebaseAuth fireAuth, final String username) {
+        listener.onStart();
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        dbRef = getDatabase().getReference();
+        dbRef.child("missings").child(username).setValue(null);
+
+        getDoublesForUsername(username, new OnGetListListener<Surprise>() {
+            @Override
+            public void onSuccess(ArrayList<Surprise> surprises) {
+                for (Surprise double_surp: surprises) {
+                    removeDouble(username, double_surp.getId());
+                }
+            }
+
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onFailure() {
+            }
+        });
+
+        user.delete()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            listener.onSuccess(null);
+                        }
+                    }
+                });
+        listener.onFailure();
     }
 }

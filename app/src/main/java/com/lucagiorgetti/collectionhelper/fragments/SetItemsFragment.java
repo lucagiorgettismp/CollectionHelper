@@ -34,14 +34,6 @@ public class SetItemsFragment extends Fragment implements View.OnClickListener{
     private ProgressBar progress;
 
     @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.fab:
-
-        }
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View layout = inflater.inflate(R.layout.set_items_fragment, container, false);
 
@@ -130,5 +122,10 @@ public class SetItemsFragment extends Fragment implements View.OnClickListener{
     public void onResume() {
         listener.setItemsTitle();
         super.onResume();
+    }
+
+    @Override
+    public void onClick(View v) {
+
     }
 }

@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Surprix</string>
     <string name="action_settings">Impostazioni</string>
     <string name="added_to_doubles">Aggiungi ai doppi</string>
     <string name="added_to_missings">Aggiungi ai mancanti</string>
     <string name="auth_failed">Errore di autenticazione</string>
     <string name="birthday">Data di nascita</string>
-    <string name="change_password">Cambia passord</string>
+    <string name="change_password">Cambia password</string>
     <string name="code">Codice</string>
     <string name="complete_account">Completa il tuo account</string>
     <string name="country">Nazione</string>
@@ -40,4 +39,15 @@
     <string name="who_have_what_you_miss">Utenti che hanno quello che stai cercando</string>
     <string name="wrong_email_or_password">E-mail o Password errata</string>
     <string name="year">Anno</string>
+    <string name="complete_all_fields">Completa tutti i campi prima di procedere alla registrazione</string>
+    <string name="delete_account">Elimina account</string>
+    <string name="dialod_delete_user_text">Vuoi eliminare il tuo account definitivamente?</string>
+    <string name="dialog_add_set_text">"Vuoi aggiungere ai mancanti la serie "</string>
+    <string name="dialog_add_set_title">Aggiungi serie</string>
+    <string name="dialog_add_year_text">Vuoi aggiugere ai mancanti l\'anno</string>
+    <string name="dialog_add_year_title">Aggiungi anno</string>
+    <string name="dialog_delete_user_title">Elimina account</string>
+    <string name="dialog_negative">Annulla</string>
+    <string name="dialog_positive">Ok</string>
+    <string name="password_lenght">La password deve essere lunga almeno 6 caratteri</string>
 </resources>

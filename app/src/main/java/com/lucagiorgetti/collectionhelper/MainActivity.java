@@ -161,16 +161,16 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onSetLongClick(final String setId, String setName) {
         final AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
-        alertDialog.setTitle("Aggiungi serie");
-        alertDialog.setMessage("Vuoi aggiungere tutta la serie " + setName + "?");
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
+        alertDialog.setTitle(getString(R.string.dialog_add_set_title));
+        alertDialog.setMessage(getString(R.string.dialog_add_set_text) + " " + setName + "?");
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.dialog_positive),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         DatabaseUtility.addMissingsFromSet(currentUser.getUsername(), setId);
                         alertDialog.dismiss();
                     }
                 });
-        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "ANNULLA",
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.dialog_negative),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         alertDialog.dismiss();
@@ -407,7 +407,6 @@ public class MainActivity extends AppCompatActivity implements
         });
     }
 
-    @SuppressWarnings("deprecation")
     private void sendEmail(User owner, Surprise missing) {
         String to = owner.getEmail().replaceAll(",", "\\.");
         String subject = "Scambio con " + currentUser.getUsername();
@@ -417,7 +416,7 @@ public class MainActivity extends AppCompatActivity implements
         intent.putExtra(Intent.EXTRA_SUBJECT, subject);
 
         String html = "Ciao," +
-                "<div>Sono " + currentUser.getUsername() + ", e tramite Surprix ho visto che trai doppi hai " + missing.getCode() + " - " + missing.getDescription() + ", a cui sono interessato.</div>" +
+                "<div>Sono " + currentUser.getUsername() + ", e tramite Surprix ho visto che tra i doppi hai " + missing.getCode() + " - " + missing.getDescription() + ", a cui sono interessato.</div>" +
                 "<div>Ti andrebbe di scambiare?</div>" +
                 "<div><br></div>" +
                 "<div>[Mail inviata grazie a Surprix]</div>";
@@ -462,9 +461,9 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onLongYearClicked(final String yearId, int year) {
         final AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
-        alertDialog.setTitle("Aggiungi Annata");
-        alertDialog.setMessage("Vuoi aggiungere tutta la annata " + year + "?");
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
+        alertDialog.setTitle(getString(R.string.dialog_add_year_title));
+        alertDialog.setMessage(getString(R.string.dialog_add_year_text) + " " + year + "?");
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.dialog_positive),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         String username = currentUser.getUsername();
@@ -472,7 +471,7 @@ public class MainActivity extends AppCompatActivity implements
                         alertDialog.dismiss();
                     }
                 });
-        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "ANNULLA",
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.dialog_negative),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         alertDialog.dismiss();
@@ -584,6 +583,43 @@ public class MainActivity extends AppCompatActivity implements
                 changePwd.dismiss();
             }
         });
+    }
+
+    @Override
+    public void openDeleteUserDialog() {
+        final AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+        alertDialog.setTitle(getString(R.string.dialog_delete_user_title));
+        alertDialog.setMessage(getString(R.string.dialod_delete_user_text));
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.dialog_positive),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        String username = currentUser.getUsername();
+                        DatabaseUtility.deleteUser(new OnGetDataListener() {
+                            @Override
+                            public void onSuccess(DataSnapshot data) {
+
+                            }
+
+                            @Override
+                            public void onStart() {
+
+                            }
+
+                            @Override
+                            public void onFailure() {
+
+                            }
+                        }, fireAuth, username);
+                        alertDialog.dismiss();
+                    }
+                });
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.dialog_negative),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        alertDialog.dismiss();
+                    }
+                });
+        alertDialog.show();
     }
 
     // endregion

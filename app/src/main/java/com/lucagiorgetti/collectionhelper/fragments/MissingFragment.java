@@ -65,8 +65,10 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mContext);
         recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new SurpRecyclerAdapter(mContext, missings);
-        recyclerView.setAdapter(mAdapter);
+        if (missings != null && !missings.isEmpty()){
+            mAdapter = new SurpRecyclerAdapter(mContext, missings);
+            recyclerView.setAdapter(mAdapter);
+        }
         FloatingActionButton fab = (FloatingActionButton) layout.findViewById(R.id.fab);
         fab.setOnClickListener(this);
         initSwipe();

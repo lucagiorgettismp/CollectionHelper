@@ -99,7 +99,7 @@ public class SearchSetsFragment extends Fragment implements SearchView.OnQueryTe
         MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setOnQueryTextListener(this);
-        searchView.setQueryHint("Cerca");
+        searchView.setQueryHint(getString(R.string.search));
         super.onCreateOptionsMenu(menu, inflater);
     }
 

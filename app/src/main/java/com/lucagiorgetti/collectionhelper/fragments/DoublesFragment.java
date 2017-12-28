@@ -64,8 +64,10 @@ public class DoublesFragment extends Fragment implements SearchView.OnQueryTextL
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mContext);
         recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new SurpRecyclerAdapter(mContext, doubles);
-        recyclerView.setAdapter(mAdapter);
+        if (doubles != null && !doubles.isEmpty()){
+            mAdapter = new SurpRecyclerAdapter(mContext, doubles);
+            recyclerView.setAdapter(mAdapter);
+        }
         FloatingActionButton fab = (FloatingActionButton) layout.findViewById(R.id.fab);
         fab.setOnClickListener(this);
         initSwipe();
