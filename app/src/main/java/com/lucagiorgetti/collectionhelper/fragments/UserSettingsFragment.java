@@ -5,12 +5,14 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lucagiorgetti.collectionhelper.DatabaseUtility;
@@ -28,6 +30,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
+import static com.lucagiorgetti.collectionhelper.R.color.common_google_signin_btn_text_dark_disabled;
 
 public class UserSettingsFragment extends Fragment{
     private FragmentListenerInterface listener;
@@ -45,9 +48,16 @@ public class UserSettingsFragment extends Fragment{
         View layout = inflater.inflate(R.layout.registration, container, false);
         currentUser = listener.getCurrentRetrievedUser();
         EditText edtEmail = (EditText) layout.findViewById(R.id.edit_reg_email);
-        EditText edtPassword = (EditText) layout.findViewById(R.id.edit_reg_password);
         EditText edtUsername = (EditText) layout.findViewById(R.id.edit_reg_username);
+        ImageView usernameImage = (ImageView) layout.findViewById(R.id.img_reg_username);
+        ImageView emailImage = (ImageView) layout.findViewById(R.id.img_reg_email);
+
         edtUsername.setEnabled(false);
+        edtEmail.setEnabled(false);
+        usernameImage.setColorFilter(ContextCompat.getColor(mContext, R.color.disabledIcon));
+        emailImage.setColorFilter(ContextCompat.getColor(mContext, R.color.disabledIcon));
+
+
         edtName = (EditText) layout.findViewById(R.id.edit_reg_name);
         edtSurname = (EditText) layout.findViewById(R.id.edit_reg_surname);
         edtBirthdate =(EditText) layout.findViewById(R.id.edit_reg_birthdate);
@@ -66,7 +76,6 @@ public class UserSettingsFragment extends Fragment{
         }
 
         myCalendar.set(Integer.parseInt(dateArray[2]),Integer.parseInt(dateArray[1]) - 1,Integer.parseInt(dateArray[0]));
-        edtEmail.setEnabled(false);
         layPassword.setVisibility(View.GONE);
         changePwd.setVisibility(View.VISIBLE);
         deleteUser.setVisibility(View.VISIBLE);

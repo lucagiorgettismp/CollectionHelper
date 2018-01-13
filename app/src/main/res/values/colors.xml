@@ -7,6 +7,7 @@
     <color name="accent_material_light">#0297cf</color>
     <color name="facebookColor">#001fb9</color>
     <color name="cardBackground">#ffffff</color>
+    <color name="disabledIcon">#ffd6d7d7</color>
 
     <color name="GreySet">#bdbdbd</color>
     <color name="LightBluSet">#39acdd</color>
