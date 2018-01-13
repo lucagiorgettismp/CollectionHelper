@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements
     private String clickedProducerId = null;
     private ArrayList<User> doubleOwners = new ArrayList<>();
     private DoublesOwnersListAdapter mAdapter;
+    private NavigationView navigationView;
 
     private String clickedYearId = null;
     private int clickedYearNumber = -1;
@@ -120,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements
             };
             drawer.addDrawerListener(toggle);
             toggle.syncState();
-            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            navigationView = (NavigationView) findViewById(R.id.nav_view);
             navigationView.setNavigationItemSelectedListener(this);
             View hView = navigationView.getHeaderView(0);
             nav_user = (TextView) hView.findViewById(R.id.navbar_title);
@@ -237,6 +238,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         int id = item.getItemId();
 
         if (id == R.id.nav_missings) {
@@ -253,7 +255,6 @@ public class MainActivity extends AppCompatActivity implements
             displayView(Fragments.USER_SETTINGS, true);
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -268,6 +269,7 @@ public class MainActivity extends AppCompatActivity implements
         String fragmentTags = "";
         switch (frag) {
             case MISSINGS:
+                navigationView.getMenu().getItem(0).setChecked(true);
                 fragment = new MissingFragment();
                 Bundle b = new Bundle();
                 b.putString("username", currentUser.getUsername());
@@ -503,16 +505,28 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void setDoublesTitle() {
+    public void setDoublesTitle(int number) {
         if (getSupportActionBar() != null){
-            getSupportActionBar().setTitle(R.string.doubles);
+            String title;
+            if (number > 0){
+                title = getResources().getString(R.string.doubles) + " (" + number + ")";
+            } else {
+                title = getResources().getString(R.string.doubles);
+            }
+            getSupportActionBar().setTitle(title);
         }
     }
 
     @Override
-    public void setMissingsTitle() {
+    public void setMissingsTitle(int number) {
         if (getSupportActionBar() != null){
-            getSupportActionBar().setTitle(R.string.missings);
+            String title;
+            if (number > 0){
+                title = getResources().getString(R.string.missings) + " (" + number + ")";
+            } else {
+                title = getResources().getString(R.string.missings);
+            }
+            getSupportActionBar().setTitle(title);
         }
     }
 

@@ -1,6 +1,7 @@
 package com.lucagiorgetti.collectionhelper.fragments;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -11,6 +12,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -57,11 +59,11 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View layout = inflater.inflate(R.layout.missings_fragment, container, false);
+        View layout = inflater.inflate(R.layout.surprise_fragment, container, false);
 
         this.username = getArguments().getString("username");
-        progress = (ProgressBar) layout.findViewById(R.id.missing_loading);
-        recyclerView = (RecyclerView) layout.findViewById(R.id.missings_recycler);
+        progress = (ProgressBar) layout.findViewById(R.id.surprise_loading);
+        recyclerView = (RecyclerView) layout.findViewById(R.id.surprise_recycler);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mContext);
         recyclerView.setLayoutManager(layoutManager);
@@ -81,8 +83,10 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
                 if(missings != null){
                     mAdapter = new SurpRecyclerAdapter(mContext, missings);
                     recyclerView.setAdapter(mAdapter);
+                    if(listener != null){
+                        listener.setMissingsTitle(missings.size());
+                    }
                 }
-
                 progress.setVisibility(View.GONE);
             }
 
@@ -111,18 +115,37 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                int position = viewHolder.getAdapterPosition();
-                Surprise s = mAdapter.getItemAtPosition(position);
+                final int position = viewHolder.getAdapterPosition();
+                final Surprise s = mAdapter.getItemAtPosition(position);
                 if (direction == ItemTouchHelper.LEFT){
-                    listener.onSwipeRemoveMissing(s.getId());
-                    mAdapter.removeItem(position);
-                    String queryTxt = searchView.getQuery().toString();
-                    if(!queryTxt.isEmpty()) {
-                        FragmentTransaction ft = getFragmentManager().beginTransaction();
-                        ft.detach(MissingFragment.this).attach(MissingFragment.this).commit();
-                        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
-                    }
+                    final AlertDialog alertDialog = new AlertDialog.Builder(mContext).create();
+                    alertDialog.setTitle("Remove from missing");
+                    alertDialog.setMessage("Do you want to remove from missings " + s.getDescription() + "?");
+                    alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.dialog_positive),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    mAdapter.removeItem(position);
+                                    listener.onSwipeRemoveMissing(s.getId());
+                                    String queryTxt = searchView.getQuery().toString();
+                                    if(!queryTxt.isEmpty()) {
+                                        FragmentTransaction ft = getFragmentManager().beginTransaction();
+                                        ft.detach(MissingFragment.this).attach(MissingFragment.this).commit();
+                                        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                                        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+                                    }
+                                    alertDialog.dismiss();
+                                    listener.setMissingsTitle(missings.size());
+                                    mAdapter.notifyDataSetChanged();
+                                }
+                            });
+                    alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.dialog_negative),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    alertDialog.dismiss();
+                                    mAdapter.notifyDataSetChanged();
+                                }
+                            });
+                    alertDialog.show();
                 } else {
                     listener.onSwipeShowDoublesOwner(s);
                     mAdapter.notifyDataSetChanged();
@@ -234,7 +257,7 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
 
     @Override
     public void onResume() {
-        listener.setMissingsTitle();
+        listener.setMissingsTitle(missings.size());
         super.onResume();
     }
 }

@@ -13,7 +13,7 @@
     <string name="who_have_what_you_miss">Users who have you are looking for</string>
     <string name="nobody_have_what_you_miss">Unfortunately, nobody have the surprise you are looking for</string>
     <string name="username" translatable="false">Username</string>
-    <string name="sign_in">Sign In</string>
+    <string name="sign_up">Sign Up</string>
     <string name="login" translatable="false">Login</string>
     <string name="login_with_facebook">Login with Facebook</string>
     <string name="email" translatable="false">E-mail</string>
@@ -63,4 +63,6 @@
     <string name="dialog_delete_user_title">Delete account</string>
     <string name="dialod_delete_user_text">Do you want to delete you user account finally?</string>
     <string name="dateFormat" translatable="false">dd/MM/yyyy</string>
+    <string name="welcome_info">Welcome in Surprix!</string>
+    <string name="username_existing">Username existing</string>
 </resources>

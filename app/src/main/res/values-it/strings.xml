@@ -30,7 +30,7 @@
     <string name="send_email">Invia e-mail</string>
     <string name="set">Serie</string>
     <string name="settings">Impostazioni</string>
-    <string name="sign_in">Registrati</string>
+    <string name="sign_up">Registrati</string>
     <string name="something_went_wrong">Ci sono stati errori</string>
     <string name="surname">Cognome</string>
     <string name="surprise">Sorpresina</string>
@@ -50,4 +50,5 @@
     <string name="dialog_negative">Annulla</string>
     <string name="dialog_positive">Ok</string>
     <string name="password_lenght">La password deve essere lunga almeno 6 caratteri</string>
+    <string name="welcome_info">Benvenuto in Surprix!</string>
 </resources>

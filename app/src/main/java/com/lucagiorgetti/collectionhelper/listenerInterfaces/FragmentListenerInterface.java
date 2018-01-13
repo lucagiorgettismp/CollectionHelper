@@ -10,7 +10,7 @@ import com.lucagiorgetti.collectionhelper.model.User;
  */
 
 public interface FragmentListenerInterface {
-    void setDoublesTitle();
+    void setDoublesTitle(int number);
 
     void onClickOpenProducersFragment();
 
@@ -20,7 +20,7 @@ public interface FragmentListenerInterface {
 
     void onSwipeShowDoublesOwner(Surprise s);
 
-    void setMissingsTitle();
+    void setMissingsTitle(int number);
 
     void onProducerClick(String id, String prod_name);
 

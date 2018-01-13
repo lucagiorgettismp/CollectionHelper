@@ -13,7 +13,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_logo_blu"
+        android:icon="@mipmap/ic_logo"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
@@ -41,8 +41,7 @@
         <activity android:name="com.facebook.FacebookActivity"
             android:configChanges=
                 "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            tools:replace="android:theme"
-            android:theme="@style/FullyTranslucent"
+
             android:label="@string/app_name" />
         <activity
             android:name="com.facebook.CustomTabActivity"

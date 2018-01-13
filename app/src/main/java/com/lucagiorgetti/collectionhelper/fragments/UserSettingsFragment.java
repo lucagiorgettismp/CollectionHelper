@@ -52,6 +52,7 @@ public class UserSettingsFragment extends Fragment{
         edtSurname = (EditText) layout.findViewById(R.id.edit_reg_surname);
         edtBirthdate =(EditText) layout.findViewById(R.id.edit_reg_birthdate);
         edtNation =(EditText) layout.findViewById(R.id.edit_reg_nation);
+        View layPassword = layout.findViewById(R.id.layout_reg_password);
 
         TextView changePwd = (TextView) layout.findViewById(R.id.btn_reg_change_pwd);
         TextView deleteUser = (TextView) layout.findViewById(R.id.btn_reg_delete_account);
@@ -66,7 +67,7 @@ public class UserSettingsFragment extends Fragment{
 
         myCalendar.set(Integer.parseInt(dateArray[2]),Integer.parseInt(dateArray[1]) - 1,Integer.parseInt(dateArray[0]));
         edtEmail.setEnabled(false);
-        edtPassword.setVisibility(View.GONE);
+        layPassword.setVisibility(View.GONE);
         changePwd.setVisibility(View.VISIBLE);
         deleteUser.setVisibility(View.VISIBLE);
 

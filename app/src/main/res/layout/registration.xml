@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/background_light"
@@ -13,6 +14,7 @@
         android:layout_height="wrap_content"
         android:text="@string/create_your_account"
         android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
         android:textSize="18sp"
         android:textStyle="bold" />
 
@@ -22,74 +24,17 @@
         android:layout_height="wrap_content"
         android:text="@string/complete_account"
         android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
         android:textSize="18sp"
         android:textStyle="bold"
         android:visibility="gone" />
 
-    <EditText
-        android:id="@+id/edit_reg_email"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/email"
-        android:inputType="textEmailAddress" />
-
-    <EditText
-        android:id="@+id/edit_reg_password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/password"
-        android:inputType="textPassword" />
-
-    <EditText
-        android:id="@+id/edit_reg_username"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/username"
-        android:inputType="textPersonName" />
-
-    <EditText
-        android:id="@+id/edit_reg_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/name"
-        android:inputType="textCapWords" />
-
-    <EditText
-        android:id="@+id/edit_reg_surname"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/surname"
-        android:inputType="textCapWords" />
-
-    <EditText
-        android:id="@+id/edit_reg_birthdate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:ems="10"
-        android:focusable="true"
-        android:hint="@string/birthday" />
-
-    <EditText
-        android:id="@+id/edit_reg_nation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:ems="10"
-        android:focusable="true"
-        android:hint="@string/country" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
         android:layout_marginTop="5dp"
-        android:orientation="horizontal">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/btn_reg_change_pwd"
@@ -97,10 +42,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/change_password"
-            android:textAlignment="viewStart"
+            android:textAlignment="textEnd"
             android:textColor="@color/colorPrimary"
-            android:textSize="18sp"
-            android:visibility="gone" />
+            android:textSize="16sp"
+            android:visibility="visible" />
 
         <TextView
             android:id="@+id/btn_reg_delete_account"
@@ -110,36 +55,176 @@
             android:text="@string/delete_account"
             android:textAlignment="textEnd"
             android:textColor="@color/colorPrimary"
-            android:textSize="18sp"
-            android:visibility="gone" />
+            android:textSize="16sp"
+            android:visibility="visible" />
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btn_reg_submit"
-        style="@style/Widget.AppCompat.Button"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_column="0"
-        android:layout_row="16"
-        android:background="@color/colorPrimary"
-        android:elevation="2dp"
-        android:foregroundGravity="top"
-        android:text="@string/sign_in"
-        android:textColor="@android:color/white"
-        android:textSize="18sp" />
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/btn_reg_complete_account"
-        style="@style/Widget.AppCompat.Button"
+        <ImageView
+            android:id="@+id/img_username"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            app:srcCompat="@drawable/ic_person_black_24dp" />
+
+        <EditText
+            android:id="@+id/edit_reg_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/username"
+            android:inputType="textPersonName" />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_column="0"
-        android:layout_row="16"
-        android:background="@android:color/holo_green_dark"
-        android:elevation="2dp"
-        android:text="AVANTI"
-        android:textColor="@android:color/background_light"
-        android:textSize="18sp"
-        android:visibility="gone" />
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/img_email"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            app:srcCompat="@drawable/ic_mail" />
+
+        <EditText
+            android:id="@+id/edit_reg_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/email"
+            android:inputType="textEmailAddress" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_reg_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/img_pwd"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            app:srcCompat="@drawable/ic_key_black_24dp" />
+
+        <EditText
+            android:id="@+id/edit_reg_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/password"
+            android:inputType="textPassword" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="100">
+
+        <EditText
+            android:id="@+id/edit_reg_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="35"
+            android:ems="10"
+            android:hint="@string/name"
+            android:imeOptions="actionNext"
+            android:inputType="textCapWords"
+            android:nextFocusRight="@+id/edit_reg_surname" />
+
+        <EditText
+            android:id="@+id/edit_reg_surname"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="65"
+            android:ems="10"
+            android:hint="@string/surname"
+            android:imeOptions="actionNext"
+            android:inputType="textCapWords"
+            android:nextFocusRight="@+id/edit_reg_nation" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="100">
+
+        <EditText
+            android:id="@+id/edit_reg_nation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="40"
+            android:clickable="true"
+            android:ems="10"
+            android:focusable="true"
+            android:hint="@string/country"
+            android:imeOptions="actionNext"
+            android:nextFocusRight="@+id/edit_reg_birthdate" />
+
+        <EditText
+            android:id="@+id/edit_reg_birthdate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="60"
+            android:clickable="true"
+            android:ems="10"
+            android:focusable="true"
+            android:hint="@string/birthday" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btn_reg_complete_account"
+            style="@style/Widget.AppCompat.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_row="16"
+            android:background="@android:color/holo_green_dark"
+            android:elevation="2dp"
+            android:text="AVANTI"
+            android:textColor="@android:color/background_light"
+            android:textSize="18sp"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/btn_reg_submit"
+            style="@style/Widget.AppCompat.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_row="16"
+            android:background="@color/colorPrimary"
+            android:elevation="2dp"
+            android:foregroundGravity="top"
+            android:text="@string/sign_up"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+
+    </LinearLayout>
 
 </LinearLayout>

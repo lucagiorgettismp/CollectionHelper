@@ -48,15 +48,11 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        View decorView = getWindow().getDecorView();
-        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-        decorView.setSystemUiVisibility(uiOptions);
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
 
         progressBar = (ProgressBar) findViewById(R.id.login_loading);
-        progressBar.setVisibility(View.GONE);
+        progressBar.setVisibility(View.INVISIBLE);
 
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
@@ -231,7 +227,7 @@ public class LoginActivity extends AppCompatActivity {
                             checkUserExisting(email, name);
                         }
 
-                        progressBar.setVisibility(View.GONE);
+                        progressBar.setVisibility(View.INVISIBLE);
                     }
                 });
     }

@@ -34,7 +34,7 @@ public class SurpRecyclerAdapter extends RecyclerView.Adapter<SurpRecyclerAdapte
 
     @Override
     public SurpViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.missing_surprise_element, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.surprise_element, parent, false);
         return new SurpViewHolder(v);
     }
 

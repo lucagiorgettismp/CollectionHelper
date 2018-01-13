@@ -14,6 +14,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Layout;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -52,7 +53,6 @@ public class RegistrateActivity extends AppCompatActivity{
     private EditText edtNation;
     private FirebaseAuth fireAuth;
     private LoginManager facebookLogin;
-    private SimpleDateFormat sdf = null;
     CountryPickerDialog countryPicker = null;
 
     final Calendar myCalendar = Calendar.getInstance();
@@ -60,10 +60,6 @@ public class RegistrateActivity extends AppCompatActivity{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        View decorView = getWindow().getDecorView();
-        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-        decorView.setSystemUiVisibility(uiOptions);
 
         this.facebookLogin = LoginManager.getInstance();
 
@@ -75,6 +71,8 @@ public class RegistrateActivity extends AppCompatActivity{
 
         edtEmail = (EditText) findViewById(R.id.edit_reg_email);
         edtPassword = (EditText) findViewById(R.id.edit_reg_password);
+
+        View layPassword = findViewById(R.id.layout_reg_password);
         edtUsername = (EditText) findViewById(R.id.edit_reg_username);
         edtName = (EditText) findViewById(R.id.edit_reg_name);
         edtSurname = (EditText) findViewById(R.id.edit_reg_surname);
@@ -103,7 +101,7 @@ public class RegistrateActivity extends AppCompatActivity{
             /*aperto da facebook*/
             submit.setVisibility(View.GONE);
             lblInfoFirstLogin.setVisibility(View.GONE);
-            edtPassword.setVisibility(View.GONE);
+            layPassword.setVisibility(View.GONE);
 
             btnAccountCompleteFacebook.setVisibility(View.VISIBLE);
             lblInfoFacebook.setVisibility(View.VISIBLE);
@@ -153,7 +151,6 @@ public class RegistrateActivity extends AppCompatActivity{
                 } else if (password.length() < 6){
                     Toast.makeText(RegistrateActivity.this, R.string.password_lenght, Toast.LENGTH_SHORT).show();
                 } else {
-
                     DatabaseUtility.checkUsernameExist(username, new OnGetDataListener() {
                         @Override
                         public void onSuccess(DataSnapshot data) {
@@ -161,12 +158,12 @@ public class RegistrateActivity extends AppCompatActivity{
                                     .addOnCompleteListener(RegistrateActivity.this, new OnCompleteListener<AuthResult>() {
                                         @Override
                                         public void onComplete(@NonNull Task<AuthResult> task) {
-                                            DatabaseUtility.generateUser(name, surname, email, username, birthDate, nation);
                                             if (!task.isSuccessful()) {
                                                 //noinspection ThrowableResultOfMethodCallIgnored
                                                 Toast.makeText(RegistrateActivity.this, getString(R.string.auth_failed) + task.getException(),
                                                         Toast.LENGTH_SHORT).show();
                                             } else {
+                                                DatabaseUtility.generateUser(name, surname, email, username, birthDate, nation);
                                                 fireAuth.signInWithEmailAndPassword(email, password);
 
                                                 Intent i = new Intent(RegistrateActivity.this, MainActivity.class);
@@ -176,7 +173,6 @@ public class RegistrateActivity extends AppCompatActivity{
                                                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                                 // Staring Login Activity
                                                 getApplicationContext().startActivity(i);
-
                                                 finish();
                                             }
                                         }
@@ -190,7 +186,7 @@ public class RegistrateActivity extends AppCompatActivity{
 
                         @Override
                         public void onFailure() {
-                            Toast.makeText(RegistrateActivity.this, "Username existing", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegistrateActivity.this, R.string.username_existing, Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
@@ -206,7 +202,6 @@ public class RegistrateActivity extends AppCompatActivity{
                 myCalendar.set(Calendar.MONTH, monthOfYear);
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 updateLabel();
-                edtNation.requestFocus();
             }
         };
 
@@ -252,6 +247,17 @@ public class RegistrateActivity extends AppCompatActivity{
     public void onBackPressed() {
         facebookLogin.logOut();
         fireAuth.signOut();
+        Intent i = new Intent(getApplicationContext(), MainActivity.class);
+        // Closing all the Activities
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        // Add new Flag to start new Activity
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        // Staring Login Activity
+        getApplicationContext().startActivity(i);
+
+        finish();
         super.onBackPressed();
     }
 }

@@ -19,7 +19,7 @@
         android:layout_height="70dp"
         android:adjustViewBounds="true"
         android:paddingLeft="5dp"
-        app:srcCompat="@mipmap/ic_logo_blu" />
+        app:srcCompat="@mipmap/ic_logo" />
 
     <TextView
         android:id="@+id/navbar_title"

@@ -1,5 +1,7 @@
 package com.lucagiorgetti.collectionhelper;
 
+import android.util.Log;
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.lucagiorgetti.collectionhelper.model.Categories;
@@ -72,6 +74,52 @@ public class Initializer {
         insertSurprise(SD748A);
         //endregion
 
+        //region HapposFamily
+        Set hapFam = new Set("Happos Family", kinSorp2017, kinderSorpresa, ExtraLocales.EUROPE, "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_HapposFamily_2017.png?alt=media&token=e5c51805-8562-4df0-b780-1c44639c35a6", Categories.HANDPAINTED);
+
+        Surprise SE259 = new Surprise("Astronauta", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FHapposFamily%2FSE259.jpg?alt=media&token=be449431-56f8-4cde-98e1-edead729ed2e", "SE259", hapFam);
+        Surprise SE260 = new Surprise("Ballerina", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FHapposFamily%2FSE260.jpg?alt=media&token=41601467-a778-4fb0-90a2-594d949e1e16", "SE260", hapFam);
+        Surprise SE261 = new Surprise("Stunt", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FHapposFamily%2FSE261.jpg?alt=media&token=f7783dd1-fdef-4ee4-87f6-b3a7419758d1", "SE261", hapFam);
+        Surprise SE262 = new Surprise("Yoga", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FHapposFamily%2FSE262.jpg?alt=media&token=1302509a-f971-4a87-a636-b8fd5bc608d6", "SE262", hapFam);
+        Surprise SE263 = new Surprise("Operaio", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FHapposFamily%2FSE263.jpg?alt=media&token=35a91bd8-5a06-47da-921a-b56998731197", "SE263", hapFam);
+        Surprise SE264 = new Surprise("Pirata", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FHapposFamily%2FSE264.jpg?alt=media&token=3e9ac656-60cc-4ce2-aa27-949848e91f40", "SE264", hapFam);
+        Surprise SE265 = new Surprise("Atleta", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FHapposFamily%2FSE265.jpg?alt=media&token=27930d87-d00b-43e3-8fe3-4d1334d539b1", "SE265", hapFam);
+        Surprise SE266 = new Surprise("SuperEroe", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FHapposFamily%2FSE266.jpg?alt=media&token=c86525be-07b4-4453-9017-2d551ba6e497", "SE266", hapFam);
+
+        insertSet(hapFam);
+        insertSurprise(SE259);
+        insertSurprise(SE260);
+        insertSurprise(SE261);
+        insertSurprise(SE262);
+        insertSurprise(SE263);
+        insertSurprise(SE264);
+        insertSurprise(SE265);
+        insertSurprise(SE266);
+        //endregion
+
+        //region PowerPuffGirls
+        Set powpuf = new Set("Power Puff Girls", kinSorp2017, kinderSorpresa, ExtraLocales.EUROPE, "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_PowerPuffGirls_2017.png?alt=media&token=b53ad14a-4235-4779-a6c1-7dfe3d0ab74d", Categories.HANDPAINTED);
+
+        Surprise SE318 = new Surprise("Mojo Jojo", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FPowerPuffGirls%2FSE318.jpg?alt=media&token=faf6caec-8207-4cb6-83af-ea98e142a25a", "SE318", powpuf);
+        Surprise SE319 = new Surprise("Molly", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FPowerPuffGirls%2FSE319.jpg?alt=media&token=ba2dbdca-8fd0-4c73-87a4-705b83bb3d2e", "SE319", powpuf);
+        Surprise SE320 = new Surprise("Dolly", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FPowerPuffGirls%2FSE320.jpg?alt=media&token=a4b4d24b-838f-4925-acf4-259ee9542ed0", "SE320", powpuf);
+        Surprise SE321 = new Surprise("Professor Utonium", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FPowerPuffGirls%2FSE321.jpg?alt=media&token=327b61be-dc9f-4a1b-97b9-55375422456f", "SE321", powpuf);
+        Surprise SE322 = new Surprise("Lolly", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FPowerPuffGirls%2FSE322.jpg?alt=media&token=27ed457e-285c-49f8-a2ac-41fc654c479d", "SE322", powpuf);
+        Surprise SE323 = new Surprise("Trio", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FPowerPuffGirls%2FSE323.jpg?alt=media&token=c271b020-f972-498b-aee5-f30aa841174c", "SE323", powpuf);
+        Surprise SE324 = new Surprise("Donny", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FPowerPuffGirls%2FSE324.jpg?alt=media&token=dda7bb90-f255-4f36-89f2-bb771e2802b4", "SE324", powpuf);
+        Surprise SE325 = new Surprise("Principessa Morbucks", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FPowerPuffGirls%2FSE325.jpg?alt=media&token=f439f33a-6403-4087-ab68-dbd8e236e7c3", "SE325", powpuf);
+
+        insertSet(powpuf);
+        insertSurprise(SE318);
+        insertSurprise(SE319);
+        insertSurprise(SE320);
+        insertSurprise(SE321);
+        insertSurprise(SE322);
+        insertSurprise(SE323);
+        insertSurprise(SE324);
+        insertSurprise(SE325);
+        //endregion
+
         //region Natale
         Set natale = new Set("Natale", kinSorp2017, kinderSorpresa, ExtraLocales.EUROPE, "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FNatale%2FBPZ_Natale_2017.jpg?alt=media&token=ec51d752-ab7e-4f35-a6cc-ba412c075e0a", Categories.HANDPAINTED);
 
@@ -96,7 +144,7 @@ public class Initializer {
         //endregion
 
         //region DoraEsploratrice
-        Set dora = new Set("Dora l'esploratrice", kinSorp2017, kinderSorpresa, ExtraLocales.EUROPE, "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FDora%2FBPZ_Dora_2017.jpg?alt=media&token=42a23a43-e8c4-49f6-9223-145c33b94665", Categories.HANDPAINTED);
+        Set dora = new Set("Dora l'esploratrice", kinSorp2017, kinderSorpresa, Locale.ITALY.getCountry(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FDora%2FBPZ_Dora_2017.jpg?alt=media&token=42a23a43-e8c4-49f6-9223-145c33b94665", Categories.HANDPAINTED);
 
         Surprise SE332 = new Surprise("Boots", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FDora%2FSE332.jpg?alt=media&token=45c35463-15c3-4283-a485-2e822983fc56", "SE332", dora);
         Surprise SE333 = new Surprise("Diego Marquez", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FDora%2FSE333.jpg?alt=media&token=3cfa4253-2b39-4f40-8365-2a9791523557", "SE333", dora);
@@ -527,7 +575,7 @@ public class Initializer {
         Set safiras = new Set("Safiras", kinSorp2017, kinderSorpresa, ExtraLocales.EUROPE, "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FBPZ_Safiras_2017.jpg?alt=media&token=182e11c5-17d2-4916-96b4-47dc29b6d1bf", Categories.COMPO);
 
         Surprise SE143 = new Surprise("Draghetto Verde", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE143.jpg?alt=media&token=30566768-c504-4cc0-ac0a-8ddce6924622", "SE143", safiras);
-        Surprise SE144 = new Surprise("Draghetto Azzurro", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE144.jpg?alt=media&token=ff2d7b87-5c63-4ae8-90c4-7f559f3d17ad", "SE144", safiras);
+        Surprise SE144 = new Surprise("Draghetto Azzurro", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE144.jpg?alt=media&token=8ad0f5f8-3496-43b9-a128-b39b9efc38ba", "SE144", safiras);
         Surprise SE146 = new Surprise("Draghetto Viola", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE146.jpg?alt=media&token=5a072fc9-f710-4900-93b3-64c76cc58231", "SE146", safiras);
         Surprise SE147 = new Surprise("Draghetto Rosso", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE147.jpg?alt=media&token=e745ce89-61fd-4123-8402-ee48b26475a6", "SE147", safiras);
 
@@ -688,7 +736,7 @@ public class Initializer {
         Surprise SE235 = new Surprise("Gatto", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE235.jpg?alt=media&token=aa351298-920d-4e1e-bfaa-50ef0f0988b7", "SE235", predcac);
         Surprise SE235A = new Surprise("Camaleonte", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE235A.jpg?alt=media&token=a9418cae-db61-4c94-a587-c2003f97cb6a", "SE235A", predcac);
         Surprise SE235B = new Surprise("Aquila", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE235B.jpg?alt=media&token=d8029f08-e6a2-4e6b-8a21-f3750b1371e8", "SE235B", predcac);
-        Surprise SE235C = new Surprise("Volpe", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE235B.jpg?alt=media&token=d8029f08-e6a2-4e6b-8a21-f3750b1371e8", "SE235C", predcac);
+        Surprise SE235C = new Surprise("Volpe", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FSE235C.jpg?alt=media&token=e60b9506-f52c-41b4-a41c-e68bdbe7b3f1", "SE235C", predcac);
 
         insertSet(predcac);
         insertSurprise(SE235);
@@ -726,7 +774,7 @@ public class Initializer {
         //endregion
 
 
-        Set spong = new Set("Spongebob", kinMer2016, kinderMerendero, Locale.ITALIAN.getCountry(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Merendero%2F2016%2FSpongebob%2FBPZ_Spongebob_2016.png?alt=media&token=b0cdf56c-1bed-439e-b09b-9e078a070385", Categories.HANDPAINTED);
+        Set spong = new Set("Spongebob", kinMer2016, kinderMerendero, Locale.ITALY.getCountry(), "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Merendero%2F2016%2FSpongebob%2FBPZ_Spongebob_2016.png?alt=media&token=b0cdf56c-1bed-439e-b09b-9e078a070385", Categories.HANDPAINTED);
         Surprise SD366 = new Surprise("Spongebob", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Merendero%2F2016%2FSpongebob%2FSD366.jpg?alt=media&token=e4f47151-c10f-4ca9-a0b2-061932d7f515", "SD366", spong);
         Surprise SD367 = new Surprise("Plankton", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Merendero%2F2016%2FSpongebob%2FSD367.jpg?alt=media&token=25eee6fa-de01-4220-8a76-41e5525f1024", "SD367", spong);
         Surprise SD368 = new Surprise("Gary", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Merendero%2F2016%2FSpongebob%2FSD368.jpg?alt=media&token=3afdd8f8-bd7a-4bd2-8726-4a7acc5bff85", "SD368", spong);

@@ -5,18 +5,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
     android:gravity="center_vertical"
     android:orientation="vertical"
     android:padding="10dp"
     android:weightSum="1">
 
+    <TextView
+        android:id="@+id/info_welcome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.36"
+        android:fontFamily="sans-serif"
+        android:gravity="center_vertical"
+        android:text="@string/welcome_info"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/logo"
         android:layout_width="match_parent"
         android:layout_height="183dp"
         android:layout_marginBottom="30dp"
         android:layout_weight="0.36"
-        app:srcCompat="@drawable/logo_blu" />
+        app:srcCompat="@drawable/logo_blu_login" />
 
     <Button
         android:id="@+id/btn_start_registration"
@@ -27,7 +41,7 @@
         android:layout_marginTop="3dp"
         android:background="@android:color/holo_blue_dark"
         android:elevation="2dp"
-        android:text="@string/sign_in"
+        android:text="@string/sign_up"
         android:textColor="@android:color/background_light"
         android:textSize="18sp" />
 
@@ -74,6 +88,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal|center"
-        tools:visibility="gone" />
+        android:layout_marginTop="20dp"
+        tools:visibility="invisible" />
 
 </LinearLayout>
