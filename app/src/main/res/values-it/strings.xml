@@ -51,4 +51,9 @@
     <string name="dialog_positive">Ok</string>
     <string name="password_lenght">La password deve essere lunga almeno 6 caratteri</string>
     <string name="welcome_info">Benvenuto in Surprix!</string>
+    <string name="username_existing">Username già esistente</string>
+    <string name="remove_double_dialog_text">Vuoi rimuovere dai doppi</string>
+    <string name="remove_double_dialog_title">Rimuovi dai doppi</string>
+    <string name="remove_missing_dialog_text">Vuoi rimuovere dai mancanti</string>
+    <string name="remove_missing_dialog_title">Rimuovi dai mancanti</string>
 </resources>

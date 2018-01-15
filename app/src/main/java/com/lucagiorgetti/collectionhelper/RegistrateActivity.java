@@ -138,7 +138,7 @@ public class RegistrateActivity extends AppCompatActivity{
             public void onClick(View v) {
                 final String email = edtEmail.getText().toString().trim();
                 final String password = edtPassword.getText().toString().trim();
-                final String username = edtUsername.getText().toString().trim();
+                final String username = edtUsername.getText().toString().trim().toLowerCase();
                 final String name = edtName.getText().toString().trim();
                 final String surname = edtSurname.getText().toString().trim();
                 final String nation = edtNation.getText().toString();

@@ -119,8 +119,8 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
                 final Surprise s = mAdapter.getItemAtPosition(position);
                 if (direction == ItemTouchHelper.LEFT){
                     final AlertDialog alertDialog = new AlertDialog.Builder(mContext).create();
-                    alertDialog.setTitle("Remove from missing");
-                    alertDialog.setMessage("Do you want to remove from missings " + s.getDescription() + "?");
+                    alertDialog.setTitle(getString(R.string.remove_missing_dialog_title));
+                    alertDialog.setMessage(getString(R.string.remove_missing_dialog_text) + " " + s.getDescription() + "?");
                     alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.dialog_positive),
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -257,7 +257,9 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
 
     @Override
     public void onResume() {
-        listener.setMissingsTitle(missings.size());
+        if(missings != null) {
+            listener.setMissingsTitle(missings.size());
+        }
         super.onResume();
     }
 }

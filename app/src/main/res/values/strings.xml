@@ -65,4 +65,8 @@
     <string name="dateFormat" translatable="false">dd/MM/yyyy</string>
     <string name="welcome_info">Welcome in Surprix!</string>
     <string name="username_existing">Username existing</string>
+    <string name="remove_missing_dialog_title">Remove from missing</string>
+    <string name="remove_missing_dialog_text">Do you want to remove from missings</string>
+    <string name="remove_double_dialog_title">Remove from doubles</string>
+    <string name="remove_double_dialog_text">Do you want to remove from doubles</string>
 </resources>

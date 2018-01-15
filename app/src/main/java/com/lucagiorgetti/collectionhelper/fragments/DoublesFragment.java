@@ -118,8 +118,8 @@ public class DoublesFragment extends Fragment implements SearchView.OnQueryTextL
                 final Surprise s = mAdapter.getItemAtPosition(position);
 
                 final AlertDialog alertDialog = new AlertDialog.Builder(mContext).create();
-                alertDialog.setTitle("Remove from doubles");
-                alertDialog.setMessage("Do you want to remove from doubles " + s.getDescription() + "?");
+                alertDialog.setTitle(getString(R.string.remove_double_dialog_title));
+                alertDialog.setMessage(getString(R.string.remove_double_dialog_text) + " " + s.getDescription() + "?");
                 alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.dialog_positive),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
@@ -252,7 +252,9 @@ public class DoublesFragment extends Fragment implements SearchView.OnQueryTextL
 
     @Override
     public void onResume() {
-        listener.setDoublesTitle(doubles.size());
+        if (doubles != null){
+            listener.setDoublesTitle(doubles.size());
+        }
         super.onResume();
     }
 

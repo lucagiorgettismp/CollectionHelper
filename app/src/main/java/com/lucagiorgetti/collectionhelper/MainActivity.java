@@ -55,6 +55,7 @@ import com.lucagiorgetti.collectionhelper.model.Surprise;
 import com.lucagiorgetti.collectionhelper.model.User;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener ,
@@ -371,7 +372,17 @@ public class MainActivity extends AppCompatActivity implements
             public void onSuccess(ArrayList<User> users) {
                 if(users != null){
                     if(!users.isEmpty()){
-                        mAdapter = new DoublesOwnersListAdapter(MainActivity.this, users);
+                        final ArrayList<User> owners = new ArrayList<>();
+                        final ArrayList<User> abroad_owners = new ArrayList<>();
+                        for(User u: users){
+                            if(Objects.equals(u.getCountry(), currentUser.getCountry())){
+                                owners.add(u);
+                            } else {
+                                abroad_owners.add(u);
+                            }
+                        }
+                        owners.addAll(abroad_owners);
+                        mAdapter = new DoublesOwnersListAdapter(MainActivity.this, owners);
                         emptyListTxv.setVisibility(View.GONE);
                         infoTxv.setVisibility(View.VISIBLE);
                         listView.setAdapter(mAdapter);
