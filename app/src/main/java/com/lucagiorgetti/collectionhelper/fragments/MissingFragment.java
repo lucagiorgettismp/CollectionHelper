@@ -22,12 +22,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.lucagiorgetti.collectionhelper.DatabaseUtility;
+import com.lucagiorgetti.collectionhelper.SystemUtility;
 import com.lucagiorgetti.collectionhelper.listenerInterfaces.FragmentListenerInterface;
 import com.lucagiorgetti.collectionhelper.listenerInterfaces.OnGetListListener;
 import com.lucagiorgetti.collectionhelper.R;
@@ -41,8 +41,8 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
 
     ArrayList<Surprise> missings = new ArrayList<>();
     private SurpRecyclerAdapter mAdapter;
-    private String username = null;
     private RecyclerView recyclerView;
+    private View emptyList;
     private Context mContext;
     private ProgressBar progress;
     private SearchView searchView;
@@ -60,33 +60,43 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.surprise_fragment, container, false);
-
-        this.username = getArguments().getString("username");
+        emptyList = layout.findViewById(R.id.empty_list);
+        String username;
+        username = getArguments().getString("username");
         progress = (ProgressBar) layout.findViewById(R.id.surprise_loading);
         recyclerView = (RecyclerView) layout.findViewById(R.id.surprise_recycler);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mContext);
         recyclerView.setLayoutManager(layoutManager);
+        mAdapter = new SurpRecyclerAdapter(mContext, missings);
+        recyclerView.setAdapter(mAdapter);
         if (missings != null && !missings.isEmpty()){
-            mAdapter = new SurpRecyclerAdapter(mContext, missings);
-            recyclerView.setAdapter(mAdapter);
+            emptyList.setVisibility(View.GONE);
+        } else {
+            emptyList.setVisibility(View.VISIBLE);
         }
+
         FloatingActionButton fab = (FloatingActionButton) layout.findViewById(R.id.fab);
         fab.setOnClickListener(this);
         initSwipe();
-        DatabaseUtility.getMissingsForUsername(this.username, new OnGetListListener<Surprise>() {
+        DatabaseUtility.getMissingsForUsername(username, new OnGetListListener<Surprise>() {
 
             @Override
             public void onSuccess(ArrayList<Surprise> surprises) {
                 missings = surprises;
 
                 if(missings != null){
+                    emptyList.setVisibility(View.GONE);
                     mAdapter = new SurpRecyclerAdapter(mContext, missings);
                     recyclerView.setAdapter(mAdapter);
                     if(listener != null){
                         listener.setMissingsTitle(missings.size());
                     }
+                } else {
+                    emptyList.setVisibility(View.VISIBLE);
                 }
+
+
                 progress.setVisibility(View.GONE);
             }
 
@@ -130,11 +140,14 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
                                     if(!queryTxt.isEmpty()) {
                                         FragmentTransaction ft = getFragmentManager().beginTransaction();
                                         ft.detach(MissingFragment.this).attach(MissingFragment.this).commit();
-                                        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                                        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+                                        SystemUtility.closeKeyboard(getActivity(), getView());
                                     }
+
                                     alertDialog.dismiss();
                                     listener.setMissingsTitle(missings.size());
+                                    if (missings == null || missings.isEmpty()){
+                                        emptyList.setVisibility(View.VISIBLE);
+                                    }
                                     mAdapter.notifyDataSetChanged();
                                 }
                             });

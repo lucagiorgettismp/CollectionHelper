@@ -8,11 +8,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.lucagiorgetti.collectionhelper.DatabaseUtility;
+import com.lucagiorgetti.collectionhelper.SystemUtility;
 import com.lucagiorgetti.collectionhelper.listenerInterfaces.FragmentListenerInterface;
 import com.lucagiorgetti.collectionhelper.listenerInterfaces.OnGetListListener;
 import com.lucagiorgetti.collectionhelper.R;
@@ -48,16 +48,14 @@ public class YearsFragment extends Fragment{
             public void onItemClick(View view, int position) {
                 Year year = mAdapter.getItemAtPosition(position);
                 listener.onYearClicked(year.getId(), year.getYear());
-                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+                SystemUtility.closeKeyboard(getActivity(), getView());
             }
 
             @Override
             public void onLongItemClick(View view, int position) {
                 Year year = mAdapter.getItemAtPosition(position);
                 listener.onLongYearClicked(year.getId(), year.getYear());
-                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+                SystemUtility.closeKeyboard(getActivity(), getView());
             }
         })
         );

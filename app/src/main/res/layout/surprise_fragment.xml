@@ -34,4 +34,33 @@ tools:context=".fragments.MissingFragment">
         android:layout_gravity="center_horizontal|center"
         tools:visibility="gone" />
 
+    <LinearLayout
+        android:id="@+id/empty_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center_vertical|center_horizontal"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <ImageView
+            android:id="@+id/empty_list_image"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:cropToPadding="false"
+            android:scaleType="fitCenter"
+            android:tint="@color/cardview_dark_background"
+            app:srcCompat="@drawable/ic_playlist_add_black_24dp" />
+
+        <TextView
+            android:id="@+id/empty_list_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/list_is_empty"
+            android:textAlignment="center"
+            android:textSize="18sp" />
+    </LinearLayout>
+
 </android.support.design.widget.CoordinatorLayout>

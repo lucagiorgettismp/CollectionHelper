@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,6 +51,7 @@ public class RegistrateActivity extends AppCompatActivity{
     private EditText edtName;
     private EditText edtSurname;
     private EditText edtBirthdate;
+    private ProgressBar progress;
     private EditText edtNation;
     private FirebaseAuth fireAuth;
     private LoginManager facebookLogin;
@@ -78,6 +80,7 @@ public class RegistrateActivity extends AppCompatActivity{
         edtSurname = (EditText) findViewById(R.id.edit_reg_surname);
         edtBirthdate =(EditText) findViewById(R.id.edit_reg_birthdate);
         edtNation =(EditText) findViewById(R.id.edit_reg_nation);
+        progress = (ProgressBar) findViewById(R.id.progress_bar);
         TextView lblInfoFacebook = (TextView) findViewById(R.id.lbl_reg_info_facebook);
         TextView lblInfoFirstLogin = (TextView) findViewById(R.id.lbl_reg_info_firstlogin);
         Button btnAccountCompleteFacebook = (Button) findViewById(R.id.btn_reg_complete_account);
@@ -121,34 +124,37 @@ public class RegistrateActivity extends AppCompatActivity{
                 final String birthDate = edtBirthdate.getText().toString();
                 final String nation = edtNation.getText().toString();
                 DatabaseUtility.generateUser(name, surname, email, username, birthDate, nation);
-                Intent i = new Intent(RegistrateActivity.this, MainActivity.class);
-                // Closing all the Activities
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                // Add new Flag to start new Activity
-                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                // Staring Login Activity
-                getApplicationContext().startActivity(i);
 
-                finish();
+                SystemUtility.openNewActivityWithFinishing(RegistrateActivity.this, getApplicationContext(), MainActivity.class, null);
             }
         });
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SystemUtility.closeKeyboard(RegistrateActivity.this, getCurrentFocus());
+                progress.setVisibility(View.VISIBLE);
+
                 final String email = edtEmail.getText().toString().trim();
                 final String password = edtPassword.getText().toString().trim();
                 final String username = edtUsername.getText().toString().trim().toLowerCase();
                 final String name = edtName.getText().toString().trim();
                 final String surname = edtSurname.getText().toString().trim();
                 final String nation = edtNation.getText().toString();
-                final String birthDate= edtBirthdate.getText().toString();
+                final String birthDate = edtBirthdate.getText().toString();
+
+                if (!SystemUtility.checkNetworkAvailability(RegistrateActivity.this)) {
+                    progress.setVisibility(View.INVISIBLE);
+                    return;
+                }
 
                 if (email.isEmpty() || password.isEmpty() || username.isEmpty() ||
                         name.isEmpty() || surname.isEmpty() || nation.isEmpty() ||
                         birthDate.isEmpty()){
+                    progress.setVisibility(View.INVISIBLE);
                     Toast.makeText(RegistrateActivity.this, R.string.complete_all_fields, Toast.LENGTH_SHORT).show();
                 } else if (password.length() < 6){
+                    progress.setVisibility(View.INVISIBLE);
                     Toast.makeText(RegistrateActivity.this, R.string.password_lenght, Toast.LENGTH_SHORT).show();
                 } else {
                     DatabaseUtility.checkUsernameExist(username, new OnGetDataListener() {
@@ -160,20 +166,15 @@ public class RegistrateActivity extends AppCompatActivity{
                                         public void onComplete(@NonNull Task<AuthResult> task) {
                                             if (!task.isSuccessful()) {
                                                 //noinspection ThrowableResultOfMethodCallIgnored
+                                                progress.setVisibility(View.INVISIBLE);
                                                 Toast.makeText(RegistrateActivity.this, getString(R.string.auth_failed) + task.getException(),
                                                         Toast.LENGTH_SHORT).show();
                                             } else {
                                                 DatabaseUtility.generateUser(name, surname, email, username, birthDate, nation);
                                                 fireAuth.signInWithEmailAndPassword(email, password);
+                                                progress.setVisibility(View.INVISIBLE);
 
-                                                Intent i = new Intent(RegistrateActivity.this, MainActivity.class);
-                                                // Closing all the Activities
-                                                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                                // Add new Flag to start new Activity
-                                                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                // Staring Login Activity
-                                                getApplicationContext().startActivity(i);
-                                                finish();
+                                                SystemUtility.openNewActivityWithFinishing(RegistrateActivity.this, getApplicationContext(), MainActivity.class, null);
                                             }
                                         }
                                     });
@@ -186,6 +187,7 @@ public class RegistrateActivity extends AppCompatActivity{
 
                         @Override
                         public void onFailure() {
+                            progress.setVisibility(View.INVISIBLE);
                             Toast.makeText(RegistrateActivity.this, R.string.username_existing, Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -247,17 +249,7 @@ public class RegistrateActivity extends AppCompatActivity{
     public void onBackPressed() {
         facebookLogin.logOut();
         fireAuth.signOut();
-        Intent i = new Intent(getApplicationContext(), MainActivity.class);
-        // Closing all the Activities
-        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-        // Add new Flag to start new Activity
-        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-        // Staring Login Activity
-        getApplicationContext().startActivity(i);
-
-        finish();
-        super.onBackPressed();
+        SystemUtility.openNewActivityWithFinishing(RegistrateActivity.this, getApplicationContext(), MainActivity.class, null);
     }
 }

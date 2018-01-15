@@ -22,12 +22,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.lucagiorgetti.collectionhelper.DatabaseUtility;
+import com.lucagiorgetti.collectionhelper.SystemUtility;
 import com.lucagiorgetti.collectionhelper.listenerInterfaces.OnGetListListener;
 import com.lucagiorgetti.collectionhelper.R;
 import com.lucagiorgetti.collectionhelper.listenerInterfaces.FragmentListenerInterface;
@@ -46,6 +46,7 @@ public class DoublesFragment extends Fragment implements SearchView.OnQueryTextL
     private ProgressBar progress;
     private SearchView searchView;
     private Paint p = new Paint();
+    private View emptyList;
 
     @Override
     public void onClick(View v) {
@@ -59,16 +60,19 @@ public class DoublesFragment extends Fragment implements SearchView.OnQueryTextL
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.surprise_fragment, container, false);
-
+        emptyList = layout.findViewById(R.id.empty_list);
         String username = getArguments().getString("username");
         progress = (ProgressBar) layout.findViewById(R.id.surprise_loading);
         recyclerView = (RecyclerView) layout.findViewById(R.id.surprise_recycler);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mContext);
         recyclerView.setLayoutManager(layoutManager);
+        mAdapter = new SurpRecyclerAdapter(mContext, doubles);
+        recyclerView.setAdapter(mAdapter);
         if (doubles != null && !doubles.isEmpty()){
-            mAdapter = new SurpRecyclerAdapter(mContext, doubles);
-            recyclerView.setAdapter(mAdapter);
+            emptyList.setVisibility(View.GONE);
+        } else {
+            emptyList.setVisibility(View.VISIBLE);
         }
         FloatingActionButton fab = (FloatingActionButton) layout.findViewById(R.id.fab);
         fab.setOnClickListener(this);
@@ -84,6 +88,9 @@ public class DoublesFragment extends Fragment implements SearchView.OnQueryTextL
                     if (listener != null){
                         listener.setDoublesTitle(doubles.size());
                     }
+                    emptyList.setVisibility(View.GONE);
+                } else {
+                    emptyList.setVisibility(View.VISIBLE);
                 }
 
                 progress.setVisibility(View.GONE);
@@ -129,11 +136,15 @@ public class DoublesFragment extends Fragment implements SearchView.OnQueryTextL
                                 if(!asd.isEmpty()) {
                                     FragmentTransaction ft = getFragmentManager().beginTransaction();
                                     ft.detach(DoublesFragment.this).attach(DoublesFragment.this).commit();
-                                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                                    imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+                                    SystemUtility.closeKeyboard(getActivity(), getView());
                                 }
+
                                 alertDialog.dismiss();
                                 listener.setDoublesTitle(doubles.size());
+                                if (doubles == null || doubles.isEmpty()){
+                                    emptyList.setVisibility(View.VISIBLE);
+                                }
+
                                 mAdapter.notifyDataSetChanged();
                             }
                         });

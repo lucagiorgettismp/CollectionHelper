@@ -34,8 +34,6 @@ public interface FragmentListenerInterface {
 
     void onItemAddDoubles(String id);
 
-    void onHomeClick();
-
     void setItemsTitle();
 
     void onYearClicked(String id, int year);

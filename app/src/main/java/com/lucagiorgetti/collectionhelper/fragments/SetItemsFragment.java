@@ -90,21 +90,6 @@ public class SetItemsFragment extends Fragment implements View.OnClickListener{
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        MenuItem item=menu.add(R.string.home); //your desired title here
-        item.setIcon(R.drawable.ic_home); //your desired icon here
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                listener.onHomeClick();
-                return false;
-            }
-        });
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
     public void onAttach(Context context){
         super.onAttach(context);
         if (context instanceof FragmentListenerInterface){

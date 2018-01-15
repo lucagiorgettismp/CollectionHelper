@@ -2,6 +2,7 @@ package com.lucagiorgetti.collectionhelper;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
@@ -19,7 +20,6 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
@@ -52,16 +52,17 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.login);
 
         progressBar = (ProgressBar) findViewById(R.id.login_loading);
+        progressBar.getIndeterminateDrawable().setColorFilter(Color.parseColor("#ffffff"),
+                android.graphics.PorterDuff.Mode.MULTIPLY);
         progressBar.setVisibility(View.INVISIBLE);
 
-        FacebookSdk.sdkInitialize(getApplicationContext());
-        AppEventsLogger.activateApp(this);
+        AppEventsLogger.activateApp(getApplication());
         callbackManager = CallbackManager.Factory.create();
         Button facebookLogin = (Button) findViewById(R.id.btn_start_facebook);
 
-        final LoginButton loginButton = (LoginButton) findViewById(R.id.btn_facebook_login);
-        loginButton.setReadPermissions("email", "public_profile");
-        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+        final LoginButton hiddenFacebookButton = (LoginButton) findViewById(R.id.btn_facebook_login);
+        hiddenFacebookButton.setReadPermissions("email", "public_profile");
+        hiddenFacebookButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Log.d("FACEBOOK", "facebook:onSuccess:" + loginResult);
@@ -81,7 +82,10 @@ public class LoginActivity extends AppCompatActivity {
         facebookLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loginButton.performClick();
+                if(SystemUtility.checkNetworkAvailability(LoginActivity.this)){
+                    progressBar.setVisibility(View.VISIBLE);
+                    hiddenFacebookButton.performClick();
+                }
             }
         });
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -102,17 +106,7 @@ public class LoginActivity extends AppCompatActivity {
         registrate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), RegistrateActivity.class);
-                // Closing all the Activities
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-                // Add new Flag to start new Activity
-                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-                // Staring Login Activity
-                getApplicationContext().startActivity(i);
-
-                finish();
+                SystemUtility.openNewActivityWithFinishing(LoginActivity.this, getApplicationContext(), RegistrateActivity.class, null);
             }
         });
     }
@@ -143,6 +137,9 @@ public class LoginActivity extends AppCompatActivity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!SystemUtility.checkNetworkAvailability(LoginActivity.this)){
+                    return;
+                }
                 String email = inEmail.getText().toString().trim();
                 Log.w("LOGIN", "input email : " + email);
                 String pwd = inPassword.getText().toString().trim();
@@ -158,13 +155,7 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(LoginActivity.this, R.string.wrong_email_or_password,
                                     Toast.LENGTH_SHORT).show();
                         } else {
-                            Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                            // Closing all the Activities
-                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            // Add new Flag to start new Activity
-                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            // Staring Login Activity
-                            getApplicationContext().startActivity(i);
+                            SystemUtility.openNewActivityWithFinishing(LoginActivity.this, getApplicationContext(), MainActivity.class, null);
                             finish();
                         }
                     }
@@ -210,8 +201,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void signInWithFacebook(AccessToken token) {
-        progressBar.setVisibility(View.VISIBLE);
-
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
 
         fireAuth.signInWithCredential(credential)
@@ -234,7 +223,7 @@ public class LoginActivity extends AppCompatActivity {
 
      private void checkUserExisting(final String email, String nameSurname) {
          FirebaseDatabase database = DatabaseUtility.getDatabase();
-         DatabaseReference emails = database.getReference("emails"); //users is a node in your Firebase Database.
+         DatabaseReference emails = database.getReference("emails");
          final String emailCod = email.replaceAll("\\.", ",");
 
          String fullName[] = nameSurname.split(" ", 2);
@@ -246,31 +235,14 @@ public class LoginActivity extends AppCompatActivity {
              public void onDataChange(DataSnapshot snapshot) {
                  if (snapshot.hasChild(emailCod)) {
                      // utente già registrato
-                     Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                     getApplicationContext().startActivity(i);
-                     finish();
-
+                     SystemUtility.openNewActivityWithFinishing(LoginActivity.this, getApplicationContext(), MainActivity.class, null);
                  } else {
-                     Intent i = new Intent(getApplicationContext(), RegistrateActivity.class);
-
                      Bundle b = new Bundle();
                      b.putInt("facebook", 1);
                      b.putString("name", facebook_name);
                      b.putString("surname", facebook_surname);
                      b.putString("email", email);
-                     i.putExtras(b);
-
-                     // Closing all the Activities
-                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-                     // Add new Flag to start new Activity
-                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-                     // Staring Login Activity
-                     getApplicationContext().startActivity(i);
-                     finish();
+                     SystemUtility.openNewActivityWithFinishing(LoginActivity.this, getApplicationContext(), MainActivity.class, b);
                  }
              }
 

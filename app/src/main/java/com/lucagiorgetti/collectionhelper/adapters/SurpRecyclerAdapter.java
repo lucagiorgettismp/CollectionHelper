@@ -64,6 +64,9 @@ public class SurpRecyclerAdapter extends RecyclerView.Adapter<SurpRecyclerAdapte
 
     @Override
     public int getItemCount() {
+        if (surprises == null){
+            return 0;
+        }
         return surprises.size();
     }
 

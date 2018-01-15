@@ -8,12 +8,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.lucagiorgetti.collectionhelper.DatabaseUtility;
+import com.lucagiorgetti.collectionhelper.SystemUtility;
 import com.lucagiorgetti.collectionhelper.listenerInterfaces.FragmentListenerInterface;
 import com.lucagiorgetti.collectionhelper.listenerInterfaces.OnGetDataListener;
 import com.lucagiorgetti.collectionhelper.R;
@@ -51,8 +51,7 @@ public class ProducersFragment extends Fragment{
                     prod_name = prod_name + " " + producer.getProduct();
                 }
                 listener.onProducerClick(producer.getId(), prod_name);
-                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+                SystemUtility.closeKeyboard(getActivity(), getView());
             }
 
             @Override

@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lucagiorgetti.collectionhelper.DatabaseUtility;
+import com.lucagiorgetti.collectionhelper.SystemUtility;
 import com.lucagiorgetti.collectionhelper.listenerInterfaces.FragmentListenerInterface;
 import com.lucagiorgetti.collectionhelper.R;
 import com.lucagiorgetti.collectionhelper.model.User;
@@ -132,12 +133,13 @@ public class UserSettingsFragment extends Fragment{
 
         TextView lblInfoFirstLogin = (TextView) layout.findViewById(R.id.lbl_reg_info_firstlogin);
         lblInfoFirstLogin.setVisibility(View.GONE);
-        submit.setText("Salva");
+        submit.setText(R.string.save);
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SimpleDateFormat sdf = new SimpleDateFormat(getString(R.string.dateFormat), Locale.ITALIAN);
+
+                SystemUtility.closeKeyboard(getActivity(),getView());
 
                 String name = edtName.getText().toString().trim();
                 String surname = edtSurname.getText().toString().trim();

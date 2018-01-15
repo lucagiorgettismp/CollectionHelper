@@ -22,7 +22,6 @@ import android.text.Html;
 import android.text.Spanned;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -90,18 +89,7 @@ public class MainActivity extends AppCompatActivity implements
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user == null) {
-                    // User is logged out
-                    Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-                    // Closing all the Activities
-                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-                    // Add new Flag to start new Activity
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-                    // Staring Login Activity
-                    getApplicationContext().startActivity(i);
-
-                    finish();
+                    SystemUtility.openNewActivityWithFinishing(MainActivity.this, getApplicationContext(), LoginActivity.class, null);
                 }
             }
         };
@@ -116,8 +104,7 @@ public class MainActivity extends AppCompatActivity implements
                 @Override
                 public void onDrawerOpened(View drawerView) {
                     super.onDrawerOpened(drawerView);
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                    SystemUtility.closeKeyboard(MainActivity.this, getCurrentFocus());
                 }
             };
             drawer.addDrawerListener(toggle);
@@ -444,12 +431,6 @@ public class MainActivity extends AppCompatActivity implements
         intent.setData(Uri.parse("mailto:" + to)); // or just "mailto:" for blank
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // this will make such that when user returns to your app, your app is displayed, instead of the email app.
         startActivity(intent);
-    }
-
-    @Override
-    public void onHomeClick() {
-        this.clearBackStack();
-        this.displayView(Fragments.MISSINGS, false);
     }
 
     private void clearBackStack() {
