@@ -416,11 +416,11 @@ public class DatabaseUtility {
         });
     }
 
-    static void generateUser(String name, String surname, String email, String username, String birthDate, String nation) {
+    static void generateUser(String name, String surname, String email, String username, String birthDate, String nation, Boolean facebook) {
         dbRef = getDatabase().getReference();
         String emailCod = email.replaceAll("\\.", ",");
 
-        User user = new User(name, surname, emailCod, username, birthDate, nation); //ObjectClass for Users
+        User user = new User(name, surname, emailCod, username, birthDate, nation, facebook); //ObjectClass for Users
 
         dbRef.child("users").child(username).setValue(user);
         dbRef.child("emails").child(emailCod).child(username).setValue(true);
@@ -461,7 +461,8 @@ public class DatabaseUtility {
 
         dbRef = getDatabase().getReference();
         dbRef.child("missings").child(username).setValue(null);
-
+        dbRef.child("users").child(username).setValue(null);
+        dbRef.child("emails").child(user.getEmail().replaceAll("\\.", ",")).setValue(null);
         getDoublesForUsername(username, new OnGetListListener<Surprise>() {
             @Override
             public void onSuccess(ArrayList<Surprise> surprises) {

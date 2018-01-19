@@ -27,11 +27,9 @@ import com.mikelau.countrypickerx.CountryPickerDialog;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
-import static com.lucagiorgetti.collectionhelper.R.color.common_google_signin_btn_text_dark_disabled;
 
 public class UserSettingsFragment extends Fragment{
     private FragmentListenerInterface listener;
@@ -58,12 +56,12 @@ public class UserSettingsFragment extends Fragment{
         usernameImage.setColorFilter(ContextCompat.getColor(mContext, R.color.disabledIcon));
         emailImage.setColorFilter(ContextCompat.getColor(mContext, R.color.disabledIcon));
 
-
         edtName = (EditText) layout.findViewById(R.id.edit_reg_name);
         edtSurname = (EditText) layout.findViewById(R.id.edit_reg_surname);
         edtBirthdate =(EditText) layout.findViewById(R.id.edit_reg_birthdate);
         edtNation =(EditText) layout.findViewById(R.id.edit_reg_nation);
         View layPassword = layout.findViewById(R.id.layout_reg_password);
+        View layButtonsModify = layout.findViewById(R.id.layout_reg_modify);
 
         TextView changePwd = (TextView) layout.findViewById(R.id.btn_reg_change_pwd);
         TextView deleteUser = (TextView) layout.findViewById(R.id.btn_reg_delete_account);
@@ -78,7 +76,12 @@ public class UserSettingsFragment extends Fragment{
 
         myCalendar.set(Integer.parseInt(dateArray[2]),Integer.parseInt(dateArray[1]) - 1,Integer.parseInt(dateArray[0]));
         layPassword.setVisibility(View.GONE);
-        changePwd.setVisibility(View.VISIBLE);
+
+
+        layButtonsModify.setVisibility(View.VISIBLE);
+        if(currentUser.isFacebook()){
+            changePwd.setVisibility(View.GONE);
+        }
         deleteUser.setVisibility(View.VISIBLE);
 
         edtEmail.setText(currentUser.getEmail().replaceAll(",", "\\."));

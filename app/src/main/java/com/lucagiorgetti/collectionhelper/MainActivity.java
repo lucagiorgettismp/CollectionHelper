@@ -32,11 +32,13 @@ import android.widget.Toast;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.FirebaseDatabase;
 import com.lucagiorgetti.collectionhelper.fragments.UserSettingsFragment;
 import com.lucagiorgetti.collectionhelper.listenerInterfaces.FragmentListenerInterface;
 import com.lucagiorgetti.collectionhelper.listenerInterfaces.OnGetListListener;
@@ -138,7 +140,6 @@ public class MainActivity extends AppCompatActivity implements
             }, fireAuth);
         }
     }
-
 
     @Override
     public void onSetShortClick(String setId, String setName) {
@@ -314,6 +315,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onStart() {
         super.onStart();
+        FirebaseDatabase.getInstance().goOnline();
         fireAuth.addAuthStateListener(fireAuthStateListener);
     }
 
@@ -323,6 +325,7 @@ public class MainActivity extends AppCompatActivity implements
         if (fireAuthStateListener != null) {
             fireAuth.removeAuthStateListener(fireAuthStateListener);
         }
+        FirebaseDatabase.getInstance().goOffline();
     }
 
     @Override
@@ -450,6 +453,12 @@ public class MainActivity extends AppCompatActivity implements
         this.clickedYearId = year;
         this.clickedYearNumber = num;
         this.displayView(Fragments.SETSEARCH, true);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        FirebaseDatabase.getInstance().goOffline();
     }
 
     @Override

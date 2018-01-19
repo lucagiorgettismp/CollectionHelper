@@ -16,17 +16,19 @@ public class User {
     private String country = null;
     private int latitude = 0;
     private int longitude = 0;
+    private boolean facebook = false;
 
     public User() {
     }
 
-    public User(String name, String surname, String email, String username, String date, String country) {
+    public User(String name, String surname, String email, String username, String date, String country, Boolean facebook) {
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.username = username;
         this.birthday = date;
         this.country = country;
+        this.facebook = facebook;
     }
 
     public String getName() {
@@ -59,5 +61,9 @@ public class User {
 
     public int getLongitude() {
         return longitude;
+    }
+
+    public boolean isFacebook() {
+        return facebook;
     }
 }
