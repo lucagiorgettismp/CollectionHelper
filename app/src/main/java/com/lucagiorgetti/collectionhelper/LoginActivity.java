@@ -72,11 +72,13 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onCancel() {
                 Log.d("FACEBOOK", "facebook:onCancel");
+                progressBar.setVisibility(View.INVISIBLE);
             }
 
             @Override
             public void onError(FacebookException error) {
                 Log.d("FACEBOOK", "facebook:onError", error);
+                progressBar.setVisibility(View.INVISIBLE);
             }
         });
         facebookLogin.setOnClickListener(new View.OnClickListener() {
