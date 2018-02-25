@@ -1,20 +1,11 @@
 package com.lucagiorgetti.collectionhelper;
 
 import android.app.DatePickerDialog;
-import android.content.Intent;
-
-import java.util.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
-
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Layout;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -29,13 +20,14 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.lucagiorgetti.collectionhelper.listenerInterfaces.OnGetDataListener;
-import com.lucagiorgetti.collectionhelper.model.User;
 import com.mikelau.countrypickerx.Country;
 import com.mikelau.countrypickerx.CountryPickerCallbacks;
 import com.mikelau.countrypickerx.CountryPickerDialog;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 /**
  * Allows user to get registered.

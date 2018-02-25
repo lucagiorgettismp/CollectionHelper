@@ -315,7 +315,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onStart() {
         super.onStart();
-        FirebaseDatabase.getInstance().goOnline();
+        // FirebaseDatabase.getInstance().goOnline();
         fireAuth.addAuthStateListener(fireAuthStateListener);
     }
 
@@ -325,7 +325,7 @@ public class MainActivity extends AppCompatActivity implements
         if (fireAuthStateListener != null) {
             fireAuth.removeAuthStateListener(fireAuthStateListener);
         }
-        FirebaseDatabase.getInstance().goOffline();
+        // FirebaseDatabase.getInstance().goOffline();
     }
 
     @Override

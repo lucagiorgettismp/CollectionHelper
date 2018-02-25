@@ -1,8 +1,10 @@
 package com.lucagiorgetti.collectionhelper;
 
+import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -45,6 +47,36 @@ public class DatabaseUtility {
         return mDatabase;
     }
 
+    public static void checkUserExisting(final String email, String nameSurname, final Activity activity, final Context context) {
+        dbRef = getDatabase().getReference();
+        String fullName[] = nameSurname.split(" ", 2);
+        final String facebook_name = fullName[0];
+        final String emailCod = email.replaceAll("\\.", ",");
+
+        final String facebook_surname = fullName[1];
+
+        dbRef.child("emails").child(emailCod).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    // utente già registrato
+                    SystemUtility.openNewActivityWithFinishing(activity, context, MainActivity.class, null);
+                } else {
+                    Bundle b = new Bundle();
+                    b.putInt("facebook", 1);
+                    b.putString("name", facebook_name);
+                    b.putString("surname", facebook_surname);
+                    b.putString("email", email);
+                    SystemUtility.openNewActivityWithFinishing(activity, context, MainActivity.class, b);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
     static void getCurrentUser(final OnGetDataListener listen, FirebaseAuth fireAuth) {
         listen.onStart();
         dbRef = getDatabase().getReference();
@@ -79,6 +111,7 @@ public class DatabaseUtility {
     }
 
     static void addMissing(String username, String surpId) {
+        dbRef = getDatabase().getReference();
         dbRef.child("missings").child(username).child(surpId).setValue(true);
     }
 

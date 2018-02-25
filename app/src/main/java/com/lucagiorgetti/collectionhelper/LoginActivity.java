@@ -29,11 +29,6 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 /**
  * Activity for loggin user into App.
@@ -215,7 +210,7 @@ public class LoginActivity extends AppCompatActivity {
                         }else{
                             String name=task.getResult().getUser().getDisplayName();
                             String email=task.getResult().getUser().getEmail();
-                            checkUserExisting(email, name);
+                            DatabaseUtility.checkUserExisting(email, name, LoginActivity.this, getApplicationContext());
                         }
 
                         progressBar.setVisibility(View.INVISIBLE);
@@ -223,37 +218,7 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
-     private void checkUserExisting(final String email, String nameSurname) {
-         FirebaseDatabase database = DatabaseUtility.getDatabase();
-         DatabaseReference emails = database.getReference("emails");
-         final String emailCod = email.replaceAll("\\.", ",");
 
-         String fullName[] = nameSurname.split(" ", 2);
-         final String facebook_name = fullName[0];
-         final String facebook_surname = fullName[1];
-
-         emails.addListenerForSingleValueEvent(new ValueEventListener() {
-             @Override
-             public void onDataChange(DataSnapshot snapshot) {
-                 if (snapshot.hasChild(emailCod)) {
-                     // utente già registrato
-                     SystemUtility.openNewActivityWithFinishing(LoginActivity.this, getApplicationContext(), MainActivity.class, null);
-                 } else {
-                     Bundle b = new Bundle();
-                     b.putInt("facebook", 1);
-                     b.putString("name", facebook_name);
-                     b.putString("surname", facebook_surname);
-                     b.putString("email", email);
-                     SystemUtility.openNewActivityWithFinishing(LoginActivity.this, getApplicationContext(), MainActivity.class, b);
-                 }
-             }
-
-             @Override
-             public void onCancelled(DatabaseError databaseError) {
-
-             }
-         });
-    }
 
     // Override the onActivityResult method and pass its parameters to the callbackManager//
     @Override
