@@ -77,6 +77,7 @@ public class DatabaseUtility {
             }
         });
     }
+
     static void getCurrentUser(final OnGetDataListener listen, FirebaseAuth fireAuth) {
         listen.onStart();
         dbRef = getDatabase().getReference();
@@ -524,5 +525,13 @@ public class DatabaseUtility {
                     }
                 });
         listener.onFailure();
+    }
+
+    public static void closeConnection(){
+        getDatabase().goOffline();
+    }
+
+    public static void openConnection(){
+        getDatabase().goOnline();
     }
 }

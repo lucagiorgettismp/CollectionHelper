@@ -60,4 +60,44 @@ public final class Colors {
         }
         return c;
     }
+
+    public static int getDarkHexColor(String color){
+        int c = -2;
+        switch (color){
+            case LIGHT_BLUE:
+                c = R.color.DarkLightBluSet;
+                break;
+            case BLUE:
+                c = R.color.DarkBlueSet;
+                break;
+            case RED:
+                c = R.color.DarkRedSet;
+                break;
+            case ORANGE:
+                c = R.color.DarkOrangeSet;
+                break;
+            case PURPLE:
+                c = R.color.DarkPurpleSet;
+                break;
+            case PINK:
+                c = R.color.DarkPinkSet;
+                break;
+            case YELLOW:
+                c = R.color.DarkYellowSet;
+                break;
+            case GREEN:
+                c = R.color.DarkGreenSet;
+                break;
+            case LIGHT_GREEN:
+                c = R.color.DarkLightGreenSet;
+                break;
+            case GREY:
+                c = R.color.DarkGreySet;
+                break;
+            case BROWN:
+                c = R.color.DarkBrownSet;
+                break;
+        }
+        return c;
+    }
 }

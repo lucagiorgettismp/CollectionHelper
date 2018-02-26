@@ -3,26 +3,37 @@
     <color name="colorPrimary">#000367</color>
     <color name="colorPrimaryDark">#000248</color>
     <color name="colorAccent">#000367</color>
-
     <color name="accent_material_light">#0297cf</color>
     <color name="facebookColor">#001fb9</color>
     <color name="cardBackground">#ffffff</color>
     <color name="disabledIcon">#ffd6d7d7</color>
-
-    <color name="GreySet">#bdbdbd</color>
-    <color name="LightBluSet">#39acdd</color>
-    <color name="BlueSet">#003dd9</color>
-    <color name="RedSet">#f73b3b</color>
-    <color name="OrangeSet">@android:color/holo_orange_light</color>
-    <color name="PurpleSet">@android:color/holo_purple</color>
-    <color name="PinkSet">#f8bbd0</color>
-    <color name="YellowSet">#ffee58</color>
-    <color name="GreenSet">#388e3c</color>
-    <color name="LightGreenSet">#0be407</color>
-    <color name="BrownSet">#d84315</color>
     <color name="AppBackground">#e0e0e0</color>
 
-    <color name="SwipeRed">#ff0000</color>
+    <color name="GreySet">#bdbdbd</color>
+    <color name="DarkGreySet">#a4a4a4</color>
+    <color name="LightBluSet">#39acdd</color>
+    <color name="DarkLightBluSet">#2192c2</color>
+    <color name="BlueSet">#003dd9</color>
+    <color name="DarkBlueSet">#002fa6</color>
+    <color name="RedSet">#f73b3b</color>
+    <color name="DarkRedSet">#f61a1a</color>
+    <color name="OrangeSet">#FFBB33</color>
+    <color name="DarkOrangeSet">#ee9f00</color>
+    <color name="PurpleSet">#AA66CC</color>
+    <color name="DarkPurpleSet">#9540bf</color>
+    <color name="PinkSet">#f8bbd0</color>
+    <color name="DarkPinkSet">#f59cbb</color>
+    <color name="YellowSet">#ffee58</color>
+    <color name="DarkYellowSet">#ffe925</color>
+    <color name="GreenSet">#388e3c</color>
+    <color name="DarkGreenSet">#2e7632</color>
+    <color name="LightGreenSet">#0be407</color>
+    <color name="DarkLightGreenSet">#09c306</color>
+    <color name="BrownSet">#d84315</color>
+    <color name="DarkBrownSet">#b93912</color>
+
+
+    <color name="SwipeRed">#f11</color>
     <color name="SwipeGreen">#04ba01</color>
 
 </resources>

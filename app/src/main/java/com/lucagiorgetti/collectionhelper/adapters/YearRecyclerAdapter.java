@@ -37,19 +37,15 @@ public class YearRecyclerAdapter extends RecyclerView.Adapter<YearRecyclerAdapte
         Year year = years.get(position);
         holder.vName.setText(String.valueOf(year.getYear()));
 
-        holder.vLayout.setBackgroundColor(ContextCompat.getColor(ctx, Colors.getHexColor(year.getProducer_color())));
         holder.vName.setTextColor(ContextCompat.getColor(ctx, R.color.cardBackground));
-
-/*        switch (position %2){
+        switch (position%2){
             case 0:
                 holder.vLayout.setBackgroundColor(ContextCompat.getColor(ctx, Colors.getHexColor(year.getProducer_color())));
-                holder.vName.setTextColor(ContextCompat.getColor(ctx, R.color.cardBackground));
                 break;
             case 1:
-                holder.vLayout.setBackgroundColor(ContextCompat.getColor(ctx, R.color.cardBackground));
-                holder.vName.setTextColor(ContextCompat.getColor(ctx, Colors.getHexColor(year.getProducer_color())));
+                holder.vLayout.setBackgroundColor(ContextCompat.getColor(ctx, Colors.getDarkHexColor(year.getProducer_color())));
                 break;
-        }*/
+        }
     }
 
     @Override
