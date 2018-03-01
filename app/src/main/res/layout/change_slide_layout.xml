@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20sp"
+        android:layout_marginTop="40sp"
+        android:paddingEnd="20sp"
+        android:paddingStart="20sp"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/onboarding_icon"
+            android:paddingEnd="10sp"
+            android:paddingStart="10sp"
+            android:paddingTop="30sp"
+            android:scaleType="fitStart"
+            app:srcCompat="@drawable/onboard_change" />
+
+        <TextView
+            android:id="@+id/add_missing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:text="@string/remove_from_list"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/add_double"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/add_missing"
+            android:layout_marginTop="80dp"
+            android:paddingEnd="20sp"
+            android:paddingStart="20sp"
+            android:text="@string/check_if_someone_has_what_you_need"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/send_mail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/image"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="54sp"
+            android:layout_marginEnd="40sp"
+            android:paddingEnd="20sp"
+            android:paddingStart="20sp"
+            android:text="@string/send_an_e_mail"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            android:textSize="24sp" />
+
+    </RelativeLayout>
+
+</LinearLayout>

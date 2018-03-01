@@ -57,4 +57,18 @@ public class SystemUtility {
         applicationContext.startActivity(i);
         activity.finish();
     }
+
+    public static void firstTimeOpeningApp(Activity activity, Context applicationContext, Class<?> cls, Bundle b) {
+        openNewActivityWithFinishing(activity, applicationContext, cls, b);
+        openNewActivity(applicationContext, OnboardActivity.class, null);
+    }
+
+    public static void openNewActivity(Context applicationContext, Class<?> cls, Bundle b) {
+        Intent i = new Intent(applicationContext, cls);
+
+        if (b != null){
+            i.putExtras(b);
+        }
+        applicationContext.startActivity(i);
+    }
 }

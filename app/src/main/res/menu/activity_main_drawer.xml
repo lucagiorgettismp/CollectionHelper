@@ -10,10 +10,6 @@
             android:id="@+id/nav_doubles"
             android:icon="@drawable/ic_double"
             android:title="@string/doubles" />
-        <!--<item
-            android:id="@+id/nav_collectors"
-            android:icon="@drawable/ic_location"
-            android:title="Vicino a me" />-->
     </group>
 
     <item android:title="@string/user_group">
@@ -22,6 +18,10 @@
                 android:id="@+id/nav_settings"
                 android:icon="@drawable/ic_settings"
                 android:title="@string/settings" />
+            <item
+                android:id="@+id/nav_tutorial"
+                android:icon="@drawable/ic_carousel"
+                android:title="@string/tutorial" />
             <item
                 android:id="@+id/nav_logout"
                 android:icon="@drawable/ic_logout"

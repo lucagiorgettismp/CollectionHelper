@@ -528,10 +528,10 @@ public class DatabaseUtility {
     }
 
     public static void closeConnection(){
-        getDatabase().goOffline();
+       // getDatabase().goOffline();
     }
 
     public static void openConnection(){
-        getDatabase().goOnline();
+       //  getDatabase().goOnline();
     }
 }

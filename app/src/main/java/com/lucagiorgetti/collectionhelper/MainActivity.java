@@ -236,8 +236,8 @@ public class MainActivity extends AppCompatActivity implements
         } else if (id == R.id.nav_doubles) {
             this.clearBackStack();
             displayView(Fragments.DOUBLES, false);
-/*        } else if (id == R.id.nav_collectors) {
-            displayView(Fragments.COLLECTORS, false);*/
+        } else if (id == R.id.nav_tutorial) {
+            SystemUtility.openNewActivity(getApplicationContext(), OnboardActivity.class, null);
         } else if (id == R.id.nav_logout) {
             logout();
         } else if (id == R.id.nav_settings) {

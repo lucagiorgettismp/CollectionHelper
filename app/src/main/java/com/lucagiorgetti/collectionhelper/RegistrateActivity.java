@@ -117,7 +117,8 @@ public class RegistrateActivity extends AppCompatActivity{
                 final String nation = edtNation.getText().toString();
                 DatabaseUtility.generateUser(name, surname, email, username, birthDate, nation, true);
 
-                SystemUtility.openNewActivityWithFinishing(RegistrateActivity.this, getApplicationContext(), MainActivity.class, null);
+                SystemUtility.firstTimeOpeningApp(RegistrateActivity.this, getApplicationContext(), MainActivity.class, null);
+
             }
         });
 
@@ -166,7 +167,7 @@ public class RegistrateActivity extends AppCompatActivity{
                                                 fireAuth.signInWithEmailAndPassword(email, password);
                                                 progress.setVisibility(View.INVISIBLE);
 
-                                                SystemUtility.openNewActivityWithFinishing(RegistrateActivity.this, getApplicationContext(), MainActivity.class, null);
+                                                SystemUtility.firstTimeOpeningApp(RegistrateActivity.this, getApplicationContext(), MainActivity.class, null);
                                             }
                                         }
                                     });

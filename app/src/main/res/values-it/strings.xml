@@ -59,4 +59,18 @@
     <string name="list_is_empty">La lista è vuota. Aggiungi elementi cliccando il pulsante!</string>
     <string name="network_not_available">La rete non è disponibile, controlla la connessione ad internet</string>
     <string name="save">Salva</string>
+    <string name="back">Indietro</string>
+    <string name="finish">Fine</string>
+    <string name="catalog">Catalogo</string>
+    <string name="onboarding_catalog_content">Naviga in un catalogo sempre in crescita</string>
+    <string name="create_lists">Crea le tue liste</string>
+    <string name="make_exchange">Scambia</string>
+    <string name="onboarding_search_content">Cerca per codice, descrizione e serie</string>
+    <string name="onboarding_menu_content">Accedi alla lista dei doppi e alle altre funzionalità</string>
+    <string name="onboarding_icon">icona del tutorial</string>
+    <string name="add_to_missings">Aggiungi ai mancanti</string>
+    <string name="add_to_doubles">Aggiungi ai doppi</string>
+    <string name="remove_from_list">Rimuovi dalla lista</string>
+    <string name="check_if_someone_has_what_you_need">Controlla se qualcuno ha quello che cerchi</string>
+    <string name="send_an_e_mail">Invia una e-mail</string>
 </resources>
