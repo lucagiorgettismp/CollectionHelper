@@ -11,12 +11,12 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.lucagiorgetti.surprix.DatabaseUtility;
-import com.lucagiorgetti.surprix.SystemUtility;
+import com.lucagiorgetti.surprix.utility.DatabaseUtility;
+import com.lucagiorgetti.surprix.utility.SystemUtility;
 import com.lucagiorgetti.surprix.listenerInterfaces.FragmentListenerInterface;
 import com.lucagiorgetti.surprix.listenerInterfaces.OnGetListListener;
 import com.lucagiorgetti.surprix.R;
-import com.lucagiorgetti.surprix.RecyclerItemClickListener;
+import com.lucagiorgetti.surprix.utility.RecyclerItemClickListener;
 import com.lucagiorgetti.surprix.adapters.YearRecyclerAdapter;
 import com.lucagiorgetti.surprix.model.Year;
 
@@ -30,12 +30,11 @@ public class YearsFragment extends Fragment{
     private RecyclerView recyclerView;
     private Context mContext;
     private ProgressBar progress;
-    private String producer_id = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View layout = inflater.inflate(R.layout.year_select_fragment, container, false);
-        this.producer_id = this.getArguments().getString("producer_id");
+        View layout = inflater.inflate(R.layout.year_fragment, container, false);
+        String producer_id = this.getArguments().getString("producer_id");
         progress = (ProgressBar) layout.findViewById(R.id.year_loading);
         recyclerView = (RecyclerView) layout.findViewById(R.id.year_recycler);
         recyclerView.setHasFixedSize(true);

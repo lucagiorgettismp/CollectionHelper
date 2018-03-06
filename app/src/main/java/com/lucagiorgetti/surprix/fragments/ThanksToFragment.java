@@ -5,23 +5,16 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
-import android.widget.Toast;
 
-import com.lucagiorgetti.surprix.DatabaseUtility;
 import com.lucagiorgetti.surprix.R;
-import com.lucagiorgetti.surprix.RecyclerItemClickListener;
-import com.lucagiorgetti.surprix.SystemUtility;
+import com.lucagiorgetti.surprix.utility.RecyclerItemClickListener;
+import com.lucagiorgetti.surprix.utility.SystemUtility;
 import com.lucagiorgetti.surprix.adapters.ThanksRecyclerAdapter;
-import com.lucagiorgetti.surprix.adapters.YearRecyclerAdapter;
 import com.lucagiorgetti.surprix.listenerInterfaces.FragmentListenerInterface;
-import com.lucagiorgetti.surprix.listenerInterfaces.OnGetListListener;
 import com.lucagiorgetti.surprix.model.Sponsor;
-import com.lucagiorgetti.surprix.model.Year;
 
 import java.util.ArrayList;
 
@@ -30,13 +23,12 @@ public class ThanksToFragment extends Fragment{
 
     ArrayList<Sponsor> sponsors = new ArrayList<>();
     private ThanksRecyclerAdapter mAdapter;
-    private RecyclerView recyclerView;
     private Context mContext;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.thanks_fragment, container, false);
-        recyclerView = (RecyclerView) layout.findViewById(R.id.thanks_recycler);
+        RecyclerView recyclerView = (RecyclerView) layout.findViewById(R.id.thanks_recycler);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mContext);
         recyclerView.setLayoutManager(layoutManager);

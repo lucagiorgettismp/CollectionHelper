@@ -10,6 +10,7 @@ import com.lucagiorgetti.surprix.model.Set;
 import com.lucagiorgetti.surprix.model.Surprise;
 import com.lucagiorgetti.surprix.model.User;
 import com.lucagiorgetti.surprix.model.Year;
+import com.lucagiorgetti.surprix.utility.DatabaseUtility;
 
 import java.util.Locale;
 

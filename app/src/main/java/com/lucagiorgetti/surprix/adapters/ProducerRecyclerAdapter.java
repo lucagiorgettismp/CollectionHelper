@@ -33,7 +33,7 @@ public class ProducerRecyclerAdapter extends RecyclerView.Adapter<ProducerRecycl
 
     @Override
     public SetViewHolder onCreateViewHolder(ViewGroup parent, int i) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.producer_select_element, parent,  false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.producer_element, parent,  false);
         return new SetViewHolder(v);
     }
 

@@ -11,7 +11,7 @@
     <string name="change_password">Change Password</string>
     <string name="surprise">Surprise</string>
     <string name="who_have_what_you_miss">Users who have you are looking for</string>
-    <string name="nobody_have_what_you_miss">Unfortunately, nobody have the surprise you are looking for</string>
+    <string name="nobody_have_what_you_miss">Unfortunately, nobody have what you are looking for</string>
     <string name="username" translatable="false">Username</string>
     <string name="sign_up">Sign Up</string>
     <string name="login" translatable="false">Login</string>
@@ -59,7 +59,6 @@
     <string name="dialog_negative">Discard</string>
     <string name="dialog_add_year_title">Add year</string>
     <string name="dialog_add_year_text">Do you want to add to missings the complete year</string>
-    <string name="dialog_delete_user_title">Delete account</string>
     <string name="dialod_delete_user_text">Do you want to delete you user account finally?</string>
     <string name="dateFormat" translatable="false">dd/MM/yyyy</string>
     <string name="welcome_info">Welcome in Surprix!</string>
@@ -71,7 +70,7 @@
     <string name="network_not_available">Network not available, check your internet connection</string>
     <string name="list_is_empty">List is empty. You can add items by clicking the add button.</string>
     <string name="save">Save</string>
-    <string name="tutorial" translatable="false">Tutorial</string>
+    <string name="tutorial">Tutorial</string>
     <string name="next">Next</string>
     <string name="back">Back</string>
     <string name="finish">Finish</string>
@@ -80,13 +79,14 @@
     <string name="create_lists">Create your lists</string>
     <string name="make_exchange">Make an exchange</string>
     <string name="onboarding_search_content">Search by code, description and set</string>
-    <string name="menu" translatable="false">Menu</string>
+    <string name="menu">Menu</string>
     <string name="onboarding_menu_content">Navigate to doubles and other functions</string>
-    <string name="onboarding_icon">onboardin icon</string>
+    <string name="onboarding_icon">Onboarding icon</string>
     <string name="add_to_missings">Add to missings</string>
     <string name="add_to_doubles">Add to doubles</string>
     <string name="remove_from_list">Remove from list</string>
     <string name="check_if_someone_has_what_you_need">Check if someone has what you need</string>
     <string name="send_an_e_mail">Send an e-mail</string>
     <string name="thanks_to">Thanks to</string>
+    <string name="thanks_to_title">Thanks to...</string>
 </resources>

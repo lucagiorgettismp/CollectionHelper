@@ -28,7 +28,7 @@ public class YearRecyclerAdapter extends RecyclerView.Adapter<YearRecyclerAdapte
 
     @Override
     public SetViewHolder onCreateViewHolder(ViewGroup parent, int i) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.year_select_element, parent,  false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.year_element, parent,  false);
         return new SetViewHolder(v);
     }
 

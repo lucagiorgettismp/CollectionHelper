@@ -1,7 +1,6 @@
 package com.lucagiorgetti.surprix.model;
 
 import android.graphics.drawable.Drawable;
-import android.media.Image;
 
 /**
  * Created by Utente on 06/03/2018.
@@ -32,23 +31,11 @@ public class Sponsor {
         return banner;
     }
 
-    public void setBanner(Drawable banner) {
-        this.banner = banner;
-    }
-
     public boolean isClickable() {
         return clickable;
     }
 
-    public void setClickable(boolean clickable) {
-        this.clickable = clickable;
-    }
-
     public String getUrl() {
         return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
     }
 }

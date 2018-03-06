@@ -12,7 +12,7 @@ import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.lucagiorgetti.surprix.DatabaseUtility;
+import com.lucagiorgetti.surprix.utility.DatabaseUtility;
 import com.lucagiorgetti.surprix.listenerInterfaces.FragmentListenerInterface;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.adapters.SetItemAdapter;
@@ -32,7 +32,7 @@ public class SetItemsFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View layout = inflater.inflate(R.layout.set_items_fragment, container, false);
+        final View layout = inflater.inflate(R.layout.set_detail_fragment, container, false);
 
         String setClicked = getArguments().getString("set");
         progress = (ProgressBar) layout.findViewById(R.id.items_loading);

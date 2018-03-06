@@ -15,11 +15,11 @@ import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.Toast;
 
-import com.lucagiorgetti.surprix.DatabaseUtility;
-import com.lucagiorgetti.surprix.SystemUtility;
+import com.lucagiorgetti.surprix.utility.DatabaseUtility;
+import com.lucagiorgetti.surprix.utility.SystemUtility;
 import com.lucagiorgetti.surprix.listenerInterfaces.FragmentListenerInterface;
 import com.lucagiorgetti.surprix.R;
-import com.lucagiorgetti.surprix.RecyclerItemClickListener;
+import com.lucagiorgetti.surprix.utility.RecyclerItemClickListener;
 import com.lucagiorgetti.surprix.adapters.SetRecyclerAdapter;
 import com.lucagiorgetti.surprix.listenerInterfaces.OnGetListListener;
 import com.lucagiorgetti.surprix.model.Set;
@@ -39,7 +39,7 @@ public class SearchSetsFragment extends Fragment implements SearchView.OnQueryTe
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         String yearId = getArguments().getString("yearId");
-        View layout = inflater.inflate(R.layout.set_search_fragment, container, false);
+        View layout = inflater.inflate(R.layout.set_fragment, container, false);
         progress = (ProgressBar) layout.findViewById(R.id.search_set_loading);
         recyclerView = (RecyclerView) layout.findViewById(R.id.set_search_recycler);
         recyclerView.setHasFixedSize(true);

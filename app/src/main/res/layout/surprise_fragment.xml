@@ -52,7 +52,7 @@ tools:context=".fragments.MissingFragment">
             android:cropToPadding="false"
             android:scaleType="fitCenter"
             android:tint="@color/cardview_dark_background"
-            app:srcCompat="@drawable/ic_playlist_add_black_24dp" />
+            app:srcCompat="@drawable/ic_playlist_add" />
 
         <TextView
             android:id="@+id/empty_list_label"

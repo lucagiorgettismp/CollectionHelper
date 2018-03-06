@@ -1,4 +1,4 @@
-package com.lucagiorgetti.surprix;
+package com.lucagiorgetti.surprix.views;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
@@ -37,6 +37,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 
+import com.lucagiorgetti.surprix.Initializer;
+import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.fragments.ThanksToFragment;
 import com.lucagiorgetti.surprix.fragments.UserSettingsFragment;
 import com.lucagiorgetti.surprix.listenerInterfaces.FragmentListenerInterface;
@@ -53,6 +55,8 @@ import com.lucagiorgetti.surprix.model.Colors;
 import com.lucagiorgetti.surprix.model.Fragments;
 import com.lucagiorgetti.surprix.model.Surprise;
 import com.lucagiorgetti.surprix.model.User;
+import com.lucagiorgetti.surprix.utility.DatabaseUtility;
+import com.lucagiorgetti.surprix.utility.SystemUtility;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -120,8 +124,8 @@ public class MainActivity extends AppCompatActivity implements
                 @Override
                 public void onSuccess(DataSnapshot dataSnapshot) {
                     currentUser = dataSnapshot.getValue(User.class);
-                    //Initializer init = new Initializer(currentUser);
-                    //init.insertData();
+                    // Initializer init = new Initializer(currentUser);
+                    // init.insertData();
                     nav_user.setText(currentUser.getUsername());
                     nav_email.setText(currentUser.getEmail().replaceAll(",", "\\."));
                     displayView(Fragments.MISSINGS, false);
@@ -360,7 +364,7 @@ public class MainActivity extends AppCompatActivity implements
     @SuppressLint("InflateParams")
     @Override
     public void onSwipeShowDoublesOwner(final Surprise missing) {
-        final View view = getLayoutInflater().inflate(R.layout.doubles_dialog, null);
+        final View view = getLayoutInflater().inflate(R.layout.dialog_doubles, null);
         TextView dialogTitle = (TextView) view.findViewById(R.id.doubles_dialog_title);
         final TextView infoTxv = (TextView) view.findViewById(R.id.doubles_dialog_info);
         final TextView emptyListTxv = (TextView) view.findViewById(R.id.doubles_dialog_empty_list);
@@ -560,7 +564,7 @@ public class MainActivity extends AppCompatActivity implements
     @SuppressLint("InflateParams")
     @Override
     public void openChangePwdDialog() {
-        final View view = getLayoutInflater().inflate(R.layout.change_password, null);
+        final View view = getLayoutInflater().inflate(R.layout.dialog_change_password, null);
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setView(view);
@@ -615,7 +619,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void openDeleteUserDialog() {
         final AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
-        alertDialog.setTitle(getString(R.string.dialog_delete_user_title));
+        alertDialog.setTitle(getString(R.string.delete_account));
         alertDialog.setMessage(getString(R.string.dialod_delete_user_text));
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.dialog_positive),
                 new DialogInterface.OnClickListener() {
@@ -651,13 +655,12 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onBannerClicked(String url) {
-        Toast.makeText(this,"Mi hai cliccato!!!", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void setThanksToTitle() {
         if (getSupportActionBar() != null){
-            getSupportActionBar().setTitle("Thanks to..");
+            getSupportActionBar().setTitle(R.string.thanks_to_title);
         }
     }
 

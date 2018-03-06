@@ -1,4 +1,4 @@
-package com.lucagiorgetti.surprix;
+package com.lucagiorgetti.surprix.views;
 
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -9,7 +9,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.lucagiorgetti.surprix.adapters.SliderAdapter;
+import com.lucagiorgetti.surprix.R;
+import com.lucagiorgetti.surprix.adapters.OnboardingAdapter;
 
 public class OnboardActivity extends AppCompatActivity {
     private ViewPager mSlideViewPager;
@@ -32,7 +33,7 @@ public class OnboardActivity extends AppCompatActivity {
         nextButton = (Button) findViewById(R.id.next);
         backButton = (Button) findViewById(R.id.previous);
 
-        SliderAdapter sliderAdapter = new SliderAdapter(this, slideCount);
+        OnboardingAdapter sliderAdapter = new OnboardingAdapter(this, slideCount);
         mSlideViewPager.setAdapter(sliderAdapter);
         addDotsIndicator(0);
 

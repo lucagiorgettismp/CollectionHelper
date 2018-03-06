@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_settings">Impostazioni</string>
-    <string name="added_to_doubles">Aggiungi ai doppi</string>
-    <string name="added_to_missings">Aggiungi ai mancanti</string>
+    <string name="added_to_doubles">Aggiunto ai doppi</string>
+    <string name="added_to_missings">Aggiunto ai mancanti</string>
     <string name="auth_failed">Errore di autenticazione</string>
     <string name="birthday">Data di nascita</string>
     <string name="change_password">Cambia password</string>
@@ -46,7 +46,6 @@
     <string name="dialog_add_set_title">Aggiungi serie</string>
     <string name="dialog_add_year_text">Vuoi aggiugere ai mancanti l\'anno</string>
     <string name="dialog_add_year_title">Aggiungi anno</string>
-    <string name="dialog_delete_user_title">Elimina account</string>
     <string name="dialog_negative">Annulla</string>
     <string name="dialog_positive">Ok</string>
     <string name="password_lenght">La password deve essere lunga almeno 6 caratteri</string>
@@ -67,10 +66,14 @@
     <string name="make_exchange">Scambia</string>
     <string name="onboarding_search_content">Cerca per codice, descrizione e serie</string>
     <string name="onboarding_menu_content">Accedi alla lista dei doppi e alle altre funzionalità</string>
-    <string name="onboarding_icon">icona del tutorial</string>
+    <string name="onboarding_icon">Icona del tutorial</string>
     <string name="add_to_missings">Aggiungi ai mancanti</string>
     <string name="add_to_doubles">Aggiungi ai doppi</string>
     <string name="remove_from_list">Rimuovi dalla lista</string>
     <string name="check_if_someone_has_what_you_need">Controlla se qualcuno ha quello che cerchi</string>
     <string name="send_an_e_mail">Invia una e-mail</string>
+    <string name="thanks_to">Grazie a</string>
+    <string name="thanks_to_title">Grazie a...</string>
+    <string name="menu">Menu</string>
+    <string name="tutorial" translatable="false">Guida</string>
 </resources>

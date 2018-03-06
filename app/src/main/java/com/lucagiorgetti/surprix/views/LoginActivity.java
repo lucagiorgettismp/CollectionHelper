@@ -1,4 +1,4 @@
-package com.lucagiorgetti.surprix;
+package com.lucagiorgetti.surprix.views;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -29,6 +29,9 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.lucagiorgetti.surprix.R;
+import com.lucagiorgetti.surprix.utility.DatabaseUtility;
+import com.lucagiorgetti.surprix.utility.SystemUtility;
 
 /**
  * Activity for loggin user into App.
@@ -44,7 +47,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login);
+        setContentView(R.layout.activity_login);
 
         progressBar = (ProgressBar) findViewById(R.id.login_loading);
         progressBar.getIndeterminateDrawable().setColorFilter(Color.parseColor("#ffffff"),
@@ -110,7 +113,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @SuppressLint("InflateParams")
     private void openLogingDialog() {
-        final View view = getLayoutInflater().inflate(R.layout.login_dialog, null);
+        final View view = getLayoutInflater().inflate(R.layout.dialog_login_user, null);
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(view);
@@ -164,7 +167,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @SuppressLint("InflateParams")
     private void openResetPwdDialog() {
-        final View view = getLayoutInflater().inflate(R.layout.reset_password, null);
+        final View view = getLayoutInflater().inflate(R.layout.dialog_password_reset, null);
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(view);

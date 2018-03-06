@@ -1,4 +1,4 @@
-package com.lucagiorgetti.surprix;
+package com.lucagiorgetti.surprix.views;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
@@ -20,7 +20,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
+import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.listenerInterfaces.OnGetDataListener;
+import com.lucagiorgetti.surprix.utility.DatabaseUtility;
+import com.lucagiorgetti.surprix.utility.SystemUtility;
 import com.mikelau.countrypickerx.Country;
 import com.mikelau.countrypickerx.CountryPickerCallbacks;
 import com.mikelau.countrypickerx.CountryPickerDialog;
@@ -61,7 +64,7 @@ public class RegistrateActivity extends AppCompatActivity{
         setSupportActionBar(toolbar);
 
         fireAuth = FirebaseAuth.getInstance();
-        setContentView(R.layout.registration);
+        setContentView(R.layout.activity_registration);
 
         edtEmail = (EditText) findViewById(R.id.edit_reg_email);
         edtPassword = (EditText) findViewById(R.id.edit_reg_password);

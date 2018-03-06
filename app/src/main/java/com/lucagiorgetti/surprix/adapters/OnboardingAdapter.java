@@ -15,13 +15,13 @@ import com.lucagiorgetti.surprix.R;
  * Created by Luca on 27/02/2018.
  */
 
-public class SliderAdapter extends PagerAdapter {
+public class OnboardingAdapter extends PagerAdapter {
 
     private Context mContext;
 
     private int numSlide;
 
-    public SliderAdapter(Context mContext, int slideCount) {
+    public OnboardingAdapter(Context mContext, int slideCount) {
         this.mContext = mContext;
         this.numSlide = slideCount;
     }
@@ -46,7 +46,7 @@ public class SliderAdapter extends PagerAdapter {
         ImageView imageView;
         switch (pos){
             case 1:
-                view = layoutInflater.inflate(R.layout.default_slide_layout, container, false);
+                view = layoutInflater.inflate(R.layout.onboarding_default, container, false);
                 title = (TextView) view.findViewById(R.id.title);
                 content = (TextView) view.findViewById(R.id.content);
                 imageView = (ImageView) view.findViewById(R.id.image);
@@ -55,17 +55,17 @@ public class SliderAdapter extends PagerAdapter {
                 imageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.onboard_catalog));
                 break;
             case 2:
-                view = layoutInflater.inflate(R.layout.adding_slide_layout, container, false);
+                view = layoutInflater.inflate(R.layout.onboarding_adding, container, false);
                 title= (TextView) view.findViewById(R.id.title);
                 title.setText(R.string.create_lists);
                 break;
             case 3:
-                view = layoutInflater.inflate(R.layout.change_slide_layout, container, false);
+                view = layoutInflater.inflate(R.layout.onboarding_exchange, container, false);
                 title = (TextView) view.findViewById(R.id.title);
                 title.setText(R.string.make_exchange);
                 break;
             case 4:
-                view = layoutInflater.inflate(R.layout.default_slide_layout, container, false);
+                view = layoutInflater.inflate(R.layout.onboarding_default, container, false);
                 title = (TextView) view.findViewById(R.id.title);
                 content = (TextView) view.findViewById(R.id.content);
                 imageView =(ImageView) view.findViewById(R.id.image);
@@ -74,7 +74,7 @@ public class SliderAdapter extends PagerAdapter {
                 imageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.onboard_search));
                 break;
             case 5:
-                view = layoutInflater.inflate(R.layout.default_slide_layout, container, false);
+                view = layoutInflater.inflate(R.layout.onboarding_default, container, false);
                 title = (TextView) view.findViewById(R.id.title);
                 content = (TextView) view.findViewById(R.id.content);
                 imageView = (ImageView) view.findViewById(R.id.image);

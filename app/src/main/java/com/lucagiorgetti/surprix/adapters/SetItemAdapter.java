@@ -52,7 +52,7 @@ public class SetItemAdapter extends BaseAdapter {
     }
 
     public View getView(final int position, View v, final ViewGroup parent) {
-        v = inflater.inflate(R.layout.set_items_element, null);
+        v = inflater.inflate(R.layout.set_detail_element, null);
 
         View vLayout = (View) v.findViewById(R.id.layout_item_titlebar);
         TextView vCode = (TextView) v.findViewById(R.id.txv_item_code);

@@ -1,4 +1,4 @@
-package com.lucagiorgetti.surprix;
+package com.lucagiorgetti.surprix.utility;
 
 import android.app.Activity;
 import android.content.Context;
@@ -14,6 +14,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.lucagiorgetti.surprix.views.MainActivity;
 import com.lucagiorgetti.surprix.listenerInterfaces.OnGetListListener;
 import com.lucagiorgetti.surprix.listenerInterfaces.OnGetDataListener;
 import com.lucagiorgetti.surprix.model.Set;
@@ -72,7 +73,7 @@ public class DatabaseUtility {
         });
     }
 
-    static void getCurrentUser(final OnGetDataListener listen, FirebaseAuth fireAuth) {
+    public static void getCurrentUser(final OnGetDataListener listen, FirebaseAuth fireAuth) {
         listen.onStart();
         dbRef = getDatabase().getReference();
         String emailCod = fireAuth.getCurrentUser().getEmail().replaceAll("\\.", ",");
@@ -105,29 +106,29 @@ public class DatabaseUtility {
         });
     }
 
-    static void addMissing(String username, String surpId) {
+    public static void addMissing(String username, String surpId) {
         dbRef = getDatabase().getReference();
         dbRef.child("missings").child(username).child(surpId).setValue(true);
     }
 
-    static void addDouble(String username, String surpId) {
+    public static void addDouble(String username, String surpId) {
         dbRef = getDatabase().getReference();
         dbRef.child("user_doubles").child(username).child(surpId).setValue(true);
         dbRef.child("surprise_doubles").child(surpId).child(username).setValue(true);
     }
 
-    static void removeMissing(String username, String surpId) {
+    public static void removeMissing(String username, String surpId) {
         dbRef = getDatabase().getReference();
         dbRef.child("missings").child(username).child(surpId).setValue(null);
     }
 
-    static void removeDouble(String username, String surpId) {
+    public static void removeDouble(String username, String surpId) {
         dbRef = getDatabase().getReference();
         dbRef.child("user_doubles").child(username).child(surpId).setValue(null);
         dbRef.child("surprise_doubles").child(surpId).child(username).setValue(null);
     }
 
-    static void getDoubleOwners(String surpId, final OnGetListListener<User> listen){
+    public static void getDoubleOwners(String surpId, final OnGetListListener<User> listen){
         listen.onStart();
         dbRef = getDatabase().getReference();
         final ArrayList<User> owners = new ArrayList<>();
@@ -369,7 +370,7 @@ public class DatabaseUtility {
         });
     }
 
-    static void addMissingsFromYear(final String username, String yearId) {
+    public static void addMissingsFromYear(final String username, String yearId) {
         dbRef = getDatabase().getReference();
         dbRef.child("years").child(yearId).child("sets").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -414,7 +415,7 @@ public class DatabaseUtility {
         });
     }
 
-    static void addMissingsFromSet(final String username, String setId) {
+    public static void addMissingsFromSet(final String username, String setId) {
         dbRef = getDatabase().getReference();
         dbRef.child("sets").child(setId).child("surprises").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -444,7 +445,7 @@ public class DatabaseUtility {
         });
     }
 
-    static void generateUser(String name, String surname, String email, String username, String birthDate, String nation, Boolean facebook) {
+    public static void generateUser(String name, String surname, String email, String username, String birthDate, String nation, Boolean facebook) {
         dbRef = getDatabase().getReference();
         String emailCod = email.replaceAll("\\.", ",");
 

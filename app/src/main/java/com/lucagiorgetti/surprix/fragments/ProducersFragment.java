@@ -12,14 +12,14 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
-import com.lucagiorgetti.surprix.DatabaseUtility;
-import com.lucagiorgetti.surprix.SystemUtility;
+import com.lucagiorgetti.surprix.model.Producer;
+import com.lucagiorgetti.surprix.utility.DatabaseUtility;
+import com.lucagiorgetti.surprix.utility.SystemUtility;
 import com.lucagiorgetti.surprix.listenerInterfaces.FragmentListenerInterface;
 import com.lucagiorgetti.surprix.listenerInterfaces.OnGetDataListener;
 import com.lucagiorgetti.surprix.R;
-import com.lucagiorgetti.surprix.RecyclerItemClickListener;
+import com.lucagiorgetti.surprix.utility.RecyclerItemClickListener;
 import com.lucagiorgetti.surprix.adapters.ProducerRecyclerAdapter;
-import com.lucagiorgetti.surprix.model.Producer;
 
 import java.util.ArrayList;
 
@@ -34,7 +34,7 @@ public class ProducersFragment extends Fragment{
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View layout = inflater.inflate(R.layout.producer_select_fragment, container, false);
+        View layout = inflater.inflate(R.layout.producer_fragment, container, false);
         progress = (ProgressBar) layout.findViewById(R.id.prd_loading);
         recyclerView = (RecyclerView) layout.findViewById(R.id.prd_recycler);
         recyclerView.setHasFixedSize(true);

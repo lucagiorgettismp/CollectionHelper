@@ -15,8 +15,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.lucagiorgetti.surprix.DatabaseUtility;
-import com.lucagiorgetti.surprix.SystemUtility;
+import com.lucagiorgetti.surprix.utility.DatabaseUtility;
+import com.lucagiorgetti.surprix.utility.SystemUtility;
 import com.lucagiorgetti.surprix.listenerInterfaces.FragmentListenerInterface;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.model.User;
@@ -44,7 +44,7 @@ public class UserSettingsFragment extends Fragment{
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View layout = inflater.inflate(R.layout.registration, container, false);
+        View layout = inflater.inflate(R.layout.activity_registration, container, false);
         currentUser = listener.getCurrentRetrievedUser();
         EditText edtEmail = (EditText) layout.findViewById(R.id.edit_reg_email);
         EditText edtUsername = (EditText) layout.findViewById(R.id.edit_reg_username);

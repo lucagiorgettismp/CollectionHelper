@@ -1,4 +1,4 @@
-package com.lucagiorgetti.surprix;
+package com.lucagiorgetti.surprix.utility;
 
 import android.app.Activity;
 import android.content.Context;
@@ -9,6 +9,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
+
+import com.lucagiorgetti.surprix.views.OnboardActivity;
+import com.lucagiorgetti.surprix.R;
 
 /**
  * Utility which contain all the implementations of methods which needs a connection with Firebase Database.

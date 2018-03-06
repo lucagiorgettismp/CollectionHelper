@@ -1,4 +1,4 @@
-package com.lucagiorgetti.surprix;
+package com.lucagiorgetti.surprix.utility;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
