@@ -40,10 +40,48 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
+              "client_id": "500151287055-m03tli5jrep2l8o12p2md1g021blpl5p.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.lucagiorgetti.Surprix"
+              }
+            },
+            {
               "client_id": "500151287055-r40li7rdm5ta8illnlpgjjv7rbqfh59a.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:500151287055:android:582d6dff994aae75",
+        "android_client_info": {
+          "package_name": "com.lucagiorgetti.surprix"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "500151287055-r40li7rdm5ta8illnlpgjjv7rbqfh59a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByiINW2Li-37qatLObT1IpUU7Cqsx9Wso"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2

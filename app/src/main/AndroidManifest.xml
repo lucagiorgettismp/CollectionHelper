@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.lucagiorgetti.collectionhelper">
+    package="com.lucagiorgetti.surprix">
 
     <!-- To auto-complete the email text field in the activity_login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -20,7 +20,7 @@
         android:theme="@style/AppTheme.NoActionBar">
 
         <activity
-            android:name=".MainActivity"
+            android:name="com.lucagiorgetti.surprix.MainActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
@@ -30,19 +30,19 @@
         </activity>
 
         <activity
-            android:name=".LoginActivity"
+            android:name="com.lucagiorgetti.surprix.LoginActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
         </activity>
 
         <activity
-            android:name=".RegistrateActivity"
+            android:name="com.lucagiorgetti.surprix.RegistrateActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
         </activity>
 
         <activity
-            android:name=".OnboardActivity"
+            android:name="com.lucagiorgetti.surprix.OnboardActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
         </activity>
