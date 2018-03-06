@@ -37,6 +37,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 
+import com.lucagiorgetti.surprix.fragments.ThanksToFragment;
 import com.lucagiorgetti.surprix.fragments.UserSettingsFragment;
 import com.lucagiorgetti.surprix.listenerInterfaces.FragmentListenerInterface;
 import com.lucagiorgetti.surprix.listenerInterfaces.OnGetListListener;
@@ -228,18 +229,28 @@ public class MainActivity extends AppCompatActivity implements
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         int id = item.getItemId();
 
-        if (id == R.id.nav_missings) {
-            this.clearBackStack();
-            displayView(Fragments.MISSINGS, false);
-        } else if (id == R.id.nav_doubles) {
-            this.clearBackStack();
-            displayView(Fragments.DOUBLES, false);
-        } else if (id == R.id.nav_tutorial) {
-            SystemUtility.openNewActivity(getApplicationContext(), OnboardActivity.class, null);
-        } else if (id == R.id.nav_logout) {
-            logout();
-        } else if (id == R.id.nav_settings) {
-            displayView(Fragments.USER_SETTINGS, true);
+        switch (id){
+            case R.id.nav_missings:
+                this.clearBackStack();
+                displayView(Fragments.MISSINGS, false);
+                break;
+            case R.id.nav_doubles:
+                this.clearBackStack();
+                displayView(Fragments.DOUBLES, false);
+                break;
+            case R.id.nav_tutorial:
+                SystemUtility.openNewActivity(getApplicationContext(), OnboardActivity.class, null);
+                break;
+            case R.id.nav_logout:
+                logout();
+                break;
+            case R.id.nav_settings:
+                displayView(Fragments.USER_SETTINGS, true);
+                break;
+            case R.id.nav_thanks:
+                displayView(Fragments.THANKS_TO, true);
+                break;
+
         }
 
         drawer.closeDrawer(GravityCompat.START);
@@ -294,6 +305,9 @@ public class MainActivity extends AppCompatActivity implements
                 break;
             case USER_SETTINGS:
                 fragment = new UserSettingsFragment();
+                break;
+            case THANKS_TO:
+                fragment = new ThanksToFragment();
                 break;
             default:
                 break;
@@ -633,6 +647,18 @@ public class MainActivity extends AppCompatActivity implements
                     }
                 });
         alertDialog.show();
+    }
+
+    @Override
+    public void onBannerClicked(String url) {
+        Toast.makeText(this,"Mi hai cliccato!!!", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void setThanksToTitle() {
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setTitle("Thanks to..");
+        }
     }
 
     // endregion

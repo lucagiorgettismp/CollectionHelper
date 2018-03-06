@@ -52,7 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/add_missing"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="90sp"
             android:paddingEnd="20sp"
             android:paddingStart="20sp"
             android:text="@string/check_if_someone_has_what_you_need"

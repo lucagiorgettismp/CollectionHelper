@@ -53,4 +53,8 @@ public interface FragmentListenerInterface {
     void openChangePwdDialog();
 
     void openDeleteUserDialog();
+
+    void onBannerClicked(String url);
+
+    void setThanksToTitle();
 }
