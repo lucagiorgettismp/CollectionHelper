@@ -1,11 +1,15 @@
 package com.lucagiorgetti.surprix.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
+import android.text.Layout;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -60,6 +64,7 @@ public class SetItemAdapter extends BaseAdapter {
         ImageView vImage = (ImageView) v.findViewById(R.id.img_item);
         ImageButton btnAddMissing = (ImageButton) v.findViewById(R.id.btn_item_add_missing);
         ImageButton btnAddDouble = (ImageButton) v.findViewById(R.id.btn_item_add_double);
+        View cardLayout = (View) v.findViewById(R.id.set_detail_layout);
 
         Surprise s = getItem(position);
 
@@ -83,6 +88,12 @@ public class SetItemAdapter extends BaseAdapter {
                 gv.performItemClick(v,position,0);
             }
         });
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        ((Activity)ctx).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int height = displayMetrics.heightPixels;
+        int width = displayMetrics.widthPixels;
+        cardLayout.getLayoutParams().width = (width - 150)/3 ;
 
         return v;
     }

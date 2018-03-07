@@ -36,7 +36,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="65"
                     android:gravity="start|center_vertical"
-                    android:paddingLeft="10dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
                     android:text="@string/name"
                     android:textAllCaps="false"
                     android:textColor="@android:color/white"
@@ -49,8 +50,9 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="25"
-                    android:gravity="center_vertical|center"
-                    android:paddingLeft="10dp"
+                    android:gravity="center_vertical|end"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
                     android:text="@string/country"
                     android:textAlignment="textEnd"
                     android:textColor="@android:color/white"
@@ -67,7 +69,8 @@
                         android:id="@+id/imageView"
                         android:layout_width="wrap_content"
                         android:layout_height="20dp"
-                        app:srcCompat="@drawable/ic_right_row_white" />
+                        app:srcCompat="@drawable/ic_right_row_white"
+                        android:contentDescription="@string/surprise_image" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -80,7 +83,8 @@
                 android:paddingBottom="2dp"
                 android:paddingTop="2dp"
                 android:scaleType="fitCenter"
-                app:srcCompat="@android:drawable/ic_menu_gallery" />
+                app:srcCompat="@android:drawable/ic_menu_gallery"
+                android:contentDescription="@string/set_image" />
 
         </LinearLayout>
 

@@ -14,7 +14,8 @@
         app:cardElevation="3dp">
 
         <LinearLayout
-            android:layout_width="107dp"
+            android:id="@+id/set_detail_layout"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="9.92"
             android:gravity="center_horizontal"
@@ -23,7 +24,7 @@
             <LinearLayout
                 android:id="@+id/layout_item_titlebar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
                 android:layout_weight="1"
                 android:background="@color/colorPrimaryDark"
                 android:orientation="vertical">
@@ -33,7 +34,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="38dp"
                     android:gravity="center_vertical"
-                    android:paddingLeft="4dp"
+                    android:paddingEnd="4dp"
+                    android:paddingStart="4dp"
                     android:text="@string/description"
                     android:textColor="@color/com_facebook_button_background_color_focused"
                     android:textSize="14sp"
@@ -47,9 +49,10 @@
                 <TextView
                     android:id="@+id/txv_item_code"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:paddingLeft="4dp"
+                    android:paddingEnd="4dp"
+                    android:paddingStart="4dp"
                     android:text="@string/code"
                     android:textColor="@color/com_facebook_button_background_color_focused"
                     android:textSize="12sp"
@@ -62,28 +65,34 @@
                 android:layout_width="78dp"
                 android:layout_height="96dp"
                 android:adjustViewBounds="true"
-                android:scaleType="fitXY"></ImageView>
+                android:contentDescription="@string/surprise_image"
+                android:scaleType="fitXY" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="horizontal">
+                android:layout_marginEnd="2dp"
+                android:layout_marginStart="2dp"
+                android:orientation="horizontal"
+                android:weightSum="100">
 
                 <ImageButton
                     android:id="@+id/btn_item_add_double"
-                    android:layout_width="match_parent"
+                    style="@style/ButtonAddDouble"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:backgroundTint="@android:color/holo_orange_light"
+                    android:layout_weight="40"
+                    android:contentDescription="@string/add_to_doubles"
                     android:tint="@color/cardview_light_background"
                     app:srcCompat="@drawable/ic_double" />
 
                 <ImageButton
                     android:id="@+id/btn_item_add_missing"
-                    android:layout_width="64dp"
+                    style="@style/ButtonAddMissing"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@android:color/holo_green_light"
+                    android:layout_weight="60"
+                    android:contentDescription="@string/add_to_missings"
                     android:tint="@color/com_facebook_button_background_color_focused"
                     app:srcCompat="@drawable/ic_missings" />
             </LinearLayout>

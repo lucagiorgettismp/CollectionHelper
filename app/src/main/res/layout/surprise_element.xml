@@ -47,7 +47,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="75"
                     android:gravity="start|center_vertical"
-                    android:paddingLeft="10dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
                     android:text="@string/description"
                     android:textColor="@android:color/white"
                     android:textSize="18sp"
@@ -59,7 +60,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:weightSum="100">
+                android:weightSum="100"
+                android:baselineAligned="false">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -76,7 +78,8 @@
                         android:layout_weight="20"
                         android:adjustViewBounds="true"
                         android:scaleType="fitXY"
-                        app:srcCompat="@android:drawable/sym_def_app_icon" />
+                        app:srcCompat="@android:drawable/sym_def_app_icon"
+                        android:contentDescription="@string/surprise_image" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -90,7 +93,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:weightSum="90"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:baselineAligned="false">
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -102,15 +106,17 @@
                                 android:id="@+id/lbl_surp_elem_set"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:paddingLeft="10dp"
+                                android:paddingStart="10dp"
+                                android:paddingEnd="10dp"
                                 android:text="@string/set"
-                                android:textSize="10sp" />
+                                android:textSize="12sp" />
 
                             <TextView
                                 android:id="@+id/txv_surp_elem_set"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:paddingLeft="10dp"
+                                android:paddingStart="10dp"
+                                android:paddingEnd="10dp"
                                 android:text="@string/set"
                                 android:textSize="15sp"
                                 android:textStyle="bold" />
@@ -127,15 +133,17 @@
                                 android:id="@+id/lbl_surp_elem_year"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:paddingLeft="10dp"
+                                android:paddingStart="10dp"
+                                android:paddingEnd="10dp"
                                 android:text="@string/year"
-                                android:textSize="10sp" />
+                                android:textSize="12sp" />
 
                             <TextView
                                 android:id="@+id/txv_surp_elem_year"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:paddingLeft="10dp"
+                                android:paddingStart="10dp"
+                                android:paddingEnd="10dp"
                                 android:text="@string/year"
                                 android:textSize="15sp"
                                 android:textStyle="bold" />
@@ -147,7 +155,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:weightSum="90">
+                        android:weightSum="90"
+                        android:baselineAligned="false">
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -159,15 +168,17 @@
                                 android:id="@+id/lbl_surp_elem_producer"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:paddingLeft="10dp"
+                                android:paddingStart="10dp"
+                                android:paddingEnd="10dp"
                                 android:text="@string/producer"
-                                android:textSize="10sp" />
+                                android:textSize="12sp" />
 
                             <TextView
                                 android:id="@+id/txv_surp_elem_producer"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:paddingLeft="10dp"
+                                android:paddingStart="10dp"
+                                android:paddingEnd="10dp"
                                 android:text="@string/producer"
                                 android:textSize="15sp" />
                         </LinearLayout>
@@ -182,15 +193,17 @@
                                 android:id="@+id/lbl_surp_elem_nation"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:paddingLeft="10dp"
+                                android:paddingStart="10dp"
+                                android:paddingEnd="10dp"
                                 android:text="@string/country"
-                                android:textSize="10sp" />
+                                android:textSize="12sp" />
 
                             <TextView
                                 android:id="@+id/txv_surp_elem_nation"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:paddingLeft="10dp"
+                                android:paddingStart="10dp"
+                                android:paddingEnd="10dp"
                                 android:text="@string/country"
                                 android:textSize="15sp" />
 

@@ -89,4 +89,11 @@
     <string name="send_an_e_mail">Send an e-mail</string>
     <string name="thanks_to">Thanks to</string>
     <string name="thanks_to_title">Thanks to...</string>
+    <string name="surprise_image">surprise image</string>
+    <string name="icon_logo">icon logo</string>
+    <string name="icon_username">icon username</string>
+    <string name="icon_email">icon email</string>
+    <string name="icon_password">icon password</string>
+    <string name="set_image">set image</string>
+    <string name="banner">banner</string>
 </resources>

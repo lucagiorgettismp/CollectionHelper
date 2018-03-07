@@ -35,4 +35,12 @@
     <style name="NoStatusBar" parent="AppTheme.NoActionBar">
         <item name="android:windowTranslucentStatus">true</item>
     </style>
+
+    <style name="ButtonAddMissing" parent="Base.Widget.AppCompat.ImageButton" >
+        <item name="backgroundTint">@android:color/holo_green_light</item>
+    </style>
+
+    <style name="ButtonAddDouble" parent="Base.Widget.AppCompat.ImageButton" >
+        <item name="backgroundTint">@android:color/holo_orange_light</item>
+    </style>
 </resources>

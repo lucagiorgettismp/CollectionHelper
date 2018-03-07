@@ -21,6 +21,7 @@ import com.lucagiorgetti.surprix.model.Set;
 import com.lucagiorgetti.surprix.model.Surprise;
 import com.lucagiorgetti.surprix.model.User;
 import com.lucagiorgetti.surprix.model.Year;
+import com.lucagiorgetti.surprix.views.RegistrateActivity;
 
 import java.util.ArrayList;
 
@@ -62,7 +63,7 @@ public class DatabaseUtility {
                     b.putString("name", facebook_name);
                     b.putString("surname", facebook_surname);
                     b.putString("email", email);
-                    SystemUtility.openNewActivityWithFinishing(activity, context, MainActivity.class, b);
+                    SystemUtility.openNewActivityWithFinishing(activity, context, RegistrateActivity.class, b);
                 }
             }
 

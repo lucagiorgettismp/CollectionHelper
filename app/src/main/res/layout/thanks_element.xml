@@ -28,7 +28,8 @@
                 android:layout_height="match_parent"
                 android:adjustViewBounds="false"
                 android:scaleType="fitXY"
-                app:srcCompat="@drawable/banner_toy_secret" />
+                app:srcCompat="@drawable/banner_toy_secret"
+                android:contentDescription="@string/banner" />
         </LinearLayout>
 
     </android.support.v7.widget.CardView>

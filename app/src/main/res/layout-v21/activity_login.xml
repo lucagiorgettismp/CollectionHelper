@@ -41,6 +41,7 @@
         android:layout_marginBottom="3dp"
         android:layout_marginTop="3dp"
         android:background="@android:color/holo_blue_dark"
+        android:elevation="2dp"
         android:text="@string/sign_up"
         android:textColor="@android:color/background_light"
         android:textSize="18sp" />
@@ -53,6 +54,7 @@
         android:layout_marginBottom="3dp"
         android:layout_marginTop="3dp"
         android:background="@android:color/holo_orange_dark"
+        android:elevation="2dp"
         android:text="@string/login"
         android:textColor="@android:color/background_light"
         android:textSize="18sp" />
@@ -76,6 +78,7 @@
         android:layout_marginBottom="3dp"
         android:layout_marginTop="3dp"
         android:background="@color/facebookColor"
+        android:elevation="2dp"
         android:text="@string/login_with_facebook"
         android:textColor="@android:color/background_light"
         android:textSize="18sp" />

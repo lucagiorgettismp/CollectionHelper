@@ -68,7 +68,7 @@ public class SystemUtility {
 
     public static void openNewActivity(Context applicationContext, Class<?> cls, Bundle b) {
         Intent i = new Intent(applicationContext, cls);
-
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         if (b != null){
             i.putExtras(b);
         }
