@@ -59,7 +59,7 @@ public class SurpRecyclerAdapter extends RecyclerView.Adapter<SurpRecyclerAdapte
 
         holder.vLayout.setBackgroundColor(ContextCompat.getColor(ctx, Colors.getHexColor(surp.getSet_producer_color())));
 
-        Glide.with(ctx).load(surp.getImg_path()).into(holder.vImage);
+        Glide.with(ctx).load(surp.getImg_path()).error(R.drawable.ic_surprise).into(holder.vImage);
     }
 
     @Override
