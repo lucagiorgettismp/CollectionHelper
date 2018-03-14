@@ -118,10 +118,15 @@ public class RegistrateActivity extends AppCompatActivity{
                 final String surname = edtSurname.getText().toString().trim();
                 final String birthDate = edtBirthdate.getText().toString();
                 final String nation = edtNation.getText().toString();
-                DatabaseUtility.generateUser(name, surname, email, username, birthDate, nation, true);
-
-                SystemUtility.firstTimeOpeningApp(RegistrateActivity.this, getApplicationContext(), MainActivity.class, null);
-
+                if (email.isEmpty() || username.isEmpty() ||
+                        name.isEmpty() || surname.isEmpty() || nation.isEmpty() ||
+                        birthDate.isEmpty()) {
+                    progress.setVisibility(View.INVISIBLE);
+                    Toast.makeText(RegistrateActivity.this, R.string.complete_all_fields, Toast.LENGTH_SHORT).show();
+                } else{
+                    DatabaseUtility.generateUser(name, surname, email, username, birthDate, nation, true);
+                    SystemUtility.firstTimeOpeningApp(RegistrateActivity.this, getApplicationContext(), MainActivity.class, null);
+                }
             }
         });
 

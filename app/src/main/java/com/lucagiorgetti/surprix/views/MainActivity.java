@@ -642,6 +642,7 @@ public class MainActivity extends AppCompatActivity implements
                             }
                         }, fireAuth, username);
                         alertDialog.dismiss();
+                        logout();
                     }
                 });
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.dialog_negative),

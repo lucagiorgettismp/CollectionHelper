@@ -76,4 +76,11 @@
     <string name="thanks_to_title">Grazie a...</string>
     <string name="menu">Menu</string>
     <string name="tutorial">Guida</string>
+    <string name="surprise_image">immagine sorpresina</string>
+    <string name="icon_logo">icona logo</string>
+    <string name="icon_username">icoan username</string>
+    <string name="icon_email">icona e-mail</string>
+    <string name="icon_password">icona password</string>
+    <string name="set_image">immagine serie</string>
+    <string name="banner">banner</string>
 </resources>
