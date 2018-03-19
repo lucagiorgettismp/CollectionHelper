@@ -8,15 +8,20 @@ import android.graphics.drawable.Drawable;
 
 public class Sponsor {
     private String name;
-    private Drawable banner;
+    private String bannerImageUrl;
     private boolean clickable;
     private String url;
+    private int order;
 
-    public Sponsor(String name, Drawable banner, boolean clickable, String url) {
+    public Sponsor(String name, String imageUrl, boolean clickable, String url, int order) {
         this.name = name;
-        this.banner = banner;
+        this.bannerImageUrl = imageUrl;
         this.clickable = clickable;
         this.url = url;
+        this.order = order;
+    }
+
+    public Sponsor() {
     }
 
     public String getName() {
@@ -27,8 +32,8 @@ public class Sponsor {
         this.name = name;
     }
 
-    public Drawable getBanner() {
-        return banner;
+    public String getBannerImageUrl() {
+        return bannerImageUrl;
     }
 
     public boolean isClickable() {
@@ -37,5 +42,13 @@ public class Sponsor {
 
     public String getUrl() {
         return url;
+    }
+
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
     }
 }

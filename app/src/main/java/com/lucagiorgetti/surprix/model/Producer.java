@@ -45,4 +45,12 @@ public class Producer {
     public String getColor() {
         return color;
     }
+
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
+    }
 }

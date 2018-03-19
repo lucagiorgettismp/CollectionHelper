@@ -14,6 +14,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.lucagiorgetti.surprix.model.Sponsor;
 import com.lucagiorgetti.surprix.views.MainActivity;
 import com.lucagiorgetti.surprix.listenerInterfaces.OnGetListListener;
 import com.lucagiorgetti.surprix.listenerInterfaces.OnGetDataListener;
@@ -529,5 +530,21 @@ public class DatabaseUtility {
 
     public static void openConnection(){
        //  getDatabase().goOnline();
+    }
+
+    public static void getSponsors(final OnGetDataListener listen) {
+        listen.onStart();
+        dbRef = getDatabase().getReference();
+        dbRef.child("sponsors").orderByChild("order").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                listen.onSuccess(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                listen.onFailure();
+            }
+        });
     }
 }

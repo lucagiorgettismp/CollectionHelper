@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.model.Sponsor;
 
@@ -36,8 +37,7 @@ public class ThanksRecyclerAdapter extends RecyclerView.Adapter<ThanksRecyclerAd
     @Override
     public void onBindViewHolder(SetViewHolder holder, int position) {
         Sponsor sponsor = sponsorsList.get(position);
-
-        holder.vImage.setImageDrawable(sponsor.getBanner());
+        Glide.with(ctx).load(sponsor.getBannerImageUrl()).into(holder.vImage);
     }
 
     @Override

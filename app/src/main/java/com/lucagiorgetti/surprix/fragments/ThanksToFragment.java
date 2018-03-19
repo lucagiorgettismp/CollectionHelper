@@ -8,8 +8,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
 import com.lucagiorgetti.surprix.R;
+import com.lucagiorgetti.surprix.listenerInterfaces.OnGetDataListener;
+import com.lucagiorgetti.surprix.listenerInterfaces.OnGetListListener;
+import com.lucagiorgetti.surprix.utility.DatabaseUtility;
 import com.lucagiorgetti.surprix.utility.RecyclerItemClickListener;
 import com.lucagiorgetti.surprix.utility.SystemUtility;
 import com.lucagiorgetti.surprix.adapters.ThanksRecyclerAdapter;
@@ -21,20 +26,21 @@ import java.util.ArrayList;
 public class ThanksToFragment extends Fragment{
     private FragmentListenerInterface listener;
 
-    ArrayList<Sponsor> sponsors = new ArrayList<>();
+    ArrayList<Sponsor> sponsorsList = new ArrayList<>();
     private ThanksRecyclerAdapter mAdapter;
     private Context mContext;
+    private RecyclerView recyclerView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.thanks_fragment, container, false);
-        RecyclerView recyclerView = (RecyclerView) layout.findViewById(R.id.thanks_recycler);
+        recyclerView = (RecyclerView) layout.findViewById(R.id.thanks_recycler);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mContext);
         recyclerView.setLayoutManager(layoutManager);
 
         createSponsorList();
-        mAdapter = new ThanksRecyclerAdapter(mContext, sponsors);
+        mAdapter = new ThanksRecyclerAdapter(mContext, sponsorsList);
         recyclerView.setAdapter(mAdapter);
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(mContext, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
@@ -56,8 +62,32 @@ public class ThanksToFragment extends Fragment{
     }
 
     private void createSponsorList() {
-        sponsors.add(new Sponsor("Banner1", getContext().getResources().getDrawable(R.drawable.banner_1), false, null));
-        sponsors.add(new Sponsor("Banner2", getContext().getResources().getDrawable(R.drawable.banner_2), false, null));
+        DatabaseUtility.getSponsors(new OnGetDataListener() {
+            @Override
+            public void onSuccess(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    for (DataSnapshot d : dataSnapshot.getChildren()){
+                        Sponsor s = d.getValue(Sponsor.class);
+                        sponsorsList.add(s);
+                        mAdapter = new ThanksRecyclerAdapter(mContext, sponsorsList);
+                        recyclerView.setAdapter(mAdapter);
+                        // progress.setVisibility(View.GONE);
+                    }
+                }
+            }
+
+            @Override
+            public void onStart() {
+                sponsorsList.clear();
+                // progress.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onFailure() {
+                // progress.setVisibility(View.GONE);
+                Toast.makeText(mContext, R.string.data_sync_error, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override

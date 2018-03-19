@@ -70,12 +70,6 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
         recyclerView.setLayoutManager(layoutManager);
         mAdapter = new SurpRecyclerAdapter(mContext, missings);
         recyclerView.setAdapter(mAdapter);
-        if (missings != null && !missings.isEmpty()){
-            emptyList.setVisibility(View.GONE);
-        } else {
-            emptyList.setVisibility(View.VISIBLE);
-        }
-
         FloatingActionButton fab = (FloatingActionButton) layout.findViewById(R.id.fab);
         fab.setOnClickListener(this);
         initSwipe();
@@ -158,6 +152,7 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
                                     mAdapter.notifyDataSetChanged();
                                 }
                             });
+                    alertDialog.setCanceledOnTouchOutside(false);
                     alertDialog.show();
                 } else {
                     listener.onSwipeShowDoublesOwner(s);

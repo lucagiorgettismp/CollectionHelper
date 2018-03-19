@@ -155,6 +155,7 @@ public class DoublesFragment extends Fragment implements SearchView.OnQueryTextL
                                 mAdapter.notifyDataSetChanged();
                             }
                         });
+                alertDialog.setCanceledOnTouchOutside(false);
                 alertDialog.show();
             }
 

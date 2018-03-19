@@ -7,6 +7,7 @@ import com.lucagiorgetti.surprix.model.Colors;
 import com.lucagiorgetti.surprix.model.ExtraLocales;
 import com.lucagiorgetti.surprix.model.Producer;
 import com.lucagiorgetti.surprix.model.Set;
+import com.lucagiorgetti.surprix.model.Sponsor;
 import com.lucagiorgetti.surprix.model.Surprise;
 import com.lucagiorgetti.surprix.model.User;
 import com.lucagiorgetti.surprix.model.Year;
@@ -24,6 +25,7 @@ public class Initializer {
     DatabaseReference sets = database.getReference("sets");
     DatabaseReference missings = database.getReference("missings");
     DatabaseReference producers = database.getReference("producers");
+    DatabaseReference sponsors = database.getReference("sponsors");
     DatabaseReference years = database.getReference("years");
     User user = null;
 
@@ -45,6 +47,9 @@ public class Initializer {
         insertYear(kinMer2017);
         Year kinMer2016 = new Year(2016, kinderMerendero);
         insertYear(kinMer2016);
+
+        Sponsor toysecret = new Sponsor("Toy Secret", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Banner%2Fbanner_1.png?alt=media&token=a28ea4a5-41df-40c8-ae6d-b6fc47f03dba", false, "", 1);
+        insertSponsor(toysecret);
 
         //region CattivissimoMe3
         Set catMe3 = new Set("Cattivissimo Me 3", kinSorp2017, kinderSorpresa, ExtraLocales.EUROPE, "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Kinder_Sorpresa%2F2017%2FCattivissimoMe3%2FBPZ_CattivissimoMe3_2017.jpg?alt=media&token=4b9069ac-cf8a-4a2d-b7d4-6780e61eb89a", Categories.HANDPAINTED);
@@ -837,4 +842,9 @@ public class Initializer {
     private void insertProducer(Producer producer){
         producers.child(producer.getId()).setValue(producer);
     }
+
+    private void insertSponsor(Sponsor sponsor){
+        sponsors.child(sponsor.getName()).setValue(sponsor);
+    }
+
 }

@@ -124,8 +124,8 @@ public class MainActivity extends AppCompatActivity implements
                 @Override
                 public void onSuccess(DataSnapshot dataSnapshot) {
                     currentUser = dataSnapshot.getValue(User.class);
-                    Initializer init = new Initializer(currentUser);
-                    init.insertData();
+                    //Initializer init = new Initializer(currentUser);
+                    //init.insertData();
                     nav_user.setText(currentUser.getUsername());
                     nav_email.setText(currentUser.getEmail().replaceAll(",", "\\."));
                     displayView(Fragments.MISSINGS, false);
