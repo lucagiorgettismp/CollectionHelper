@@ -40,6 +40,7 @@ public class SurpRecyclerAdapter extends RecyclerView.Adapter<SurpRecyclerAdapte
 
     @Override
     public void onBindViewHolder(SurpViewHolder holder, int position) {
+
         Surprise surp = surprises.get(position);
         holder.vCode.setText(surp.getCode());
         holder.vSetName.setText(surp.getSet_name());

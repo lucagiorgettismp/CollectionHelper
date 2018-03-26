@@ -35,6 +35,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 
+import com.lucagiorgetti.surprix.Initializer;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.fragments.ThanksToFragment;
 import com.lucagiorgetti.surprix.fragments.UserSettingsFragment;
@@ -78,7 +79,6 @@ public class MainActivity extends AppCompatActivity implements
     private NavigationView navigationView;
 
     String surprix_mail = "info.surprix@gmail.com";
-    // String facebook_url="";
 
     private String clickedYearId = null;
     private int clickedYearNumber = -1;
@@ -127,8 +127,12 @@ public class MainActivity extends AppCompatActivity implements
                 @Override
                 public void onSuccess(DataSnapshot dataSnapshot) {
                     currentUser = dataSnapshot.getValue(User.class);
-                    //Initializer init = new Initializer(currentUser);
-                    //init.insertData();
+
+                    if(getResources().getBoolean(R.bool.doInitialize)){
+                        Initializer init = new Initializer(currentUser);
+                        init.insertData();
+                    }
+
                     nav_user.setText(currentUser.getUsername());
                     nav_email.setText(currentUser.getEmail().replaceAll(",", "\\."));
                     displayView(Fragments.MISSINGS, false);
@@ -672,6 +676,7 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onBannerClicked(String url) {
+        SystemUtility.openUrl(MainActivity.this, url);
     }
 
     @Override
