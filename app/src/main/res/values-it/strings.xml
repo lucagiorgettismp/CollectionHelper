@@ -83,4 +83,7 @@
     <string name="icon_password">icona password</string>
     <string name="set_image">immagine serie</string>
     <string name="banner">banner</string>
+    <string name="info_images_dialog_title">Info e immagini</string>
+    <string name="info_images_dialog_content">Vuoi informazioni su Surprix o vuoi far crescere il catalogo? Invia una e-mail a info.surprix@gmail.com</string>
+    <string name="info_send_images">Info e invio immagini</string>
 </resources>

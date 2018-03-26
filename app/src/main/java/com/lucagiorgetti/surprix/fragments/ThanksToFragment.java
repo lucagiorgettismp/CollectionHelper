@@ -8,12 +8,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.listenerInterfaces.OnGetDataListener;
-import com.lucagiorgetti.surprix.listenerInterfaces.OnGetListListener;
 import com.lucagiorgetti.surprix.utility.DatabaseUtility;
 import com.lucagiorgetti.surprix.utility.RecyclerItemClickListener;
 import com.lucagiorgetti.surprix.utility.SystemUtility;
@@ -30,6 +30,7 @@ public class ThanksToFragment extends Fragment{
     private ThanksRecyclerAdapter mAdapter;
     private Context mContext;
     private RecyclerView recyclerView;
+    private ProgressBar progress;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -38,6 +39,7 @@ public class ThanksToFragment extends Fragment{
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mContext);
         recyclerView.setLayoutManager(layoutManager);
+        progress = (ProgressBar) layout.findViewById(R.id.thanks_loading);
 
         createSponsorList();
         mAdapter = new ThanksRecyclerAdapter(mContext, sponsorsList);
@@ -71,20 +73,21 @@ public class ThanksToFragment extends Fragment{
                         sponsorsList.add(s);
                         mAdapter = new ThanksRecyclerAdapter(mContext, sponsorsList);
                         recyclerView.setAdapter(mAdapter);
-                        // progress.setVisibility(View.GONE);
+                        progress.setVisibility(View.GONE);
                     }
                 }
+
             }
 
             @Override
             public void onStart() {
                 sponsorsList.clear();
-                // progress.setVisibility(View.VISIBLE);
+                progress.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onFailure() {
-                // progress.setVisibility(View.GONE);
+                progress.setVisibility(View.GONE);
                 Toast.makeText(mContext, R.string.data_sync_error, Toast.LENGTH_SHORT).show();
             }
         });

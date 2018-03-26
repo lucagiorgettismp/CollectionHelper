@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.Spanned;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
@@ -73,5 +75,19 @@ public class SystemUtility {
             i.putExtras(b);
         }
         applicationContext.startActivity(i);
+    }
+
+    public static void sendMail(Context context, String to, String subject, Spanned html_body) {
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setType("text/plain");
+        if (subject != null && !subject.isEmpty()){
+            intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        }
+        if (html_body != null && html_body.length() > 0){
+            intent.putExtra(Intent.EXTRA_TEXT, html_body);
+        }
+        intent.setData(Uri.parse("mailto:" + to));
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // this will make such that when user returns to your app, your app is displayed, instead of the email app.
+        context.startActivity(intent);
     }
 }

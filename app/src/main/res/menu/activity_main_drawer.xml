@@ -18,6 +18,10 @@
             android:id="@+id/nav_tutorial"
             android:icon="@drawable/ic_carousel"
             android:title="@string/tutorial" />
+        <item
+            android:id="@+id/nav_facebook"
+            android:icon="@drawable/ic_facebook"
+            android:title="@string/info_send_images"/>
     </group>
 
     <item android:title="@string/user_group">

@@ -48,7 +48,7 @@ public class Initializer {
         Year kinMer2016 = new Year(2016, kinderMerendero);
         insertYear(kinMer2016);
 
-        Sponsor toysecret = new Sponsor("Toy Secret", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Banner%2Fbanner_1.png?alt=media&token=a28ea4a5-41df-40c8-ae6d-b6fc47f03dba", false, "", 1);
+        Sponsor toysecret = new Sponsor("Toy Secret", "https://firebasestorage.googleapis.com/v0/b/collectionhelper.appspot.com/o/Banner%2Fbanner_1.png?alt=media&token=9a70d994-4e28-4c84-8f01-b4858674e293", false, "", 1);
         insertSponsor(toysecret);
 
         //region CattivissimoMe3

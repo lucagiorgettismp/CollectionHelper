@@ -2,10 +2,8 @@ package com.lucagiorgetti.surprix.views;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
-import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -37,7 +35,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 
-import com.lucagiorgetti.surprix.Initializer;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.fragments.ThanksToFragment;
 import com.lucagiorgetti.surprix.fragments.UserSettingsFragment;
@@ -80,6 +77,9 @@ public class MainActivity extends AppCompatActivity implements
     private DoublesOwnersListAdapter mAdapter;
     private NavigationView navigationView;
 
+    String surprix_mail = "info.surprix@gmail.com";
+    // String facebook_url="";
+
     private String clickedYearId = null;
     private int clickedYearNumber = -1;
 
@@ -116,6 +116,9 @@ public class MainActivity extends AppCompatActivity implements
             toggle.syncState();
             navigationView = (NavigationView) findViewById(R.id.nav_view);
             navigationView.setNavigationItemSelectedListener(this);
+            navigationView.getMenu().getItem(3).setCheckable(false);
+            navigationView.getMenu().getItem(4).setCheckable(false);
+
             View hView = navigationView.getHeaderView(0);
             nav_user = (TextView) hView.findViewById(R.id.navbar_title);
             nav_email = (TextView) hView.findViewById(R.id.navbar_subtitle);
@@ -249,16 +252,41 @@ public class MainActivity extends AppCompatActivity implements
                 logout();
                 break;
             case R.id.nav_settings:
-                displayView(Fragments.USER_SETTINGS, true);
+                displayView(Fragments.USER_SETTINGS, false);
                 break;
             case R.id.nav_thanks:
-                displayView(Fragments.THANKS_TO, true);
+                displayView(Fragments.THANKS_TO, false);
+                break;
+            case R.id.nav_facebook:
+                showInfoPopUp();
                 break;
 
         }
 
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void showInfoPopUp() {
+        final AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+        alertDialog.setTitle(getString(R.string.info_images_dialog_title));
+        alertDialog.setMessage(getString(R.string.info_images_dialog_content));
+
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "E-mail",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        SystemUtility.sendMail(MainActivity.this, surprix_mail, null, null);
+                        alertDialog.dismiss();
+                    }
+                });
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.dialog_negative),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        alertDialog.dismiss();
+                    }
+                });
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.show();
     }
 
     private void logout() {
@@ -421,35 +449,23 @@ public class MainActivity extends AppCompatActivity implements
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 alert.dismiss();
                 final User owner = mAdapter.getItem(position);
-                sendEmail(owner, missing);
+                sendEmailToUser(owner, missing);
             }
         });
     }
 
-    private void sendEmail(User owner, Surprise missing) {
+    private void sendEmailToUser(User owner, Surprise missing) {
         String to = owner.getEmail().replaceAll(",", "\\.");
-        String subject = "Scambio con " + currentUser.getUsername();
-
-        Intent intent = new Intent(Intent.ACTION_SENDTO);
-        intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
-
-        String html = "Ciao," +
-                "<div>Sono " + currentUser.getUsername() + ", e tramite Surprix ho visto che tra i doppi hai " + missing.getCode() + " - " + missing.getDescription() + ", a cui sono interessato.</div>" +
-                "<div>Ti andrebbe di scambiare?</div>" +
-                "<div><br></div>" +
-                "<div>[Mail inviata grazie a Surprix]</div>";
+        String subject = getString(R.string.mail_subject, currentUser.getUsername());
+        String html = getString(R.string.mail_exchange_body, currentUser.getUsername(), missing.getCode(), missing.getDescription());
         Spanned body;
-
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             body = Html.fromHtml(html,Html.FROM_HTML_MODE_LEGACY);
         } else {
             body = Html.fromHtml(html);
         }
-        intent.putExtra(Intent.EXTRA_TEXT, body);
-        intent.setData(Uri.parse("mailto:" + to)); // or just "mailto:" for blank
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // this will make such that when user returns to your app, your app is displayed, instead of the email app.
-        startActivity(intent);
+
+        SystemUtility.sendMail(MainActivity.this, to, subject, body);
     }
 
     private void clearBackStack() {
