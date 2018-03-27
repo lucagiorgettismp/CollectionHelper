@@ -35,7 +35,6 @@
     <string name="surname">Cognome</string>
     <string name="surprise">Sorpresina</string>
     <string name="user_added">Utente aggiornato</string>
-    <string name="user_group">Utente</string>
     <string name="who_have_what_you_miss">Utenti che hanno quello che cerchi:</string>
     <string name="wrong_email_or_password">E-mail o Password errata</string>
     <string name="year">Anno</string>
@@ -86,4 +85,5 @@
     <string name="info_images_dialog_title">Info e immagini</string>
     <string name="info_images_dialog_content">Vuoi informazioni su Surprix o vuoi far crescere il catalogo? Invia una e-mail a info.surprix@gmail.com</string>
     <string name="info_send_images">Info e invio immagini</string>
+    <string name="need_help">Bisogno di aiuto?</string>
 </resources>

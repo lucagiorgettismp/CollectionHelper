@@ -55,6 +55,7 @@ import com.lucagiorgetti.surprix.model.Surprise;
 import com.lucagiorgetti.surprix.model.User;
 import com.lucagiorgetti.surprix.utility.DatabaseUtility;
 import com.lucagiorgetti.surprix.utility.SystemUtility;
+import com.lucagiorgetti.surprix.utility.TitleHelper;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -67,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements
     private FirebaseAuth fireAuth;
     private LoginManager facebookLogin;
     private FirebaseAuth.AuthStateListener fireAuthStateListener;
+
     private User currentUser = null;
     private TextView nav_user;
     private TextView nav_email;
@@ -81,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements
     private String clickedYearId = null;
     private int clickedYearNumber = -1;
 
+    // region Override standard methods
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,8 +117,6 @@ public class MainActivity extends AppCompatActivity implements
             toggle.syncState();
             navigationView = (NavigationView) findViewById(R.id.nav_view);
             navigationView.setNavigationItemSelectedListener(this);
-            navigationView.getMenu().getItem(3).setCheckable(false);
-            navigationView.getMenu().getItem(4).setCheckable(false);
 
             View hView = navigationView.getHeaderView(0);
             nav_user = (TextView) hView.findViewById(R.id.navbar_title);
@@ -150,68 +151,19 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onSetShortClick(String setId, String setName) {
-        this.clickedSetId = setId;
-        this.clickedSetName = setName;
-        displayView(Fragments.SETITEMS, true);
+    public void onStart() {
+        super.onStart();
+        DatabaseUtility.openConnection();
+        fireAuth.addAuthStateListener(fireAuthStateListener);
     }
 
     @Override
-    public void onSetLongClick(final String setId, String setName) {
-        final AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
-        alertDialog.setTitle(getString(R.string.dialog_add_set_title));
-        alertDialog.setMessage(getString(R.string.dialog_add_set_text) + " " + setName + "?");
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.dialog_positive),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        DatabaseUtility.addMissingsFromSet(currentUser.getUsername(), setId);
-                        alertDialog.dismiss();
-                    }
-                });
-        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.dialog_negative),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        alertDialog.dismiss();
-                    }
-                });
-        alertDialog.show();
-    }
-
-    @Override
-    public User getCurrentRetrievedUser() {
-        return currentUser;
-    }
-
-    @Override
-    public void refreshUser() {
-        DatabaseUtility.getCurrentUser(new OnGetDataListener() {
-            @Override
-            public void onSuccess(DataSnapshot data) {
-                currentUser = data.getValue(User.class);
-            }
-
-            @Override
-            public void onStart() {
-
-            }
-
-            @Override
-            public void onFailure() {
-
-            }
-        }, fireAuth);
-    }
-
-    @Override
-    public void onItemAddMissings(String surpId) {
-        String username = currentUser.getUsername();
-        DatabaseUtility.addMissing(username, surpId);
-    }
-
-    @Override
-    public void onItemAddDoubles(String surpId) {
-        String username = currentUser.getUsername();
-        DatabaseUtility.addDouble(username, surpId);
+    public void onStop() {
+        super.onStop();
+        if (fireAuthStateListener != null) {
+            fireAuth.removeAuthStateListener(fireAuthStateListener);
+        }
+        DatabaseUtility.closeConnection();
     }
 
     @Override
@@ -229,6 +181,12 @@ public class MainActivity extends AppCompatActivity implements
                 fragmentManager.popBackStack();
             }
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        DatabaseUtility.closeConnection();
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -260,7 +218,7 @@ public class MainActivity extends AppCompatActivity implements
                 displayView(Fragments.THANKS_TO, false);
                 break;
             case R.id.nav_facebook:
-                showInfoPopUp();
+                showInfoDialog();
                 break;
 
         }
@@ -269,26 +227,32 @@ public class MainActivity extends AppCompatActivity implements
         return true;
     }
 
-    private void showInfoPopUp() {
-        final AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
-        alertDialog.setTitle(getString(R.string.info_images_dialog_title));
-        alertDialog.setMessage(getString(R.string.info_images_dialog_content));
+    // endregion
 
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.email),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        SystemUtility.sendMail(MainActivity.this, getResources().getString(R.string.surprix_mail), null, null);
-                        alertDialog.dismiss();
-                    }
-                });
-        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.dialog_negative),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        alertDialog.dismiss();
-                    }
-                });
-        alertDialog.setCanceledOnTouchOutside(false);
-        alertDialog.show();
+    // region Custom methods
+    @Override
+    public User getCurrentRetrievedUser() {
+        return currentUser;
+    }
+
+    @Override
+    public void refreshUser() {
+        DatabaseUtility.getCurrentUser(new OnGetDataListener() {
+            @Override
+            public void onSuccess(DataSnapshot data) {
+                currentUser = data.getValue(User.class);
+            }
+
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onFailure() {
+
+            }
+        }, fireAuth);
     }
 
     private void logout() {
@@ -358,22 +322,235 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        DatabaseUtility.openConnection();
-        fireAuth.addAuthStateListener(fireAuthStateListener);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (fireAuthStateListener != null) {
-            fireAuth.removeAuthStateListener(fireAuthStateListener);
+    private void sendEmailToUser(User owner, Surprise missing) {
+        String to = owner.getEmail().replaceAll(",", "\\.");
+        String subject = getString(R.string.mail_subject, currentUser.getUsername());
+        String html = getString(R.string.mail_exchange_body, currentUser.getUsername(), missing.getCode(), missing.getDescription());
+        Spanned body;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            body = Html.fromHtml(html,Html.FROM_HTML_MODE_LEGACY);
+        } else {
+            body = Html.fromHtml(html);
         }
-        DatabaseUtility.closeConnection();
+
+        SystemUtility.sendMail(MainActivity.this, to, subject, body);
     }
 
+    private void clearBackStack() {
+        fragmentManager = getSupportFragmentManager();
+        fragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+    }
+    // endregion
+
+    // region Dialog
+    private void showInfoDialog() {
+        final AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+        alertDialog.setTitle(getString(R.string.info_images_dialog_title));
+        alertDialog.setMessage(getString(R.string.info_images_dialog_content));
+
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.email),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        SystemUtility.sendMail(MainActivity.this, getResources().getString(R.string.surprix_mail), null, null);
+                        alertDialog.dismiss();
+                    }
+                });
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.dialog_negative),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        alertDialog.dismiss();
+                    }
+                });
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.show();
+    }
+
+    @SuppressLint("InflateParams")
+    @Override
+    public void openChangePwdDialog() {
+        final View view = getLayoutInflater().inflate(R.layout.dialog_change_password, null);
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setView(view);
+        builder.setTitle(R.string.change_password);
+
+        final EditText oldPassword = (EditText) view.findViewById(R.id.edt_dialog_old_pwd);
+        final EditText newPassword = (EditText) view.findViewById(R.id.edt_dialog_new_pwd);
+        Button btnChangePwd = (Button) view.findViewById(R.id.btn_dialog_submit);
+
+        final AlertDialog changePwd = builder.create();
+
+        changePwd.show();
+        btnChangePwd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                String oldPwd = oldPassword.getText().toString().trim();
+                final String newPwd = newPassword.getText().toString().trim();
+
+                final FirebaseUser user;
+                user = FirebaseAuth.getInstance().getCurrentUser();
+
+                String email = null;
+                if (user != null) {
+                    email = user.getEmail();
+                }
+                if (email != null){
+
+                    AuthCredential credential = EmailAuthProvider.getCredential(email, oldPwd);
+
+                    user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful()){
+                                user.updatePassword(newPwd).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if(!task.isSuccessful()){
+                                            Toast.makeText(MainActivity.this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
+                                        }else {
+                                            Toast.makeText(MainActivity.this, R.string.password_changed, Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
+                            }else {
+                                Toast.makeText(MainActivity.this, R.string.old_password_wrong, Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
+                changePwd.dismiss();
+            }
+        });
+    }
+
+    @Override
+    public void openDeleteUserDialog() {
+        final AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+        alertDialog.setTitle(getString(R.string.delete_account));
+        alertDialog.setMessage(getString(R.string.dialod_delete_user_text));
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.dialog_positive),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        String username = currentUser.getUsername();
+                        DatabaseUtility.deleteUser(new OnGetDataListener() {
+                            @Override
+                            public void onSuccess(DataSnapshot data) {
+
+                            }
+
+                            @Override
+                            public void onStart() {
+
+                            }
+
+                            @Override
+                            public void onFailure() {
+
+                            }
+                        }, fireAuth, username);
+                        alertDialog.dismiss();
+                        logout();
+                    }
+                });
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.dialog_negative),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        alertDialog.dismiss();
+                    }
+                });
+        alertDialog.show();
+    }
+    // endregion
+
+    // region ItemClick
+    @Override
+    public void onSetShortClick(String setId, String setName) {
+        this.clickedSetId = setId;
+        this.clickedSetName = setName;
+        displayView(Fragments.SETITEMS, true);
+    }
+
+    @Override
+    public void onSetLongClick(final String setId, String setName) {
+        final AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+        alertDialog.setTitle(getString(R.string.dialog_add_set_title));
+        alertDialog.setMessage(getString(R.string.dialog_add_set_text) + " " + setName + "?");
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.dialog_positive),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        DatabaseUtility.addMissingsFromSet(currentUser.getUsername(), setId);
+                        alertDialog.dismiss();
+                    }
+                });
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.dialog_negative),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        alertDialog.dismiss();
+                    }
+                });
+        alertDialog.show();
+    }
+
+    @Override
+    public void onItemAddMissings(String surpId) {
+        String username = currentUser.getUsername();
+        DatabaseUtility.addMissing(username, surpId);
+    }
+
+    @Override
+    public void onItemAddDoubles(String surpId) {
+        String username = currentUser.getUsername();
+        DatabaseUtility.addDouble(username, surpId);
+    }
+
+    @Override
+    public void onClickOpenProducersFragment() {
+        this.displayView(Fragments.PRODUCERS, true);
+    }
+
+    @Override
+    public void onProducerClick(String id, String name) {
+        this.clickedProducerName = name;
+        this.clickedProducerId = id;
+        this.displayView(Fragments.YEARS, true);
+    }
+
+    @Override
+    public void onYearClicked(String year, int num) {
+        this.clickedYearId = year;
+        this.clickedYearNumber = num;
+        this.displayView(Fragments.SETSEARCH, true);
+    }
+
+    @Override
+    public void onLongYearClicked(final String yearId, int year) {
+        final AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+        alertDialog.setTitle(getString(R.string.dialog_add_year_title));
+        alertDialog.setMessage(getString(R.string.dialog_add_year_text) + " " + year + "?");
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.dialog_positive),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        String username = currentUser.getUsername();
+                        DatabaseUtility.addMissingsFromYear(username, yearId);
+                        alertDialog.dismiss();
+                    }
+                });
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.dialog_negative),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        alertDialog.dismiss();
+                    }
+                });
+        alertDialog.show();
+    }
+
+    @Override
+    public void onBannerClicked(String url) {
+        SystemUtility.openUrl(MainActivity.this, url);
+    }
+    // endregion
+
+    // region Swipe
     @Override
     public void onSwipeRemoveMissing(String surpId) {
         String username = currentUser.getUsername();
@@ -384,11 +561,6 @@ public class MainActivity extends AppCompatActivity implements
     public void onSwipeRemoveDouble(String surpId) {
         String username = currentUser.getUsername();
         DatabaseUtility.removeDouble(username, surpId);
-    }
-
-    @Override
-    public void onClickOpenProducersFragment() {
-        this.displayView(Fragments.PRODUCERS, true);
     }
 
     @SuppressLint("InflateParams")
@@ -465,233 +637,47 @@ public class MainActivity extends AppCompatActivity implements
         });
     }
 
-    private void sendEmailToUser(User owner, Surprise missing) {
-        String to = owner.getEmail().replaceAll(",", "\\.");
-        String subject = getString(R.string.mail_subject, currentUser.getUsername());
-        String html = getString(R.string.mail_exchange_body, currentUser.getUsername(), missing.getCode(), missing.getDescription());
-        Spanned body;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            body = Html.fromHtml(html,Html.FROM_HTML_MODE_LEGACY);
-        } else {
-            body = Html.fromHtml(html);
-        }
-
-        SystemUtility.sendMail(MainActivity.this, to, subject, body);
-    }
-
-    private void clearBackStack() {
-        fragmentManager = getSupportFragmentManager();
-        fragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-    }
-
-    @Override
-    public void onProducerClick(String id, String name) {
-        this.clickedProducerName = name;
-        this.clickedProducerId = id;
-        this.displayView(Fragments.YEARS, true);
-    }
-
-    @Override
-    public void onYearClicked(String year, int num) {
-        this.clickedYearId = year;
-        this.clickedYearNumber = num;
-        this.displayView(Fragments.SETSEARCH, true);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        DatabaseUtility.closeConnection();
-    }
-
-    @Override
-    public void onLongYearClicked(final String yearId, int year) {
-        final AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
-        alertDialog.setTitle(getString(R.string.dialog_add_year_title));
-        alertDialog.setMessage(getString(R.string.dialog_add_year_text) + " " + year + "?");
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.dialog_positive),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        String username = currentUser.getUsername();
-                        DatabaseUtility.addMissingsFromYear(username, yearId);
-                        alertDialog.dismiss();
-                    }
-                });
-        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.dialog_negative),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        alertDialog.dismiss();
-                    }
-                });
-        alertDialog.show();
-    }
+    // endregion
 
     // region ActionBarTitle
     @Override
     public void setProducerTitle() {
-        if (getSupportActionBar() != null){
-            getSupportActionBar().setTitle(R.string.producer);
-        }
+        TitleHelper.setProducerTitle(getSupportActionBar());
     }
 
     @Override
     public void setSearchTitle() {
-        if (getSupportActionBar() != null){
-            getSupportActionBar().setTitle(this.clickedProducerName + " - "+ this.clickedYearNumber);
-        }
+        TitleHelper.setSetSearchTitle(getSupportActionBar(), this.clickedProducerName, this.clickedYearNumber);
     }
 
     @Override
     public void setItemsTitle() {
-        if (getSupportActionBar() != null){
-            getSupportActionBar().setTitle(this.clickedSetName);
-        }
+        TitleHelper.setSetItemsTitle(getSupportActionBar(), this.clickedSetName);
     }
 
     @Override
     public void setDoublesTitle(int number) {
-        if (getSupportActionBar() != null){
-            String title;
-            if (number > 0){
-                title = getResources().getString(R.string.doubles) + " (" + number + ")";
-            } else {
-                title = getResources().getString(R.string.doubles);
-            }
-            getSupportActionBar().setTitle(title);
-        }
+        TitleHelper.setDoublesTitle(MainActivity.this, getSupportActionBar(), number);
     }
 
     @Override
     public void setMissingsTitle(int number) {
-        if (getSupportActionBar() != null){
-            String title;
-            if (number > 0){
-                title = getResources().getString(R.string.missings) + " (" + number + ")";
-            } else {
-                title = getResources().getString(R.string.missings);
-            }
-            getSupportActionBar().setTitle(title);
-        }
+        TitleHelper.setMissingsTitle(MainActivity.this, getSupportActionBar(), number);
     }
 
     @Override
     public void setYearTitle() {
-        if (getSupportActionBar() != null){
-            getSupportActionBar().setTitle(this.clickedProducerName);
-        }
+        TitleHelper.setYearTitle(getSupportActionBar(), clickedProducerName);
     }
 
     @Override
     public void setSettingsTitle() {
-        if (getSupportActionBar() != null){
-            getSupportActionBar().setTitle(R.string.settings);
-        }
-    }
-
-    @SuppressLint("InflateParams")
-    @Override
-    public void openChangePwdDialog() {
-        final View view = getLayoutInflater().inflate(R.layout.dialog_change_password, null);
-
-        final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setView(view);
-        builder.setTitle(R.string.change_password);
-
-        final EditText oldPassword = (EditText) view.findViewById(R.id.edt_dialog_old_pwd);
-        final EditText newPassword = (EditText) view.findViewById(R.id.edt_dialog_new_pwd);
-        Button btnChangePwd = (Button) view.findViewById(R.id.btn_dialog_submit);
-
-        final AlertDialog changePwd = builder.create();
-
-        changePwd.show();
-        btnChangePwd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                String oldPwd = oldPassword.getText().toString().trim();
-                final String newPwd = newPassword.getText().toString().trim();
-
-                final FirebaseUser user;
-                user = FirebaseAuth.getInstance().getCurrentUser();
-
-                final String email = user.getEmail();
-                if (email != null){
-
-                    AuthCredential credential = EmailAuthProvider.getCredential(email, oldPwd);
-
-                    user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful()){
-                                user.updatePassword(newPwd).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if(!task.isSuccessful()){
-                                            Toast.makeText(MainActivity.this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
-                                        }else {
-                                            Toast.makeText(MainActivity.this, R.string.password_changed, Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-                                });
-                            }else {
-                                Toast.makeText(MainActivity.this, R.string.old_password_wrong, Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-                }
-                changePwd.dismiss();
-            }
-        });
-    }
-
-    @Override
-    public void openDeleteUserDialog() {
-        final AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
-        alertDialog.setTitle(getString(R.string.delete_account));
-        alertDialog.setMessage(getString(R.string.dialod_delete_user_text));
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.dialog_positive),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        String username = currentUser.getUsername();
-                        DatabaseUtility.deleteUser(new OnGetDataListener() {
-                            @Override
-                            public void onSuccess(DataSnapshot data) {
-
-                            }
-
-                            @Override
-                            public void onStart() {
-
-                            }
-
-                            @Override
-                            public void onFailure() {
-
-                            }
-                        }, fireAuth, username);
-                        alertDialog.dismiss();
-                        logout();
-                    }
-                });
-        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.dialog_negative),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        alertDialog.dismiss();
-                    }
-                });
-        alertDialog.show();
-    }
-
-    @Override
-    public void onBannerClicked(String url) {
-        SystemUtility.openUrl(MainActivity.this, url);
+        TitleHelper.setSettingsTitle(MainActivity.this, getSupportActionBar());
     }
 
     @Override
     public void setThanksToTitle() {
-        if (getSupportActionBar() != null){
-            getSupportActionBar().setTitle(R.string.thanks_to_title);
-        }
+        TitleHelper.setThanksTitle(MainActivity.this, getSupportActionBar());
     }
-
     // endregion
 }
