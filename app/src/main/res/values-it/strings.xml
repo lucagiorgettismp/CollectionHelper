@@ -36,7 +36,7 @@
     <string name="surprise">Sorpresina</string>
     <string name="user_added">Utente aggiornato</string>
     <string name="user_group">Utente</string>
-    <string name="who_have_what_you_miss">Utenti che hanno quello che stai cercando</string>
+    <string name="who_have_what_you_miss">Utenti che hanno quello che cerchi:</string>
     <string name="wrong_email_or_password">E-mail o Password errata</string>
     <string name="year">Anno</string>
     <string name="complete_all_fields">Completa tutti i campi prima di procedere alla registrazione</string>
@@ -78,7 +78,7 @@
     <string name="tutorial">Guida</string>
     <string name="surprise_image">immagine sorpresina</string>
     <string name="icon_logo">icona logo</string>
-    <string name="icon_username">icoan username</string>
+    <string name="icon_username">icona username</string>
     <string name="icon_email">icona e-mail</string>
     <string name="icon_password">icona password</string>
     <string name="set_image">immagine serie</string>

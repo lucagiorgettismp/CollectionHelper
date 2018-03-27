@@ -33,7 +33,7 @@
         android:paddingRight="10dp"
         android:text="@string/country"
         android:textAlignment="textEnd"
-        android:textSize="12sp" />
+        android:textSize="14sp" />
 
     <ImageView
         android:id="@+id/img_collector_mail"

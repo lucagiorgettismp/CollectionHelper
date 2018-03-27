@@ -10,7 +10,7 @@
     <string name="new_password">New Password</string>
     <string name="change_password">Change Password</string>
     <string name="surprise">Surprise</string>
-    <string name="who_have_what_you_miss">Users who have you are looking for</string>
+    <string name="who_have_what_you_miss">Users who have you are looking for:</string>
     <string name="nobody_have_what_you_miss">Unfortunately, nobody have what you are looking for</string>
     <string name="username" translatable="false">Username</string>
     <string name="sign_up">Sign Up</string>
@@ -109,4 +109,5 @@
     <string name="info_images_dialog_title">Info e images</string>
     <string name="info_images_dialog_content">Do you need any info about Surprix or want to help the growth of the catalog? Send an e-mail to info.surprix@gmail.com</string>
     <string name="info_send_images">Info and send images</string>
+    <string name="double_owners_dialog_title" translatable="false">%s - %s</string>
 </resources>

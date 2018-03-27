@@ -78,8 +78,6 @@ public class MainActivity extends AppCompatActivity implements
     private DoublesOwnersListAdapter mAdapter;
     private NavigationView navigationView;
 
-    String surprix_mail = "info.surprix@gmail.com";
-
     private String clickedYearId = null;
     private int clickedYearNumber = -1;
 
@@ -145,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements
 
                 @Override
                 public void onFailure() {
-                    Toast.makeText(MainActivity.this, "Errore nella sincronizzazione dei dati", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, getResources().getString(R.string.data_sync_error), Toast.LENGTH_SHORT).show();
                 }
             }, fireAuth);
         }
@@ -276,10 +274,10 @@ public class MainActivity extends AppCompatActivity implements
         alertDialog.setTitle(getString(R.string.info_images_dialog_title));
         alertDialog.setMessage(getString(R.string.info_images_dialog_content));
 
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "E-mail",
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.email),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        SystemUtility.sendMail(MainActivity.this, surprix_mail, null, null);
+                        SystemUtility.sendMail(MainActivity.this, getResources().getString(R.string.surprix_mail), null, null);
                         alertDialog.dismiss();
                     }
                 });
@@ -401,7 +399,7 @@ public class MainActivity extends AppCompatActivity implements
         final TextView infoTxv = (TextView) view.findViewById(R.id.doubles_dialog_info);
         final TextView emptyListTxv = (TextView) view.findViewById(R.id.doubles_dialog_empty_list);
         dialogTitle.setBackgroundColor(ContextCompat.getColor(MainActivity.this, Colors.getHexColor(missing.getSet_producer_color())));
-        dialogTitle.setText(missing.getCode() + " - " + missing.getDescription());
+        dialogTitle.setText(String.format(getString(R.string.double_owners_dialog_title), missing.getCode(), missing.getDescription()));
         mAdapter = new DoublesOwnersListAdapter(MainActivity.this, doubleOwners);
         final ListView listView = (ListView) view.findViewById(R.id.doubles_dialog_list);
         listView.setAdapter(mAdapter);
@@ -410,6 +408,15 @@ public class MainActivity extends AppCompatActivity implements
             public void onSuccess(ArrayList<User> users) {
                 if(users != null){
                     if(!users.isEmpty()){
+                        /*
+                        for (int i = 0; i < 100; i++){
+                            if (i % 2 == 0){
+                                users.add(new User(String.valueOf(i), String.valueOf(i),String.valueOf(i),String.valueOf(i), "25/01/1995", "Francia", false));
+                            } else {
+                                users.add(new User(String.valueOf(i), String.valueOf(i),String.valueOf(i),String.valueOf(i), "25/01/1995", "Italia", false));
+                            }
+                        }
+                        */
                         final ArrayList<User> owners = new ArrayList<>();
                         final ArrayList<User> abroad_owners = new ArrayList<>();
                         for(User u: users){
