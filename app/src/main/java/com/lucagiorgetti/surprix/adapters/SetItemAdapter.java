@@ -70,7 +70,7 @@ public class SetItemAdapter extends BaseAdapter {
 
         vCode.setText(s.getCode());
         vDescription.setText(s.getDescription());
-        Glide.with(ctx).load(s.getImg_path()).error(R.drawable.ic_surprise).into(vImage);
+        Glide.with(ctx).load(s.getImg_path()).error(R.drawable.ic_surprise_grey).into(vImage);
 
         vLayout.setBackgroundColor(ContextCompat.getColor(ctx, Colors.getHexColor(s.getSet_producer_color())));
         final GridView gv = (GridView) parent;
