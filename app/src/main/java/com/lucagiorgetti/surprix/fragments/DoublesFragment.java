@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -58,12 +59,12 @@ public class DoublesFragment extends Fragment implements SearchView.OnQueryTextL
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.surprise_fragment, container, false);
         emptyList = layout.findViewById(R.id.empty_list);
         String username = getArguments().getString("username");
-        progress = (ProgressBar) layout.findViewById(R.id.surprise_loading);
-        recyclerView = (RecyclerView) layout.findViewById(R.id.surprise_recycler);
+        progress = layout.findViewById(R.id.surprise_loading);
+        recyclerView = layout.findViewById(R.id.surprise_recycler);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mContext);
         recyclerView.setLayoutManager(layoutManager);
@@ -74,7 +75,7 @@ public class DoublesFragment extends Fragment implements SearchView.OnQueryTextL
         } else {
             emptyList.setVisibility(View.VISIBLE);
         }
-        FloatingActionButton fab = (FloatingActionButton) layout.findViewById(R.id.fab);
+        FloatingActionButton fab = layout.findViewById(R.id.fab);
         fab.setOnClickListener(this);
         initSwipe();
         DatabaseUtility.getDoublesForUsername(username, new OnGetListListener<Surprise>() {

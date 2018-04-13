@@ -21,6 +21,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.lucagiorgetti.surprix.R;
+import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.listenerInterfaces.OnGetDataListener;
 import com.lucagiorgetti.surprix.utility.DatabaseUtility;
 import com.lucagiorgetti.surprix.utility.SystemUtility;
@@ -60,26 +61,26 @@ public class RegistrateActivity extends AppCompatActivity{
 
         this.facebookLogin = LoginManager.getInstance();
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        fireAuth = FirebaseAuth.getInstance();
+        fireAuth = SurprixApplication.getInstance().getFirebaseAuth();
         setContentView(R.layout.activity_registration);
 
-        edtEmail = (EditText) findViewById(R.id.edit_reg_email);
-        edtPassword = (EditText) findViewById(R.id.edit_reg_password);
+        edtEmail = findViewById(R.id.edit_reg_email);
+        edtPassword = findViewById(R.id.edit_reg_password);
 
         View layPassword = findViewById(R.id.layout_reg_password);
-        edtUsername = (EditText) findViewById(R.id.edit_reg_username);
-        edtName = (EditText) findViewById(R.id.edit_reg_name);
-        edtSurname = (EditText) findViewById(R.id.edit_reg_surname);
-        edtBirthdate =(EditText) findViewById(R.id.edit_reg_birthdate);
-        edtNation =(EditText) findViewById(R.id.edit_reg_nation);
-        progress = (ProgressBar) findViewById(R.id.progress_bar);
-        TextView lblInfoFacebook = (TextView) findViewById(R.id.lbl_reg_info_facebook);
-        TextView lblInfoFirstLogin = (TextView) findViewById(R.id.lbl_reg_info_firstlogin);
-        Button btnAccountCompleteFacebook = (Button) findViewById(R.id.btn_reg_complete_account);
-        Button submit = (Button) findViewById(R.id.btn_reg_submit);
+        edtUsername = findViewById(R.id.edit_reg_username);
+        edtName = findViewById(R.id.edit_reg_name);
+        edtSurname = findViewById(R.id.edit_reg_surname);
+        edtBirthdate = findViewById(R.id.edit_reg_birthdate);
+        edtNation = findViewById(R.id.edit_reg_nation);
+        progress = findViewById(R.id.progress_bar);
+        TextView lblInfoFacebook = findViewById(R.id.lbl_reg_info_facebook);
+        TextView lblInfoFirstLogin = findViewById(R.id.lbl_reg_info_firstlogin);
+        Button btnAccountCompleteFacebook = findViewById(R.id.btn_reg_complete_account);
+        Button submit = findViewById(R.id.btn_reg_submit);
 
         Bundle b = getIntent().getExtras();
         int facebook = 0;

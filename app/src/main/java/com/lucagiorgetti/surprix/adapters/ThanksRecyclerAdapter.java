@@ -1,6 +1,7 @@
 package com.lucagiorgetti.surprix.adapters;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,14 +30,15 @@ public class ThanksRecyclerAdapter extends RecyclerView.Adapter<ThanksRecyclerAd
         ctx = context;
     }
 
+    @NonNull
     @Override
-    public SetViewHolder onCreateViewHolder(ViewGroup parent, int i) {
+    public SetViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.thanks_element, parent,  false);
         return new SetViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(SetViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull SetViewHolder holder, int position) {
         Sponsor sponsor = sponsorsList.get(position);
 
         Glide.with(ctx).load(sponsor.getBannerImageUrl()).into(holder.vImage);
@@ -56,7 +58,7 @@ public class ThanksRecyclerAdapter extends RecyclerView.Adapter<ThanksRecyclerAd
 
         SetViewHolder(View v) {
             super(v);
-            vImage =  (ImageView) v.findViewById(R.id.image_thanks);
+            vImage = v.findViewById(R.id.image_thanks);
         }
     }
 }

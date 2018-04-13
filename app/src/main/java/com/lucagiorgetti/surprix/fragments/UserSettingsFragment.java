@@ -3,6 +3,7 @@ package com.lucagiorgetti.surprix.fragments;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -43,29 +44,29 @@ public class UserSettingsFragment extends Fragment{
     CountryPickerDialog countryPicker = null;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.activity_registration, container, false);
         currentUser = listener.getCurrentRetrievedUser();
-        EditText edtEmail = (EditText) layout.findViewById(R.id.edit_reg_email);
-        EditText edtUsername = (EditText) layout.findViewById(R.id.edit_reg_username);
-        ImageView usernameImage = (ImageView) layout.findViewById(R.id.img_reg_username);
-        ImageView emailImage = (ImageView) layout.findViewById(R.id.img_reg_email);
+        EditText edtEmail = layout.findViewById(R.id.edit_reg_email);
+        EditText edtUsername = layout.findViewById(R.id.edit_reg_username);
+        ImageView usernameImage = layout.findViewById(R.id.img_reg_username);
+        ImageView emailImage = layout.findViewById(R.id.img_reg_email);
 
         edtUsername.setEnabled(false);
         edtEmail.setEnabled(false);
         usernameImage.setColorFilter(ContextCompat.getColor(mContext, R.color.disabledIcon));
         emailImage.setColorFilter(ContextCompat.getColor(mContext, R.color.disabledIcon));
 
-        edtName = (EditText) layout.findViewById(R.id.edit_reg_name);
-        edtSurname = (EditText) layout.findViewById(R.id.edit_reg_surname);
-        edtBirthdate =(EditText) layout.findViewById(R.id.edit_reg_birthdate);
-        edtNation =(EditText) layout.findViewById(R.id.edit_reg_nation);
+        edtName = layout.findViewById(R.id.edit_reg_name);
+        edtSurname =  layout.findViewById(R.id.edit_reg_surname);
+        edtBirthdate = layout.findViewById(R.id.edit_reg_birthdate);
+        edtNation = layout.findViewById(R.id.edit_reg_nation);
         View layPassword = layout.findViewById(R.id.layout_reg_password);
         View layButtonsModify = layout.findViewById(R.id.layout_reg_modify);
 
-        TextView changePwd = (TextView) layout.findViewById(R.id.btn_reg_change_pwd);
-        TextView deleteUser = (TextView) layout.findViewById(R.id.btn_reg_delete_account);
-        Button submit = (Button) layout.findViewById(R.id.btn_reg_submit);
+        TextView changePwd = layout.findViewById(R.id.btn_reg_change_pwd);
+        TextView deleteUser = layout.findViewById(R.id.btn_reg_delete_account);
+        Button submit = layout.findViewById(R.id.btn_reg_submit);
 
         String[] dateArray = new String[0];
         try {
@@ -134,7 +135,7 @@ public class UserSettingsFragment extends Fragment{
             }
         });
 
-        TextView lblInfoFirstLogin = (TextView) layout.findViewById(R.id.lbl_reg_info_firstlogin);
+        TextView lblInfoFirstLogin = layout.findViewById(R.id.lbl_reg_info_firstlogin);
         lblInfoFirstLogin.setVisibility(View.GONE);
         submit.setText(R.string.save);
 

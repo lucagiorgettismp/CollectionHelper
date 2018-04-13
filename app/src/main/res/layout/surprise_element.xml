@@ -38,7 +38,7 @@
                     android:text="@string/code"
                     android:textAlignment="center"
                     android:textColor="@android:color/white"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -47,11 +47,11 @@
                     android:layout_height="match_parent"
                     android:layout_weight="75"
                     android:gravity="start|center_vertical"
-                    android:paddingStart="10dp"
                     android:paddingEnd="10dp"
+                    android:paddingStart="10dp"
                     android:text="@string/description"
                     android:textColor="@android:color/white"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
             </LinearLayout>
 

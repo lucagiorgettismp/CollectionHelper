@@ -1,6 +1,8 @@
 package com.lucagiorgetti.surprix.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,7 +12,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.lucagiorgetti.surprix.R;
+import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.model.Colors;
 import com.lucagiorgetti.surprix.model.ExtraLocales;
 import com.lucagiorgetti.surprix.model.Surprise;
@@ -32,14 +38,16 @@ public class SurpRecyclerAdapter extends RecyclerView.Adapter<SurpRecyclerAdapte
         ctx = context;
     }
 
+    @NonNull
     @Override
-    public SurpViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public SurpViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.surprise_element, parent, false);
         return new SurpViewHolder(v);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(SurpViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull SurpViewHolder holder, int position) {
 
         Surprise surp = surprises.get(position);
         holder.vCode.setText(surp.getCode());
@@ -60,7 +68,23 @@ public class SurpRecyclerAdapter extends RecyclerView.Adapter<SurpRecyclerAdapte
 
         holder.vLayout.setBackgroundColor(ContextCompat.getColor(ctx, Colors.getHexColor(surp.getSet_producer_color())));
 
-        Glide.with(ctx).load(surp.getImg_path()).error(R.drawable.ic_surprise_grey).into(holder.vImage);
+        String path = surp.getImg_path();
+        if (path.startsWith("gs")){
+            FirebaseStorage storage = SurprixApplication.getInstance().getFirebaseStorage();
+            StorageReference gsReference = storage.getReferenceFromUrl(path);
+            Glide.with(ctx).
+                    load(gsReference).
+                    apply(new RequestOptions()
+                            .placeholder(R.drawable.ic_surprise_grey))
+                    .into(holder.vImage);
+
+        } else {
+            Glide.with(ctx).
+                    load(path).
+                    apply(new RequestOptions()
+                            .placeholder(R.drawable.ic_surprise_grey))
+                    .into(holder.vImage);
+        }
     }
 
     @Override
@@ -95,13 +119,13 @@ public class SurpRecyclerAdapter extends RecyclerView.Adapter<SurpRecyclerAdapte
 
         SurpViewHolder(View v) {
             super(v);
-            vCode = (TextView) v.findViewById(R.id.txv_surp_elem_code);
-            vSetName = (TextView) v.findViewById(R.id.txv_surp_elem_set);
-            vDescription = (TextView) v.findViewById(R.id.txv_surp_elem_desc);
-            vYear = (TextView) v.findViewById(R.id.txv_surp_elem_year);
-            vProducer = (TextView) v.findViewById(R.id.txv_surp_elem_producer);
-            vNation = (TextView) v.findViewById(R.id.txv_surp_elem_nation);
-            vImage = (ImageView) v.findViewById(R.id.img_surp_elem);
+            vCode = v.findViewById(R.id.txv_surp_elem_code);
+            vSetName = v.findViewById(R.id.txv_surp_elem_set);
+            vDescription = v.findViewById(R.id.txv_surp_elem_desc);
+            vYear = v.findViewById(R.id.txv_surp_elem_year);
+            vProducer = v.findViewById(R.id.txv_surp_elem_producer);
+            vNation = v.findViewById(R.id.txv_surp_elem_nation);
+            vImage = v.findViewById(R.id.img_surp_elem);
             vLayout = v.findViewById(R.id.layout_surp_elem_titlebar);
         }
     }

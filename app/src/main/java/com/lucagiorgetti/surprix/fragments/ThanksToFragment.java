@@ -2,6 +2,7 @@ package com.lucagiorgetti.surprix.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -33,13 +34,13 @@ public class ThanksToFragment extends Fragment{
     private ProgressBar progress;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.thanks_fragment, container, false);
-        recyclerView = (RecyclerView) layout.findViewById(R.id.thanks_recycler);
+        recyclerView = layout.findViewById(R.id.thanks_recycler);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mContext);
         recyclerView.setLayoutManager(layoutManager);
-        progress = (ProgressBar) layout.findViewById(R.id.thanks_loading);
+        progress = layout.findViewById(R.id.thanks_loading);
 
         createSponsorList();
         mAdapter = new ThanksRecyclerAdapter(mContext, sponsorsList);

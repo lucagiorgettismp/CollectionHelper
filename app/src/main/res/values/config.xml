@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <bool name="doInitialize">false</bool>
     <string name="surprix_mail" translatable="false">info.surprix@gmail.com</string>
 </resources>

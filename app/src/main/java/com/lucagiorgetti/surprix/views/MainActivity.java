@@ -35,8 +35,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 
-import com.lucagiorgetti.surprix.Initializer;
 import com.lucagiorgetti.surprix.R;
+import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.fragments.ThanksToFragment;
 import com.lucagiorgetti.surprix.fragments.UserSettingsFragment;
 import com.lucagiorgetti.surprix.listenerInterfaces.FragmentListenerInterface;
@@ -65,8 +65,8 @@ public class MainActivity extends AppCompatActivity implements
         FragmentListenerInterface {
 
     private static FragmentManager fragmentManager;
-    private FirebaseAuth fireAuth;
     private LoginManager facebookLogin;
+    private FirebaseAuth fireAuth;
     private FirebaseAuth.AuthStateListener fireAuthStateListener;
 
     private User currentUser = null;
@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        fireAuth = FirebaseAuth.getInstance();
+        fireAuth = SurprixApplication.getInstance().getFirebaseAuth();
         facebookLogin = LoginManager.getInstance();
 
         fireAuthStateListener = new FirebaseAuth.AuthStateListener() {
@@ -126,11 +126,6 @@ public class MainActivity extends AppCompatActivity implements
                 @Override
                 public void onSuccess(DataSnapshot dataSnapshot) {
                     currentUser = dataSnapshot.getValue(User.class);
-
-                    if(getResources().getBoolean(R.bool.doInitialize)){
-                        Initializer init = new Initializer(currentUser);
-                        init.insertData();
-                    }
 
                     nav_user.setText(currentUser.getUsername());
                     nav_email.setText(currentUser.getEmail().replaceAll(",", "\\."));
@@ -388,7 +383,7 @@ public class MainActivity extends AppCompatActivity implements
                 final String newPwd = newPassword.getText().toString().trim();
 
                 final FirebaseUser user;
-                user = FirebaseAuth.getInstance().getCurrentUser();
+                user = SurprixApplication.getInstance().getFirebaseAuth().getCurrentUser();
 
                 String email = null;
                 if (user != null) {

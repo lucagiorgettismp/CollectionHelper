@@ -1,6 +1,7 @@
 package com.lucagiorgetti.surprix.adapters;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -31,14 +32,15 @@ public class ProducerRecyclerAdapter extends RecyclerView.Adapter<ProducerRecycl
         ctx = context;
     }
 
+    @NonNull
     @Override
-    public SetViewHolder onCreateViewHolder(ViewGroup parent, int i) {
+    public SetViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.producer_element, parent,  false);
         return new SetViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(SetViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull SetViewHolder holder, int position) {
         Producer producer = producers.get(position);
         holder.vName.setText(producer.getName());
         holder.vProduct.setText(producer.getProduct());
@@ -62,8 +64,8 @@ public class ProducerRecyclerAdapter extends RecyclerView.Adapter<ProducerRecycl
 
         SetViewHolder(View v) {
             super(v);
-            vName =  (TextView) v.findViewById(R.id.txv_title_prd_select);
-            vProduct = (TextView)  v.findViewById(R.id.txv_subtitle_prd_select);
+            vName = v.findViewById(R.id.txv_title_prd_select);
+            vProduct = v.findViewById(R.id.txv_subtitle_prd_select);
             vLayout = v.findViewById(R.id.layout_prd_select);
         }
     }

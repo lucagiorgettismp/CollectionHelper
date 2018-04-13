@@ -30,6 +30,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.lucagiorgetti.surprix.R;
+import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.utility.DatabaseUtility;
 import com.lucagiorgetti.surprix.utility.SystemUtility;
 
@@ -91,7 +92,7 @@ public class LoginActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        fireAuth = FirebaseAuth.getInstance();
+        fireAuth = SurprixApplication.getInstance().getFirebaseAuth();
 
         Button login = (Button) findViewById(R.id.btn_start_login);
         Button registrate = (Button) findViewById(R.id.btn_start_registration);
@@ -189,7 +190,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void sendPasswordResetEmail(String email) {
-        FirebaseAuth.getInstance().sendPasswordResetEmail(email)
+        SurprixApplication.getInstance().getFirebaseAuth().sendPasswordResetEmail(email)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

@@ -2,6 +2,7 @@ package com.lucagiorgetti.surprix.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -36,12 +37,12 @@ public class SearchSetsFragment extends Fragment implements SearchView.OnQueryTe
     private ProgressBar progress;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         String yearId = getArguments().getString("yearId");
         View layout = inflater.inflate(R.layout.set_fragment, container, false);
-        progress = (ProgressBar) layout.findViewById(R.id.search_set_loading);
-        recyclerView = (RecyclerView) layout.findViewById(R.id.set_search_recycler);
+        progress = layout.findViewById(R.id.search_set_loading);
+        recyclerView = layout.findViewById(R.id.set_search_recycler);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mContext);
         recyclerView.setLayoutManager(layoutManager);

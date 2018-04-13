@@ -1,6 +1,7 @@
 package com.lucagiorgetti.surprix.adapters;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -26,14 +27,15 @@ public class YearRecyclerAdapter extends RecyclerView.Adapter<YearRecyclerAdapte
         ctx = context;
     }
 
+    @NonNull
     @Override
-    public SetViewHolder onCreateViewHolder(ViewGroup parent, int i) {
+    public SetViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.year_element, parent,  false);
         return new SetViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(SetViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull SetViewHolder holder, int position) {
         Year year = years.get(position);
         holder.vName.setText(String.valueOf(year.getYear()));
 
@@ -64,7 +66,7 @@ public class YearRecyclerAdapter extends RecyclerView.Adapter<YearRecyclerAdapte
 
         SetViewHolder(View v) {
             super(v);
-            vName =  (TextView) v.findViewById(R.id.txv_year_number);
+            vName = v.findViewById(R.id.txv_year_number);
             vLayout = v.findViewById(R.id.layout_year_select);
         }
     }

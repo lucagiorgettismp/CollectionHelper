@@ -46,8 +46,8 @@ public class DoublesOwnersListAdapter extends BaseAdapter {
     public View getView(final int position, View v, final ViewGroup parent) {
         v = inflater.inflate(R.layout.dialog_doubles_element, parent, false);
 
-        TextView vUsername = (TextView) v.findViewById(R.id.txv_collector_username);
-        TextView vCountry = (TextView) v.findViewById(R.id.txv_collector_country);
+        TextView vUsername = v.findViewById(R.id.txv_collector_username);
+        TextView vCountry = v.findViewById(R.id.txv_collector_country);
         User user = getItem(position);
 
         vUsername.setText(user.getUsername());

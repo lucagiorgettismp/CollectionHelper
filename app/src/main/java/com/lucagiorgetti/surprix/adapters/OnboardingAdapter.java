@@ -1,6 +1,7 @@
 package com.lucagiorgetti.surprix.adapters;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,52 +33,54 @@ public class OnboardingAdapter extends PagerAdapter {
     }
 
     @Override
-    public boolean isViewFromObject(View view, Object object) {
+    public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
         return view == object;
     }
 
+    @NonNull
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
+    public Object instantiateItem(@NonNull ViewGroup container, int position) {
         int pos = position + 1;
         LayoutInflater layoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = null;
         TextView title;
         TextView content;
         ImageView imageView;
+
         switch (pos){
             case 1:
                 view = layoutInflater.inflate(R.layout.onboarding_default, container, false);
-                title = (TextView) view.findViewById(R.id.title);
-                content = (TextView) view.findViewById(R.id.content);
-                imageView = (ImageView) view.findViewById(R.id.image);
+                title = view.findViewById(R.id.title);
+                content = view.findViewById(R.id.content);
+                imageView = view.findViewById(R.id.image);
                 title.setText(R.string.catalog);
                 content.setText(R.string.onboarding_catalog_content);
                 imageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.onboard_catalog));
                 break;
             case 2:
                 view = layoutInflater.inflate(R.layout.onboarding_adding, container, false);
-                title= (TextView) view.findViewById(R.id.title);
+                title= view.findViewById(R.id.title);
                 title.setText(R.string.create_lists);
                 break;
             case 3:
                 view = layoutInflater.inflate(R.layout.onboarding_exchange, container, false);
-                title = (TextView) view.findViewById(R.id.title);
+                title = view.findViewById(R.id.title);
                 title.setText(R.string.make_exchange);
                 break;
             case 4:
                 view = layoutInflater.inflate(R.layout.onboarding_default, container, false);
-                title = (TextView) view.findViewById(R.id.title);
-                content = (TextView) view.findViewById(R.id.content);
-                imageView =(ImageView) view.findViewById(R.id.image);
+                title = view.findViewById(R.id.title);
+                content = view.findViewById(R.id.content);
+                imageView = view.findViewById(R.id.image);
                 title.setText(R.string.search);
                 content.setText(R.string.onboarding_search_content);
                 imageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.onboard_search));
                 break;
             case 5:
                 view = layoutInflater.inflate(R.layout.onboarding_default, container, false);
-                title = (TextView) view.findViewById(R.id.title);
-                content = (TextView) view.findViewById(R.id.content);
-                imageView = (ImageView) view.findViewById(R.id.image);
+                title = view.findViewById(R.id.title);
+                content = view.findViewById(R.id.content);
+                imageView = view.findViewById(R.id.image);
                 title.setText(R.string.menu);
                 content.setText(R.string.onboarding_menu_content);
                 imageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.onboard_menu));
@@ -88,7 +91,7 @@ public class OnboardingAdapter extends PagerAdapter {
     }
 
     @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
+    public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         container.removeView((LinearLayout)object);
     }
 }

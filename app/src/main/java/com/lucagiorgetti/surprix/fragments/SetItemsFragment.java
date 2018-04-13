@@ -2,6 +2,7 @@ package com.lucagiorgetti.surprix.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -31,14 +32,14 @@ public class SetItemsFragment extends Fragment implements View.OnClickListener{
     private ProgressBar progress;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View layout = inflater.inflate(R.layout.set_detail_fragment, container, false);
 
         String setClicked = getArguments().getString("set");
-        progress = (ProgressBar) layout.findViewById(R.id.items_loading);
+        progress = layout.findViewById(R.id.items_loading);
 
         mAdapter = new SetItemAdapter(mContext, surprises);
-        gridView = (GridView) layout.findViewById(R.id.items_gridview);
+        gridView = layout.findViewById(R.id.items_gridview);
         gridView.setAdapter(mAdapter);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
