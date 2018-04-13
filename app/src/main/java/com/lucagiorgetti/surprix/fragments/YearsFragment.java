@@ -63,7 +63,7 @@ public class YearsFragment extends Fragment{
         DatabaseUtility.getYearsFromProducer(producer_id, new OnGetListListener<Year>() {
             @Override
             public void onSuccess(ArrayList<Year> yearsList) {
-                Collections.reverse(yearsList);
+                Collections.sort(yearsList, new Year.SortByDescYear());
                 mAdapter = new YearRecyclerAdapter(mContext, yearsList);
                 recyclerView.setAdapter(mAdapter);
                 progress.setVisibility(View.GONE);

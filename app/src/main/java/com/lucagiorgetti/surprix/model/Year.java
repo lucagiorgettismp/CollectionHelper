@@ -1,5 +1,7 @@
 package com.lucagiorgetti.surprix.model;
 
+import java.util.Comparator;
+
 /**
  * Created by Utente on 17/04/2017.
  */
@@ -36,4 +38,13 @@ public class Year {
     public String getProducer_color() {
         return producer_color;
     }
+
+    public static class SortByDescYear implements Comparator<Year>
+    {
+        @Override
+        public int compare(Year o1, Year o2) {
+            return o2.getYear() - o1.getYear();
+        }
+    }
 }
+
