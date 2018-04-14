@@ -3,10 +3,12 @@ package com.lucagiorgetti.surprix.utility;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.Spanned;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -22,6 +24,9 @@ import com.lucagiorgetti.surprix.R;
  */
 
 public class SystemUtility {
+    public static final String FIRST_TIME_YEAR_HELP_SHOW= "showYearHelp";
+    public static final String FIRST_TIME_SET_HELP_SHOW = "showSetHelp";
+
     public static boolean checkNetworkAvailability(Context context) {
         boolean available = false;
         int[] networkTypes = {ConnectivityManager.TYPE_MOBILE,
@@ -64,6 +69,11 @@ public class SystemUtility {
     }
 
     public static void firstTimeOpeningApp(Activity activity, Context applicationContext, Class<?> cls, Bundle b) {
+        SharedPreferences.Editor edit = PreferenceManager.getDefaultSharedPreferences(applicationContext).edit();
+        edit.putBoolean(FIRST_TIME_SET_HELP_SHOW, true);
+        edit.putBoolean(FIRST_TIME_YEAR_HELP_SHOW, true);
+        edit.apply();
+
         openNewActivityWithFinishing(activity, applicationContext, cls, b);
         openNewActivity(applicationContext, OnboardActivity.class, null);
     }

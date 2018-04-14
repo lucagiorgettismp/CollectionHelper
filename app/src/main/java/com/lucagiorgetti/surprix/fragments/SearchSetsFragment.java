@@ -1,9 +1,13 @@
 package com.lucagiorgetti.surprix.fragments;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -83,6 +87,8 @@ public class SearchSetsFragment extends Fragment implements SearchView.OnQueryTe
                 Toast.makeText(mContext, R.string.data_sync_error, Toast.LENGTH_SHORT).show();
             }
         });
+
+        showFirstTimeHelp();
         return layout;
     }
 
@@ -158,5 +164,27 @@ public class SearchSetsFragment extends Fragment implements SearchView.OnQueryTe
     public void onResume() {
         listener.setSearchTitle();
         super.onResume();
+    }
+
+    private void showFirstTimeHelp() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+        boolean show = prefs.getBoolean(SystemUtility.FIRST_TIME_SET_HELP_SHOW, false);
+        if (show) {
+            final AlertDialog alertDialog = new AlertDialog.Builder(mContext).create();
+            alertDialog.setTitle(getString(R.string.smart_tip));
+            alertDialog.setMessage(getString(R.string.tip_you_can_add_all_set));
+
+            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.ok_thanks),
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            SharedPreferences.Editor edit = PreferenceManager.getDefaultSharedPreferences(mContext).edit();
+                            edit.putBoolean(SystemUtility.FIRST_TIME_SET_HELP_SHOW, false);
+                            edit.apply();
+                            alertDialog.dismiss();
+                        }
+                    });
+            alertDialog.setCanceledOnTouchOutside(false);
+            alertDialog.show();
+        }
     }
 }

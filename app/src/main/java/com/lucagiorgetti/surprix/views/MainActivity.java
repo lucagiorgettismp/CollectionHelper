@@ -575,15 +575,6 @@ public class MainActivity extends AppCompatActivity implements
             public void onSuccess(ArrayList<User> users) {
                 if(users != null){
                     if(!users.isEmpty()){
-                        /*
-                        for (int i = 0; i < 100; i++){
-                            if (i % 2 == 0){
-                                users.add(new User(String.valueOf(i), String.valueOf(i),String.valueOf(i),String.valueOf(i), "25/01/1995", "Francia", false));
-                            } else {
-                                users.add(new User(String.valueOf(i), String.valueOf(i),String.valueOf(i),String.valueOf(i), "25/01/1995", "Italia", false));
-                            }
-                        }
-                        */
                         final ArrayList<User> owners = new ArrayList<>();
                         final ArrayList<User> abroad_owners = new ArrayList<>();
                         for(User u: users){

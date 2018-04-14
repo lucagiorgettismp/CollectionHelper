@@ -86,4 +86,8 @@
     <string name="info_images_dialog_content">Vuoi informazioni su Surprix o vuoi far crescere il catalogo? Invia una e-mail a info.surprix@gmail.com</string>
     <string name="info_send_images">Info e invio immagini</string>
     <string name="need_help">Bisogno di aiuto?</string>
+    <string name="ok_thanks">Ok, grazie</string>
+    <string name="smart_tip">Un consiglio</string>
+    <string name="tip_you_can_add_all_set">Se tieni premuta una serie, puoi aggiungerla ai tuoi mancanti!</string>
+    <string name="tip_you_can_add_all_year">Se tieni premuto un anno, puoi aggiungerlo completamente ai tuoi mancanti!</string>
 </resources>
