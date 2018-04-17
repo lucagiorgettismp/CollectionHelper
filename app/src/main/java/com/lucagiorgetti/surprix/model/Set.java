@@ -1,5 +1,7 @@
 package com.lucagiorgetti.surprix.model;
 
+import java.util.Comparator;
+
 /**
  * Created by Utente on 17/04/2017.
  */
@@ -70,5 +72,14 @@ public class Set {
 
     public String getCategory() {
         return category;
+    }
+
+
+    public static class SortBySetName implements Comparator<Set>
+    {
+        @Override
+        public int compare(Set o1, Set o2) {
+            return o2.getName().compareTo(o1.getName());
+        }
     }
 }

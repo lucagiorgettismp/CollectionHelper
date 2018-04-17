@@ -20,6 +20,7 @@ import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.lucagiorgetti.surprix.model.Categories;
 import com.lucagiorgetti.surprix.utility.DatabaseUtility;
 import com.lucagiorgetti.surprix.utility.SystemUtility;
 import com.lucagiorgetti.surprix.listenerInterfaces.FragmentListenerInterface;
@@ -30,6 +31,7 @@ import com.lucagiorgetti.surprix.listenerInterfaces.OnGetListListener;
 import com.lucagiorgetti.surprix.model.Set;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SearchSetsFragment extends Fragment implements SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener {
     private FragmentListenerInterface listener;
@@ -70,7 +72,20 @@ public class SearchSetsFragment extends Fragment implements SearchView.OnQueryTe
         DatabaseUtility.getSetsFromYear(yearId, new OnGetListListener<Set>() {
             @Override
             public void onSuccess(ArrayList<Set> setsList) {
-                sets = setsList;
+                ArrayList<Set> handpaintedSets = new ArrayList<>();
+                ArrayList<Set> compoSets = new ArrayList<>();
+                
+                for (Set s : setsList){
+                    if (s.getCategory().equals(Categories.HANDPAINTED)){
+                        handpaintedSets.add(s);
+                    } else {
+                        compoSets.add(s);
+                    }
+                }
+                
+                handpaintedSets.addAll(compoSets);
+                sets = handpaintedSets;
+                
                 mAdapter = new SetRecyclerAdapter(mContext, sets);
                 recyclerView.setAdapter(mAdapter);
                 progress.setVisibility(View.GONE);
@@ -168,7 +183,7 @@ public class SearchSetsFragment extends Fragment implements SearchView.OnQueryTe
 
     private void showFirstTimeHelp() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
-        boolean show = prefs.getBoolean(SystemUtility.FIRST_TIME_SET_HELP_SHOW, false);
+        boolean show = prefs.getBoolean(SystemUtility.FIRST_TIME_SET_HELP_SHOW, true);
         if (show) {
             final AlertDialog alertDialog = new AlertDialog.Builder(mContext).create();
             alertDialog.setTitle(getString(R.string.smart_tip));

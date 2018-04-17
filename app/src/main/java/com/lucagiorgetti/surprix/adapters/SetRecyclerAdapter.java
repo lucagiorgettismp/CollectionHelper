@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.lucagiorgetti.surprix.R;
@@ -65,10 +66,18 @@ public class SetRecyclerAdapter extends RecyclerView.Adapter<SetRecyclerAdapter.
         if (path.startsWith("gs")){
             FirebaseStorage storage = SurprixApplication.getInstance().getFirebaseStorage();
             StorageReference gsReference = storage.getReferenceFromUrl(path);
-            Glide.with(ctx).load(gsReference).into(holder.vImage);
+            Glide.with(ctx).
+                    load(gsReference).
+                    apply(new RequestOptions()
+                            .placeholder(R.drawable.ic_bpz_placeholder))
+                    .into(holder.vImage);
 
         } else {
-            Glide.with(ctx).load(path).into(holder.vImage);
+            Glide.with(ctx).
+                    load(path).
+                    apply(new RequestOptions()
+                            .placeholder(R.drawable.ic_bpz_placeholder))
+                    .into(holder.vImage);
         }
     }
 

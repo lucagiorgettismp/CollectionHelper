@@ -107,6 +107,13 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
             }
         });
 
+        emptyList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onClickOpenProducersFragment();
+            }
+        });
+
         return layout;
     }
 

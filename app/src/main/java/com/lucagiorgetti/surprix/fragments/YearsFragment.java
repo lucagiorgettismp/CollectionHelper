@@ -119,7 +119,7 @@ public class YearsFragment extends Fragment{
 
     private void showFirstTimeHelp() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
-        boolean show = prefs.getBoolean(SystemUtility.FIRST_TIME_YEAR_HELP_SHOW, false);
+        boolean show = prefs.getBoolean(SystemUtility.FIRST_TIME_YEAR_HELP_SHOW, true);
         if (show) {
             final AlertDialog alertDialog = new AlertDialog.Builder(mContext).create();
             alertDialog.setTitle(getString(R.string.smart_tip));
