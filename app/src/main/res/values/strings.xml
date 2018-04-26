@@ -114,4 +114,9 @@
     <string name="tip_you_can_add_all_set">If you keep pressed a set, you can add it to your missings list!</string>
     <string name="smart_tip">Smart tip</string>
     <string name="tip_you_can_add_all_year">If you keep pressed a year, you can add it completely to your missings list!</string>
+    <string name="network_unavailable">Network connection not available. Please retry later</string>
+    <string name="info_privacy_1">Surprix takes care about your privacy and requires only very little infos about you.</string>
+    <string name="info_privacy_2">Your e-mail address is used to authenticate you, recover your credentials and to be contacted for exchanges.</string>
+    <string name="info_privacy_3">The nation is used to show you the collectors of your country first.</string>
+    <string name="email_format">Please check the e-mail format</string>
 </resources>

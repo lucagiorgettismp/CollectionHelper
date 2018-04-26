@@ -8,11 +8,11 @@ import java.text.ParseException;
 
 public class User {
 
-    private String name = null;
-    private String surname = null;
+    // private String name = null;
+    // private String surname = null;
     private String email = null;
     private String username = null;
-    private String birthday = null;
+    // private String birthday = null;
     private String country = null;
     private int latitude = 0;
     private int longitude = 0;
@@ -21,22 +21,11 @@ public class User {
     public User() {
     }
 
-    public User(String name, String surname, String email, String username, String date, String country, Boolean facebook) {
-        this.name = name;
-        this.surname = surname;
+    public User(String email, String username, String country, Boolean facebook) {
         this.email = email;
         this.username = username;
-        this.birthday = date;
         this.country = country;
         this.facebook = facebook;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getSurname() {
-        return surname;
     }
 
     public String getEmail() {
@@ -45,10 +34,6 @@ public class User {
 
     public String getUsername() {
         return username;
-    }
-
-    public String getBirthday() throws ParseException {
-        return birthday;
     }
 
     public String getCountry() {

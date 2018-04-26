@@ -1,14 +1,14 @@
 package com.lucagiorgetti.surprix.views;
 
-import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -19,19 +19,14 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
-import com.lucagiorgetti.surprix.listenerInterfaces.OnGetDataListener;
+import com.lucagiorgetti.surprix.listenerInterfaces.OnGetResultListener;
 import com.lucagiorgetti.surprix.utility.DatabaseUtility;
 import com.lucagiorgetti.surprix.utility.SystemUtility;
 import com.mikelau.countrypickerx.Country;
 import com.mikelau.countrypickerx.CountryPickerCallbacks;
 import com.mikelau.countrypickerx.CountryPickerDialog;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
 
 /**
  * Allows user to get registered.
@@ -44,27 +39,24 @@ public class RegistrateActivity extends AppCompatActivity{
     private EditText edtEmail;
     private EditText edtPassword;
     private EditText edtUsername;
-    private EditText edtName;
-    private EditText edtSurname;
-    private EditText edtBirthdate;
     private ProgressBar progress;
     private EditText edtNation;
     private FirebaseAuth fireAuth;
     private LoginManager facebookLogin;
     CountryPickerDialog countryPicker = null;
 
-    final Calendar myCalendar = Calendar.getInstance();
+    // final Calendar myCalendar = Calendar.getInstance();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         this.facebookLogin = LoginManager.getInstance();
+        this.fireAuth = SurprixApplication.getInstance().getFirebaseAuth();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        fireAuth = SurprixApplication.getInstance().getFirebaseAuth();
         setContentView(R.layout.activity_registration);
 
         edtEmail = findViewById(R.id.edit_reg_email);
@@ -72,9 +64,6 @@ public class RegistrateActivity extends AppCompatActivity{
 
         View layPassword = findViewById(R.id.layout_reg_password);
         edtUsername = findViewById(R.id.edit_reg_username);
-        edtName = findViewById(R.id.edit_reg_name);
-        edtSurname = findViewById(R.id.edit_reg_surname);
-        edtBirthdate = findViewById(R.id.edit_reg_birthdate);
         edtNation = findViewById(R.id.edit_reg_nation);
         progress = findViewById(R.id.progress_bar);
         TextView lblInfoFacebook = findViewById(R.id.lbl_reg_info_facebook);
@@ -83,20 +72,16 @@ public class RegistrateActivity extends AppCompatActivity{
         Button submit = findViewById(R.id.btn_reg_submit);
 
         Bundle b = getIntent().getExtras();
-        int facebook = 0;
-        String facebook_name = null;
-        String facebook_surname = null;
+        boolean facebook = false;
         String facebook_email = null;
 
 
         if(b != null){
-            facebook = b.getInt("facebook");
-            facebook_name = b.getString("name");
-            facebook_surname = b.getString("surname");
+            facebook = b.getBoolean("facebook");
             facebook_email = b.getString("email");
         }
 
-        if (facebook == 1){
+        if (facebook){
             /*aperto da facebook*/
             submit.setVisibility(View.GONE);
             lblInfoFirstLogin.setVisibility(View.GONE);
@@ -104,8 +89,7 @@ public class RegistrateActivity extends AppCompatActivity{
 
             btnAccountCompleteFacebook.setVisibility(View.VISIBLE);
             lblInfoFacebook.setVisibility(View.VISIBLE);
-            edtName.setText(facebook_name);
-            edtSurname.setText(facebook_surname);
+
             edtEmail.setText(facebook_email);
             edtEmail.setEnabled(false);
         }
@@ -115,17 +99,14 @@ public class RegistrateActivity extends AppCompatActivity{
             public void onClick(View v) {
                 final String email = edtEmail.getText().toString().trim();
                 final String username = edtUsername.getText().toString().trim().toLowerCase();
-                final String name = edtName.getText().toString().trim();
-                final String surname = edtSurname.getText().toString().trim();
-                final String birthDate = edtBirthdate.getText().toString();
                 final String nation = edtNation.getText().toString();
-                if (email.isEmpty() || username.isEmpty() ||
-                        name.isEmpty() || surname.isEmpty() || nation.isEmpty() ||
-                        birthDate.isEmpty()) {
+                if (email.isEmpty() ||
+                        username.isEmpty() ||
+                        nation.isEmpty()) {
                     progress.setVisibility(View.INVISIBLE);
                     Toast.makeText(RegistrateActivity.this, R.string.complete_all_fields, Toast.LENGTH_SHORT).show();
                 } else{
-                    DatabaseUtility.generateUser(name, surname, email, username, birthDate, nation, true);
+                    DatabaseUtility.generateUser(email, username, nation, true);
                     SystemUtility.firstTimeOpeningApp(RegistrateActivity.this, getApplicationContext(), MainActivity.class, null);
                 }
             }
@@ -140,63 +121,64 @@ public class RegistrateActivity extends AppCompatActivity{
                 final String email = edtEmail.getText().toString().trim();
                 final String password = edtPassword.getText().toString().trim();
                 final String username = edtUsername.getText().toString().trim().toLowerCase();
-                final String name = edtName.getText().toString().trim();
-                final String surname = edtSurname.getText().toString().trim();
                 final String nation = edtNation.getText().toString();
-                final String birthDate = edtBirthdate.getText().toString();
 
                 if (!SystemUtility.checkNetworkAvailability(RegistrateActivity.this)) {
                     progress.setVisibility(View.INVISIBLE);
                     return;
                 }
 
-                if (email.isEmpty() || password.isEmpty() || username.isEmpty() ||
-                        name.isEmpty() || surname.isEmpty() || nation.isEmpty() ||
-                        birthDate.isEmpty()){
+                if (email.isEmpty() ||
+                        password.isEmpty() ||
+                        username.isEmpty() ||
+                        nation.isEmpty()){
                     progress.setVisibility(View.INVISIBLE);
-                    Toast.makeText(RegistrateActivity.this, R.string.complete_all_fields, Toast.LENGTH_SHORT).show();
+                    Snackbar.make(getCurrentFocus(), R.string.complete_all_fields, Snackbar.LENGTH_SHORT).show();
                 } else if (password.length() < 6){
                     progress.setVisibility(View.INVISIBLE);
-                    Toast.makeText(RegistrateActivity.this, R.string.password_lenght, Toast.LENGTH_SHORT).show();
+                    Snackbar.make(getCurrentFocus(), R.string.password_lenght, Snackbar.LENGTH_SHORT).show();
+                } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                    progress.setVisibility(View.INVISIBLE);
+                    Snackbar.make(getCurrentFocus(), R.string.email_format , Snackbar.LENGTH_SHORT).show();
                 } else {
-                    DatabaseUtility.checkUsernameExist(username, new OnGetDataListener() {
+                    DatabaseUtility.checkUsernameDontExists(username, new OnGetResultListener() {
                         @Override
-                        public void onSuccess(DataSnapshot data) {
-                            fireAuth.createUserWithEmailAndPassword(email, password)
-                                    .addOnCompleteListener(RegistrateActivity.this, new OnCompleteListener<AuthResult>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<AuthResult> task) {
-                                            if (!task.isSuccessful()) {
-                                                //noinspection ThrowableResultOfMethodCallIgnored
-                                                progress.setVisibility(View.INVISIBLE);
-                                                Toast.makeText(RegistrateActivity.this, getString(R.string.auth_failed) + task.getException(),
-                                                        Toast.LENGTH_SHORT).show();
-                                            } else {
-                                                DatabaseUtility.generateUser(name, surname, email, username, birthDate, nation, false);
-                                                fireAuth.signInWithEmailAndPassword(email, password);
-                                                progress.setVisibility(View.INVISIBLE);
+                        public void onSuccess(boolean result) {
+                            if(result){
+                                fireAuth.createUserWithEmailAndPassword(email, password)
+                                        .addOnCompleteListener(RegistrateActivity.this, new OnCompleteListener<AuthResult>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                                if (!task.isSuccessful()) {
+                                                    //noinspection ThrowableResultOfMethodCallIgnored
+                                                    progress.setVisibility(View.INVISIBLE);
+                                                    Snackbar.make(getCurrentFocus(), getString(R.string.auth_failed),
+                                                            Snackbar.LENGTH_SHORT).show();
+                                                } else {
+                                                    DatabaseUtility.generateUser(email, username, nation, false);
+                                                    fireAuth.signInWithEmailAndPassword(email, password);
+                                                    progress.setVisibility(View.INVISIBLE);
 
-                                                SystemUtility.firstTimeOpeningApp(RegistrateActivity.this, getApplicationContext(), MainActivity.class, null);
+                                                    SystemUtility.firstTimeOpeningApp(RegistrateActivity.this, getApplicationContext(), MainActivity.class, null);
+                                                }
                                             }
-                                        }
-                                    });
-                        }
-
-                        @Override
-                        public void onStart() {
-
+                                        });
+                            } else {
+                                progress.setVisibility(View.INVISIBLE);
+                                Snackbar.make(getCurrentFocus(), R.string.username_existing, Snackbar.LENGTH_SHORT).show();
+                            }
                         }
 
                         @Override
                         public void onFailure() {
-                            progress.setVisibility(View.INVISIBLE);
-                            Toast.makeText(RegistrateActivity.this, R.string.username_existing, Toast.LENGTH_SHORT).show();
+                            Snackbar.make(getCurrentFocus(), R.string.data_sync_error, Snackbar.LENGTH_SHORT).show();
                         }
                     });
                 }
             }
         });
 
+        /*
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
             @Override
@@ -219,6 +201,11 @@ public class RegistrateActivity extends AppCompatActivity{
             }
         });
 
+        private void updateLabel() {
+            SimpleDateFormat sdf = new SimpleDateFormat(getString(R.string.dateFormat), Locale.ITALIAN);
+            edtBirthdate.setText(sdf.format(myCalendar.getTime()));
+        }
+        */
         edtNation.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -240,11 +227,6 @@ public class RegistrateActivity extends AppCompatActivity{
             }
             }
         });
-    }
-
-    private void updateLabel() {
-        SimpleDateFormat sdf = new SimpleDateFormat(getString(R.string.dateFormat), Locale.ITALIAN);
-        edtBirthdate.setText(sdf.format(myCalendar.getTime()));
     }
 
     @Override

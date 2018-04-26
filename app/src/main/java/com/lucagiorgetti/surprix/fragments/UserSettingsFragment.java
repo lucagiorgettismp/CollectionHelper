@@ -36,11 +36,11 @@ public class UserSettingsFragment extends Fragment{
     private FragmentListenerInterface listener;
     private User currentUser;
     private Context mContext;
-    private EditText edtName;
-    private EditText edtSurname;
-    private EditText edtBirthdate;
+    //private EditText edtName;
+    //private EditText edtSurname;
+   // private EditText edtBirthdate;
     private EditText edtNation;
-    final Calendar myCalendar = Calendar.getInstance();
+    //final Calendar myCalendar = Calendar.getInstance();
     CountryPickerDialog countryPicker = null;
 
     @Override
@@ -57,9 +57,9 @@ public class UserSettingsFragment extends Fragment{
         usernameImage.setColorFilter(ContextCompat.getColor(mContext, R.color.disabledIcon));
         emailImage.setColorFilter(ContextCompat.getColor(mContext, R.color.disabledIcon));
 
-        edtName = layout.findViewById(R.id.edit_reg_name);
-        edtSurname =  layout.findViewById(R.id.edit_reg_surname);
-        edtBirthdate = layout.findViewById(R.id.edit_reg_birthdate);
+        //edtName = layout.findViewById(R.id.edit_reg_name);
+        //edtSurname =  layout.findViewById(R.id.edit_reg_surname);
+        //edtBirthdate = layout.findViewById(R.id.edit_reg_birthdate);
         edtNation = layout.findViewById(R.id.edit_reg_nation);
         View layPassword = layout.findViewById(R.id.layout_reg_password);
         View layButtonsModify = layout.findViewById(R.id.layout_reg_modify);
@@ -68,16 +68,15 @@ public class UserSettingsFragment extends Fragment{
         TextView deleteUser = layout.findViewById(R.id.btn_reg_delete_account);
         Button submit = layout.findViewById(R.id.btn_reg_submit);
 
-        String[] dateArray = new String[0];
+/*        String[] dateArray = new String[0];
         try {
             dateArray = currentUser.getBirthday().split("/");
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        myCalendar.set(Integer.parseInt(dateArray[2]),Integer.parseInt(dateArray[1]) - 1,Integer.parseInt(dateArray[0]));*/
 
-        myCalendar.set(Integer.parseInt(dateArray[2]),Integer.parseInt(dateArray[1]) - 1,Integer.parseInt(dateArray[0]));
         layPassword.setVisibility(View.GONE);
-
 
         layButtonsModify.setVisibility(View.VISIBLE);
         if(currentUser.isFacebook()){
@@ -87,17 +86,16 @@ public class UserSettingsFragment extends Fragment{
 
         edtEmail.setText(currentUser.getEmail().replaceAll(",", "\\."));
         edtUsername.setText(currentUser.getUsername());
-        edtName.setText(currentUser.getName());
+/*        edtName.setText(currentUser.getName());
         edtSurname.setText(currentUser.getSurname());
-        edtUsername.setText(currentUser.getUsername());
         try {
             edtBirthdate.setText(currentUser.getBirthday());
         } catch (ParseException e) {
             e.printStackTrace();
-        }
+        }*/
         edtNation.setText(currentUser.getCountry());
 
-        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+        /*final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear,
@@ -118,6 +116,12 @@ public class UserSettingsFragment extends Fragment{
                 }
             }
         });
+
+        private void updateLabel(){
+            SimpleDateFormat sdf = new SimpleDateFormat(getString(R.string.dateFormat), Locale.ITALIAN);
+            edtBirthdate.setText(sdf.format(myCalendar.getTime()));
+        }
+    */
 
         edtNation.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -142,15 +146,9 @@ public class UserSettingsFragment extends Fragment{
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 SystemUtility.closeKeyboard(getActivity(),getView());
-
-                String name = edtName.getText().toString().trim();
-                String surname = edtSurname.getText().toString().trim();
                 String nation = edtNation.getText().toString();
-                String birthDate = edtBirthdate.getText().toString();
-
-                DatabaseUtility.updateUser(currentUser.getUsername(), name, surname, birthDate, nation);
+                DatabaseUtility.updateUser(currentUser.getUsername(), nation);
                 listener.refreshUser();
                 currentUser = listener.getCurrentRetrievedUser();
                 Snackbar.make(v, R.string.user_added, Snackbar.LENGTH_SHORT).show();
@@ -171,11 +169,6 @@ public class UserSettingsFragment extends Fragment{
             }
         });
         return layout;
-    }
-
-    private void updateLabel(){
-        SimpleDateFormat sdf = new SimpleDateFormat(getString(R.string.dateFormat), Locale.ITALIAN);
-        edtBirthdate.setText(sdf.format(myCalendar.getTime()));
     }
 
     @Override

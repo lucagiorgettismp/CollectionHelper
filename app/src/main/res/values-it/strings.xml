@@ -90,4 +90,9 @@
     <string name="smart_tip">Un consiglio</string>
     <string name="tip_you_can_add_all_set">Se tieni premuta una serie, puoi aggiungerla ai tuoi mancanti!</string>
     <string name="tip_you_can_add_all_year">Se tieni premuto un anno, puoi aggiungerlo completamente ai tuoi mancanti!</string>
+    <string name="network_unavailable">Connessione internet assente. Riprova più tardi</string>
+    <string name="info_privacy_1">Surprix ci tiene alla tua privacy e richiede solo poche informazioni personali.</string>
+    <string name="info_privacy_2">L\'indirizzo e-mail è utilizzato per l\'autenticazione, per il recupero delle credenziali e per essere contattatto per eventuali scambi.</string>
+    <string name="info_privacy_3">La nazione serve a mostrati prima i collezionisti del tuo Paese.</string>
+    <string name="email_format">Controlla il formato della e-mail</string>
 </resources>
