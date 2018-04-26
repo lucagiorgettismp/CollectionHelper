@@ -31,6 +31,7 @@ import com.lucagiorgetti.surprix.listenerInterfaces.OnGetListListener;
 import com.lucagiorgetti.surprix.model.Set;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class SearchSetsFragment extends Fragment implements SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener {
@@ -72,9 +73,13 @@ public class SearchSetsFragment extends Fragment implements SearchView.OnQueryTe
         DatabaseUtility.getSetsFromYear(yearId, new OnGetListListener<Set>() {
             @Override
             public void onSuccess(ArrayList<Set> setsList) {
+                if (setsList != null){
+                    Collections.sort(setsList, new Set.SortBySetName());
+                }
+
                 ArrayList<Set> handpaintedSets = new ArrayList<>();
                 ArrayList<Set> compoSets = new ArrayList<>();
-                
+
                 for (Set s : setsList){
                     if (s.getCategory().equals(Categories.HANDPAINTED)){
                         handpaintedSets.add(s);

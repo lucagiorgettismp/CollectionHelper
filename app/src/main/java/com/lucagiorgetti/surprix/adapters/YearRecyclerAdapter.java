@@ -37,7 +37,7 @@ public class YearRecyclerAdapter extends RecyclerView.Adapter<YearRecyclerAdapte
     @Override
     public void onBindViewHolder(@NonNull SetViewHolder holder, int position) {
         Year year = years.get(position);
-        holder.vName.setText(String.valueOf(year.getYear()));
+        holder.vName.setText(year.getDescr());
 
         holder.vName.setTextColor(ContextCompat.getColor(ctx, R.color.cardBackground));
         switch (position%2){

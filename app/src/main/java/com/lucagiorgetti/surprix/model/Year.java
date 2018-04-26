@@ -9,18 +9,24 @@ import java.util.Comparator;
 public class Year {
     private String id;
     private int year = -1;
+    private String descr = null;
     private String producer_id = null;
     private String producer_color = null;
 
-    public Year(int year, Producer producer) {
+    public Year(int year, String descr, Producer producer) {
         this.year = year;
         this.producer_id = producer.getId();
+        this.descr = descr;
         this.producer_color = producer.getColor();
         this.id = producer.getId() + "_" + String.valueOf(year);
     }
 
     public Year (){
 
+    }
+
+    public String getDescr() {
+        return descr;
     }
 
     public int getYear() {

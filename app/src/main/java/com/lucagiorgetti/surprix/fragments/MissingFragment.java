@@ -36,6 +36,7 @@ import com.lucagiorgetti.surprix.adapters.SurpRecyclerAdapter;
 import com.lucagiorgetti.surprix.model.Surprise;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class MissingFragment extends Fragment implements SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener, View.OnClickListener{
     private FragmentListenerInterface listener;
@@ -81,6 +82,7 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
                 missings = surprises;
 
                 if(missings != null){
+                    Collections.sort(missings, new Surprise.SortByCode());
                     emptyList.setVisibility(View.GONE);
                     mAdapter = new SurpRecyclerAdapter(mContext, missings);
                     recyclerView.setAdapter(mAdapter);

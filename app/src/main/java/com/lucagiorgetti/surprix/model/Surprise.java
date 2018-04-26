@@ -1,5 +1,7 @@
 package com.lucagiorgetti.surprix.model;
 
+import java.util.Comparator;
+
 /**
  * Created by Utente on 17/04/2017.
  */
@@ -30,7 +32,7 @@ public class Surprise {
         this.set_producer_name = set.getProducer_name();
         this.set_product_name = set.getProduct();
         this.set_nation = set.getNation();
-        this.id = set_producer_name + "_" + set_year + "_" + code;
+        this.id = set_producer_name + "_" + set_year + "_" + set.getCode() + "_" + code;
         this.set_id = set.getId();
     }
 
@@ -76,6 +78,13 @@ public class Surprise {
 
     public String getSet_producer_color() {
         return set_producer_color;
+    }
+
+    public static class SortByCode implements Comparator<Surprise> {
+        @Override
+        public int compare(Surprise o1, Surprise o2) {
+            return o1.getCode().compareTo(o2.getCode());
+        }
     }
 }
 

@@ -36,6 +36,7 @@ import com.lucagiorgetti.surprix.adapters.SurpRecyclerAdapter;
 import com.lucagiorgetti.surprix.model.Surprise;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class DoublesFragment extends Fragment implements SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener, View.OnClickListener{
     private FragmentListenerInterface listener;
@@ -84,6 +85,7 @@ public class DoublesFragment extends Fragment implements SearchView.OnQueryTextL
                 doubles = surprises;
 
                 if(doubles != null){
+                    Collections.sort(doubles, new Surprise.SortByCode());
                     mAdapter = new SurpRecyclerAdapter(mContext, doubles);
                     recyclerView.setAdapter(mAdapter);
                     if (listener != null){
