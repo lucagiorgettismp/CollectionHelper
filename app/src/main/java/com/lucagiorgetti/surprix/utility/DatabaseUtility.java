@@ -1,8 +1,5 @@
 package com.lucagiorgetti.surprix.utility;
 
-import android.app.Activity;
-import android.content.Context;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -16,12 +13,11 @@ import com.google.firebase.database.ValueEventListener;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.listenerInterfaces.OnGetDataListener;
 import com.lucagiorgetti.surprix.listenerInterfaces.OnGetListListener;
+import com.lucagiorgetti.surprix.listenerInterfaces.OnGetResultListener;
 import com.lucagiorgetti.surprix.model.Set;
 import com.lucagiorgetti.surprix.model.Surprise;
 import com.lucagiorgetti.surprix.model.User;
 import com.lucagiorgetti.surprix.model.Year;
-import com.lucagiorgetti.surprix.views.MainActivity;
-import com.lucagiorgetti.surprix.views.RegistrateActivity;
 
 import java.util.ArrayList;
 
@@ -35,26 +31,16 @@ public class DatabaseUtility {
     
     private static DatabaseReference reference = SurprixApplication.getInstance().getDatabaseReference();
     
-    public static void checkUserExisting(final String email, String nameSurname, final Activity activity, final Context context) {
-        String fullName[] = nameSurname.split(" ", 2);
-        final String facebook_name = fullName[0];
+    public static void checkUserExisting(final String email, final OnGetResultListener listener) {
         final String emailCod = email.replaceAll("\\.", ",");
-
-        final String facebook_surname = fullName[1];
 
         reference.child("emails").child(emailCod).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    // utente già registrato
-                    SystemUtility.openNewActivityWithFinishing(activity, context, MainActivity.class, null);
+                    listener.onSuccess(true);
                 } else {
-                    Bundle b = new Bundle();
-                    b.putInt("facebook", 1);
-                    b.putString("name", facebook_name);
-                    b.putString("surname", facebook_surname);
-                    b.putString("email", email);
-                    SystemUtility.openNewActivityWithFinishing(activity, context, RegistrateActivity.class, b);
+                    listener.onSuccess(false);
                 }
             }
 
@@ -423,30 +409,27 @@ public class DatabaseUtility {
         });
     }
 
-    public static void generateUser(String name, String surname, String email, String username, String birthDate, String nation, Boolean facebook) {
+    public static void generateUser(String email, String username, String nation, Boolean facebook) {
         String emailCod = email.replaceAll("\\.", ",");
 
-        User user = new User(name, surname, emailCod, username, birthDate, nation, facebook); //ObjectClass for Users
+        User user = new User(emailCod, username, nation, facebook); //ObjectClass for Users
 
         reference.child("users").child(username).setValue(user);
         reference.child("emails").child(emailCod).child(username).setValue(true);
     }
 
-    public static void updateUser(String username, String name, String surname, String birthDate, String nation) {
-        reference.child("users").child(username).child("name").setValue(name);
-        reference.child("users").child(username).child("surname").setValue(surname);
-        reference.child("users").child(username).child("birthday").setValue(birthDate);
+    public static void updateUser(String username, String nation) {
         reference.child("users").child(username).child("country").setValue(nation);
     }
 
-    public static void checkUsernameExist(String username, final OnGetDataListener listener) {
+    public static void checkUsernameDontExists(String username, final OnGetResultListener listener) {
         reference.child("users").child(username).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if( dataSnapshot.exists()){
-                    listener.onFailure();
+                    listener.onSuccess(false);
                 } else {
-                    listener.onSuccess(null);
+                    listener.onSuccess(true);
                 }
             }
 
@@ -468,8 +451,10 @@ public class DatabaseUtility {
         getDoublesForUsername(username, new OnGetListListener<Surprise>() {
             @Override
             public void onSuccess(ArrayList<Surprise> surprises) {
-                for (Surprise double_surp: surprises) {
-                    removeDouble(username, double_surp.getId());
+                if (surprises != null){
+                    for (Surprise double_surp: surprises) {
+                        removeDouble(username, double_surp.getId());
+                    }
                 }
             }
 

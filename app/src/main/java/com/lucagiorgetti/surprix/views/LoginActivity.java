@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -31,6 +32,7 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
+import com.lucagiorgetti.surprix.listenerInterfaces.OnGetResultListener;
 import com.lucagiorgetti.surprix.utility.DatabaseUtility;
 import com.lucagiorgetti.surprix.utility.SystemUtility;
 
@@ -50,57 +52,23 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        progressBar = (ProgressBar) findViewById(R.id.login_loading);
+        progressBar = findViewById(R.id.login_loading);
         progressBar.getIndeterminateDrawable().setColorFilter(Color.parseColor("#ffffff"),
                 android.graphics.PorterDuff.Mode.MULTIPLY);
         progressBar.setVisibility(View.INVISIBLE);
 
         AppEventsLogger.activateApp(getApplication());
         callbackManager = CallbackManager.Factory.create();
-        Button facebookLogin = (Button) findViewById(R.id.btn_start_facebook);
 
-        final LoginButton hiddenFacebookButton = (LoginButton) findViewById(R.id.btn_facebook_login);
-        hiddenFacebookButton.setReadPermissions("email", "public_profile");
-        hiddenFacebookButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                Log.d("FACEBOOK", "facebook:onSuccess:" + loginResult);
-                signInWithFacebook(loginResult.getAccessToken());
-            }
-
-            @Override
-            public void onCancel() {
-                Log.d("FACEBOOK", "facebook:onCancel");
-                progressBar.setVisibility(View.INVISIBLE);
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-                Log.d("FACEBOOK", "facebook:onError", error);
-                progressBar.setVisibility(View.INVISIBLE);
-            }
-        });
-        facebookLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(SystemUtility.checkNetworkAvailability(LoginActivity.this)){
-                    progressBar.setVisibility(View.VISIBLE);
-                    hiddenFacebookButton.performClick();
-                }
-            }
-        });
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        fireAuth = SurprixApplication.getInstance().getFirebaseAuth();
-
-        Button login = (Button) findViewById(R.id.btn_start_login);
-        Button registrate = (Button) findViewById(R.id.btn_start_registration);
+        Button facebookCustomLogin = findViewById(R.id.btn_start_facebook);
+        final LoginButton hiddenFacebookButton = findViewById(R.id.btn_facebook_login);
+        Button login = findViewById(R.id.btn_start_login);
+        Button registrate = findViewById(R.id.btn_start_registration);
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openLogingDialog();
+                openLoginDialog();
             }
         });
 
@@ -110,35 +78,72 @@ public class LoginActivity extends AppCompatActivity {
                 SystemUtility.openNewActivityWithFinishing(LoginActivity.this, getApplicationContext(), RegistrateActivity.class, null);
             }
         });
+
+
+
+        hiddenFacebookButton.setReadPermissions("email");
+        hiddenFacebookButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                Log.d("FACEBOOK", "facebook:onSuccess:" + loginResult);
+                signInWithFacebookToken(loginResult.getAccessToken());
+            }
+
+            @Override
+            public void onCancel() {
+                Snackbar.make(getCurrentFocus(), "Facebook login cancelled", Snackbar.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                Snackbar.make(getCurrentFocus(), "Facebook login error", Snackbar.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.INVISIBLE);
+            }
+        });
+        facebookCustomLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(SystemUtility.checkNetworkAvailability(LoginActivity.this)){
+                    progressBar.setVisibility(View.VISIBLE);
+                    hiddenFacebookButton.performClick();
+                }
+            }
+        });
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        fireAuth = SurprixApplication.getInstance().getFirebaseAuth();
     }
 
     @SuppressLint("InflateParams")
-    private void openLogingDialog() {
+    private void openLoginDialog() {
         final View view = getLayoutInflater().inflate(R.layout.dialog_login_user, null);
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(view);
         builder.setTitle("Login");
 
-        final EditText inEmail = (EditText) view.findViewById(R.id.login_dialog_email);
-        final EditText inPassword = (EditText) view.findViewById(R.id.login_dialog_pwd);
-        Button loginBtn = (Button) view.findViewById(R.id.login_dialog_submit);
-        TextView forgetPwd = (TextView) view.findViewById(R.id.lbl_login_forgotten_pwd);
+        final EditText inEmail = view.findViewById(R.id.login_dialog_email);
+        final EditText inPassword = view.findViewById(R.id.login_dialog_pwd);
+        Button loginBtn = view.findViewById(R.id.login_dialog_submit);
+        TextView forgetPwd = view.findViewById(R.id.lbl_login_forgotten_pwd);
 
-        final AlertDialog login = builder.create();
+        final AlertDialog loginDialog = builder.create();
         forgetPwd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openResetPwdDialog();
-                login.dismiss();
+                loginDialog.dismiss();
             }
         });
 
-        login.show();
+        loginDialog.show();
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!SystemUtility.checkNetworkAvailability(LoginActivity.this)){
+                    Snackbar.make(view, R.string.network_unavailable, Snackbar.LENGTH_SHORT).show();
                     return;
                 }
                 String email = inEmail.getText().toString().trim();
@@ -149,19 +154,17 @@ public class LoginActivity extends AppCompatActivity {
                 fireAuth.signInWithEmailAndPassword(email, pwd).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.w("LOGIN", "Fatto. Stato" + task.isSuccessful());
                         if (!task.isSuccessful())
                         {
-                            Log.w("LOGIN", "Errore:(");
                             Toast.makeText(LoginActivity.this, R.string.wrong_email_or_password,
                                     Toast.LENGTH_SHORT).show();
                         } else {
-                            SystemUtility.openNewActivityWithFinishing(LoginActivity.this, getApplicationContext(), MainActivity.class, null);
+                            goToMainActivity();
                             finish();
                         }
                     }
                 });
-                login.dismiss();
+                loginDialog.dismiss();
             }
         });
     }
@@ -174,8 +177,8 @@ public class LoginActivity extends AppCompatActivity {
         builder.setView(view);
         builder.setTitle(R.string.forgot_yout_password);
 
-        final EditText inEmail = (EditText) view.findViewById(R.id.login_reset_pwd_email);
-        Button resetBtn = (Button) view.findViewById(R.id.login_reset_pwd_submit);
+        final EditText inEmail = view.findViewById(R.id.login_reset_pwd_email);
+        Button resetBtn = view.findViewById(R.id.login_reset_pwd_submit);
 
         final AlertDialog resetDialog = builder.create();
         resetDialog.show();
@@ -201,7 +204,7 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
-    private void signInWithFacebook(AccessToken token) {
+    private void signInWithFacebookToken(AccessToken token) {
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
 
         fireAuth.signInWithCredential(credential)
@@ -212,9 +215,25 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(LoginActivity.this, R.string.auth_failed,
                                     Toast.LENGTH_SHORT).show();
                         }else{
-                            String name=task.getResult().getUser().getDisplayName();
-                            String email=task.getResult().getUser().getEmail();
-                            DatabaseUtility.checkUserExisting(email, name, LoginActivity.this, getApplicationContext());
+                            final String email=task.getResult().getUser().getEmail();
+                            DatabaseUtility.checkUserExisting(email, new OnGetResultListener() {
+                                @Override
+                                public void onSuccess(boolean result) {
+                                    if (result){
+                                        goToMainActivity();
+                                    } else {
+                                        Bundle b = new Bundle();
+                                        b.putBoolean("facebook", true);
+                                        b.putString("email", email);
+                                        goToRegistrateActivity(b);
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure() {
+
+                                }
+                            });
                         }
 
                         progressBar.setVisibility(View.INVISIBLE);
@@ -222,6 +241,13 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
+    private void goToRegistrateActivity(Bundle bundle) {
+        SystemUtility.openNewActivityWithFinishing(LoginActivity.this, getApplicationContext(), RegistrateActivity.class, bundle);
+    }
+
+    private void goToMainActivity() {
+        SystemUtility.openNewActivityWithFinishing(LoginActivity.this, getApplicationContext(), MainActivity.class, null);
+    }
 
 
     // Override the onActivityResult method and pass its parameters to the callbackManager//

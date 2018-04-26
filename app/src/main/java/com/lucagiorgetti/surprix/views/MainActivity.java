@@ -102,9 +102,9 @@ public class MainActivity extends AppCompatActivity implements
 
         if (fireAuth.getCurrentUser() != null) {
             setContentView(R.layout.activity_main);
-            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            Toolbar toolbar = findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            DrawerLayout drawer = findViewById(R.id.drawer_layout);
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                     this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
                 @Override
@@ -115,12 +115,12 @@ public class MainActivity extends AppCompatActivity implements
             };
             drawer.addDrawerListener(toggle);
             toggle.syncState();
-            navigationView = (NavigationView) findViewById(R.id.nav_view);
+            navigationView = findViewById(R.id.nav_view);
             navigationView.setNavigationItemSelectedListener(this);
 
             View hView = navigationView.getHeaderView(0);
-            nav_user = (TextView) hView.findViewById(R.id.navbar_title);
-            nav_email = (TextView) hView.findViewById(R.id.navbar_subtitle);
+            nav_user = hView.findViewById(R.id.navbar_title);
+            nav_email = hView.findViewById(R.id.navbar_subtitle);
 
             DatabaseUtility.getCurrentUser(new OnGetDataListener() {
                 @Override
@@ -163,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -188,7 +188,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         int id = item.getItemId();
 
         switch (id){
@@ -369,9 +369,9 @@ public class MainActivity extends AppCompatActivity implements
         builder.setView(view);
         builder.setTitle(R.string.change_password);
 
-        final EditText oldPassword = (EditText) view.findViewById(R.id.edt_dialog_old_pwd);
-        final EditText newPassword = (EditText) view.findViewById(R.id.edt_dialog_new_pwd);
-        Button btnChangePwd = (Button) view.findViewById(R.id.btn_dialog_submit);
+        final EditText oldPassword = view.findViewById(R.id.edt_dialog_old_pwd);
+        final EditText newPassword = view.findViewById(R.id.edt_dialog_new_pwd);
+        Button btnChangePwd = view.findViewById(R.id.btn_dialog_submit);
 
         final AlertDialog changePwd = builder.create();
 
@@ -562,13 +562,13 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onSwipeShowDoublesOwner(final Surprise missing) {
         final View view = getLayoutInflater().inflate(R.layout.dialog_doubles, null);
-        TextView dialogTitle = (TextView) view.findViewById(R.id.doubles_dialog_title);
-        final TextView infoTxv = (TextView) view.findViewById(R.id.doubles_dialog_info);
-        final TextView emptyListTxv = (TextView) view.findViewById(R.id.doubles_dialog_empty_list);
+        TextView dialogTitle = view.findViewById(R.id.doubles_dialog_title);
+        final TextView infoTxv = view.findViewById(R.id.doubles_dialog_info);
+        final TextView emptyListTxv = view.findViewById(R.id.doubles_dialog_empty_list);
         dialogTitle.setBackgroundColor(ContextCompat.getColor(MainActivity.this, Colors.getHexColor(missing.getSet_producer_color())));
         dialogTitle.setText(String.format(getString(R.string.double_owners_dialog_title), missing.getCode(), missing.getDescription()));
         mAdapter = new DoublesOwnersListAdapter(MainActivity.this, doubleOwners);
-        final ListView listView = (ListView) view.findViewById(R.id.doubles_dialog_list);
+        final ListView listView = view.findViewById(R.id.doubles_dialog_list);
         listView.setAdapter(mAdapter);
         DatabaseUtility.getDoubleOwners(missing.getId(), new OnGetListListener<User>() {
             @Override

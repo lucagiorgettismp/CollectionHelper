@@ -66,31 +66,6 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/img_reg_username"
-            android:layout_width="40dp"
-            android:layout_height="match_parent"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
-            android:tint="@color/colorPrimary"
-            app:srcCompat="@drawable/ic_person_black"
-            android:contentDescription="@string/icon_username" />
-
-        <EditText
-            android:id="@+id/edit_reg_username"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10"
-            android:hint="@string/username"
-            android:inputType="textPersonName" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <ImageView
             android:id="@+id/img_reg_email"
             android:layout_width="40dp"
             android:layout_height="match_parent"
@@ -109,6 +84,31 @@
             android:hint="@string/email"
             android:inputType="textEmailAddress" />
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/img_reg_username"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/icon_username"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:tint="@color/colorPrimary"
+            app:srcCompat="@drawable/ic_person_black" />
+
+        <EditText
+            android:id="@+id/edit_reg_username"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/username"
+            android:inputType="textPersonName" />
     </LinearLayout>
 
     <LinearLayout
@@ -145,56 +145,16 @@
         android:weightSum="100">
 
         <EditText
-            android:id="@+id/edit_reg_name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="35"
-            android:ems="10"
-            android:hint="@string/name"
-            android:imeOptions="actionNext"
-            android:inputType="textCapWords"
-            android:nextFocusRight="@+id/edit_reg_surname" />
-
-        <EditText
-            android:id="@+id/edit_reg_surname"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="65"
-            android:ems="10"
-            android:hint="@string/surname"
-            android:imeOptions="actionNext"
-            android:inputType="textCapWords"
-            android:nextFocusRight="@+id/edit_reg_nation" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="100">
-
-        <EditText
             android:id="@+id/edit_reg_nation"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="40"
+            android:layout_weight="100"
             android:clickable="true"
             android:ems="10"
             android:focusable="true"
             android:hint="@string/country"
             android:imeOptions="actionNext"
             android:nextFocusRight="@+id/edit_reg_birthdate" />
-
-        <EditText
-            android:id="@+id/edit_reg_birthdate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="60"
-            android:clickable="true"
-            android:ems="10"
-            android:focusable="true"
-            android:hint="@string/birthday" />
 
     </LinearLayout>
 
@@ -234,6 +194,34 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:visibility="invisible" />
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10sp"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/info_privacy_1"
+            android:textAlignment="center"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10sp"
+            android:text="@string/info_privacy_2"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/info_privacy_3"
+            android:textSize="16sp" />
+    </LinearLayout>
 
 </LinearLayout>
