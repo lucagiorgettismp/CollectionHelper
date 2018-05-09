@@ -26,6 +26,7 @@ import com.lucagiorgetti.surprix.R;
 public class SystemUtility {
     public static final String FIRST_TIME_YEAR_HELP_SHOW= "showYearHelp";
     public static final String FIRST_TIME_SET_HELP_SHOW = "showSetHelp";
+    public static final String PRIVACY_POLICY_ACCEPTED = "privacyPolicyAccepted";
 
     public static boolean checkNetworkAvailability(Context context) {
         boolean available = false;

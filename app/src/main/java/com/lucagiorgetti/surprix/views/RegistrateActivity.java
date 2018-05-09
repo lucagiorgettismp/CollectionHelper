@@ -1,11 +1,16 @@
 package com.lucagiorgetti.surprix.views;
 
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -70,7 +75,14 @@ public class RegistrateActivity extends AppCompatActivity{
         TextView lblInfoFirstLogin = findViewById(R.id.lbl_reg_info_firstlogin);
         Button btnAccountCompleteFacebook = findViewById(R.id.btn_reg_complete_account);
         Button submit = findViewById(R.id.btn_reg_submit);
+        TextView lblPrivacyPolicy = findViewById(R.id.lbl_reg_policy);
 
+        lblPrivacyPolicy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPrivacyPolicy();
+            }
+        });
         Bundle b = getIntent().getExtras();
         boolean facebook = false;
         String facebook_email = null;
@@ -86,7 +98,6 @@ public class RegistrateActivity extends AppCompatActivity{
             submit.setVisibility(View.GONE);
             lblInfoFirstLogin.setVisibility(View.GONE);
             layPassword.setVisibility(View.GONE);
-
             btnAccountCompleteFacebook.setVisibility(View.VISIBLE);
             lblInfoFacebook.setVisibility(View.VISIBLE);
 
@@ -178,34 +189,8 @@ public class RegistrateActivity extends AppCompatActivity{
             }
         });
 
-        /*
-        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+        showFirstTimePolicy();
 
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear,
-                                  int dayOfMonth) {
-                myCalendar.set(Calendar.YEAR, year);
-                myCalendar.set(Calendar.MONTH, monthOfYear);
-                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                updateLabel();
-            }
-        };
-
-        edtBirthdate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus) {
-                    new DatePickerDialog(RegistrateActivity.this, date, myCalendar
-                            .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                            myCalendar.get(Calendar.DAY_OF_MONTH)).show();
-                }
-            }
-        });
-
-        private void updateLabel() {
-            SimpleDateFormat sdf = new SimpleDateFormat(getString(R.string.dateFormat), Locale.ITALIAN);
-            edtBirthdate.setText(sdf.format(myCalendar.getTime()));
-        }
-        */
         edtNation.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -215,8 +200,6 @@ public class RegistrateActivity extends AppCompatActivity{
                     public void onCountrySelected(Country country, int flagResId) {
                         edtNation.setText(country.getCountryName(getApplicationContext()));
                         countryPicker.dismiss();
-                /* Get Country Name: country.getCountryName(context); */
-                /* Call countryPicker.dismiss(); to prevent memory leaks */
                     }
 
           /* Set to false if you want to disable Dial Code in the results and true if you want to show it
@@ -227,6 +210,47 @@ public class RegistrateActivity extends AppCompatActivity{
             }
             }
         });
+    }
+
+    private void showFirstTimePolicy() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        boolean accepted = prefs.getBoolean(SystemUtility.PRIVACY_POLICY_ACCEPTED, false);
+        if (!accepted) {
+            showPrivacyPolicy();
+        }
+    }
+
+    private void showPrivacyPolicy() {
+        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle(getString(R.string.privacy_policy));
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            alertDialog.setMessage(Html.fromHtml(getString(R.string.privacy_policy_text), Html.FROM_HTML_MODE_LEGACY));
+        } else {
+            alertDialog.setMessage(Html.fromHtml(getString(R.string.privacy_policy_text)));
+        }
+
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.terms_agree),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        SharedPreferences.Editor edit = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
+                        edit.putBoolean(SystemUtility.PRIVACY_POLICY_ACCEPTED, true);
+                        edit.apply();
+                        alertDialog.dismiss();
+                    }
+                });
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.back),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        SharedPreferences.Editor edit = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
+                        edit.putBoolean(SystemUtility.PRIVACY_POLICY_ACCEPTED, false);
+                        edit.apply();
+                        alertDialog.dismiss();
+                        onBackPressed();
+                    }
+                });
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.show();
     }
 
     @Override

@@ -60,7 +60,7 @@
     <string name="dialog_add_year_text">Do you want to add to missings the complete year</string>
     <string name="dialod_delete_user_text">Do you want to delete you user account finally?</string>
     <string name="dateFormat" translatable="false">dd/MM/yyyy</string>
-    <string name="welcome_info">Welcome in Surprix!</string>
+    <string name="welcome_info">"Welcome in "</string>
     <string name="username_existing">Username existing</string>
     <string name="remove_missing_dialog_title">Remove from missing</string>
     <string name="remove_missing_dialog_text">Do you want to remove from missings</string>
@@ -119,4 +119,36 @@
     <string name="info_privacy_2">Your e-mail address is used to authenticate you, recover your credentials and to be contacted for exchanges.</string>
     <string name="info_privacy_3">The nation is used to show you the collectors of your country first.</string>
     <string name="email_format">Please check the e-mail format</string>
+    <string name="privacy_policy">Privacy policy</string>
+    <string name="privacy_policy_text"><![CDATA[<p>This privacy policy has been compiled to inform users about which personal data are collected in Surprix. Please read our privacy policy carefully to get a clear understanding of how we collect, use, protect or otherwise handle your Personally Identifiable Information.</p>
+        <div><strong>What personal information do we collect from the people that register to Surprix?</strong></div>
+        <div>When registering on our app, as appropriate, you may be asked to enter your email address and your country.</div>
+        <div><strong>When do we collect information?</strong></div>
+        <div>We collect information from you when you register on our app or enter information on our app.</div>
+        <div>
+        <div><strong>How do we use your information?</strong></div>
+        <div>We use your email address to&nbsp;authenticate you inside the app. The using of the email is necessary for password recovery and to be contacted by other users for making exchanges.</div>
+        <div>We ask your country to improve your experience on the app, like showing you, when necessary, users of your country first.</div>
+        <div><strong>How do we protect your information?</strong></div>
+        <div>We implement a variety of security measures when a user enters, submits, or accesses their information to maintain the safety of your personal information.</div>
+        <div>To do so, all the Authentication is handled by Google Firebase Authentication, which stores, protect and provide services for password recovery and data deletion.</div>
+        <div>Other information, are maintained behind secured networks and is only accessible by a limited number of persons who have special access rights to such systems and are required to keep the information confidential.</div>
+        <div><strong>Do we use \'cookies\'?</strong></div>
+        <div>We do not use cookies for tracking purposes</div>
+        <div><strong>Third-party disclosure</strong></div>
+        <div>We do not sell, trade, or otherwise transfer to outside parties your Personally Identifiable Information.</div>
+        <div><strong>Third-party links</strong></div>
+        <div>We do not include or offer third-party products or services on our app.</div>
+        <div><strong>Fair Information Practices</strong></div>
+        <div>The Fair Information Practices Principles form the backbone of privacy law in the United States and the concepts they include have played a significant role in the development of data protection laws around the globe. Understanding the Fair Information Practice Principles and how they should be implemented is critical to comply with the various privacy laws that protect personal information.<br /><strong>In order to be in line with Fair Information Practices we will take the following responsive action, should a data breach occur:</strong></div>
+        <div>We will notify you via email within 1 business day</div>
+        <div><br />We also agree to the Individual Redress Principle which requires that individuals have the right to legally pursue enforceable rights against data collectors and processors who fail to adhere to the law. This principle requires not only that individuals have enforceable rights against data users, but also that individuals have recourse to courts or government agencies to investigate and/or prosecute non-compliance by data processors.</div>
+        </div>
+        <div>
+        <div><strong>Contacting Us</strong></div>
+        <div>If there are any questions regarding this privacy policy, you may contact us using the email below:</div>
+        <div><em>info.surprix@gmail.com</em></div>
+        </div>]]>
+    </string>
+    <string name="terms_agree">I agree with terms</string>
 </resources>

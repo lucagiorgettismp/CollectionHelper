@@ -1,34 +1,30 @@
 package com.lucagiorgetti.surprix.fragments;
 
-import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.lucagiorgetti.surprix.R;
+import com.lucagiorgetti.surprix.listenerInterfaces.FragmentListenerInterface;
+import com.lucagiorgetti.surprix.model.User;
 import com.lucagiorgetti.surprix.utility.DatabaseUtility;
 import com.lucagiorgetti.surprix.utility.SystemUtility;
-import com.lucagiorgetti.surprix.listenerInterfaces.FragmentListenerInterface;
-import com.lucagiorgetti.surprix.R;
-import com.lucagiorgetti.surprix.model.User;
 import com.mikelau.countrypickerx.Country;
 import com.mikelau.countrypickerx.CountryPickerCallbacks;
 import com.mikelau.countrypickerx.CountryPickerDialog;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
@@ -36,11 +32,7 @@ public class UserSettingsFragment extends Fragment{
     private FragmentListenerInterface listener;
     private User currentUser;
     private Context mContext;
-    //private EditText edtName;
-    //private EditText edtSurname;
-   // private EditText edtBirthdate;
     private EditText edtNation;
-    //final Calendar myCalendar = Calendar.getInstance();
     CountryPickerDialog countryPicker = null;
 
     @Override
@@ -51,15 +43,20 @@ public class UserSettingsFragment extends Fragment{
         EditText edtUsername = layout.findViewById(R.id.edit_reg_username);
         ImageView usernameImage = layout.findViewById(R.id.img_reg_username);
         ImageView emailImage = layout.findViewById(R.id.img_reg_email);
+        TextView lblPrivacyPolicy = layout.findViewById(R.id.lbl_reg_policy);
+
+        lblPrivacyPolicy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPrivacyPolicy();
+            }
+        });
 
         edtUsername.setEnabled(false);
         edtEmail.setEnabled(false);
         usernameImage.setColorFilter(ContextCompat.getColor(mContext, R.color.disabledIcon));
         emailImage.setColorFilter(ContextCompat.getColor(mContext, R.color.disabledIcon));
 
-        //edtName = layout.findViewById(R.id.edit_reg_name);
-        //edtSurname =  layout.findViewById(R.id.edit_reg_surname);
-        //edtBirthdate = layout.findViewById(R.id.edit_reg_birthdate);
         edtNation = layout.findViewById(R.id.edit_reg_nation);
         View layPassword = layout.findViewById(R.id.layout_reg_password);
         View layButtonsModify = layout.findViewById(R.id.layout_reg_modify);
@@ -67,14 +64,6 @@ public class UserSettingsFragment extends Fragment{
         TextView changePwd = layout.findViewById(R.id.btn_reg_change_pwd);
         TextView deleteUser = layout.findViewById(R.id.btn_reg_delete_account);
         Button submit = layout.findViewById(R.id.btn_reg_submit);
-
-/*        String[] dateArray = new String[0];
-        try {
-            dateArray = currentUser.getBirthday().split("/");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        myCalendar.set(Integer.parseInt(dateArray[2]),Integer.parseInt(dateArray[1]) - 1,Integer.parseInt(dateArray[0]));*/
 
         layPassword.setVisibility(View.GONE);
 
@@ -86,42 +75,7 @@ public class UserSettingsFragment extends Fragment{
 
         edtEmail.setText(currentUser.getEmail().replaceAll(",", "\\."));
         edtUsername.setText(currentUser.getUsername());
-/*        edtName.setText(currentUser.getName());
-        edtSurname.setText(currentUser.getSurname());
-        try {
-            edtBirthdate.setText(currentUser.getBirthday());
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }*/
         edtNation.setText(currentUser.getCountry());
-
-        /*final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
-
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear,
-                                  int dayOfMonth) {
-                myCalendar.set(Calendar.YEAR, year);
-                myCalendar.set(Calendar.MONTH, monthOfYear);
-                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                updateLabel();
-            }
-        };
-
-        edtBirthdate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus) {
-                    new DatePickerDialog(mContext, date, myCalendar
-                            .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                            myCalendar.get(Calendar.DAY_OF_MONTH)).show();
-                }
-            }
-        });
-
-        private void updateLabel(){
-            SimpleDateFormat sdf = new SimpleDateFormat(getString(R.string.dateFormat), Locale.ITALIAN);
-            edtBirthdate.setText(sdf.format(myCalendar.getTime()));
-        }
-    */
 
         edtNation.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -169,6 +123,26 @@ public class UserSettingsFragment extends Fragment{
             }
         });
         return layout;
+    }
+
+    private void showPrivacyPolicy() {
+        final AlertDialog alertDialog = new AlertDialog.Builder(mContext).create();
+        alertDialog.setTitle(getString(R.string.privacy_policy));
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            alertDialog.setMessage(Html.fromHtml(getString(R.string.privacy_policy_text), Html.FROM_HTML_MODE_LEGACY));
+        } else {
+            alertDialog.setMessage(Html.fromHtml(getString(R.string.privacy_policy_text)));
+        }
+
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.dialog_positive),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        alertDialog.dismiss();
+                    }
+                });
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.show();
     }
 
     @Override
