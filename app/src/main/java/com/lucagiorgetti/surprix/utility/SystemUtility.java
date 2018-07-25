@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.views.OnboardActivity;
 import com.lucagiorgetti.surprix.R;
 
@@ -27,6 +28,8 @@ public class SystemUtility {
     public static final String FIRST_TIME_YEAR_HELP_SHOW= "showYearHelp";
     public static final String FIRST_TIME_SET_HELP_SHOW = "showSetHelp";
     public static final String PRIVACY_POLICY_ACCEPTED = "privacyPolicyAccepted";
+    public static final String USER_USERNAME = "loggedUsername";
+    public static final String USER_EMAIL = "loggedEmail";
 
     public static boolean checkNetworkAvailability(Context context) {
         boolean available = false;
@@ -36,7 +39,10 @@ public class SystemUtility {
             ConnectivityManager connectivityManager =
                     (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
             for (int networkType : networkTypes) {
-                NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+                NetworkInfo activeNetworkInfo = null;
+                if (connectivityManager != null) {
+                    activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+                }
                 if (activeNetworkInfo != null &&
                         activeNetworkInfo.getType() == networkType)
                     available = true;
@@ -53,10 +59,13 @@ public class SystemUtility {
 
     public static void closeKeyboard(Activity activity, View view) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
-    public static void openNewActivityWithFinishing(Activity activity, Context applicationContext, Class<?> cls, Bundle b) {
+    public static void openNewActivityWithFinishing(Activity activity, Class<?> cls, Bundle b) {
+        Context applicationContext = SurprixApplication.getSurprixContext();
         Intent i = new Intent(applicationContext, cls);
 
         if (b != null){
@@ -69,17 +78,19 @@ public class SystemUtility {
         activity.finish();
     }
 
-    public static void firstTimeOpeningApp(Activity activity, Context applicationContext, Class<?> cls, Bundle b) {
+    public static void firstTimeOpeningApp(Activity activity, Class<?> cls, Bundle b) {
+        Context applicationContext = SurprixApplication.getSurprixContext();
         SharedPreferences.Editor edit = PreferenceManager.getDefaultSharedPreferences(applicationContext).edit();
         edit.putBoolean(FIRST_TIME_SET_HELP_SHOW, true);
         edit.putBoolean(FIRST_TIME_YEAR_HELP_SHOW, true);
         edit.apply();
 
-        openNewActivityWithFinishing(activity, applicationContext, cls, b);
-        openNewActivity(applicationContext, OnboardActivity.class, null);
+        openNewActivityWithFinishing(activity, cls, b);
+        openNewActivity(OnboardActivity.class, null);
     }
 
-    public static void openNewActivity(Context applicationContext, Class<?> cls, Bundle b) {
+    public static void openNewActivity(Class<?> cls, Bundle b) {
+        Context applicationContext = SurprixApplication.getSurprixContext();
         Intent i = new Intent(applicationContext, cls);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         if (b != null){
@@ -107,4 +118,21 @@ public class SystemUtility {
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         context.startActivity(intent);
     }
+
+    public static void writeUserInfo(String username, String email) {
+        Context applicationContext = SurprixApplication.getSurprixContext();
+        SharedPreferences.Editor edit = PreferenceManager.getDefaultSharedPreferences(applicationContext).edit();
+        edit.putString(USER_USERNAME, username);
+        edit.putString(USER_EMAIL, email);
+        edit.apply();
+    }
+
+    public static String getLoggedUserUsername(){
+        Context applicationContext = SurprixApplication.getSurprixContext();
+        return PreferenceManager.getDefaultSharedPreferences(applicationContext).getString(USER_USERNAME, null);
+    }
+
+/*    public static String getLoggedUserEmail(Context applicationContext){
+        return PreferenceManager.getDefaultSharedPreferences(applicationContext).getString(USER_EMAIL, null);
+    }*/
 }

@@ -26,6 +26,8 @@ import com.mikelau.countrypickerx.Country;
 import com.mikelau.countrypickerx.CountryPickerCallbacks;
 import com.mikelau.countrypickerx.CountryPickerDialog;
 
+import java.util.Objects;
+
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class UserSettingsFragment extends Fragment{
@@ -100,9 +102,9 @@ public class UserSettingsFragment extends Fragment{
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SystemUtility.closeKeyboard(getActivity(),getView());
+                SystemUtility.closeKeyboard(Objects.requireNonNull(getActivity()),getView());
                 String nation = edtNation.getText().toString();
-                DatabaseUtility.updateUser(currentUser.getUsername(), nation);
+                DatabaseUtility.updateUser(nation);
                 listener.refreshUser();
                 currentUser = listener.getCurrentRetrievedUser();
                 Snackbar.make(v, R.string.user_added, Snackbar.LENGTH_SHORT).show();

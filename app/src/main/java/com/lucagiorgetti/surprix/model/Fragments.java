@@ -5,5 +5,5 @@ package com.lucagiorgetti.surprix.model;
  */
 
 public enum Fragments {
-    MISSINGS, DOUBLES, COLLECTORS, SETSEARCH, PRODUCERS, YEARS, USER_SETTINGS, THANKS_TO, SETITEMS
+    MISSINGS, DOUBLES, COLLECTORS, USER_SETTINGS, THANKS_TO
 }

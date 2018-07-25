@@ -27,11 +27,11 @@ public class OnboardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.onboarding_main);
 
-        mSlideViewPager = (ViewPager) findViewById(R.id.slideViewPager);
-        mDotsLayout = (LinearLayout) findViewById(R.id.dotsLayout);
+        mSlideViewPager = findViewById(R.id.slideViewPager);
+        mDotsLayout = findViewById(R.id.dotsLayout);
 
-        nextButton = (Button) findViewById(R.id.next);
-        backButton = (Button) findViewById(R.id.previous);
+        nextButton = findViewById(R.id.next);
+        backButton = findViewById(R.id.previous);
 
         OnboardingAdapter sliderAdapter = new OnboardingAdapter(this, slideCount);
         mSlideViewPager.setAdapter(sliderAdapter);

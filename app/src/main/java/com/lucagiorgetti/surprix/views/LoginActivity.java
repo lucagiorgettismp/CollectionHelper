@@ -36,6 +36,8 @@ import com.lucagiorgetti.surprix.listenerInterfaces.OnGetResultListener;
 import com.lucagiorgetti.surprix.utility.DatabaseUtility;
 import com.lucagiorgetti.surprix.utility.SystemUtility;
 
+import java.util.Objects;
+
 /**
  * Activity for loggin user into App.
  *
@@ -75,7 +77,7 @@ public class LoginActivity extends AppCompatActivity {
         registrate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SystemUtility.openNewActivityWithFinishing(LoginActivity.this, getApplicationContext(), RegistrateActivity.class, null);
+                SystemUtility.openNewActivityWithFinishing(LoginActivity.this, RegistrateActivity.class, null);
             }
         });
 
@@ -91,13 +93,13 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onCancel() {
-                Snackbar.make(getCurrentFocus(), "Facebook login cancelled", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(Objects.requireNonNull(getCurrentFocus()), "Facebook login cancelled", Snackbar.LENGTH_SHORT).show();
                 progressBar.setVisibility(View.INVISIBLE);
             }
 
             @Override
             public void onError(FacebookException error) {
-                Snackbar.make(getCurrentFocus(), "Facebook login error", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(Objects.requireNonNull(getCurrentFocus()), "Facebook login error", Snackbar.LENGTH_SHORT).show();
                 progressBar.setVisibility(View.INVISIBLE);
             }
         });
@@ -216,24 +218,26 @@ public class LoginActivity extends AppCompatActivity {
                                     Toast.LENGTH_SHORT).show();
                         }else{
                             final String email=task.getResult().getUser().getEmail();
-                            DatabaseUtility.checkUserExisting(email, new OnGetResultListener() {
-                                @Override
-                                public void onSuccess(boolean result) {
-                                    if (result){
-                                        goToMainActivity();
-                                    } else {
-                                        Bundle b = new Bundle();
-                                        b.putBoolean("facebook", true);
-                                        b.putString("email", email);
-                                        goToRegistrateActivity(b);
+                            if (email != null) {
+                                DatabaseUtility.checkUserExisting(email, new OnGetResultListener() {
+                                    @Override
+                                    public void onSuccess(boolean result) {
+                                        if (result){
+                                            goToMainActivity();
+                                        } else {
+                                            Bundle b = new Bundle();
+                                            b.putBoolean("facebook", true);
+                                            b.putString("email", email);
+                                            goToRegistrateActivity(b);
+                                        }
                                     }
-                                }
 
-                                @Override
-                                public void onFailure() {
+                                    @Override
+                                    public void onFailure() {
 
-                                }
-                            });
+                                    }
+                                });
+                            }
                         }
 
                         progressBar.setVisibility(View.INVISIBLE);
@@ -242,11 +246,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void goToRegistrateActivity(Bundle bundle) {
-        SystemUtility.openNewActivityWithFinishing(LoginActivity.this, getApplicationContext(), RegistrateActivity.class, bundle);
+        SystemUtility.openNewActivityWithFinishing(LoginActivity.this, RegistrateActivity.class, bundle);
     }
 
     private void goToMainActivity() {
-        SystemUtility.openNewActivityWithFinishing(LoginActivity.this, getApplicationContext(), MainActivity.class, null);
+        SystemUtility.openNewActivityWithFinishing(LoginActivity.this, MainActivity.class, null);
     }
 
 

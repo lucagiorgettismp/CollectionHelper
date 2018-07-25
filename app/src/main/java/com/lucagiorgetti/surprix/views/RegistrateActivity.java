@@ -33,6 +33,8 @@ import com.mikelau.countrypickerx.Country;
 import com.mikelau.countrypickerx.CountryPickerCallbacks;
 import com.mikelau.countrypickerx.CountryPickerDialog;
 
+import java.util.Objects;
+
 /**
  * Allows user to get registered.
  *
@@ -118,7 +120,7 @@ public class RegistrateActivity extends AppCompatActivity{
                     Toast.makeText(RegistrateActivity.this, R.string.complete_all_fields, Toast.LENGTH_SHORT).show();
                 } else{
                     DatabaseUtility.generateUser(email, username, nation, true);
-                    SystemUtility.firstTimeOpeningApp(RegistrateActivity.this, getApplicationContext(), MainActivity.class, null);
+                    SystemUtility.firstTimeOpeningApp(RegistrateActivity.this, MainActivity.class, null);
                 }
             }
         });
@@ -144,13 +146,13 @@ public class RegistrateActivity extends AppCompatActivity{
                         username.isEmpty() ||
                         nation.isEmpty()){
                     progress.setVisibility(View.INVISIBLE);
-                    Snackbar.make(getCurrentFocus(), R.string.complete_all_fields, Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(Objects.requireNonNull(getCurrentFocus()), R.string.complete_all_fields, Snackbar.LENGTH_SHORT).show();
                 } else if (password.length() < 6){
                     progress.setVisibility(View.INVISIBLE);
-                    Snackbar.make(getCurrentFocus(), R.string.password_lenght, Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(Objects.requireNonNull(getCurrentFocus()), R.string.password_lenght, Snackbar.LENGTH_SHORT).show();
                 } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                     progress.setVisibility(View.INVISIBLE);
-                    Snackbar.make(getCurrentFocus(), R.string.email_format , Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(Objects.requireNonNull(getCurrentFocus()), R.string.email_format , Snackbar.LENGTH_SHORT).show();
                 } else {
                     DatabaseUtility.checkUsernameDontExists(username, new OnGetResultListener() {
                         @Override
@@ -163,26 +165,26 @@ public class RegistrateActivity extends AppCompatActivity{
                                                 if (!task.isSuccessful()) {
                                                     //noinspection ThrowableResultOfMethodCallIgnored
                                                     progress.setVisibility(View.INVISIBLE);
-                                                    Snackbar.make(getCurrentFocus(), getString(R.string.auth_failed),
+                                                    Snackbar.make(Objects.requireNonNull(getCurrentFocus()), getString(R.string.auth_failed),
                                                             Snackbar.LENGTH_SHORT).show();
                                                 } else {
                                                     DatabaseUtility.generateUser(email, username, nation, false);
                                                     fireAuth.signInWithEmailAndPassword(email, password);
                                                     progress.setVisibility(View.INVISIBLE);
 
-                                                    SystemUtility.firstTimeOpeningApp(RegistrateActivity.this, getApplicationContext(), MainActivity.class, null);
+                                                    SystemUtility.firstTimeOpeningApp(RegistrateActivity.this, MainActivity.class, null);
                                                 }
                                             }
                                         });
                             } else {
                                 progress.setVisibility(View.INVISIBLE);
-                                Snackbar.make(getCurrentFocus(), R.string.username_existing, Snackbar.LENGTH_SHORT).show();
+                                Snackbar.make(Objects.requireNonNull(getCurrentFocus()), R.string.username_existing, Snackbar.LENGTH_SHORT).show();
                             }
                         }
 
                         @Override
                         public void onFailure() {
-                            Snackbar.make(getCurrentFocus(), R.string.data_sync_error, Snackbar.LENGTH_SHORT).show();
+                            Snackbar.make(Objects.requireNonNull(getCurrentFocus()), R.string.data_sync_error, Snackbar.LENGTH_SHORT).show();
                         }
                     });
                 }
@@ -258,6 +260,6 @@ public class RegistrateActivity extends AppCompatActivity{
         facebookLogin.logOut();
         fireAuth.signOut();
 
-        SystemUtility.openNewActivityWithFinishing(RegistrateActivity.this, getApplicationContext(), MainActivity.class, null);
+        SystemUtility.openNewActivityWithFinishing(RegistrateActivity.this, MainActivity.class, null);
     }
 }

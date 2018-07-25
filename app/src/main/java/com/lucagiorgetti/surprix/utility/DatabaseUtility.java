@@ -20,6 +20,7 @@ import com.lucagiorgetti.surprix.model.User;
 import com.lucagiorgetti.surprix.model.Year;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * Utility which contain all the implementations of methods which needs a connection with Firebase Database.
@@ -28,7 +29,8 @@ import java.util.ArrayList;
  */
 
 public class DatabaseUtility {
-    
+    private static String username = SystemUtility.getLoggedUserUsername();
+
     private static DatabaseReference reference = SurprixApplication.getInstance().getDatabaseReference();
     
     public static void checkUserExisting(final String email, final OnGetResultListener listener) {
@@ -36,7 +38,7 @@ public class DatabaseUtility {
 
         reference.child("emails").child(emailCod).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot snapshot) {
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
                     listener.onSuccess(true);
                 } else {
@@ -45,7 +47,7 @@ public class DatabaseUtility {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
@@ -53,23 +55,23 @@ public class DatabaseUtility {
 
     public static void getCurrentUser(final OnGetDataListener listen, FirebaseAuth fireAuth) {
         listen.onStart();
-        String emailCod = fireAuth.getCurrentUser().getEmail().replaceAll("\\.", ",");
+        String emailCod = Objects.requireNonNull(Objects.requireNonNull(fireAuth.getCurrentUser()).getEmail()).replaceAll("\\.", ",");
         final String[] username = {null};
         reference.child("emails").child(emailCod).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
                     username[0] = d.getKey();
                 }
                 if(username[0] != null){
                     reference.child("users").child(username[0]).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             listen.onSuccess(dataSnapshot);
                         }
 
                         @Override
-                        public void onCancelled(DatabaseError databaseError) {
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
                             listen.onFailure();
                         }
                     });
@@ -77,26 +79,26 @@ public class DatabaseUtility {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
                 listen.onFailure();
             }
         });
     }
 
-    public static void addMissing(String username, String surpId) {
+    public static void addMissing(String surpId) {
         reference.child("missings").child(username).child(surpId).setValue(true);
     }
 
-    public static void addDouble(String username, String surpId) {
+    public static void addDouble(String surpId) {
         reference.child("user_doubles").child(username).child(surpId).setValue(true);
         reference.child("surprise_doubles").child(surpId).child(username).setValue(true);
     }
 
-    public static void removeMissing(String username, String surpId) {
+    public static void removeMissing(String surpId) {
         reference.child("missings").child(username).child(surpId).setValue(null);
     }
 
-    public static void removeDouble(String username, String surpId) {
+    public static void removeDouble(String surpId) {
         reference.child("user_doubles").child(username).child(surpId).setValue(null);
         reference.child("surprise_doubles").child(surpId).child(username).setValue(null);
     }
@@ -106,12 +108,12 @@ public class DatabaseUtility {
         final ArrayList<User> owners = new ArrayList<>();
         reference.child("surprise_doubles").child(surpId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot d : dataSnapshot.getChildren()) {
-                        reference.child("users").child(d.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        reference.child("users").child(Objects.requireNonNull(d.getKey())).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
-                            public void onDataChange(DataSnapshot snapshot) {
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 if(snapshot.exists()){
                                     User u = snapshot.getValue(User.class);
                                     owners.add(u);
@@ -120,7 +122,7 @@ public class DatabaseUtility {
                             }
 
                             @Override
-                            public void onCancelled(DatabaseError databaseError) {
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
                                 listen.onFailure();
                             }
                         });
@@ -131,24 +133,24 @@ public class DatabaseUtility {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
     }
 
-    public static void getDoublesForUsername(String username, final OnGetListListener<Surprise> listen) {
+    public static void getDoublesForUsername(final OnGetListListener<Surprise> listen) {
         listen.onStart();
         final ArrayList<Surprise> doubles = new ArrayList<>();
 
         reference.child("user_doubles").child(username).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
                     for (DataSnapshot d : dataSnapshot.getChildren()){
-                        reference.child("surprises").child(d.getKey()).orderByChild("code").addListenerForSingleValueEvent(new ValueEventListener() {
+                        reference.child("surprises").child(Objects.requireNonNull(d.getKey())).orderByChild("code").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
-                            public void onDataChange(DataSnapshot snapshot) {
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 if(snapshot.exists()){
                                     Surprise s = snapshot.getValue(Surprise.class);
                                     doubles.add(s);
@@ -157,7 +159,7 @@ public class DatabaseUtility {
                             }
 
                             @Override
-                            public void onCancelled(DatabaseError databaseError) {
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
                                 listen.onFailure();
                             }
                         });
@@ -168,7 +170,7 @@ public class DatabaseUtility {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
     }
@@ -180,12 +182,12 @@ public class DatabaseUtility {
 
         reference.child("producers").child(producerId).child("years").orderByChild("year").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
                     for (DataSnapshot d : dataSnapshot.getChildren()){
-                        reference.child("years").child(d.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        reference.child("years").child(Objects.requireNonNull(d.getKey())).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
-                            public void onDataChange(DataSnapshot snapshot) {
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 if(snapshot.exists()){
                                     Year y = snapshot.getValue(Year.class);
                                     years.add(y);
@@ -194,7 +196,7 @@ public class DatabaseUtility {
                             }
 
                             @Override
-                            public void onCancelled(DatabaseError databaseError) {
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
                                 listen.onFailure();
                             }
                         });
@@ -205,7 +207,7 @@ public class DatabaseUtility {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
     }
@@ -214,29 +216,29 @@ public class DatabaseUtility {
         listen.onStart();
         reference.child("producers").orderByChild("order").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 listen.onSuccess(dataSnapshot);
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
                 listen.onFailure();
             }
         });
     }
 
-    public static void getMissingsForUsername(String username, final OnGetListListener<Surprise> listen) {
+    public static void getMissingsForUsername(final OnGetListListener<Surprise> listen) {
         listen.onStart();
         final ArrayList<Surprise> missings = new ArrayList<>();
 
         reference.child("missings").child(username).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
                     for (DataSnapshot d : dataSnapshot.getChildren()){
-                        reference.child("surprises").child(d.getKey()).orderByChild("code").addListenerForSingleValueEvent(new ValueEventListener() {
+                        reference.child("surprises").child(Objects.requireNonNull(d.getKey())).orderByChild("code").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
-                            public void onDataChange(DataSnapshot snapshot) {
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 if(snapshot.exists()){
                                     Surprise s = snapshot.getValue(Surprise.class);
                                     missings.add(s);
@@ -245,7 +247,7 @@ public class DatabaseUtility {
                             }
 
                             @Override
-                            public void onCancelled(DatabaseError databaseError) {
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
                                 listen.onFailure();
                             }
                         });
@@ -256,7 +258,7 @@ public class DatabaseUtility {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
     }
@@ -268,13 +270,13 @@ public class DatabaseUtility {
 
         reference.child("years").child(yearId).child("sets").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot d : dataSnapshot.getChildren()) {
 
-                        reference.child("sets").child(d.getKey()).orderByChild("year").addListenerForSingleValueEvent(new ValueEventListener() {
+                        reference.child("sets").child(Objects.requireNonNull(d.getKey())).orderByChild("year").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
-                            public void onDataChange(DataSnapshot snapshot) {
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 if (snapshot.exists()) {
                                     Set s = snapshot.getValue(Set.class);
                                     sets.add(s);
@@ -283,7 +285,7 @@ public class DatabaseUtility {
                             }
 
                             @Override
-                            public void onCancelled(DatabaseError databaseError) {
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
                                 listen.onFailure();
                             }
                         });
@@ -294,7 +296,7 @@ public class DatabaseUtility {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
@@ -306,12 +308,12 @@ public class DatabaseUtility {
 
         reference.child("sets").child(setClicked).child("surprises").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
                     for (DataSnapshot d : dataSnapshot.getChildren()){
-                        reference.child("surprises").child(d.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        reference.child("surprises").child(Objects.requireNonNull(d.getKey())).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
-                            public void onDataChange(DataSnapshot snapshot) {
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 if(snapshot.exists()){
                                     Surprise s = snapshot.getValue(Surprise.class);
                                     surprises.add(s);
@@ -320,7 +322,7 @@ public class DatabaseUtility {
                             }
 
                             @Override
-                            public void onCancelled(DatabaseError databaseError) {
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
                                 listen.onFailure();
                             }
                         });
@@ -331,33 +333,33 @@ public class DatabaseUtility {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
     }
 
-    public static void addMissingsFromYear(final String username, String yearId) {
+    public static void addMissingsFromYear(String yearId) {
         reference.child("years").child(yearId).child("sets").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot d : dataSnapshot.getChildren()) {
-                        reference.child("sets").child(d.getKey()).child("surprises").addListenerForSingleValueEvent(new ValueEventListener() {
+                        reference.child("sets").child(Objects.requireNonNull(d.getKey())).child("surprises").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 if (dataSnapshot.exists()) {
                                     for (DataSnapshot d : dataSnapshot.getChildren()) {
-                                        reference.child("surprises").child(d.getKey()).child("id").addListenerForSingleValueEvent(new ValueEventListener() {
+                                        reference.child("surprises").child(Objects.requireNonNull(d.getKey())).child("id").addListenerForSingleValueEvent(new ValueEventListener() {
                                             @Override
-                                            public void onDataChange(DataSnapshot snapshot) {
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
                                                 if (snapshot.exists()) {
                                                     String surpId = snapshot.getValue(String.class);
-                                                    addMissing(username, surpId);
+                                                    addMissing(surpId);
                                                 }
                                             }
 
                                             @Override
-                                            public void onCancelled(DatabaseError databaseError) {
+                                            public void onCancelled(@NonNull DatabaseError databaseError) {
                                             }
                                         });
                                     }
@@ -365,7 +367,7 @@ public class DatabaseUtility {
                             }
 
                             @Override
-                            public void onCancelled(DatabaseError databaseError) {
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
                             }
                         });
                     }
@@ -374,29 +376,29 @@ public class DatabaseUtility {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
     }
 
-    public static void addMissingsFromSet(final String username, String setId) {
+    public static void addMissingsFromSet(String setId) {
         reference.child("sets").child(setId).child("surprises").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot d : dataSnapshot.getChildren()) {
-                        reference.child("surprises").child(d.getKey()).child("id").addListenerForSingleValueEvent(new ValueEventListener() {
+                        reference.child("surprises").child(Objects.requireNonNull(d.getKey())).child("id").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
-                            public void onDataChange(DataSnapshot snapshot) {
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 if (snapshot.exists()) {
                                     String surpId = snapshot.getValue(String.class);
-                                    addMissing(username, surpId);
+                                    addMissing(surpId);
                                 }
                             }
 
                             @Override
-                            public void onCancelled(DatabaseError databaseError) {
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
                             }
                         });
                     }
@@ -404,7 +406,7 @@ public class DatabaseUtility {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
     }
@@ -418,14 +420,14 @@ public class DatabaseUtility {
         reference.child("emails").child(emailCod).child(username).setValue(true);
     }
 
-    public static void updateUser(String username, String nation) {
+    public static void updateUser(String nation) {
         reference.child("users").child(username).child("country").setValue(nation);
     }
 
     public static void checkUsernameDontExists(String username, final OnGetResultListener listener) {
         reference.child("users").child(username).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if( dataSnapshot.exists()){
                     listener.onSuccess(false);
                 } else {
@@ -434,26 +436,28 @@ public class DatabaseUtility {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
                 listener.onFailure();
             }
         });
     }
 
-    public static void deleteUser(final OnGetDataListener listener, FirebaseAuth fireAuth, final String username) {
+    public static void deleteUser(final OnGetDataListener listener) {
         listener.onStart();
 
         FirebaseUser user = SurprixApplication.getInstance().getFirebaseAuth().getCurrentUser();
 
         reference.child("missings").child(username).setValue(null);
         reference.child("users").child(username).setValue(null);
-        reference.child("emails").child(user.getEmail().replaceAll("\\.", ",")).setValue(null);
-        getDoublesForUsername(username, new OnGetListListener<Surprise>() {
+        if (user != null) {
+            reference.child("emails").child(Objects.requireNonNull(user.getEmail()).replaceAll("\\.", ",")).setValue(null);
+        }
+        getDoublesForUsername(new OnGetListListener<Surprise>() {
             @Override
             public void onSuccess(ArrayList<Surprise> surprises) {
                 if (surprises != null){
                     for (Surprise double_surp: surprises) {
-                        removeDouble(username, double_surp.getId());
+                        removeDouble(double_surp.getId());
                     }
                 }
             }
@@ -468,36 +472,30 @@ public class DatabaseUtility {
             }
         });
 
-        user.delete()
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            listener.onSuccess(null);
+        if (user != null) {
+            user.delete()
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                listener.onSuccess(null);
+                            }
                         }
-                    }
-                });
+                    });
+        }
         listener.onFailure();
-    }
-
-    public static void closeConnection(){
-       // getDatabase().goOffline();
-    }
-
-    public static void openConnection(){
-       //  getDatabase().goOnline();
     }
 
     public static void getSponsors(final OnGetDataListener listen) {
         listen.onStart();
         reference.child("sponsors").orderByChild("order").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 listen.onSuccess(dataSnapshot);
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
                 listen.onFailure();
             }
         });

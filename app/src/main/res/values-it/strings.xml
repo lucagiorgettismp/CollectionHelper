@@ -95,7 +95,7 @@
     <string name="info_privacy_2">L\'indirizzo e-mail è utilizzato per l\'autenticazione, per il recupero delle credenziali e per essere contattato per eventuali scambi.</string>
     <string name="info_privacy_3">La nazione serve a mostrati prima i collezionisti del tuo Paese.</string>
     <string name="email_format">Controlla il formato della e-mail</string>
-    <string name="privacy_policy">Termini e codizioni</string>
+    <string name="privacy_policy">Termini e condizioni</string>
     <string name="privacy_policy_text"><![CDATA[<p>I termini e condizioni per la protezione dei dati personali sono stati scritti per informare gli utenti riguardo ai dati personali che vengono raccolti in Surprix. Ti preghiamo di leggere i termini e le condizioni attentamente, per essere consapevole di come raccogliamo, utilizziamo, proteggiamo o gestiamo le tue informazioni personali.</p>
         <div><strong>Quali informazioni raccogliamo al momento della iscrizione a Surprix?</strong></div>
         <div>Al momento della registrazione, ti verr&agrave; chiesto di inserire il tuo indirizzo email e la tua nazione.</div>

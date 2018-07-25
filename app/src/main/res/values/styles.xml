@@ -36,11 +36,15 @@
         <item name="android:windowTranslucentStatus">true</item>
     </style>
 
-    <style name="ButtonAddMissing" parent="Base.Widget.AppCompat.ImageButton" >
+    <style name="ButtonAddMissing" parent="Base.Widget.AppCompat.ImageButton">
         <item name="backgroundTint">@android:color/holo_green_light</item>
     </style>
 
-    <style name="ButtonAddDouble" parent="Base.Widget.AppCompat.ImageButton" >
+    <style name="ButtonAddDouble" parent="Base.Widget.AppCompat.ImageButton">
         <item name="backgroundTint">@android:color/holo_orange_light</item>
     </style>
+
+    <style name="AppTheme.NoActionBar.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.NoActionBar.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

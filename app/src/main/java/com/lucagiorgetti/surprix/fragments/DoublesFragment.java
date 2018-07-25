@@ -37,6 +37,7 @@ import com.lucagiorgetti.surprix.model.Surprise;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Objects;
 
 public class DoublesFragment extends Fragment implements SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener, View.OnClickListener{
     private FragmentListenerInterface listener;
@@ -54,7 +55,7 @@ public class DoublesFragment extends Fragment implements SearchView.OnQueryTextL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fab:
-                listener.onClickOpenProducersFragment();
+                listener.onClickOpenProducers();
                 break;
         }
     }
@@ -63,7 +64,6 @@ public class DoublesFragment extends Fragment implements SearchView.OnQueryTextL
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.surprise_fragment, container, false);
         emptyList = layout.findViewById(R.id.empty_list);
-        String username = getArguments().getString("username");
         progress = layout.findViewById(R.id.surprise_loading);
         recyclerView = layout.findViewById(R.id.surprise_recycler);
         recyclerView.setHasFixedSize(true);
@@ -79,42 +79,13 @@ public class DoublesFragment extends Fragment implements SearchView.OnQueryTextL
         FloatingActionButton fab = layout.findViewById(R.id.fab);
         fab.setOnClickListener(this);
         initSwipe();
-        DatabaseUtility.getDoublesForUsername(username, new OnGetListListener<Surprise>() {
-            @Override
-            public void onSuccess(ArrayList<Surprise> surprises) {
-                doubles = surprises;
 
-                if(doubles != null){
-                    Collections.sort(doubles, new Surprise.SortByCode());
-                    mAdapter = new SurpRecyclerAdapter(mContext, doubles);
-                    recyclerView.setAdapter(mAdapter);
-                    if (listener != null){
-                        listener.setDoublesTitle(doubles.size());
-                    }
-                    emptyList.setVisibility(View.GONE);
-                } else {
-                    emptyList.setVisibility(View.VISIBLE);
-                }
-
-                progress.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onStart() {
-                progress.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onFailure() {
-                progress.setVisibility(View.GONE);
-                Toast.makeText(mContext, R.string.data_sync_error, Toast.LENGTH_SHORT).show();
-            }
-        });
+        getData();
 
         emptyList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onClickOpenProducersFragment();
+                listener.onClickOpenProducers();
             }
         });
 
@@ -144,9 +115,14 @@ public class DoublesFragment extends Fragment implements SearchView.OnQueryTextL
                                 mAdapter.removeItem(position);
                                 String asd = searchView.getQuery().toString();
                                 if(!asd.isEmpty()) {
-                                    FragmentTransaction ft = getFragmentManager().beginTransaction();
-                                    ft.detach(DoublesFragment.this).attach(DoublesFragment.this).commit();
-                                    SystemUtility.closeKeyboard(getActivity(), getView());
+                                    FragmentTransaction ft = null;
+                                    if (getFragmentManager() != null) {
+                                        ft = getFragmentManager().beginTransaction();
+                                    }
+                                    if (ft != null) {
+                                        ft.detach(DoublesFragment.this).attach(DoublesFragment.this).commit();
+                                    }
+                                    SystemUtility.closeKeyboard(Objects.requireNonNull(getActivity()), getView());
                                 }
 
                                 alertDialog.dismiss();
@@ -274,12 +250,42 @@ public class DoublesFragment extends Fragment implements SearchView.OnQueryTextL
 
     @Override
     public void onResume() {
-        if (doubles != null){
-            listener.setDoublesTitle(doubles.size());
-        }
+        getData();
         super.onResume();
     }
 
 
+    public void getData() {
+        DatabaseUtility.getDoublesForUsername(new OnGetListListener<Surprise>() {
+            @Override
+            public void onSuccess(ArrayList<Surprise> surprises) {
+                doubles = surprises;
 
+                if(doubles != null){
+                    Collections.sort(doubles, new Surprise.SortByCode());
+                    mAdapter = new SurpRecyclerAdapter(mContext, doubles);
+                    recyclerView.setAdapter(mAdapter);
+                    if (listener != null){
+                        listener.setDoublesTitle(doubles.size());
+                    }
+                    emptyList.setVisibility(View.GONE);
+                } else {
+                    emptyList.setVisibility(View.VISIBLE);
+                }
+
+                progress.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onStart() {
+                progress.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onFailure() {
+                progress.setVisibility(View.GONE);
+                Toast.makeText(mContext, R.string.data_sync_error, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }

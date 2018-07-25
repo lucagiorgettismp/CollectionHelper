@@ -37,6 +37,7 @@ import com.lucagiorgetti.surprix.model.Surprise;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Objects;
 
 public class MissingFragment extends Fragment implements SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener, View.OnClickListener{
     private FragmentListenerInterface listener;
@@ -54,7 +55,7 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fab:
-                listener.onClickOpenProducersFragment();
+                listener.onClickOpenProducers();
                 break;
         }
     }
@@ -63,8 +64,6 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.surprise_fragment, container, false);
         emptyList = layout.findViewById(R.id.empty_list);
-        String username;
-        username = getArguments().getString("username");
         progress = layout.findViewById(R.id.surprise_loading);
         recyclerView = layout.findViewById(R.id.surprise_recycler);
         recyclerView.setHasFixedSize(true);
@@ -75,7 +74,21 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
         FloatingActionButton fab = layout.findViewById(R.id.fab);
         fab.setOnClickListener(this);
         initSwipe();
-        DatabaseUtility.getMissingsForUsername(username, new OnGetListListener<Surprise>() {
+
+        getData();
+
+        emptyList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onClickOpenProducers();
+            }
+        });
+
+        return layout;
+    }
+
+    private void getData() {
+        DatabaseUtility.getMissingsForUsername(new OnGetListListener<Surprise>() {
 
             @Override
             public void onSuccess(ArrayList<Surprise> surprises) {
@@ -108,15 +121,6 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
                 Toast.makeText(mContext, R.string.data_sync_error, Toast.LENGTH_SHORT).show();
             }
         });
-
-        emptyList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onClickOpenProducersFragment();
-            }
-        });
-
-        return layout;
     }
 
     private void initSwipe(){
@@ -142,9 +146,14 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
                                     listener.onSwipeRemoveMissing(s.getId());
                                     String queryTxt = searchView.getQuery().toString();
                                     if(!queryTxt.isEmpty()) {
-                                        FragmentTransaction ft = getFragmentManager().beginTransaction();
-                                        ft.detach(MissingFragment.this).attach(MissingFragment.this).commit();
-                                        SystemUtility.closeKeyboard(getActivity(), getView());
+                                        FragmentTransaction ft = null;
+                                        if (getFragmentManager() != null) {
+                                            ft = getFragmentManager().beginTransaction();
+                                        }
+                                        if (ft != null) {
+                                            ft.detach(MissingFragment.this).attach(MissingFragment.this).commit();
+                                        }
+                                        SystemUtility.closeKeyboard(Objects.requireNonNull(getActivity()), Objects.requireNonNull(getView()));
                                     }
 
                                     alertDialog.dismiss();
@@ -275,9 +284,7 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
 
     @Override
     public void onResume() {
-        if(missings != null) {
-            listener.setMissingsTitle(missings.size());
-        }
+        getData();
         super.onResume();
     }
 }

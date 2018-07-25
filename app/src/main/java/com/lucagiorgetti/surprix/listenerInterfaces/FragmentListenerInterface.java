@@ -12,7 +12,7 @@ import com.lucagiorgetti.surprix.model.User;
 public interface FragmentListenerInterface {
     void setDoublesTitle(int number);
 
-    void onClickOpenProducersFragment();
+    void onClickOpenProducers();
 
     void onSwipeRemoveDouble(String id);
 
@@ -21,28 +21,6 @@ public interface FragmentListenerInterface {
     void onSwipeShowDoublesOwner(Surprise s);
 
     void setMissingsTitle(int number);
-
-    void onProducerClick(String id, String prod_name);
-
-    void setProducerTitle();
-
-    void onSetShortClick(String id, String name);
-
-    void setSearchTitle();
-
-    void onItemAddMissings(String id);
-
-    void onItemAddDoubles(String id);
-
-    void setItemsTitle();
-
-    void onYearClicked(String id, int year);
-
-    void onLongYearClicked(String id, int year);
-
-    void setYearTitle();
-
-    void onSetLongClick(String id, String name);
 
     User getCurrentRetrievedUser();
 

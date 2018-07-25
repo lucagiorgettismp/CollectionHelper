@@ -23,6 +23,7 @@ import com.lucagiorgetti.surprix.listenerInterfaces.FragmentListenerInterface;
 import com.lucagiorgetti.surprix.model.Sponsor;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class ThanksToFragment extends Fragment{
     private FragmentListenerInterface listener;
@@ -52,7 +53,7 @@ public class ThanksToFragment extends Fragment{
                 if(sponsor.isClickable()){
                     listener.onBannerClicked(sponsor.getUrl());
                 }
-                SystemUtility.closeKeyboard(getActivity(), getView());
+                SystemUtility.closeKeyboard(Objects.requireNonNull(getActivity()), Objects.requireNonNull(getView()));
             }
 
             @Override

@@ -2,11 +2,13 @@ package com.lucagiorgetti.surprix.views;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
@@ -34,21 +36,16 @@ import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
-
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
-import com.lucagiorgetti.surprix.fragments.ThanksToFragment;
-import com.lucagiorgetti.surprix.fragments.UserSettingsFragment;
-import com.lucagiorgetti.surprix.listenerInterfaces.FragmentListenerInterface;
-import com.lucagiorgetti.surprix.listenerInterfaces.OnGetListListener;
-import com.lucagiorgetti.surprix.listenerInterfaces.OnGetDataListener;
 import com.lucagiorgetti.surprix.adapters.DoublesOwnersListAdapter;
 import com.lucagiorgetti.surprix.fragments.DoublesFragment;
 import com.lucagiorgetti.surprix.fragments.MissingFragment;
-import com.lucagiorgetti.surprix.fragments.ProducersFragment;
-import com.lucagiorgetti.surprix.fragments.SearchSetsFragment;
-import com.lucagiorgetti.surprix.fragments.SetItemsFragment;
-import com.lucagiorgetti.surprix.fragments.YearsFragment;
+import com.lucagiorgetti.surprix.fragments.ThanksToFragment;
+import com.lucagiorgetti.surprix.fragments.UserSettingsFragment;
+import com.lucagiorgetti.surprix.listenerInterfaces.FragmentListenerInterface;
+import com.lucagiorgetti.surprix.listenerInterfaces.OnGetDataListener;
+import com.lucagiorgetti.surprix.listenerInterfaces.OnGetListListener;
 import com.lucagiorgetti.surprix.model.Colors;
 import com.lucagiorgetti.surprix.model.Fragments;
 import com.lucagiorgetti.surprix.model.Surprise;
@@ -72,16 +69,9 @@ public class MainActivity extends AppCompatActivity implements
     private User currentUser = null;
     private TextView nav_user;
     private TextView nav_email;
-    private String clickedSetId = null;
-    private String clickedSetName = null;
-    private String clickedProducerName = null;
-    private String clickedProducerId = null;
     private ArrayList<User> doubleOwners = new ArrayList<>();
     private DoublesOwnersListAdapter mAdapter;
     private NavigationView navigationView;
-
-    private String clickedYearId = null;
-    private int clickedYearNumber = -1;
 
     // region Override standard methods
     @Override
@@ -95,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user == null) {
-                    SystemUtility.openNewActivityWithFinishing(MainActivity.this, getApplicationContext(), LoginActivity.class, null);
+                    SystemUtility.openNewActivityWithFinishing(MainActivity.this, LoginActivity.class, null);
                 }
             }
         };
@@ -110,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements
                 @Override
                 public void onDrawerOpened(View drawerView) {
                     super.onDrawerOpened(drawerView);
-                    SystemUtility.closeKeyboard(MainActivity.this, getCurrentFocus());
+                    SystemUtility.closeKeyboard(MainActivity.this, Objects.requireNonNull(getCurrentFocus()));
                 }
             };
             drawer.addDrawerListener(toggle);
@@ -126,9 +116,14 @@ public class MainActivity extends AppCompatActivity implements
                 @Override
                 public void onSuccess(DataSnapshot dataSnapshot) {
                     currentUser = dataSnapshot.getValue(User.class);
+                    if (currentUser != null){
+                        String username = currentUser.getUsername();
+                        String email = currentUser.getEmail().replaceAll(",", "\\.") ;
+                        nav_user.setText(username);
+                        nav_email.setText(email);
+                        SystemUtility.writeUserInfo(username, email);
+                    }
 
-                    nav_user.setText(currentUser.getUsername());
-                    nav_email.setText(currentUser.getEmail().replaceAll(",", "\\."));
                     displayView(Fragments.MISSINGS, false);
                 }
 
@@ -148,7 +143,6 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onStart() {
         super.onStart();
-        DatabaseUtility.openConnection();
         fireAuth.addAuthStateListener(fireAuthStateListener);
     }
 
@@ -158,7 +152,6 @@ public class MainActivity extends AppCompatActivity implements
         if (fireAuthStateListener != null) {
             fireAuth.removeAuthStateListener(fireAuthStateListener);
         }
-        DatabaseUtility.closeConnection();
     }
 
     @Override
@@ -181,7 +174,6 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onPause() {
         super.onPause();
-        DatabaseUtility.closeConnection();
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -201,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements
                 displayView(Fragments.DOUBLES, false);
                 break;
             case R.id.nav_tutorial:
-                SystemUtility.openNewActivity(getApplicationContext(), OnboardActivity.class, null);
+                SystemUtility.openNewActivity(OnboardActivity.class, null);
                 break;
             case R.id.nav_logout:
                 logout();
@@ -253,6 +245,11 @@ public class MainActivity extends AppCompatActivity implements
     private void logout() {
         this.fireAuth.signOut();
         this.facebookLogin.logOut();
+
+        SharedPreferences.Editor edit = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
+        edit.remove(SystemUtility.USER_USERNAME);
+        edit.remove(SystemUtility.USER_EMAIL);
+        edit.apply();
     }
 
     public void displayView(Fragments frag, boolean backable) {
@@ -262,39 +259,11 @@ public class MainActivity extends AppCompatActivity implements
             case MISSINGS:
                 navigationView.getMenu().getItem(0).setChecked(true);
                 fragment = new MissingFragment();
-                Bundle b = new Bundle();
-                b.putString("username", currentUser.getUsername());
-                fragment.setArguments(b);
                 break;
             case DOUBLES:
                 fragment = new DoublesFragment();
-                Bundle d = new Bundle();
-                d.putString("username", currentUser.getUsername());
-                fragment.setArguments(d);
                 break;
             case COLLECTORS:
-                break;
-            case SETSEARCH:
-                fragment = new SearchSetsFragment();
-                Bundle c = new Bundle();
-                c.putString("yearId", this.clickedYearId);
-                fragment.setArguments(c);
-                break;
-            case SETITEMS:
-                fragment = new SetItemsFragment();
-                Bundle e = new Bundle();
-                e.putString("set", this.clickedSetId);
-                fragment.setArguments(e);
-                break;
-            case PRODUCERS:
-                fragment = new ProducersFragment();
-                break;
-            case YEARS:
-                fragment = new YearsFragment();
-                Bundle a = new Bundle();
-                a.putString("producer_name", this.clickedProducerName);
-                a.putString("producer_id", this.clickedProducerId);
-                fragment.setArguments(a);
                 break;
             case USER_SETTINGS:
                 fragment = new UserSettingsFragment();
@@ -426,7 +395,6 @@ public class MainActivity extends AppCompatActivity implements
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.dialog_positive),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        String username = currentUser.getUsername();
                         DatabaseUtility.deleteUser(new OnGetDataListener() {
                             @Override
                             public void onSuccess(DataSnapshot data) {
@@ -442,7 +410,7 @@ public class MainActivity extends AppCompatActivity implements
                             public void onFailure() {
 
                             }
-                        }, fireAuth, username);
+                        });
                         alertDialog.dismiss();
                         logout();
                     }
@@ -455,88 +423,10 @@ public class MainActivity extends AppCompatActivity implements
                 });
         alertDialog.show();
     }
-    // endregion
-
-    // region ItemClick
-    @Override
-    public void onSetShortClick(String setId, String setName) {
-        this.clickedSetId = setId;
-        this.clickedSetName = setName;
-        displayView(Fragments.SETITEMS, true);
-    }
 
     @Override
-    public void onSetLongClick(final String setId, String setName) {
-        final AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
-        alertDialog.setTitle(getString(R.string.dialog_add_set_title));
-        alertDialog.setMessage(getString(R.string.dialog_add_set_text) + " " + setName + "?");
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.dialog_positive),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        DatabaseUtility.addMissingsFromSet(currentUser.getUsername(), setId);
-                        alertDialog.dismiss();
-                    }
-                });
-        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.dialog_negative),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        alertDialog.dismiss();
-                    }
-                });
-        alertDialog.show();
-    }
-
-    @Override
-    public void onItemAddMissings(String surpId) {
-        String username = currentUser.getUsername();
-        DatabaseUtility.addMissing(username, surpId);
-    }
-
-    @Override
-    public void onItemAddDoubles(String surpId) {
-        String username = currentUser.getUsername();
-        DatabaseUtility.addDouble(username, surpId);
-    }
-
-    @Override
-    public void onClickOpenProducersFragment() {
-        this.displayView(Fragments.PRODUCERS, true);
-    }
-
-    @Override
-    public void onProducerClick(String id, String name) {
-        this.clickedProducerName = name;
-        this.clickedProducerId = id;
-        this.displayView(Fragments.YEARS, true);
-    }
-
-    @Override
-    public void onYearClicked(String year, int num) {
-        this.clickedYearId = year;
-        this.clickedYearNumber = num;
-        this.displayView(Fragments.SETSEARCH, true);
-    }
-
-    @Override
-    public void onLongYearClicked(final String yearId, int year) {
-        final AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
-        alertDialog.setTitle(getString(R.string.dialog_add_year_title));
-        alertDialog.setMessage(getString(R.string.dialog_add_year_text) + " " + year + "?");
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.dialog_positive),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        String username = currentUser.getUsername();
-                        DatabaseUtility.addMissingsFromYear(username, yearId);
-                        alertDialog.dismiss();
-                    }
-                });
-        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.dialog_negative),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        alertDialog.dismiss();
-                    }
-                });
-        alertDialog.show();
+    public void onClickOpenProducers() {
+        SystemUtility.openNewActivity(ProducersActivity.class, null);
     }
 
     @Override
@@ -548,14 +438,12 @@ public class MainActivity extends AppCompatActivity implements
     // region Swipe
     @Override
     public void onSwipeRemoveMissing(String surpId) {
-        String username = currentUser.getUsername();
-        DatabaseUtility.removeMissing(username, surpId);
+        DatabaseUtility.removeMissing(surpId);
     }
 
     @Override
     public void onSwipeRemoveDouble(String surpId) {
-        String username = currentUser.getUsername();
-        DatabaseUtility.removeDouble(username, surpId);
+        DatabaseUtility.removeDouble(surpId);
     }
 
     @SuppressLint("InflateParams")
@@ -622,25 +510,9 @@ public class MainActivity extends AppCompatActivity implements
             }
         });
     }
-
     // endregion
 
     // region ActionBarTitle
-    @Override
-    public void setProducerTitle() {
-        TitleHelper.setProducerTitle(getSupportActionBar());
-    }
-
-    @Override
-    public void setSearchTitle() {
-        TitleHelper.setSetSearchTitle(getSupportActionBar(), this.clickedProducerName, this.clickedYearNumber);
-    }
-
-    @Override
-    public void setItemsTitle() {
-        TitleHelper.setSetItemsTitle(getSupportActionBar(), this.clickedSetName);
-    }
-
     @Override
     public void setDoublesTitle(int number) {
         TitleHelper.setDoublesTitle(MainActivity.this, getSupportActionBar(), number);
@@ -649,11 +521,6 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void setMissingsTitle(int number) {
         TitleHelper.setMissingsTitle(MainActivity.this, getSupportActionBar(), number);
-    }
-
-    @Override
-    public void setYearTitle() {
-        TitleHelper.setYearTitle(getSupportActionBar(), clickedProducerName);
     }
 
     @Override
