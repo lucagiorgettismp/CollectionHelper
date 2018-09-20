@@ -69,7 +69,6 @@
         <activity android:name=".views.SetsActivity" />
         <activity
             android:name=".views.SetDetailActivity"
-            android:label="@string/title_activity_set_detail"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
