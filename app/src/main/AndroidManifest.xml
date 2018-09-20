@@ -32,15 +32,15 @@
         <activity
             android:name=".views.LoginActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"></activity>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".views.RegistrateActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"></activity>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".views.OnboardActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"></activity>
+            android:windowSoftInputMode="adjustPan" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -67,6 +67,10 @@
         <activity android:name=".views.ProducersActivity" />
         <activity android:name=".views.YearsActivity" />
         <activity android:name=".views.SetsActivity" />
-        <activity android:name=".views.SetItemsActivity" />
+        <activity
+            android:name=".views.SetDetailActivity"
+            android:label="@string/title_activity_set_detail"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
+
 </manifest>

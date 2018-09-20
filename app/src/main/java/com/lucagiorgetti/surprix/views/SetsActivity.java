@@ -155,7 +155,7 @@ public class SetsActivity extends AppCompatActivity implements SearchView.OnQuer
         Bundle b = new Bundle();
         b.putString("set_id", setId);
         b.putString("set_name", setName);
-        SystemUtility.openNewActivity(SetItemsActivity.class, b);
+        SystemUtility.openNewActivity(SetDetailActivity.class, b);
     }
 
     @Override

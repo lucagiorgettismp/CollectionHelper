@@ -1,7 +1,7 @@
 package com.lucagiorgetti.surprix.views;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -19,24 +19,23 @@ import com.lucagiorgetti.surprix.utility.DatabaseUtility;
 import com.lucagiorgetti.surprix.utility.TitleHelper;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
-public class SetItemsActivity extends AppCompatActivity {
+public class SetDetailActivity extends AppCompatActivity {
     ArrayList<Surprise> surprises = new ArrayList<>();
     private SetItemAdapter mAdapter;
     private GridView gridView;
     private ProgressBar progress;
-
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         final View parentLayout = findViewById(android.R.id.content);
-        
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.set_detail_fragment);
 
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_set_detail);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -46,13 +45,22 @@ public class SetItemsActivity extends AppCompatActivity {
             }
         });
 
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+
         Bundle b = getIntent().getExtras();
         if (b != null){
             String setId = b.getString("set_id");
             String setName = b.getString("set_name");
             progress = findViewById(R.id.items_loading);
 
-            mAdapter = new SetItemAdapter(SetItemsActivity.this, surprises);
+            mAdapter = new SetItemAdapter(SetDetailActivity.this, surprises);
             gridView = findViewById(R.id.items_gridview);
             gridView.setAdapter(mAdapter);
 
@@ -75,7 +83,7 @@ public class SetItemsActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(ArrayList<Surprise> surprisesList) {
                     surprises = surprisesList;
-                    mAdapter = new SetItemAdapter(SetItemsActivity.this, surprises);
+                    mAdapter = new SetItemAdapter(SetDetailActivity.this, surprises);
                     gridView.setAdapter(mAdapter);
                     progress.setVisibility(View.GONE);
                 }
@@ -88,7 +96,7 @@ public class SetItemsActivity extends AppCompatActivity {
                 @Override
                 public void onFailure() {
                     progress.setVisibility(View.GONE);
-                    Toast.makeText(SetItemsActivity.this, R.string.data_sync_error, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SetDetailActivity.this, R.string.data_sync_error, Toast.LENGTH_SHORT).show();
                 }
             });
 

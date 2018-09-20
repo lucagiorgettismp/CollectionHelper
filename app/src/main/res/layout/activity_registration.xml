@@ -154,7 +154,8 @@
             android:focusable="true"
             android:hint="@string/country"
             android:imeOptions="actionNext"
-            android:nextFocusRight="@+id/edit_reg_birthdate" />
+            android:nextFocusRight="@+id/edit_reg_birthdate"
+            android:inputType="textAutoComplete" />
 
     </LinearLayout>
 

@@ -1,25 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".views.MainActivity"
-    tools:showIn="@layout/app_bar_main">
+    android:fillViewport="true"
+    tools:context=".views.SetDetailActivity"
+    tools:showIn="@layout/activity_set_detail">
 
-    <GridView
-        android:id="@+id/items_gridview"
-        android:numColumns="3"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-    <ProgressBar
-        android:id="@+id/items_loading"
-        style="?android:attr/progressBarStyle"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal|center"
-        tools:visibility="gone" />
-</RelativeLayout>
+        android:orientation="vertical">
+
+        <GridView
+            android:id="@+id/items_gridview"
+            android:numColumns="3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ProgressBar
+            android:id="@+id/items_loading"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center"
+            tools:visibility="gone" />
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>
 
