@@ -75,8 +75,6 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
         fab.setOnClickListener(this);
         initSwipe();
 
-        getData();
-
         emptyList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

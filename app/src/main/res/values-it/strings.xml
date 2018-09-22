@@ -8,7 +8,7 @@
     <string name="change_password">Cambia password</string>
     <string name="code">Codice</string>
     <string name="complete_account">Completa il tuo account</string>
-    <string name="country">Nazione</string>
+    <string name="country">Origine</string>
     <string name="create_your_account">Crea il tuo account ed entra in Surprix!</string>
     <string name="data_sync_error">Errore di sincronizzazione dei dati</string>
     <string name="description">Descrizione</string>
@@ -129,4 +129,5 @@
         </div>]]>
     </string>
     <string name="terms_agree">Accetto</string>
+    <string name="difficulty">Trovabilità: </string>
 </resources>

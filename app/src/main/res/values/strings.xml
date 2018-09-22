@@ -24,7 +24,7 @@
     <string name="set">Set</string>
     <string name="year">Year</string>
     <string name="producer">Producer</string>
-    <string name="country">Country</string>
+    <string name="country">From</string>
     <string name="sample_mail" translatable="false">email@email.com</string>
     <string name="name">Name</string>
     <string name="product">Product</string>
@@ -151,4 +151,5 @@
         </div>]]>
     </string>
     <string name="terms_agree">I agree with terms</string>
+    <string name="difficulty">Findability: </string>
 </resources>

@@ -17,6 +17,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -79,8 +80,6 @@ public class DoublesFragment extends Fragment implements SearchView.OnQueryTextL
         FloatingActionButton fab = layout.findViewById(R.id.fab);
         fab.setOnClickListener(this);
         initSwipe();
-
-        getData();
 
         emptyList.setOnClickListener(new View.OnClickListener() {
             @Override
