@@ -25,7 +25,6 @@ public class SetDetailActivity extends AppCompatActivity {
     ArrayList<Surprise> surprises = new ArrayList<>();
     private SetDetailRecyclerAdapter mAdapter;
     private RecyclerView recyclerView;
-    private ProgressBar progress;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -57,7 +56,6 @@ public class SetDetailActivity extends AppCompatActivity {
         if (b != null){
             String setId = b.getString("set_id");
             String setName = b.getString("set_name");
-            progress = findViewById(R.id.items_loading);
 
             recyclerView = findViewById(R.id.items_recycler);
             recyclerView.setHasFixedSize(true);
@@ -73,17 +71,14 @@ public class SetDetailActivity extends AppCompatActivity {
                     surprises = surprisesList;
                     mAdapter = new SetDetailRecyclerAdapter(SetDetailActivity.this, surprises);
                     recyclerView.setAdapter(mAdapter);
-                    progress.setVisibility(View.GONE);
                 }
 
                 @Override
                 public void onStart() {
-                    progress.setVisibility(View.VISIBLE);
                 }
 
                 @Override
                 public void onFailure() {
-                    progress.setVisibility(View.GONE);
                     Toast.makeText(SetDetailActivity.this, R.string.data_sync_error, Toast.LENGTH_SHORT).show();
                 }
             });
