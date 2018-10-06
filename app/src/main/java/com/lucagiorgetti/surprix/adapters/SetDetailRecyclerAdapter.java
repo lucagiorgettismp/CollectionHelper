@@ -92,6 +92,36 @@ public class SetDetailRecyclerAdapter extends RecyclerView.Adapter<SetDetailRecy
                             .placeholder(R.drawable.ic_surprise_grey))
                     .into(holder.vImage);
         }
+
+        Integer rarity = s.getIntRarity();
+        holder.vStar1On.setVisibility(View.GONE);
+        holder.vStar2On.setVisibility(View.GONE);
+        holder.vStar3On.setVisibility(View.GONE);
+        holder.vStar1Off.setVisibility(View.VISIBLE);
+        holder.vStar2Off.setVisibility(View.VISIBLE);
+        holder.vStar3Off.setVisibility(View.VISIBLE);
+        if (rarity != null) {
+            switch (rarity) {
+                case 1:
+                    holder.vStar1On.setVisibility(View.VISIBLE);
+                    holder.vStar1Off.setVisibility(View.GONE);
+                    break;
+                case 2:
+                    holder.vStar1On.setVisibility(View.VISIBLE);
+                    holder.vStar2On.setVisibility(View.VISIBLE);
+                    holder.vStar1Off.setVisibility(View.GONE);
+                    holder.vStar2Off.setVisibility(View.GONE);
+                    break;
+                case 3:
+                    holder.vStar1On.setVisibility(View.VISIBLE);
+                    holder.vStar2On.setVisibility(View.VISIBLE);
+                    holder.vStar3On.setVisibility(View.VISIBLE);
+                    holder.vStar1Off.setVisibility(View.GONE);
+                    holder.vStar2Off.setVisibility(View.GONE);
+                    holder.vStar3Off.setVisibility(View.GONE);
+                    break;
+            }
+        }
     }
 
     @Override
@@ -112,6 +142,12 @@ public class SetDetailRecyclerAdapter extends RecyclerView.Adapter<SetDetailRecy
         View cardLayout;
         View titleBar;
         MyClickListener listner;
+        ImageView vStar1On;
+        ImageView vStar2On;
+        ImageView vStar3On;
+        ImageView vStar1Off;
+        ImageView vStar2Off;
+        ImageView vStar3Off;
 
         SetDetailViewHolder(View v, MyClickListener listener) {
             super(v);
@@ -125,6 +161,13 @@ public class SetDetailRecyclerAdapter extends RecyclerView.Adapter<SetDetailRecy
             btnAddDouble = v.findViewById(R.id.btn_item_add_double);
             cardLayout = v.findViewById(R.id.set_detail_layout);
             titleBar = v.findViewById(R.id.layout_item_titlebar);
+            vStar1On= v.findViewById(R.id.img_item_star_1_on);
+            vStar2On= v.findViewById(R.id.img_item_star_2_on);
+            vStar3On= v.findViewById(R.id.img_item_star_3_on);
+            vStar1Off= v.findViewById(R.id.img_item_star_1_off);
+            vStar2Off= v.findViewById(R.id.img_item_star_2_off);
+            vStar3Off= v.findViewById(R.id.img_item_star_3_off);
+            
             btnAddDouble.setOnClickListener(this);
             btnAddMissing.setOnClickListener(this);
         }

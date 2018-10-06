@@ -1,5 +1,7 @@
 package com.lucagiorgetti.surprix.model;
 
+import android.support.annotation.Nullable;
+
 import java.util.Comparator;
 
 /**
@@ -18,11 +20,12 @@ public class Surprise {
     private String set_producer_color = null;
     private String set_nation = null;
     private String set_id = null;
+    private String rarity = null;
 
     public Surprise(){
     }
 
-    public Surprise(String description, String img_path, String code, Set set) {
+    public Surprise(String description, String img_path, String code, Set set, @Nullable Integer rarity) {
         this.description = description;
         this.img_path = img_path;
         this.code = code;
@@ -34,6 +37,7 @@ public class Surprise {
         this.set_nation = set.getNation();
         this.id = set_producer_name + "_" + set_year + "_" + set.getCode() + "_" + code;
         this.set_id = set.getId();
+        this.rarity = rarity != null ? String.valueOf(rarity) : null;
     }
 
     public String getId() {
@@ -85,6 +89,14 @@ public class Surprise {
         public int compare(Surprise o1, Surprise o2) {
             return o1.getCode().compareTo(o2.getCode());
         }
+    }
+
+    public String getRarity(){
+        return rarity;
+    }
+
+    public Integer getIntRarity(){
+        return rarity != null ? Integer.valueOf(rarity) : null;
     }
 }
 

@@ -81,8 +81,6 @@ public class SetsActivity extends AppCompatActivity implements SearchView.OnQuer
 
                         @Override
                         public void onLongItemClick(View view, int position) {
-                            Set set = mAdapter.getItemAtPosition(position);
-                            onSetLongClick(set.getId(), set.getName());
                         }
                     })
             );
@@ -126,29 +124,8 @@ public class SetsActivity extends AppCompatActivity implements SearchView.OnQuer
                 }
             });
 
-            showFirstTimeHelp();
             setTitle(prodName, yearNum);
         }
-    }
-
-    private void onSetLongClick(final String setId, String setName) {
-        final AlertDialog alertDialog = new AlertDialog.Builder(SetsActivity.this).create();
-        alertDialog.setTitle(getString(R.string.dialog_add_set_title));
-        alertDialog.setMessage(getString(R.string.dialog_add_set_text) + " " + setName + "?");
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.dialog_positive),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        DatabaseUtility.addMissingsFromSet(setId);
-                        alertDialog.dismiss();
-                    }
-                });
-        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.dialog_negative),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        alertDialog.dismiss();
-                    }
-                });
-        alertDialog.show();
     }
 
     private void onSetShortClick(String setId, String setName) {
@@ -168,28 +145,6 @@ public class SetsActivity extends AppCompatActivity implements SearchView.OnQuer
         searchView.setQueryHint(getString(R.string.search));
 
         return true;
-    }
-
-    private void showFirstTimeHelp() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        boolean show = prefs.getBoolean(SystemUtility.FIRST_TIME_SET_HELP_SHOW, true);
-        if (show) {
-            final AlertDialog alertDialog = new AlertDialog.Builder(SetsActivity.this).create();
-            alertDialog.setTitle(getString(R.string.smart_tip));
-            alertDialog.setMessage(getString(R.string.tip_you_can_add_all_set));
-
-            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.ok_thanks),
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            SharedPreferences.Editor edit = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
-                            edit.putBoolean(SystemUtility.FIRST_TIME_SET_HELP_SHOW, false);
-                            edit.apply();
-                            alertDialog.dismiss();
-                        }
-                    });
-            alertDialog.setCanceledOnTouchOutside(false);
-            alertDialog.show();
-        }
     }
 
     private void setTitle(String prodName, int yearNum) {

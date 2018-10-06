@@ -68,27 +68,60 @@
                     android:weightSum="100">
 
                     <ImageView
-                        android:id="@+id/imageView5"
+                        android:id="@+id/img_surp_elem_star_1_on"
                         android:layout_width="22dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:adjustViewBounds="true"
                         android:cropToPadding="false"
                         android:scaleType="fitXY"
+                        android:visibility="gone"
                         app:srcCompat="@android:drawable/btn_star_big_on" />
 
                     <ImageView
-                        android:id="@+id/imageView2"
+                        android:id="@+id/img_surp_elem_star_1_off"
                         android:layout_width="22dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:adjustViewBounds="true"
                         android:cropToPadding="false"
                         android:scaleType="fitXY"
+                        app:srcCompat="@android:drawable/btn_star_big_off" />
+
+                    <ImageView
+                        android:id="@+id/img_surp_elem_star_2_on"
+                        android:layout_width="22dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:adjustViewBounds="true"
+                        android:cropToPadding="false"
+                        android:scaleType="fitXY"
+                        android:visibility="gone"
                         app:srcCompat="@android:drawable/btn_star_big_on" />
 
                     <ImageView
-                        android:id="@+id/imageView4"
+                        android:id="@+id/img_surp_elem_star_2_off"
+                        android:layout_width="22dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:adjustViewBounds="true"
+                        android:cropToPadding="false"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@android:drawable/btn_star_big_off" />
+
+                    <ImageView
+                        android:id="@+id/img_surp_elem_star_3_on"
+                        android:layout_width="22dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:adjustViewBounds="true"
+                        android:cropToPadding="false"
+                        android:scaleType="fitXY"
+                        android:visibility="gone"
+                        app:srcCompat="@android:drawable/btn_star_big_on" />
+
+                    <ImageView
+                        android:id="@+id/img_surp_elem_star_3_off"
                         android:layout_width="22dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"

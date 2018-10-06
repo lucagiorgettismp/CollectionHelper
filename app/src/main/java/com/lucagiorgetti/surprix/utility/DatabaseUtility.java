@@ -229,6 +229,10 @@ public class DatabaseUtility {
 
     public static void getMissingsForUsername(final OnGetListListener<Surprise> listen) {
         listen.onStart();
+        if (username == null){
+            username = SystemUtility.getLoggedUserUsername();
+        }
+
         final ArrayList<Surprise> missings = new ArrayList<>();
 
         reference.child("missings").child(username).addListenerForSingleValueEvent(new ValueEventListener() {

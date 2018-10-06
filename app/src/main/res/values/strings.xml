@@ -111,7 +111,7 @@
     <string name="double_owners_dialog_title" translatable="false">%s - %s</string>
     <string name="need_help">Need help?</string>
     <string name="ok_thanks">Ok,thanks</string>
-    <string name="tip_you_can_add_all_set">If you keep pressed a set, you can add it to your missings list!</string>
+    <string name="tip_you_can_add_all_set">If you press the round green button, you can add the complete set to your missings list!</string>
     <string name="smart_tip">Smart tip</string>
     <string name="tip_you_can_add_all_year">If you keep pressed a year, you can add it completely to your missings list!</string>
     <string name="network_unavailable">Network connection not available. Please retry later</string>
@@ -151,5 +151,5 @@
         </div>]]>
     </string>
     <string name="terms_agree">I agree with terms</string>
-    <string name="difficulty">Findability: </string>
+    <string name="difficulty">Rarity:</string>
 </resources>
