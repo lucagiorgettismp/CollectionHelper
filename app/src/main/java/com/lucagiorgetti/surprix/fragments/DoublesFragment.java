@@ -255,6 +255,9 @@ public class DoublesFragment extends Fragment implements SearchView.OnQueryTextL
 
 
     public void getData() {
+        mAdapter = new SurpRecyclerAdapter(mContext, null);
+        recyclerView.setAdapter(mAdapter);
+
         DatabaseUtility.getDoublesForUsername(new OnGetListListener<Surprise>() {
             @Override
             public void onSuccess(ArrayList<Surprise> surprises) {

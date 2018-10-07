@@ -86,6 +86,9 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
     }
 
     private void getData() {
+        mAdapter = new SurpRecyclerAdapter(mContext, null);
+        recyclerView.setAdapter(mAdapter);
+
         DatabaseUtility.getMissingsForUsername(new OnGetListListener<Surprise>() {
 
             @Override

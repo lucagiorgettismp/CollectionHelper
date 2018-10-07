@@ -19,6 +19,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.Spanned;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -72,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements
     private ArrayList<User> doubleOwners = new ArrayList<>();
     private DoublesOwnersListAdapter mAdapter;
     private NavigationView navigationView;
+    private static final String TAG = "MainActivity";
 
     // region Override standard methods
     @Override
@@ -243,6 +245,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void logout() {
+        SystemUtility.disableFCM();
         this.fireAuth.signOut();
         this.facebookLogin.logOut();
 
@@ -278,11 +281,15 @@ public class MainActivity extends AppCompatActivity implements
         if (fragment != null) {
             fragmentManager = getSupportFragmentManager();
             FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.replace(R.id.content_frame, fragment, fragmentTags);
-            if (backable) {
-                transaction.addToBackStack(null);
+            try {
+                transaction.replace(R.id.content_frame, fragment, fragmentTags);
+                if (backable) {
+                    transaction.addToBackStack(null);
+                }
+                transaction.commitAllowingStateLoss();
+            } catch (Exception e){
+                Log.i(TAG, "Errore displayView");
             }
-            transaction.commit();
         }
     }
 

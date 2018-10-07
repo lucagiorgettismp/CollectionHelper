@@ -161,6 +161,7 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(LoginActivity.this, R.string.wrong_email_or_password,
                                     Toast.LENGTH_SHORT).show();
                         } else {
+                            SystemUtility.enableFCM();
                             goToMainActivity();
                             finish();
                         }

@@ -24,7 +24,7 @@
     <string name="old_password">Vecchia password</string>
     <string name="old_password_wrong">Vecchia password errata</string>
     <string name="password_changed">Password cambiata</string>
-    <string name="producer">Marca</string>
+    <string name="producer">Prodotto</string>
     <string name="product">Prodotto</string>
     <string name="search">Cerca</string>
     <string name="send_email">Invia e-mail</string>

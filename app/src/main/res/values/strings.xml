@@ -23,7 +23,7 @@
     <string name="description">Description</string>
     <string name="set">Set</string>
     <string name="year">Year</string>
-    <string name="producer">Producer</string>
+    <string name="producer">Product</string>
     <string name="country">From</string>
     <string name="sample_mail" translatable="false">email@email.com</string>
     <string name="name">Name</string>
@@ -152,4 +152,6 @@
     </string>
     <string name="terms_agree">I agree with terms</string>
     <string name="difficulty">Rarity:</string>
+    <string name="default_notification_channel_id">surprix_default</string>
+    <string name="default_notification_channel_name">SurprixDefault</string>
 </resources>

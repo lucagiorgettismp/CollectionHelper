@@ -14,9 +14,10 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.views.OnboardActivity;
-import com.lucagiorgetti.surprix.R;
 
 /**
  * Utility which contain all the implementations of methods which needs a connection with Firebase Database.
@@ -85,8 +86,25 @@ public class SystemUtility {
         edit.putBoolean(FIRST_TIME_YEAR_HELP_SHOW, true);
         edit.apply();
 
+        enableFCM();
         openNewActivityWithFinishing(activity, cls, b);
         openNewActivity(OnboardActivity.class, null);
+    }
+
+
+    public static void enableFCM(){
+        // Enable FCM via enable Auto-init service which generate new token and receive in FCMService
+        FirebaseMessaging.getInstance().setAutoInitEnabled(true);
+        FirebaseMessaging.getInstance().subscribeToTopic("global");
+    }
+
+    public static void disableFCM(){
+        // Disable auto init
+        FirebaseMessaging.getInstance().setAutoInitEnabled(false);
+        new Thread(() -> {
+            // Remove InstanceID initiate to unsubscribe all topic
+            FirebaseMessaging.getInstance().unsubscribeFromTopic("global");
+        }).start();
     }
 
     public static void openNewActivity(Class<?> cls, Bundle b) {
@@ -131,8 +149,4 @@ public class SystemUtility {
         Context applicationContext = SurprixApplication.getSurprixContext();
         return PreferenceManager.getDefaultSharedPreferences(applicationContext).getString(USER_USERNAME, null);
     }
-
-/*    public static String getLoggedUserEmail(Context applicationContext){
-        return PreferenceManager.getDefaultSharedPreferences(applicationContext).getString(USER_EMAIL, null);
-    }*/
 }
