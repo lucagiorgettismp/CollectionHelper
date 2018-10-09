@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Spanned;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
@@ -31,6 +32,7 @@ public class SystemUtility {
     public static final String PRIVACY_POLICY_ACCEPTED = "privacyPolicyAccepted";
     public static final String USER_USERNAME = "loggedUsername";
     public static final String USER_EMAIL = "loggedEmail";
+    public static final String TAG = "SystemUtility";
 
     public static boolean checkNetworkAvailability(Context context) {
         boolean available = false;
@@ -86,7 +88,6 @@ public class SystemUtility {
         edit.putBoolean(FIRST_TIME_YEAR_HELP_SHOW, true);
         edit.apply();
 
-        enableFCM();
         openNewActivityWithFinishing(activity, cls, b);
         openNewActivity(OnboardActivity.class, null);
     }
@@ -95,6 +96,7 @@ public class SystemUtility {
     public static void enableFCM(){
         // Enable FCM via enable Auto-init service which generate new token and receive in FCMService
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
+        Log.i(TAG, "FCM enable");
         FirebaseMessaging.getInstance().subscribeToTopic("global");
     }
 
@@ -104,6 +106,7 @@ public class SystemUtility {
         new Thread(() -> {
             // Remove InstanceID initiate to unsubscribe all topic
             FirebaseMessaging.getInstance().unsubscribeFromTopic("global");
+            Log.i(TAG, "FCM disable");
         }).start();
     }
 

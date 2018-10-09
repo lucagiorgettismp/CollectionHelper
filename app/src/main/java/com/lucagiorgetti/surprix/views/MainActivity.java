@@ -93,6 +93,7 @@ public class MainActivity extends AppCompatActivity implements
         };
 
         if (fireAuth.getCurrentUser() != null) {
+            SystemUtility.enableFCM();
             setContentView(R.layout.activity_main);
             Toolbar toolbar = findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);

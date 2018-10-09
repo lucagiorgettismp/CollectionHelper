@@ -153,20 +153,23 @@ public class LoginActivity extends AppCompatActivity {
                 String pwd = inPassword.getText().toString().trim();
                 Log.w("LOGIN", "input pwd : " + pwd);
 
-                fireAuth.signInWithEmailAndPassword(email, pwd).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (!task.isSuccessful())
-                        {
-                            Toast.makeText(LoginActivity.this, R.string.wrong_email_or_password,
-                                    Toast.LENGTH_SHORT).show();
-                        } else {
-                            SystemUtility.enableFCM();
-                            goToMainActivity();
-                            finish();
+                if (!email.equals("") && !pwd.equals("")) {
+                    fireAuth.signInWithEmailAndPassword(email, pwd).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (!task.isSuccessful()) {
+                                Toast.makeText(LoginActivity.this, R.string.wrong_email_or_password,
+                                        Toast.LENGTH_SHORT).show();
+                            } else {
+                                goToMainActivity();
+                                finish();
+                            }
                         }
-                    }
-                });
+                    });
+                } else {
+                    Toast.makeText(LoginActivity.this, R.string.wrong_email_or_password,
+                            Toast.LENGTH_SHORT).show();
+                }
                 loginDialog.dismiss();
             }
         });
