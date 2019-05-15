@@ -60,8 +60,14 @@ public class SystemUtility {
         return available;
     }
 
-    public static void closeKeyboard(Activity activity, View view) {
+    public static void closeKeyboard(Activity activity) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        View view = activity.getCurrentFocus();
+
+        if (view == null){
+            view = new View(activity);
+        }
         if (imm != null) {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }

@@ -53,7 +53,7 @@ public class ThanksToFragment extends Fragment{
                 if(sponsor.isClickable()){
                     listener.onBannerClicked(sponsor.getUrl());
                 }
-                SystemUtility.closeKeyboard(Objects.requireNonNull(getActivity()), Objects.requireNonNull(getView()));
+                SystemUtility.closeKeyboard(Objects.requireNonNull(getActivity()));
             }
 
             @Override

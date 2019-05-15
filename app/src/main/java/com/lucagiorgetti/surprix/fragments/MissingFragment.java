@@ -154,7 +154,7 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
                                         if (ft != null) {
                                             ft.detach(MissingFragment.this).attach(MissingFragment.this).commit();
                                         }
-                                        SystemUtility.closeKeyboard(Objects.requireNonNull(getActivity()), Objects.requireNonNull(getView()));
+                                        SystemUtility.closeKeyboard(Objects.requireNonNull(getActivity()));
                                     }
 
                                     alertDialog.dismiss();
@@ -162,7 +162,7 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
                                     if (missings == null || missings.isEmpty()){
                                         emptyList.setVisibility(View.VISIBLE);
                                     }
-                                    mAdapter.notifyDataSetChanged();
+                                    //mAdapter.notifyDataSetChanged();
                                 }
                             });
                     alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.dialog_negative),

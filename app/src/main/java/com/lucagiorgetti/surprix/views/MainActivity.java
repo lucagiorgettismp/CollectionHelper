@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements
                 @Override
                 public void onDrawerOpened(View drawerView) {
                     super.onDrawerOpened(drawerView);
-                    SystemUtility.closeKeyboard(MainActivity.this, Objects.requireNonNull(getCurrentFocus()));
+                    SystemUtility.closeKeyboard(MainActivity.this);
                 }
             };
             drawer.addDrawerListener(toggle);

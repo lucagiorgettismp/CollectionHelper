@@ -102,7 +102,7 @@ public class UserSettingsFragment extends Fragment{
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SystemUtility.closeKeyboard(Objects.requireNonNull(getActivity()),getView());
+                SystemUtility.closeKeyboard(Objects.requireNonNull(getActivity()));
                 String nation = edtNation.getText().toString();
                 DatabaseUtility.updateUser(nation);
                 listener.refreshUser();

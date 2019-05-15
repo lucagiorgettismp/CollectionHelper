@@ -128,7 +128,7 @@ public class RegistrateActivity extends AppCompatActivity{
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SystemUtility.closeKeyboard(RegistrateActivity.this, getCurrentFocus());
+                SystemUtility.closeKeyboard(RegistrateActivity.this);
                 progress.setVisibility(View.VISIBLE);
 
                 final String email = edtEmail.getText().toString().trim();

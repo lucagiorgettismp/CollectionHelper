@@ -121,7 +121,7 @@ public class DoublesFragment extends Fragment implements SearchView.OnQueryTextL
                                     if (ft != null) {
                                         ft.detach(DoublesFragment.this).attach(DoublesFragment.this).commit();
                                     }
-                                    SystemUtility.closeKeyboard(Objects.requireNonNull(getActivity()), getView());
+                                    SystemUtility.closeKeyboard(Objects.requireNonNull(getActivity()));
                                 }
 
                                 alertDialog.dismiss();

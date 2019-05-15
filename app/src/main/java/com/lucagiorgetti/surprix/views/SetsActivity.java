@@ -76,7 +76,7 @@ public class SetsActivity extends AppCompatActivity implements SearchView.OnQuer
                         public void onItemClick(View view, int position) {
                             Set set = mAdapter.getItemAtPosition(position);
                             onSetShortClick(set.getId(), set.getName());
-                            SystemUtility.closeKeyboard(SetsActivity.this, getCurrentFocus());
+                            SystemUtility.closeKeyboard(SetsActivity.this);
                         }
 
                         @Override

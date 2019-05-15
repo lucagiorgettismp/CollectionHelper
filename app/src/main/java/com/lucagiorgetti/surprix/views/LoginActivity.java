@@ -22,6 +22,7 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -36,6 +37,8 @@ import com.lucagiorgetti.surprix.listenerInterfaces.OnGetResultListener;
 import com.lucagiorgetti.surprix.utility.DatabaseUtility;
 import com.lucagiorgetti.surprix.utility.SystemUtility;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Objects;
 
 /**
@@ -63,9 +66,38 @@ public class LoginActivity extends AppCompatActivity {
         callbackManager = CallbackManager.Factory.create();
 
         Button facebookCustomLogin = findViewById(R.id.btn_start_facebook);
-        final LoginButton hiddenFacebookButton = findViewById(R.id.btn_facebook_login);
+        //final LoginButton facebookLoginButton = findViewById(R.id.btn_facebook_login);
         Button login = findViewById(R.id.btn_start_login);
         Button registrate = findViewById(R.id.btn_start_registration);
+
+        facebookCustomLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(SystemUtility.checkNetworkAvailability(LoginActivity.this)){
+                    progressBar.setVisibility(View.VISIBLE);
+                    LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Collections.singletonList("email"));
+                    LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+                        @Override
+                        public void onSuccess(LoginResult loginResult) {
+                            Log.d("FACEBOOK", "facebook:onSuccess:" + loginResult);
+                            signInWithFacebookToken(loginResult.getAccessToken());
+                        }
+
+                        @Override
+                        public void onCancel() {
+                            Snackbar.make(Objects.requireNonNull(getCurrentFocus()), "Facebook login cancelled", Snackbar.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.INVISIBLE);
+                        }
+
+                        @Override
+                        public void onError(FacebookException error) {
+                            Snackbar.make(Objects.requireNonNull(getCurrentFocus()), "Facebook login error", Snackbar.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.INVISIBLE);
+                        }
+                    });
+                }
+            }
+        });
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,37 +113,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-
-
-        hiddenFacebookButton.setReadPermissions("email");
-        hiddenFacebookButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                Log.d("FACEBOOK", "facebook:onSuccess:" + loginResult);
-                signInWithFacebookToken(loginResult.getAccessToken());
-            }
-
-            @Override
-            public void onCancel() {
-                Snackbar.make(Objects.requireNonNull(getCurrentFocus()), "Facebook login cancelled", Snackbar.LENGTH_SHORT).show();
-                progressBar.setVisibility(View.INVISIBLE);
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-                Snackbar.make(Objects.requireNonNull(getCurrentFocus()), "Facebook login error", Snackbar.LENGTH_SHORT).show();
-                progressBar.setVisibility(View.INVISIBLE);
-            }
-        });
-        facebookCustomLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(SystemUtility.checkNetworkAvailability(LoginActivity.this)){
-                    progressBar.setVisibility(View.VISIBLE);
-                    hiddenFacebookButton.performClick();
-                }
-            }
-        });
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

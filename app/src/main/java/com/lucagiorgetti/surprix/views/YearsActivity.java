@@ -66,14 +66,14 @@ public class YearsActivity extends AppCompatActivity{
                         public void onItemClick(View view, int position) {
                             Year year = mAdapter.getItemAtPosition(position);
                             onYearClicked(year.getId(), year.getYear(), producer_name);
-                            SystemUtility.closeKeyboard(YearsActivity.this, getCurrentFocus());
+                            SystemUtility.closeKeyboard(YearsActivity.this);
                         }
 
                         @Override
                         public void onLongItemClick(View view, int position) {
                             Year year = mAdapter.getItemAtPosition(position);
                             onLongYearClicked(year.getId(), year.getYear());
-                            SystemUtility.closeKeyboard(YearsActivity.this, getCurrentFocus());
+                            SystemUtility.closeKeyboard(YearsActivity.this);
                         }
                     })
             );
