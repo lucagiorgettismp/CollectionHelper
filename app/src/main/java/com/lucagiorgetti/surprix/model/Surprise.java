@@ -22,7 +22,7 @@ public class Surprise {
     private String set_id = null;
     private String rarity = null;
 
-    public Surprise(){
+    public Surprise() {
     }
 
     public Surprise(String description, String img_path, String code, Set set, @Nullable Integer rarity) {
@@ -91,11 +91,11 @@ public class Surprise {
         }
     }
 
-    public String getRarity(){
+    public String getRarity() {
         return rarity;
     }
 
-    public Integer getIntRarity(){
+    public Integer getIntRarity() {
         return rarity != null ? Integer.valueOf(rarity) : null;
     }
 }

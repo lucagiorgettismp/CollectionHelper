@@ -5,7 +5,7 @@ import com.lucagiorgetti.surprix.model.User;
 
 /**
  * Interface which contains all methods called from fragments.
- *
+ * <p>
  * Created by Luca on 23/11/2017.
  */
 

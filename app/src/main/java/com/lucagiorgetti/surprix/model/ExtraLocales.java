@@ -12,7 +12,9 @@ public final class ExtraLocales {
     private static final String AFRICA = "afr";
     private static final String OCEANIA = "oce";
     private static final String WORLD_WIDE = "wrld";
-    private ExtraLocales(){}
+
+    private ExtraLocales() {
+    }
 
     public static boolean isExtraLocale(String set_nation) {
         return (set_nation.equals(NORTH_AMERICA) || set_nation.equals(SOUTH_AMERICA) || set_nation.equals(EUROPE) ||
@@ -21,7 +23,7 @@ public final class ExtraLocales {
 
     public static String getDisplayName(String set_nation) {
         String name = null;
-        switch (set_nation){
+        switch (set_nation) {
             case NORTH_AMERICA:
                 name = "America Nord";
                 break;

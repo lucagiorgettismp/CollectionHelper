@@ -29,6 +29,6 @@ public class SurprixAppGlideModule extends AppGlideModule {
 
     @Override
     public void applyOptions(@NonNull Context context, @NonNull GlideBuilder builder) {
-        builder.setDiskCache(new InternalCacheDiskCacheFactory(context,  31457280));
+        builder.setDiskCache(new InternalCacheDiskCacheFactory(context, 31457280));
     }
 }

@@ -22,12 +22,12 @@ import com.lucagiorgetti.surprix.views.OnboardActivity;
 
 /**
  * Utility which contain all the implementations of methods which needs a connection with Firebase Database.
- *
+ * <p>
  * Created by Luca on 13/11/2017.
  */
 
 public class SystemUtility {
-    public static final String FIRST_TIME_YEAR_HELP_SHOW= "showYearHelp";
+    public static final String FIRST_TIME_YEAR_HELP_SHOW = "showYearHelp";
     public static final String FIRST_TIME_SET_HELP_SHOW = "showSetHelp";
     public static final String PRIVACY_POLICY_ACCEPTED = "privacyPolicyAccepted";
     public static final String USER_USERNAME = "loggedUsername";
@@ -54,7 +54,7 @@ public class SystemUtility {
             available = false;
         }
 
-        if (!available){
+        if (!available) {
             Toast.makeText(context, R.string.network_not_available, Toast.LENGTH_SHORT).show();
         }
         return available;
@@ -65,7 +65,7 @@ public class SystemUtility {
 
         View view = activity.getCurrentFocus();
 
-        if (view == null){
+        if (view == null) {
             view = new View(activity);
         }
         if (imm != null) {
@@ -77,7 +77,7 @@ public class SystemUtility {
         Context applicationContext = SurprixApplication.getSurprixContext();
         Intent i = new Intent(applicationContext, cls);
 
-        if (b != null){
+        if (b != null) {
             i.putExtras(b);
         }
 
@@ -99,14 +99,14 @@ public class SystemUtility {
     }
 
 
-    public static void enableFCM(){
+    public static void enableFCM() {
         // Enable FCM via enable Auto-init service which generate new token and receive in FCMService
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
         Log.i(TAG, "FCM enable");
         FirebaseMessaging.getInstance().subscribeToTopic("global");
     }
 
-    public static void disableFCM(){
+    public static void disableFCM() {
         // Disable auto init
         FirebaseMessaging.getInstance().setAutoInitEnabled(false);
         new Thread(() -> {
@@ -120,7 +120,7 @@ public class SystemUtility {
         Context applicationContext = SurprixApplication.getSurprixContext();
         Intent i = new Intent(applicationContext, cls);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        if (b != null){
+        if (b != null) {
             i.putExtras(b);
         }
         applicationContext.startActivity(i);
@@ -129,10 +129,10 @@ public class SystemUtility {
     public static void sendMail(Context context, String to, String subject, Spanned html_body) {
         Intent intent = new Intent(Intent.ACTION_SENDTO);
         intent.setType("text/plain");
-        if (subject != null && !subject.isEmpty()){
+        if (subject != null && !subject.isEmpty()) {
             intent.putExtra(Intent.EXTRA_SUBJECT, subject);
         }
-        if (html_body != null && html_body.length() > 0){
+        if (html_body != null && html_body.length() > 0) {
             intent.putExtra(Intent.EXTRA_TEXT, html_body);
         }
         intent.setData(Uri.parse("mailto:" + to));
@@ -154,7 +154,7 @@ public class SystemUtility {
         edit.apply();
     }
 
-    public static String getLoggedUserUsername(){
+    public static String getLoggedUserUsername() {
         Context applicationContext = SurprixApplication.getSurprixContext();
         return PreferenceManager.getDefaultSharedPreferences(applicationContext).getString(USER_USERNAME, null);
     }

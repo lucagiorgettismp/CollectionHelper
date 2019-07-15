@@ -39,7 +39,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Objects;
 
-public class MissingFragment extends Fragment implements SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener, View.OnClickListener{
+public class MissingFragment extends Fragment implements SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener, View.OnClickListener {
     private FragmentListenerInterface listener;
 
     ArrayList<Surprise> missings = new ArrayList<>();
@@ -95,12 +95,12 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
             public void onSuccess(ArrayList<Surprise> surprises) {
                 missings = surprises;
 
-                if(missings != null){
+                if (missings != null) {
                     Collections.sort(missings, new Surprise.SortByCode());
                     emptyList.setVisibility(View.GONE);
                     mAdapter = new SurpRecyclerAdapter(mContext, missings);
                     recyclerView.setAdapter(mAdapter);
-                    if(listener != null){
+                    if (listener != null) {
                         listener.setMissingsTitle(missings.size());
                     }
                 } else {
@@ -124,7 +124,7 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
         });
     }
 
-    private void initSwipe(){
+    private void initSwipe() {
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
 
             @Override
@@ -136,7 +136,7 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 final int position = viewHolder.getAdapterPosition();
                 final Surprise s = mAdapter.getItemAtPosition(position);
-                if (direction == ItemTouchHelper.LEFT){
+                if (direction == ItemTouchHelper.LEFT) {
                     final AlertDialog alertDialog = new AlertDialog.Builder(mContext).create();
                     alertDialog.setTitle(getString(R.string.remove_missing_dialog_title));
                     alertDialog.setMessage(getString(R.string.remove_missing_dialog_text) + " " + s.getDescription() + "?");
@@ -146,7 +146,7 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
                                     mAdapter.removeItem(position);
                                     listener.onSwipeRemoveMissing(s.getId());
                                     String queryTxt = searchView.getQuery().toString();
-                                    if(!queryTxt.isEmpty()) {
+                                    if (!queryTxt.isEmpty()) {
                                         FragmentTransaction ft = null;
                                         if (getFragmentManager() != null) {
                                             ft = getFragmentManager().beginTransaction();
@@ -159,7 +159,7 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
 
                                     alertDialog.dismiss();
                                     listener.setMissingsTitle(missings.size());
-                                    if (missings == null || missings.isEmpty()){
+                                    if (missings == null || missings.isEmpty()) {
                                         emptyList.setVisibility(View.VISIBLE);
                                     }
                                     //mAdapter.notifyDataSetChanged();
@@ -184,26 +184,26 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
             public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
 
                 Bitmap icon;
-                if(actionState == ItemTouchHelper.ACTION_STATE_SWIPE){
+                if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
 
                     View itemView = viewHolder.itemView;
                     float height = (float) itemView.getBottom() - (float) itemView.getTop();
                     float width = height / 3;
 
-                    if(dX > 0){
+                    if (dX > 0) {
                         p.setColor(ContextCompat.getColor(mContext, R.color.SwipeGreen));
-                        RectF background = new RectF((float) itemView.getLeft(), (float) itemView.getTop(), dX,(float) itemView.getBottom());
-                        c.drawRect(background,p);
+                        RectF background = new RectF((float) itemView.getLeft(), (float) itemView.getTop(), dX, (float) itemView.getBottom());
+                        c.drawRect(background, p);
                         icon = BitmapFactory.decodeResource(getResources(), R.drawable.ic_person);
-                        RectF icon_dest = new RectF((float) itemView.getLeft() + width ,(float) itemView.getTop() + width,(float) itemView.getLeft()+ 2*width,(float)itemView.getBottom() - width);
-                        c.drawBitmap(icon,null,icon_dest,p);
+                        RectF icon_dest = new RectF((float) itemView.getLeft() + width, (float) itemView.getTop() + width, (float) itemView.getLeft() + 2 * width, (float) itemView.getBottom() - width);
+                        c.drawBitmap(icon, null, icon_dest, p);
                     } else {
                         p.setColor(ContextCompat.getColor(mContext, R.color.SwipeRed));
-                        RectF background = new RectF((float) itemView.getRight() + dX, (float) itemView.getTop(),(float) itemView.getRight(), (float) itemView.getBottom());
-                        c.drawRect(background,p);
+                        RectF background = new RectF((float) itemView.getRight() + dX, (float) itemView.getTop(), (float) itemView.getRight(), (float) itemView.getBottom());
+                        c.drawRect(background, p);
                         icon = BitmapFactory.decodeResource(getResources(), R.drawable.ic_delete_white);
-                        RectF icon_dest = new RectF((float) itemView.getRight() - 2*width ,(float) itemView.getTop() + width,(float) itemView.getRight() - width,(float)itemView.getBottom() - width);
-                        c.drawBitmap(icon,null,icon_dest,p);
+                        RectF icon_dest = new RectF((float) itemView.getRight() - 2 * width, (float) itemView.getTop() + width, (float) itemView.getRight() - width, (float) itemView.getBottom() - width);
+                        c.drawBitmap(icon, null, icon_dest, p);
                     }
                 }
                 super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
@@ -270,9 +270,9 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
     }
 
     @Override
-    public void onAttach(Context context){
+    public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof FragmentListenerInterface){
+        if (context instanceof FragmentListenerInterface) {
             listener = (FragmentListenerInterface) context;
         }
     }

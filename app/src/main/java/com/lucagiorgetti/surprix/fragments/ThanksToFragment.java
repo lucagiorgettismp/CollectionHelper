@@ -25,7 +25,7 @@ import com.lucagiorgetti.surprix.model.Sponsor;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class ThanksToFragment extends Fragment{
+public class ThanksToFragment extends Fragment {
     private FragmentListenerInterface listener;
 
     ArrayList<Sponsor> sponsorsList = new ArrayList<>();
@@ -47,19 +47,19 @@ public class ThanksToFragment extends Fragment{
         mAdapter = new ThanksRecyclerAdapter(mContext, sponsorsList);
         recyclerView.setAdapter(mAdapter);
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(mContext, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                Sponsor sponsor = mAdapter.getItemAtPosition(position);
-                if(sponsor.isClickable()){
-                    listener.onBannerClicked(sponsor.getUrl());
-                }
-                SystemUtility.closeKeyboard(Objects.requireNonNull(getActivity()));
-            }
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Sponsor sponsor = mAdapter.getItemAtPosition(position);
+                        if (sponsor.isClickable()) {
+                            listener.onBannerClicked(sponsor.getUrl());
+                        }
+                        SystemUtility.closeKeyboard(Objects.requireNonNull(getActivity()));
+                    }
 
-            @Override
-            public void onLongItemClick(View view, int position) {
-            }
-        })
+                    @Override
+                    public void onLongItemClick(View view, int position) {
+                    }
+                })
         );
 
         return layout;
@@ -69,8 +69,8 @@ public class ThanksToFragment extends Fragment{
         DatabaseUtility.getSponsors(new OnGetDataListener() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
-                    for (DataSnapshot d : dataSnapshot.getChildren()){
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot d : dataSnapshot.getChildren()) {
                         Sponsor s = d.getValue(Sponsor.class);
                         sponsorsList.add(s);
                         mAdapter = new ThanksRecyclerAdapter(mContext, sponsorsList);
@@ -103,9 +103,9 @@ public class ThanksToFragment extends Fragment{
     }
 
     @Override
-    public void onAttach(Context context){
+    public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof FragmentListenerInterface){
+        if (context instanceof FragmentListenerInterface) {
             this.listener = (FragmentListenerInterface) context;
         }
     }

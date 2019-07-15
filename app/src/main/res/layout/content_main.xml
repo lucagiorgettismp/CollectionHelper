@@ -11,5 +11,6 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:background="@color/AppBackground"
-        android:layout_height="match_parent" android:id="@+id/content_frame"/>
+        android:layout_height="match_parent"
+        android:id="@+id/content_frame" />
 </RelativeLayout>

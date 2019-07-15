@@ -37,11 +37,11 @@ import java.util.Objects;
 
 /**
  * Allows user to get registered.
- *
+ * <p>
  * Created by Luca on 18/10/2017.
  */
 
-public class RegistrateActivity extends AppCompatActivity{
+public class RegistrateActivity extends AppCompatActivity {
 
     private EditText edtEmail;
     private EditText edtPassword;
@@ -90,12 +90,12 @@ public class RegistrateActivity extends AppCompatActivity{
         String facebook_email = null;
 
 
-        if(b != null){
+        if (b != null) {
             facebook = b.getBoolean("facebook");
             facebook_email = b.getString("email");
         }
 
-        if (facebook){
+        if (facebook) {
             /*aperto da facebook*/
             submit.setVisibility(View.GONE);
             lblInfoFirstLogin.setVisibility(View.GONE);
@@ -118,7 +118,7 @@ public class RegistrateActivity extends AppCompatActivity{
                         nation.isEmpty()) {
                     progress.setVisibility(View.INVISIBLE);
                     Toast.makeText(RegistrateActivity.this, R.string.complete_all_fields, Toast.LENGTH_SHORT).show();
-                } else{
+                } else {
                     DatabaseUtility.generateUser(email, username, nation, true);
                     SystemUtility.firstTimeOpeningApp(RegistrateActivity.this, MainActivity.class, null);
                 }
@@ -144,20 +144,20 @@ public class RegistrateActivity extends AppCompatActivity{
                 if (email.isEmpty() ||
                         password.isEmpty() ||
                         username.isEmpty() ||
-                        nation.isEmpty()){
+                        nation.isEmpty()) {
                     progress.setVisibility(View.INVISIBLE);
                     Snackbar.make(Objects.requireNonNull(getCurrentFocus()), R.string.complete_all_fields, Snackbar.LENGTH_SHORT).show();
-                } else if (password.length() < 6){
+                } else if (password.length() < 6) {
                     progress.setVisibility(View.INVISIBLE);
                     Snackbar.make(Objects.requireNonNull(getCurrentFocus()), R.string.password_lenght, Snackbar.LENGTH_SHORT).show();
                 } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                     progress.setVisibility(View.INVISIBLE);
-                    Snackbar.make(Objects.requireNonNull(getCurrentFocus()), R.string.email_format , Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(Objects.requireNonNull(getCurrentFocus()), R.string.email_format, Snackbar.LENGTH_SHORT).show();
                 } else {
                     DatabaseUtility.checkUsernameDontExists(username, new OnGetResultListener() {
                         @Override
                         public void onSuccess(boolean result) {
-                            if(result){
+                            if (result) {
                                 fireAuth.createUserWithEmailAndPassword(email, password)
                                         .addOnCompleteListener(RegistrateActivity.this, new OnCompleteListener<AuthResult>() {
                                             @Override
@@ -196,20 +196,20 @@ public class RegistrateActivity extends AppCompatActivity{
         edtNation.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-            if(hasFocus){
-                countryPicker = new CountryPickerDialog(RegistrateActivity.this, new CountryPickerCallbacks() {
-                    @Override
-                    public void onCountrySelected(Country country, int flagResId) {
-                        edtNation.setText(country.getCountryName(getApplicationContext()));
-                        countryPicker.dismiss();
-                    }
+                if (hasFocus) {
+                    countryPicker = new CountryPickerDialog(RegistrateActivity.this, new CountryPickerCallbacks() {
+                        @Override
+                        public void onCountrySelected(Country country, int flagResId) {
+                            edtNation.setText(country.getCountryName(getApplicationContext()));
+                            countryPicker.dismiss();
+                        }
 
           /* Set to false if you want to disable Dial Code in the results and true if you want to show it
              Set to zero if you don't have a custom JSON list of countries in your raw file otherwise use
              resourceId for your customly available countries */
-                }, false, 0);
-                countryPicker.show();
-            }
+                    }, false, 0);
+                    countryPicker.show();
+                }
             }
         });
     }

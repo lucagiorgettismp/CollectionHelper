@@ -40,7 +40,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Objects;
 
-public class DoublesFragment extends Fragment implements SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener, View.OnClickListener{
+public class DoublesFragment extends Fragment implements SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener, View.OnClickListener {
     private FragmentListenerInterface listener;
 
     ArrayList<Surprise> doubles = new ArrayList<>();
@@ -72,7 +72,7 @@ public class DoublesFragment extends Fragment implements SearchView.OnQueryTextL
         recyclerView.setLayoutManager(layoutManager);
         mAdapter = new SurpRecyclerAdapter(mContext, doubles);
         recyclerView.setAdapter(mAdapter);
-        if (doubles != null && !doubles.isEmpty()){
+        if (doubles != null && !doubles.isEmpty()) {
             emptyList.setVisibility(View.GONE);
         } else {
             emptyList.setVisibility(View.VISIBLE);
@@ -91,7 +91,7 @@ public class DoublesFragment extends Fragment implements SearchView.OnQueryTextL
         return layout;
     }
 
-    private void initSwipe(){
+    private void initSwipe() {
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
 
             @Override
@@ -113,7 +113,7 @@ public class DoublesFragment extends Fragment implements SearchView.OnQueryTextL
                                 listener.onSwipeRemoveDouble(s.getId());
                                 mAdapter.removeItem(position);
                                 String asd = searchView.getQuery().toString();
-                                if(!asd.isEmpty()) {
+                                if (!asd.isEmpty()) {
                                     FragmentTransaction ft = null;
                                     if (getFragmentManager() != null) {
                                         ft = getFragmentManager().beginTransaction();
@@ -126,7 +126,7 @@ public class DoublesFragment extends Fragment implements SearchView.OnQueryTextL
 
                                 alertDialog.dismiss();
                                 listener.setDoublesTitle(doubles.size());
-                                if (doubles == null || doubles.isEmpty()){
+                                if (doubles == null || doubles.isEmpty()) {
                                     emptyList.setVisibility(View.VISIBLE);
                                 }
 
@@ -148,27 +148,26 @@ public class DoublesFragment extends Fragment implements SearchView.OnQueryTextL
             public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
 
                 Bitmap icon;
-                if(actionState == ItemTouchHelper.ACTION_STATE_SWIPE){
+                if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
 
                     View itemView = viewHolder.itemView;
                     float height = (float) itemView.getBottom() - (float) itemView.getTop();
                     float width = height / 3;
 
-                    if(dX > 0){
+                    if (dX > 0) {
                         p.setColor(ContextCompat.getColor(mContext, R.color.SwipeRed));
-                        RectF background = new RectF((float) itemView.getLeft(), (float) itemView.getTop(), dX,(float) itemView.getBottom());
-                        c.drawRect(background,p);
+                        RectF background = new RectF((float) itemView.getLeft(), (float) itemView.getTop(), dX, (float) itemView.getBottom());
+                        c.drawRect(background, p);
                         icon = BitmapFactory.decodeResource(getResources(), R.drawable.ic_delete_white);
-                        RectF icon_dest = new RectF((float) itemView.getLeft() + width ,(float) itemView.getTop() + width,(float) itemView.getLeft()+ 2*width,(float)itemView.getBottom() - width);
-                        c.drawBitmap(icon,null,icon_dest,p);
-                    }
-                    else {
+                        RectF icon_dest = new RectF((float) itemView.getLeft() + width, (float) itemView.getTop() + width, (float) itemView.getLeft() + 2 * width, (float) itemView.getBottom() - width);
+                        c.drawBitmap(icon, null, icon_dest, p);
+                    } else {
                         p.setColor(ContextCompat.getColor(mContext, R.color.SwipeRed));
-                        RectF background = new RectF((float) itemView.getRight() + dX, (float) itemView.getTop(),(float) itemView.getRight(), (float) itemView.getBottom());
-                        c.drawRect(background,p);
+                        RectF background = new RectF((float) itemView.getRight() + dX, (float) itemView.getTop(), (float) itemView.getRight(), (float) itemView.getBottom());
+                        c.drawRect(background, p);
                         icon = BitmapFactory.decodeResource(getResources(), R.drawable.ic_delete_white);
-                        RectF icon_dest = new RectF((float) itemView.getRight() - 2*width ,(float) itemView.getTop() + width,(float) itemView.getRight() - width,(float)itemView.getBottom() - width);
-                        c.drawBitmap(icon,null,icon_dest,p);
+                        RectF icon_dest = new RectF((float) itemView.getRight() - 2 * width, (float) itemView.getTop() + width, (float) itemView.getRight() - width, (float) itemView.getBottom() - width);
+                        c.drawBitmap(icon, null, icon_dest, p);
                     }
                 }
                 super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
@@ -234,9 +233,9 @@ public class DoublesFragment extends Fragment implements SearchView.OnQueryTextL
     }
 
     @Override
-    public void onAttach(Context context){
+    public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof FragmentListenerInterface){
+        if (context instanceof FragmentListenerInterface) {
             listener = (FragmentListenerInterface) context;
         }
     }
@@ -263,11 +262,11 @@ public class DoublesFragment extends Fragment implements SearchView.OnQueryTextL
             public void onSuccess(ArrayList<Surprise> surprises) {
                 doubles = surprises;
 
-                if(doubles != null){
+                if (doubles != null) {
                     Collections.sort(doubles, new Surprise.SortByCode());
                     mAdapter = new SurpRecyclerAdapter(mContext, doubles);
                     recyclerView.setAdapter(mAdapter);
-                    if (listener != null){
+                    if (listener != null) {
                         listener.setDoublesTitle(doubles.size());
                     }
                     emptyList.setVisibility(View.GONE);

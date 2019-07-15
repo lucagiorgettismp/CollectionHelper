@@ -30,7 +30,7 @@ import java.util.Objects;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
-public class UserSettingsFragment extends Fragment{
+public class UserSettingsFragment extends Fragment {
     private FragmentListenerInterface listener;
     private User currentUser;
     private Context mContext;
@@ -70,7 +70,7 @@ public class UserSettingsFragment extends Fragment{
         layPassword.setVisibility(View.GONE);
 
         layButtonsModify.setVisibility(View.VISIBLE);
-        if(currentUser.isFacebook()){
+        if (currentUser.isFacebook()) {
             changePwd.setVisibility(View.GONE);
         }
         deleteUser.setVisibility(View.VISIBLE);
@@ -82,7 +82,7 @@ public class UserSettingsFragment extends Fragment{
         edtNation.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus){
+                if (hasFocus) {
                     countryPicker = new CountryPickerDialog(mContext, new CountryPickerCallbacks() {
                         @Override
                         public void onCountrySelected(Country country, int flagResId) {
@@ -155,9 +155,9 @@ public class UserSettingsFragment extends Fragment{
     }
 
     @Override
-    public void onAttach(Context context){
+    public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof FragmentListenerInterface){
+        if (context instanceof FragmentListenerInterface) {
             this.listener = (FragmentListenerInterface) context;
         }
     }

@@ -26,7 +26,7 @@ import java.util.ArrayList;
 
 /**
  * Adapter for showing a list of Surprises from a selected set.
- *
+ * <p>
  * Created by Luca on 28/10/2017.
  */
 
@@ -54,7 +54,7 @@ public class SetDetailRecyclerAdapter extends RecyclerView.Adapter<SetDetailRecy
             public void onAddMissingClick(int p) {
                 Surprise s = getItemAtPosition(p);
                 DatabaseUtility.addMissing(s.getId());
-                Snackbar.make(v, SurprixApplication.getInstance().getString(R.string.added_to_missings)+ ": " + s.getDescription() , Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(v, SurprixApplication.getInstance().getString(R.string.added_to_missings) + ": " + s.getDescription(), Snackbar.LENGTH_SHORT).show();
 
             }
 
@@ -62,7 +62,7 @@ public class SetDetailRecyclerAdapter extends RecyclerView.Adapter<SetDetailRecy
             public void onAddDoubleClick(int p) {
                 Surprise s = getItemAtPosition(p);
                 DatabaseUtility.addDouble(s.getId());
-                Snackbar.make(v, SurprixApplication.getInstance().getString(R.string.added_to_doubles) + ": " + s.getDescription() , Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(v, SurprixApplication.getInstance().getString(R.string.added_to_doubles) + ": " + s.getDescription(), Snackbar.LENGTH_SHORT).show();
 
             }
         });
@@ -76,7 +76,7 @@ public class SetDetailRecyclerAdapter extends RecyclerView.Adapter<SetDetailRecy
         holder.titleBar.setBackgroundColor(ContextCompat.getColor(ctx, Colors.getHexColor(s.getSet_producer_color())));
 
         String path = s.getImg_path();
-        if (path.startsWith("gs")){
+        if (path.startsWith("gs")) {
             FirebaseStorage storage = SurprixApplication.getInstance().getFirebaseStorage();
             StorageReference gsReference = storage.getReferenceFromUrl(path);
             Glide.with(ctx).
@@ -126,13 +126,13 @@ public class SetDetailRecyclerAdapter extends RecyclerView.Adapter<SetDetailRecy
 
     @Override
     public int getItemCount() {
-        if (items == null){
+        if (items == null) {
             return 0;
         }
         return items.size();
     }
 
-    static class SetDetailViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    static class SetDetailViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         View vLayout;
         TextView vCode;
         TextView vDescription;
@@ -161,20 +161,20 @@ public class SetDetailRecyclerAdapter extends RecyclerView.Adapter<SetDetailRecy
             btnAddDouble = v.findViewById(R.id.btn_item_add_double);
             cardLayout = v.findViewById(R.id.set_detail_layout);
             titleBar = v.findViewById(R.id.layout_item_titlebar);
-            vStar1On= v.findViewById(R.id.img_item_star_1_on);
-            vStar2On= v.findViewById(R.id.img_item_star_2_on);
-            vStar3On= v.findViewById(R.id.img_item_star_3_on);
-            vStar1Off= v.findViewById(R.id.img_item_star_1_off);
-            vStar2Off= v.findViewById(R.id.img_item_star_2_off);
-            vStar3Off= v.findViewById(R.id.img_item_star_3_off);
-            
+            vStar1On = v.findViewById(R.id.img_item_star_1_on);
+            vStar2On = v.findViewById(R.id.img_item_star_2_on);
+            vStar3On = v.findViewById(R.id.img_item_star_3_on);
+            vStar1Off = v.findViewById(R.id.img_item_star_1_off);
+            vStar2Off = v.findViewById(R.id.img_item_star_2_off);
+            vStar3Off = v.findViewById(R.id.img_item_star_3_off);
+
             btnAddDouble.setOnClickListener(this);
             btnAddMissing.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            switch (v.getId()){
+            switch (v.getId()) {
                 case R.id.btn_item_add_missing:
                     listner.onAddMissingClick(this.getLayoutPosition());
                     break;
@@ -186,6 +186,7 @@ public class SetDetailRecyclerAdapter extends RecyclerView.Adapter<SetDetailRecy
 
         public interface MyClickListener {
             void onAddMissingClick(int p);
+
             void onAddDoubleClick(int p);
         }
     }

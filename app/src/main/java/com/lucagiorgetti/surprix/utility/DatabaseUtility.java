@@ -24,7 +24,7 @@ import java.util.Objects;
 
 /**
  * Utility which contain all the implementations of methods which needs a connection with Firebase Database.
- *
+ * <p>
  * Created by Luca on 13/11/2017.
  */
 
@@ -32,7 +32,7 @@ public class DatabaseUtility {
     private static String username = SystemUtility.getLoggedUserUsername();
 
     private static DatabaseReference reference = SurprixApplication.getInstance().getDatabaseReference();
-    
+
     public static void checkUserExisting(final String email, final OnGetResultListener listener) {
         final String emailCod = email.replaceAll("\\.", ",");
 
@@ -63,7 +63,7 @@ public class DatabaseUtility {
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
                     username[0] = d.getKey();
                 }
-                if(username[0] != null){
+                if (username[0] != null) {
                     reference.child("users").child(username[0]).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -103,7 +103,7 @@ public class DatabaseUtility {
         reference.child("surprise_doubles").child(surpId).child(username).setValue(null);
     }
 
-    public static void getDoubleOwners(String surpId, final OnGetListListener<User> listen){
+    public static void getDoubleOwners(String surpId, final OnGetListListener<User> listen) {
         listen.onStart();
         final ArrayList<User> owners = new ArrayList<>();
         reference.child("surprise_doubles").child(surpId).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -114,7 +114,7 @@ public class DatabaseUtility {
                         reference.child("users").child(Objects.requireNonNull(d.getKey())).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                if(snapshot.exists()){
+                                if (snapshot.exists()) {
                                     User u = snapshot.getValue(User.class);
                                     owners.add(u);
                                 }
@@ -146,12 +146,12 @@ public class DatabaseUtility {
         reference.child("user_doubles").child(username).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
-                    for (DataSnapshot d : dataSnapshot.getChildren()){
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot d : dataSnapshot.getChildren()) {
                         reference.child("surprises").child(Objects.requireNonNull(d.getKey())).orderByChild("code").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                if(snapshot.exists()){
+                                if (snapshot.exists()) {
                                     Surprise s = snapshot.getValue(Surprise.class);
                                     doubles.add(s);
                                 }
@@ -175,7 +175,7 @@ public class DatabaseUtility {
         });
     }
 
-    public static void getYearsFromProducer (String producerId, final OnGetListListener<Year> listen) {
+    public static void getYearsFromProducer(String producerId, final OnGetListListener<Year> listen) {
         listen.onStart();
 
         final ArrayList<Year> years = new ArrayList<>();
@@ -183,12 +183,12 @@ public class DatabaseUtility {
         reference.child("producers").child(producerId).child("years").orderByChild("year").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
-                    for (DataSnapshot d : dataSnapshot.getChildren()){
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot d : dataSnapshot.getChildren()) {
                         reference.child("years").child(Objects.requireNonNull(d.getKey())).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                if(snapshot.exists()){
+                                if (snapshot.exists()) {
                                     Year y = snapshot.getValue(Year.class);
                                     years.add(y);
                                 }
@@ -229,7 +229,7 @@ public class DatabaseUtility {
 
     public static void getMissingsForUsername(final OnGetListListener<Surprise> listen) {
         listen.onStart();
-        if (username == null){
+        if (username == null) {
             username = SystemUtility.getLoggedUserUsername();
         }
 
@@ -238,12 +238,12 @@ public class DatabaseUtility {
         reference.child("missings").child(username).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
-                    for (DataSnapshot d : dataSnapshot.getChildren()){
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot d : dataSnapshot.getChildren()) {
                         reference.child("surprises").child(Objects.requireNonNull(d.getKey())).orderByChild("code").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                if(snapshot.exists()){
+                                if (snapshot.exists()) {
                                     Surprise s = snapshot.getValue(Surprise.class);
                                     missings.add(s);
                                 }
@@ -313,12 +313,12 @@ public class DatabaseUtility {
         reference.child("sets").child(setClicked).child("surprises").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
-                    for (DataSnapshot d : dataSnapshot.getChildren()){
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot d : dataSnapshot.getChildren()) {
                         reference.child("surprises").child(Objects.requireNonNull(d.getKey())).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                if(snapshot.exists()){
+                                if (snapshot.exists()) {
                                     Surprise s = snapshot.getValue(Surprise.class);
                                     surprises.add(s);
                                 }
@@ -432,7 +432,7 @@ public class DatabaseUtility {
         reference.child("users").child(username).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if( dataSnapshot.exists()){
+                if (dataSnapshot.exists()) {
                     listener.onSuccess(false);
                 } else {
                     listener.onSuccess(true);
@@ -459,8 +459,8 @@ public class DatabaseUtility {
         getDoublesForUsername(new OnGetListListener<Surprise>() {
             @Override
             public void onSuccess(ArrayList<Surprise> surprises) {
-                if (surprises != null){
-                    for (Surprise double_surp: surprises) {
+                if (surprises != null) {
+                    for (Surprise double_surp : surprises) {
                         removeDouble(double_surp.getId());
                     }
                 }

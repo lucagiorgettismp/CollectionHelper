@@ -26,14 +26,15 @@ import java.util.Locale;
 
 /**
  * Adapter for showing a list of Surprises.
- *
+ * <p>
  * Created by Luca on 28/10/2017.
  */
 
-public class SurpRecyclerAdapter extends RecyclerView.Adapter<SurpRecyclerAdapter.SurpViewHolder>{
+public class SurpRecyclerAdapter extends RecyclerView.Adapter<SurpRecyclerAdapter.SurpViewHolder> {
     private ArrayList<Surprise> surprises = new ArrayList<>();
     private Context ctx;
-    public SurpRecyclerAdapter(Context context, ArrayList<Surprise> surpList){
+
+    public SurpRecyclerAdapter(Context context, ArrayList<Surprise> surpList) {
         surprises = surpList;
         ctx = context;
     }
@@ -58,7 +59,7 @@ public class SurpRecyclerAdapter extends RecyclerView.Adapter<SurpRecyclerAdapte
 
         String nation;
         if (ExtraLocales.isExtraLocale(surp.getSet_nation())) {
-           nation = ExtraLocales.getDisplayName(surp.getSet_nation());
+            nation = ExtraLocales.getDisplayName(surp.getSet_nation());
         } else {
             Locale l = new Locale("", surp.getSet_nation());
             nation = l.getDisplayCountry();
@@ -69,7 +70,7 @@ public class SurpRecyclerAdapter extends RecyclerView.Adapter<SurpRecyclerAdapte
         holder.vLayout.setBackgroundColor(ContextCompat.getColor(ctx, Colors.getHexColor(surp.getSet_producer_color())));
 
         String path = surp.getImg_path();
-        if (path.startsWith("gs")){
+        if (path.startsWith("gs")) {
             FirebaseStorage storage = SurprixApplication.getInstance().getFirebaseStorage();
             StorageReference gsReference = storage.getReferenceFromUrl(path);
             Glide.with(ctx).
@@ -119,7 +120,7 @@ public class SurpRecyclerAdapter extends RecyclerView.Adapter<SurpRecyclerAdapte
 
     @Override
     public int getItemCount() {
-        if (surprises == null){
+        if (surprises == null) {
             return 0;
         }
         return surprises.size();
@@ -164,12 +165,12 @@ public class SurpRecyclerAdapter extends RecyclerView.Adapter<SurpRecyclerAdapte
             vNation = v.findViewById(R.id.txv_surp_elem_nation);
             vImage = v.findViewById(R.id.img_surp_elem);
             vLayout = v.findViewById(R.id.layout_surp_elem_titlebar);
-            vStar1On= v.findViewById(R.id.img_surp_elem_star_1_on);
-            vStar2On= v.findViewById(R.id.img_surp_elem_star_2_on);
-            vStar3On= v.findViewById(R.id.img_surp_elem_star_3_on);
-            vStar1Off= v.findViewById(R.id.img_surp_elem_star_1_off);
-            vStar2Off= v.findViewById(R.id.img_surp_elem_star_2_off);
-            vStar3Off= v.findViewById(R.id.img_surp_elem_star_3_off);
+            vStar1On = v.findViewById(R.id.img_surp_elem_star_1_on);
+            vStar2On = v.findViewById(R.id.img_surp_elem_star_2_on);
+            vStar3On = v.findViewById(R.id.img_surp_elem_star_3_on);
+            vStar1Off = v.findViewById(R.id.img_surp_elem_star_1_off);
+            vStar2Off = v.findViewById(R.id.img_surp_elem_star_2_off);
+            vStar3Off = v.findViewById(R.id.img_surp_elem_star_3_off);
         }
     }
 }

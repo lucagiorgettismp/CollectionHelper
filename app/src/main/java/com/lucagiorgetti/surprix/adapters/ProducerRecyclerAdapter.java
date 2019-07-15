@@ -17,11 +17,11 @@ import java.util.ArrayList;
 
 /**
  * Adapter for showing a list of Producers.
- *
+ * <p>
  * Created by Luca on 24/10/2017.
  */
 
-public class ProducerRecyclerAdapter extends RecyclerView.Adapter<ProducerRecyclerAdapter.SetViewHolder>{
+public class ProducerRecyclerAdapter extends RecyclerView.Adapter<ProducerRecyclerAdapter.SetViewHolder> {
     private ArrayList<Producer> producers = new ArrayList<>();
     private ArrayList<Producer> mFilterList;
     private Context ctx;
@@ -35,7 +35,7 @@ public class ProducerRecyclerAdapter extends RecyclerView.Adapter<ProducerRecycl
     @NonNull
     @Override
     public SetViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.producer_element, parent,  false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.producer_element, parent, false);
         return new SetViewHolder(v);
     }
 

@@ -17,11 +17,11 @@ import java.util.ArrayList;
 
 /**
  * Adapter for showing a list of Sponsor.
- *
+ * <p>
  * Created by Luca on 24/10/2017.
  */
 
-public class ThanksRecyclerAdapter extends RecyclerView.Adapter<ThanksRecyclerAdapter.SetViewHolder>{
+public class ThanksRecyclerAdapter extends RecyclerView.Adapter<ThanksRecyclerAdapter.SetViewHolder> {
     private ArrayList<Sponsor> sponsorsList = new ArrayList<>();
     private Context ctx;
 
@@ -33,7 +33,7 @@ public class ThanksRecyclerAdapter extends RecyclerView.Adapter<ThanksRecyclerAd
     @NonNull
     @Override
     public SetViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.thanks_element, parent,  false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.thanks_element, parent, false);
         return new SetViewHolder(v);
     }
 

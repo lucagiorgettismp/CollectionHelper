@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 /**
  * Adapter for showing a list of User which owns a selected surprise.
- *
+ * <p>
  * Created by Luca on 28/10/2017.
  */
 

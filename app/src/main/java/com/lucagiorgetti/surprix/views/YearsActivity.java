@@ -26,7 +26,7 @@ import com.lucagiorgetti.surprix.utility.TitleHelper;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class YearsActivity extends AppCompatActivity{
+public class YearsActivity extends AppCompatActivity {
     ArrayList<Year> years = new ArrayList<>();
     private YearRecyclerAdapter mAdapter;
     private RecyclerView recyclerView;
@@ -36,7 +36,7 @@ public class YearsActivity extends AppCompatActivity{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.year_fragment);
-    
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -51,7 +51,7 @@ public class YearsActivity extends AppCompatActivity{
         });
 
         Bundle b = getIntent().getExtras();
-        if (b != null){
+        if (b != null) {
             String producer_id = b.getString("producer_id");
             final String producer_name = b.getString("producer_name");
             progress = findViewById(R.id.year_loading);

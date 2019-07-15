@@ -11,7 +11,7 @@ public class Producer {
     private String color = null;
     private int order = 0;
 
-    public Producer(String name, String product, int order, String color){
+    public Producer(String name, String product, int order, String color) {
         this.id = name + "_" + product;
         this.name = name;
         this.product = product;
@@ -19,14 +19,14 @@ public class Producer {
         this.color = color;
     }
 
-    public Producer(String name, int order, String color){
+    public Producer(String name, int order, String color) {
         this.id = name;
         this.name = name;
         this.color = color;
         this.order = order;
     }
 
-    public Producer(){
+    public Producer() {
 
     }
 

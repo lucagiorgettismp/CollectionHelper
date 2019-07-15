@@ -8,17 +8,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.model.Colors;
 import com.lucagiorgetti.surprix.model.Year;
+
 import java.util.ArrayList;
+
 /**
  * Adapter for showing a list of Years.
- *
+ * <p>
  * Created by Luca on 24/10/2017.
  */
 
-public class YearRecyclerAdapter extends RecyclerView.Adapter<YearRecyclerAdapter.SetViewHolder>{
+public class YearRecyclerAdapter extends RecyclerView.Adapter<YearRecyclerAdapter.SetViewHolder> {
     private ArrayList<Year> years = new ArrayList<>();
     private Context ctx;
 
@@ -30,7 +33,7 @@ public class YearRecyclerAdapter extends RecyclerView.Adapter<YearRecyclerAdapte
     @NonNull
     @Override
     public SetViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.year_element, parent,  false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.year_element, parent, false);
         return new SetViewHolder(v);
     }
 
@@ -40,7 +43,7 @@ public class YearRecyclerAdapter extends RecyclerView.Adapter<YearRecyclerAdapte
         holder.vName.setText(year.getDescr());
 
         holder.vName.setTextColor(ContextCompat.getColor(ctx, R.color.cardBackground));
-        switch (position%2){
+        switch (position % 2) {
             case 0:
                 holder.vLayout.setBackgroundColor(ContextCompat.getColor(ctx, Colors.getHexColor(year.getProducer_color())));
                 break;

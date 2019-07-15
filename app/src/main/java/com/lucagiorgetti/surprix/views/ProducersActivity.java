@@ -58,13 +58,13 @@ public class ProducersActivity extends AppCompatActivity {
                     public void onItemClick(View view, int position) {
                         Producer producer = mAdapter.getItemAtPosition(position);
                         String prod_name = producer.getName();
-                        if(producer.getProduct() != null){
+                        if (producer.getProduct() != null) {
                             prod_name = prod_name + " " + producer.getProduct();
                         }
                         onProducerClick(producer.getId(), prod_name);
                     }
 
-            @Override
+                    @Override
                     public void onLongItemClick(View view, int position) {
 
                     }
@@ -73,8 +73,8 @@ public class ProducersActivity extends AppCompatActivity {
         DatabaseUtility.getProducers(new OnGetDataListener() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
-                    for (DataSnapshot d : dataSnapshot.getChildren()){
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot d : dataSnapshot.getChildren()) {
                         Producer p = d.getValue(Producer.class);
                         producers.add(p);
                         mAdapter = new ProducerRecyclerAdapter(ProducersActivity.this, producers);
@@ -101,7 +101,7 @@ public class ProducersActivity extends AppCompatActivity {
     }
 
     private void setTitle() {
-       TitleHelper.setProducerTitle(getSupportActionBar());
+        TitleHelper.setProducerTitle(getSupportActionBar());
     }
 
     private void onProducerClick(String id, String prod_name) {

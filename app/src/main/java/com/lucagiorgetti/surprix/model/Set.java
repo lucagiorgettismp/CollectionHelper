@@ -30,7 +30,7 @@ public class Set {
         this.nation = nation;
         this.img_path = img_path;
         this.category = category;
-        this.id = producer.getName() + "_" + year.getYear()+ "_" + code;
+        this.id = producer.getName() + "_" + year.getYear() + "_" + code;
     }
 
     public Set() {
@@ -81,8 +81,7 @@ public class Set {
     }
 
 
-    public static class SortBySetName implements Comparator<Set>
-    {
+    public static class SortBySetName implements Comparator<Set> {
         @Override
         public int compare(Set o1, Set o2) {
             return o1.getName().compareTo(o2.getName());

@@ -15,7 +15,7 @@ import com.lucagiorgetti.surprix.views.MainActivity;
 
 import java.util.Objects;
 
-public class MyFirebaseMessaging extends FirebaseMessagingService{
+public class MyFirebaseMessaging extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
@@ -26,7 +26,7 @@ public class MyFirebaseMessaging extends FirebaseMessagingService{
     private void showNotification(RemoteMessage.Notification notification) {
         Intent i = new Intent(this, MainActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , i, PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, i, PendingIntent.FLAG_ONE_SHOT);
 
         String channelId = getString(R.string.default_notification_channel_id);
         String channelName = getString(R.string.default_notification_channel_name);

@@ -25,11 +25,11 @@ import java.util.Locale;
 
 /**
  * Adapter for showing a list of Sets.
- *
+ * <p>
  * Created by Luca on 24/10/2017.
  */
 
-public class SetRecyclerAdapter extends RecyclerView.Adapter<SetRecyclerAdapter.SetViewHolder>{
+public class SetRecyclerAdapter extends RecyclerView.Adapter<SetRecyclerAdapter.SetViewHolder> {
     private ArrayList<Set> sets = new ArrayList<>();
     private ArrayList<Set> mStringFilterList;
     private Context ctx;
@@ -43,7 +43,7 @@ public class SetRecyclerAdapter extends RecyclerView.Adapter<SetRecyclerAdapter.
     @NonNull
     @Override
     public SetViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.set_element, parent,  false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.set_element, parent, false);
         return new SetViewHolder(v);
     }
 
@@ -63,7 +63,7 @@ public class SetRecyclerAdapter extends RecyclerView.Adapter<SetRecyclerAdapter.
         holder.vLayout.setBackgroundColor(ContextCompat.getColor(ctx, Colors.getHexColor(set.getProducer_color())));
 
         String path = set.getImg_path();
-        if (path.startsWith("gs")){
+        if (path.startsWith("gs")) {
             FirebaseStorage storage = SurprixApplication.getInstance().getFirebaseStorage();
             StorageReference gsReference = storage.getReferenceFromUrl(path);
             Glide.with(ctx).

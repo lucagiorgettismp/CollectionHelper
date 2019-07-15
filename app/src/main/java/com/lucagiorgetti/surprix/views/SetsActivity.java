@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 
-public class SetsActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener{
+public class SetsActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener {
 
     ArrayList<Set> sets = new ArrayList<>();
     private SetRecyclerAdapter mAdapter;
@@ -59,7 +59,7 @@ public class SetsActivity extends AppCompatActivity implements SearchView.OnQuer
 
 
         Bundle b = getIntent().getExtras();
-        if (b != null){
+        if (b != null) {
             String yearId = b.getString("year_id");
             int yearNum = b.getInt("year_num");
             String prodName = b.getString("producer_name");
@@ -87,7 +87,7 @@ public class SetsActivity extends AppCompatActivity implements SearchView.OnQuer
             DatabaseUtility.getSetsFromYear(yearId, new OnGetListListener<Set>() {
                 @Override
                 public void onSuccess(ArrayList<Set> setsList) {
-                    if (setsList != null){
+                    if (setsList != null) {
                         Collections.sort(setsList, new Set.SortBySetName());
                     }
 
@@ -95,8 +95,8 @@ public class SetsActivity extends AppCompatActivity implements SearchView.OnQuer
                     ArrayList<Set> compoSets = new ArrayList<>();
 
                     if (setsList != null) {
-                        for (Set s : setsList){
-                            if (s.getCategory().equals(Categories.HANDPAINTED)){
+                        for (Set s : setsList) {
+                            if (s.getCategory().equals(Categories.HANDPAINTED)) {
                                 handpaintedSets.add(s);
                             } else {
                                 compoSets.add(s);

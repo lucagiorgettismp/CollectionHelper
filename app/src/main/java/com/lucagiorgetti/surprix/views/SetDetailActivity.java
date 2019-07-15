@@ -32,6 +32,7 @@ public class SetDetailActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private String setId;
     private String setName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -54,12 +55,12 @@ public class SetDetailActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    onFabClicked();
+                onFabClicked();
             }
         });
 
         Bundle b = getIntent().getExtras();
-        if (b != null){
+        if (b != null) {
             setId = b.getString("set_id");
             setName = b.getString("set_name");
 

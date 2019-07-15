@@ -12,7 +12,7 @@ import com.google.firebase.storage.FirebaseStorage;
  * Created by Luca Giorgetti on 11/04/2018.
  */
 
-public class SurprixApplication extends Application{
+public class SurprixApplication extends Application {
     private FirebaseStorage firebaseStorage;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
@@ -29,7 +29,7 @@ public class SurprixApplication extends Application{
         return mInstance;
     }
 
-    public static synchronized Context getSurprixContext(){
+    public static synchronized Context getSurprixContext() {
         return mInstance.getApplicationContext();
     }
 
@@ -45,7 +45,7 @@ public class SurprixApplication extends Application{
             firebaseDatabase = FirebaseDatabase.getInstance();
             firebaseDatabase.setPersistenceEnabled(true);
         }
-        if (databaseReference == null){
+        if (databaseReference == null) {
             databaseReference = firebaseDatabase.getReference();
             databaseReference.keepSynced(true);
         }
@@ -59,5 +59,5 @@ public class SurprixApplication extends Application{
         }
         return fireAuth;
     }
-    
+
 }

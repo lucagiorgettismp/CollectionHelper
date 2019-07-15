@@ -22,6 +22,7 @@ public class OnboardActivity extends AppCompatActivity {
     private Button backButton;
 
     private TextView[] mDots;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +59,7 @@ public class OnboardActivity extends AppCompatActivity {
         });
     }
 
-    public void addDotsIndicator(int position){
+    public void addDotsIndicator(int position) {
         mDots = new TextView[slideCount];
         mDotsLayout.removeAllViews();
         for (int i = 0; i < slideCount; i++) {
@@ -70,7 +71,7 @@ public class OnboardActivity extends AppCompatActivity {
             mDotsLayout.addView(mDots[i]);
         }
 
-        if(mDots.length > 0){
+        if (mDots.length > 0) {
             mDots[position].setTextColor(getResources().getColor(R.color.colorWhite));
         }
     }
@@ -86,14 +87,14 @@ public class OnboardActivity extends AppCompatActivity {
             addDotsIndicator(position);
             currentPage = position;
 
-            if(currentPage == 0){
+            if (currentPage == 0) {
                 backButton.setEnabled(false);
                 nextButton.setEnabled(true);
                 backButton.setVisibility(View.INVISIBLE);
 
                 nextButton.setText(getResources().getString(R.string.next));
                 backButton.setText(getResources().getString(R.string.back));
-            } else if (currentPage == mDots.length - 1){
+            } else if (currentPage == mDots.length - 1) {
                 backButton.setEnabled(true);
                 nextButton.setEnabled(true);
                 backButton.setVisibility(View.VISIBLE);

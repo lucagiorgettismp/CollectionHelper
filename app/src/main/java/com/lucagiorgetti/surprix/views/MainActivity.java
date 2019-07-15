@@ -59,7 +59,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements
-        NavigationView.OnNavigationItemSelectedListener ,
+        NavigationView.OnNavigationItemSelectedListener,
         FragmentListenerInterface {
 
     private static FragmentManager fragmentManager;
@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements
             setSupportActionBar(toolbar);
             DrawerLayout drawer = findViewById(R.id.drawer_layout);
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
+                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
                 @Override
                 public void onDrawerOpened(View drawerView) {
                     super.onDrawerOpened(drawerView);
@@ -119,9 +119,9 @@ public class MainActivity extends AppCompatActivity implements
                 @Override
                 public void onSuccess(DataSnapshot dataSnapshot) {
                     currentUser = dataSnapshot.getValue(User.class);
-                    if (currentUser != null){
+                    if (currentUser != null) {
                         String username = currentUser.getUsername();
-                        String email = currentUser.getEmail().replaceAll(",", "\\.") ;
+                        String email = currentUser.getEmail().replaceAll(",", "\\.");
                         nav_user.setText(username);
                         nav_email.setText(email);
                         SystemUtility.writeUserInfo(username, email);
@@ -186,7 +186,7 @@ public class MainActivity extends AppCompatActivity implements
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         int id = item.getItemId();
 
-        switch (id){
+        switch (id) {
             case R.id.nav_missings:
                 this.clearBackStack();
                 displayView(Fragments.MISSINGS, false);
@@ -288,7 +288,7 @@ public class MainActivity extends AppCompatActivity implements
                     transaction.addToBackStack(null);
                 }
                 transaction.commitAllowingStateLoss();
-            } catch (Exception e){
+            } catch (Exception e) {
                 Log.i(TAG, "Errore displayView");
             }
         }
@@ -300,7 +300,7 @@ public class MainActivity extends AppCompatActivity implements
         String html = getString(R.string.mail_exchange_body, currentUser.getUsername(), missing.getCode(), missing.getDescription());
         Spanned body;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            body = Html.fromHtml(html,Html.FROM_HTML_MODE_LEGACY);
+            body = Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY);
         } else {
             body = Html.fromHtml(html);
         }
@@ -366,25 +366,25 @@ public class MainActivity extends AppCompatActivity implements
                 if (user != null) {
                     email = user.getEmail();
                 }
-                if (email != null){
+                if (email != null) {
 
                     AuthCredential credential = EmailAuthProvider.getCredential(email, oldPwd);
 
                     user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful()){
+                            if (task.isSuccessful()) {
                                 user.updatePassword(newPwd).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-                                        if(!task.isSuccessful()){
+                                        if (!task.isSuccessful()) {
                                             Toast.makeText(MainActivity.this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
-                                        }else {
+                                        } else {
                                             Toast.makeText(MainActivity.this, R.string.password_changed, Toast.LENGTH_SHORT).show();
                                         }
                                     }
                                 });
-                            }else {
+                            } else {
                                 Toast.makeText(MainActivity.this, R.string.old_password_wrong, Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -469,12 +469,12 @@ public class MainActivity extends AppCompatActivity implements
         DatabaseUtility.getDoubleOwners(missing.getId(), new OnGetListListener<User>() {
             @Override
             public void onSuccess(ArrayList<User> users) {
-                if(users != null){
-                    if(!users.isEmpty()){
+                if (users != null) {
+                    if (!users.isEmpty()) {
                         final ArrayList<User> owners = new ArrayList<>();
                         final ArrayList<User> abroad_owners = new ArrayList<>();
-                        for(User u: users){
-                            if(Objects.equals(u.getCountry(), currentUser.getCountry())){
+                        for (User u : users) {
+                            if (Objects.equals(u.getCountry(), currentUser.getCountry())) {
                                 owners.add(u);
                             } else {
                                 abroad_owners.add(u);
@@ -499,7 +499,7 @@ public class MainActivity extends AppCompatActivity implements
 
             }
         });
-        if(doubleOwners.isEmpty()){
+        if (doubleOwners.isEmpty()) {
             infoTxv.setVisibility(View.GONE);
             emptyListTxv.setVisibility(View.VISIBLE);
         }

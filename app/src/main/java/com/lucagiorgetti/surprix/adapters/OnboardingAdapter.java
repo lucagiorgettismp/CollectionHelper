@@ -47,7 +47,7 @@ public class OnboardingAdapter extends PagerAdapter {
         TextView content;
         ImageView imageView;
 
-        switch (pos){
+        switch (pos) {
             case 1:
                 view = layoutInflater.inflate(R.layout.onboarding_default, container, false);
                 title = view.findViewById(R.id.title);
@@ -59,7 +59,7 @@ public class OnboardingAdapter extends PagerAdapter {
                 break;
             case 2:
                 view = layoutInflater.inflate(R.layout.onboarding_adding, container, false);
-                title= view.findViewById(R.id.title);
+                title = view.findViewById(R.id.title);
                 title.setText(R.string.create_lists);
                 break;
             case 3:
@@ -92,6 +92,6 @@ public class OnboardingAdapter extends PagerAdapter {
 
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-        container.removeView((LinearLayout)object);
+        container.removeView((LinearLayout) object);
     }
 }

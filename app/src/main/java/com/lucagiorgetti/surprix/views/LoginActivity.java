@@ -43,7 +43,7 @@ import java.util.Objects;
 
 /**
  * Activity for loggin user into App.
- *
+ * <p>
  * Created by Luca Giorgetti on 27/06/2017.
  */
 
@@ -73,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
         facebookCustomLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(SystemUtility.checkNetworkAvailability(LoginActivity.this)){
+                if (SystemUtility.checkNetworkAvailability(LoginActivity.this)) {
                     progressBar.setVisibility(View.VISIBLE);
                     LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Collections.singletonList("email"));
                     LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
@@ -145,7 +145,7 @@ public class LoginActivity extends AppCompatActivity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!SystemUtility.checkNetworkAvailability(LoginActivity.this)){
+                if (!SystemUtility.checkNetworkAvailability(LoginActivity.this)) {
                     Snackbar.make(view, R.string.network_unavailable, Snackbar.LENGTH_SHORT).show();
                     return;
                 }
@@ -221,13 +221,13 @@ public class LoginActivity extends AppCompatActivity {
                         if (!task.isSuccessful()) {
                             Toast.makeText(LoginActivity.this, R.string.auth_failed,
                                     Toast.LENGTH_SHORT).show();
-                        }else{
-                            final String email=task.getResult().getUser().getEmail();
+                        } else {
+                            final String email = task.getResult().getUser().getEmail();
                             if (email != null) {
                                 DatabaseUtility.checkUserExisting(email, new OnGetResultListener() {
                                     @Override
                                     public void onSuccess(boolean result) {
-                                        if (result){
+                                        if (result) {
                                             goToMainActivity();
                                         } else {
                                             Bundle b = new Bundle();

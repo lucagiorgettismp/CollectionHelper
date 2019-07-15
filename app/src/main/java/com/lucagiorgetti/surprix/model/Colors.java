@@ -19,11 +19,12 @@ public final class Colors {
     private static final String BROWN = "Brown";
     private static final String GREY = "Grey";
 
-    private Colors(){}
+    private Colors() {
+    }
 
-    public static int getHexColor(String color){
+    public static int getHexColor(String color) {
         int c = -2;
-        switch (color){
+        switch (color) {
             case LIGHT_BLUE:
                 c = R.color.LightBluSet;
                 break;
@@ -61,9 +62,9 @@ public final class Colors {
         return c;
     }
 
-    public static int getDarkHexColor(String color){
+    public static int getDarkHexColor(String color) {
         int c = -2;
-        switch (color){
+        switch (color) {
             case LIGHT_BLUE:
                 c = R.color.DarkLightBluSet;
                 break;
