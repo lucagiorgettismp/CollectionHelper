@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:weightSum="1">
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="2dp"
@@ -30,7 +30,7 @@
                 android:scaleType="fitXY" />
         </LinearLayout>
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
 </LinearLayout>
 

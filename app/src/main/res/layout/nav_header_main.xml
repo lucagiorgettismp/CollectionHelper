@@ -20,7 +20,7 @@
         android:adjustViewBounds="true"
         android:paddingStart="5dp"
         android:paddingEnd="5dp"
-        app:srcCompat="@mipmap/ic_logo"
+        app:srcCompat="@drawable/ic_logo"
         android:contentDescription="@string/icon_logo" />
 
     <TextView

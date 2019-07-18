@@ -1,7 +1,7 @@
 package com.lucagiorgetti.surprix.utility;
 
 import android.content.Context;
-import android.support.v7.app.ActionBar;
+import androidx.appcompat.app.ActionBar;
 
 import com.lucagiorgetti.surprix.R;
 
