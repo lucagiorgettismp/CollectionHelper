@@ -1,37 +1,34 @@
 package com.lucagiorgetti.surprix.views;
 
 import android.annotation.SuppressLint;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import androidx.annotation.NonNull;
-import com.google.android.material.navigation.NavigationView;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.core.content.ContextCompat;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.facebook.login.LoginManager;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
@@ -82,13 +79,10 @@ public class MainActivity extends AppCompatActivity implements
         fireAuth = SurprixApplication.getInstance().getFirebaseAuth();
         facebookLogin = LoginManager.getInstance();
 
-        fireAuthStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user == null) {
-                    SystemUtility.openNewActivityWithFinishing(MainActivity.this, LoginActivity.class, null);
-                }
+        fireAuthStateListener = firebaseAuth -> {
+            FirebaseUser user = firebaseAuth.getCurrentUser();
+            if (user == null) {
+                SystemUtility.openNewActivityWithFinishing(MainActivity.this, LoginActivity.class, null);
             }
         };
 
@@ -179,7 +173,6 @@ public class MainActivity extends AppCompatActivity implements
         super.onPause();
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
@@ -321,18 +314,12 @@ public class MainActivity extends AppCompatActivity implements
         alertDialog.setMessage(getString(R.string.info_images_dialog_content));
 
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.email),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        SystemUtility.sendMail(MainActivity.this, getResources().getString(R.string.surprix_mail), null, null);
-                        alertDialog.dismiss();
-                    }
+                (dialog, which) -> {
+                    SystemUtility.sendMail(MainActivity.this, getResources().getString(R.string.surprix_mail), null, null);
+                    alertDialog.dismiss();
                 });
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.dialog_negative),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        alertDialog.dismiss();
-                    }
-                });
+                (dialog, which) -> alertDialog.dismiss());
         alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.show();
     }
@@ -353,45 +340,36 @@ public class MainActivity extends AppCompatActivity implements
         final AlertDialog changePwd = builder.create();
 
         changePwd.show();
-        btnChangePwd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                String oldPwd = oldPassword.getText().toString().trim();
-                final String newPwd = newPassword.getText().toString().trim();
+        btnChangePwd.setOnClickListener(v -> {
+            String oldPwd = oldPassword.getText().toString().trim();
+            final String newPwd = newPassword.getText().toString().trim();
 
-                final FirebaseUser user;
-                user = SurprixApplication.getInstance().getFirebaseAuth().getCurrentUser();
+            final FirebaseUser user;
+            user = SurprixApplication.getInstance().getFirebaseAuth().getCurrentUser();
 
-                String email = null;
-                if (user != null) {
-                    email = user.getEmail();
-                }
-                if (email != null) {
-
-                    AuthCredential credential = EmailAuthProvider.getCredential(email, oldPwd);
-
-                    user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                user.updatePassword(newPwd).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (!task.isSuccessful()) {
-                                            Toast.makeText(MainActivity.this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
-                                        } else {
-                                            Toast.makeText(MainActivity.this, R.string.password_changed, Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-                                });
-                            } else {
-                                Toast.makeText(MainActivity.this, R.string.old_password_wrong, Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-                }
-                changePwd.dismiss();
+            String email = null;
+            if (user != null) {
+                email = user.getEmail();
             }
+            if (email != null) {
+
+                AuthCredential credential = EmailAuthProvider.getCredential(email, oldPwd);
+
+                user.reauthenticate(credential).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        user.updatePassword(newPwd).addOnCompleteListener(task1 -> {
+                            if (!task1.isSuccessful()) {
+                                Toast.makeText(MainActivity.this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(MainActivity.this, R.string.password_changed, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } else {
+                        Toast.makeText(MainActivity.this, R.string.old_password_wrong, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+            changePwd.dismiss();
         });
     }
 
@@ -401,34 +379,28 @@ public class MainActivity extends AppCompatActivity implements
         alertDialog.setTitle(getString(R.string.delete_account));
         alertDialog.setMessage(getString(R.string.dialod_delete_user_text));
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.dialog_positive),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        DatabaseUtility.deleteUser(new OnGetDataListener() {
-                            @Override
-                            public void onSuccess(DataSnapshot data) {
+                (dialog, which) -> {
+                    DatabaseUtility.deleteUser(new OnGetDataListener() {
+                        @Override
+                        public void onSuccess(DataSnapshot data) {
 
-                            }
+                        }
 
-                            @Override
-                            public void onStart() {
+                        @Override
+                        public void onStart() {
 
-                            }
+                        }
 
-                            @Override
-                            public void onFailure() {
+                        @Override
+                        public void onFailure() {
 
-                            }
-                        });
-                        alertDialog.dismiss();
-                        logout();
-                    }
+                        }
+                    });
+                    alertDialog.dismiss();
+                    logout();
                 });
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.dialog_negative),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        alertDialog.dismiss();
-                    }
-                });
+                (dialog, which) -> alertDialog.dismiss());
         alertDialog.show();
     }
 
@@ -509,13 +481,10 @@ public class MainActivity extends AppCompatActivity implements
         final AlertDialog alert = builder.create();
         alert.show();
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                alert.dismiss();
-                final User owner = mAdapter.getItem(position);
-                sendEmailToUser(owner, missing);
-            }
+        listView.setOnItemClickListener((parent, v, position, id) -> {
+            alert.dismiss();
+            final User owner = mAdapter.getItem(position);
+            sendEmailToUser(owner, missing);
         });
     }
     // endregion

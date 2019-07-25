@@ -32,7 +32,7 @@ public class SystemUtility {
     public static final String PRIVACY_POLICY_ACCEPTED = "privacyPolicyAccepted";
     public static final String USER_USERNAME = "loggedUsername";
     public static final String USER_EMAIL = "loggedEmail";
-    public static final String TAG = "SystemUtility";
+    private static final String TAG = "SystemUtility";
 
     public static boolean checkNetworkAvailability(Context context) {
         boolean available = false;
@@ -128,14 +128,13 @@ public class SystemUtility {
 
     public static void sendMail(Context context, String to, String subject, Spanned html_body) {
         Intent intent = new Intent(Intent.ACTION_SENDTO);
-        intent.setType("text/plain");
+        intent.setDataAndType(Uri.parse("mailto:" + to),"text/plain");
         if (subject != null && !subject.isEmpty()) {
             intent.putExtra(Intent.EXTRA_SUBJECT, subject);
         }
         if (html_body != null && html_body.length() > 0) {
             intent.putExtra(Intent.EXTRA_TEXT, html_body);
         }
-        intent.setData(Uri.parse("mailto:" + to));
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // this will make such that when user returns to your app, your app is displayed, instead of the email app.
         context.startActivity(intent);
     }
@@ -154,7 +153,7 @@ public class SystemUtility {
         edit.apply();
     }
 
-    public static String getLoggedUserUsername() {
+    static String getLoggedUserUsername() {
         Context applicationContext = SurprixApplication.getSurprixContext();
         return PreferenceManager.getDefaultSharedPreferences(applicationContext).getString(USER_USERNAME, null);
     }

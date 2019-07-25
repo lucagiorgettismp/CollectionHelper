@@ -478,12 +478,9 @@ public class DatabaseUtility {
 
         if (user != null) {
             user.delete()
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                listener.onSuccess(null);
-                            }
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            listener.onSuccess(null);
                         }
                     });
         }

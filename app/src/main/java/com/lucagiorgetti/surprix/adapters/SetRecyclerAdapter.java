@@ -30,7 +30,7 @@ import java.util.Locale;
  */
 
 public class SetRecyclerAdapter extends RecyclerView.Adapter<SetRecyclerAdapter.SetViewHolder> {
-    private ArrayList<Set> sets = new ArrayList<>();
+    private ArrayList<Set> sets;
     private ArrayList<Set> mStringFilterList;
     private Context ctx;
 

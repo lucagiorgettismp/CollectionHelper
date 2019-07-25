@@ -31,7 +31,7 @@ import java.util.Locale;
  */
 
 public class SurpRecyclerAdapter extends RecyclerView.Adapter<SurpRecyclerAdapter.SurpViewHolder> {
-    private ArrayList<Surprise> surprises = new ArrayList<>();
+    private ArrayList<Surprise> surprises;
     private Context ctx;
 
     public SurpRecyclerAdapter(Context context, ArrayList<Surprise> surpList) {

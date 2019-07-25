@@ -1,22 +1,12 @@
 package com.lucagiorgetti.surprix.fragments;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AlertDialog;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,13 +17,23 @@ import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.Toast;
 
-import com.lucagiorgetti.surprix.utility.DatabaseUtility;
-import com.lucagiorgetti.surprix.utility.SystemUtility;
-import com.lucagiorgetti.surprix.listenerInterfaces.FragmentListenerInterface;
-import com.lucagiorgetti.surprix.listenerInterfaces.OnGetListListener;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.adapters.SurpRecyclerAdapter;
+import com.lucagiorgetti.surprix.listenerInterfaces.FragmentListenerInterface;
+import com.lucagiorgetti.surprix.listenerInterfaces.OnGetListListener;
 import com.lucagiorgetti.surprix.model.Surprise;
+import com.lucagiorgetti.surprix.utility.DatabaseUtility;
+import com.lucagiorgetti.surprix.utility.SystemUtility;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,7 +42,7 @@ import java.util.Objects;
 public class MissingFragment extends Fragment implements SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener, View.OnClickListener {
     private FragmentListenerInterface listener;
 
-    ArrayList<Surprise> missings = new ArrayList<>();
+    private ArrayList<Surprise> missings = new ArrayList<>();
     private SurpRecyclerAdapter mAdapter;
     private RecyclerView recyclerView;
     private View emptyList;
@@ -53,10 +53,8 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.fab:
-                listener.onClickOpenProducers();
-                break;
+        if (v.getId() == R.id.fab) {
+            listener.onClickOpenProducers();
         }
     }
 
@@ -75,12 +73,7 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
         fab.setOnClickListener(this);
         initSwipe();
 
-        emptyList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onClickOpenProducers();
-            }
-        });
+        emptyList.setOnClickListener(v -> listener.onClickOpenProducers());
 
         return layout;
     }
@@ -141,36 +134,32 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
                     alertDialog.setTitle(getString(R.string.remove_missing_dialog_title));
                     alertDialog.setMessage(getString(R.string.remove_missing_dialog_text) + " " + s.getDescription() + "?");
                     alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.dialog_positive),
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    mAdapter.removeItem(position);
-                                    listener.onSwipeRemoveMissing(s.getId());
-                                    String queryTxt = searchView.getQuery().toString();
-                                    if (!queryTxt.isEmpty()) {
-                                        FragmentTransaction ft = null;
-                                        if (getFragmentManager() != null) {
-                                            ft = getFragmentManager().beginTransaction();
-                                        }
-                                        if (ft != null) {
-                                            ft.detach(MissingFragment.this).attach(MissingFragment.this).commit();
-                                        }
-                                        SystemUtility.closeKeyboard(Objects.requireNonNull(getActivity()));
+                            (dialog, which) -> {
+                                mAdapter.removeItem(position);
+                                listener.onSwipeRemoveMissing(s.getId());
+                                String queryTxt = searchView.getQuery().toString();
+                                if (!queryTxt.isEmpty()) {
+                                    FragmentTransaction ft = null;
+                                    if (getFragmentManager() != null) {
+                                        ft = getFragmentManager().beginTransaction();
                                     }
-
-                                    alertDialog.dismiss();
-                                    listener.setMissingsTitle(missings.size());
-                                    if (missings == null || missings.isEmpty()) {
-                                        emptyList.setVisibility(View.VISIBLE);
+                                    if (ft != null) {
+                                        ft.detach(MissingFragment.this).attach(MissingFragment.this).commit();
                                     }
-                                    //mAdapter.notifyDataSetChanged();
+                                    SystemUtility.closeKeyboard(Objects.requireNonNull(getActivity()));
                                 }
+
+                                alertDialog.dismiss();
+                                listener.setMissingsTitle(missings.size());
+                                if (missings == null || missings.isEmpty()) {
+                                    emptyList.setVisibility(View.VISIBLE);
+                                }
+                                //mAdapter.notifyDataSetChanged();
                             });
                     alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.dialog_negative),
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    alertDialog.dismiss();
-                                    mAdapter.notifyDataSetChanged();
-                                }
+                            (dialog, which) -> {
+                                alertDialog.dismiss();
+                                mAdapter.notifyDataSetChanged();
                             });
                     alertDialog.setCanceledOnTouchOutside(false);
                     alertDialog.show();
@@ -254,7 +243,7 @@ public class MissingFragment extends Fragment implements SearchView.OnQueryTextL
         return false;
     }
 
-    public void resetSearch() {
+    private void resetSearch() {
         mAdapter = new SurpRecyclerAdapter(mContext, missings);
         recyclerView.setAdapter(mAdapter);
     }

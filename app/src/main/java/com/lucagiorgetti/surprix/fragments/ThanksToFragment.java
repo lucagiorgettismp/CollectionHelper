@@ -28,7 +28,7 @@ import java.util.Objects;
 public class ThanksToFragment extends Fragment {
     private FragmentListenerInterface listener;
 
-    ArrayList<Sponsor> sponsorsList = new ArrayList<>();
+    private ArrayList<Sponsor> sponsorsList = new ArrayList<>();
     private ThanksRecyclerAdapter mAdapter;
     private Context mContext;
     private RecyclerView recyclerView;

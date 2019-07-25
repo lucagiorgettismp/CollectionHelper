@@ -1,18 +1,18 @@
 package com.lucagiorgetti.surprix.views;
 
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.adapters.YearRecyclerAdapter;
@@ -43,12 +43,7 @@ public class YearsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
         Bundle b = getIntent().getExtras();
         if (b != null) {
@@ -112,13 +107,11 @@ public class YearsActivity extends AppCompatActivity {
             alertDialog.setMessage(getString(R.string.tip_you_can_add_all_year));
 
             alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.ok_thanks),
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            SharedPreferences.Editor edit = prefs.edit();
-                            edit.putBoolean(SystemUtility.FIRST_TIME_YEAR_HELP_SHOW, false);
-                            edit.apply();
-                            alertDialog.dismiss();
-                        }
+                    (dialog, which) -> {
+                        SharedPreferences.Editor edit = prefs.edit();
+                        edit.putBoolean(SystemUtility.FIRST_TIME_YEAR_HELP_SHOW, false);
+                        edit.apply();
+                        alertDialog.dismiss();
                     });
             alertDialog.setCanceledOnTouchOutside(false);
             alertDialog.show();
@@ -134,18 +127,12 @@ public class YearsActivity extends AppCompatActivity {
         alertDialog.setTitle(getString(R.string.dialog_add_year_title));
         alertDialog.setMessage(getString(R.string.dialog_add_year_text) + " " + year + "?");
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.dialog_positive),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        DatabaseUtility.addMissingsFromYear(yearId);
-                        alertDialog.dismiss();
-                    }
+                (dialog, which) -> {
+                    DatabaseUtility.addMissingsFromYear(yearId);
+                    alertDialog.dismiss();
                 });
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.dialog_negative),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        alertDialog.dismiss();
-                    }
-                });
+                (dialog, which) -> alertDialog.dismiss());
         alertDialog.show();
     }
 

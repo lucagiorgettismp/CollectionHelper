@@ -1,13 +1,14 @@
 package com.lucagiorgetti.surprix.adapters;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.model.Colors;
@@ -22,7 +23,7 @@ import java.util.ArrayList;
  */
 
 public class YearRecyclerAdapter extends RecyclerView.Adapter<YearRecyclerAdapter.SetViewHolder> {
-    private ArrayList<Year> years = new ArrayList<>();
+    private ArrayList<Year> years;
     private Context ctx;
 
     public YearRecyclerAdapter(Context context, ArrayList<Year> yearsList) {

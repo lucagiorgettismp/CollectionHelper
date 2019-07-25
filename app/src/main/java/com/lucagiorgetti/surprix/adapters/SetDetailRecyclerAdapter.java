@@ -73,7 +73,7 @@ public class SetDetailRecyclerAdapter extends RecyclerView.Adapter<SetDetailRecy
         Surprise s = items.get(position);
         holder.vCode.setText(s.getCode());
         holder.vDescription.setText(s.getDescription());
-        holder.titleBar.setBackgroundColor(ContextCompat.getColor(ctx, Colors.getHexColor(s.getSet_producer_color())));
+        holder.vLayout.setBackgroundColor(ContextCompat.getColor(ctx, Colors.getHexColor(s.getSet_producer_color())));
 
         String path = s.getImg_path();
         if (path.startsWith("gs")) {
@@ -140,7 +140,6 @@ public class SetDetailRecyclerAdapter extends RecyclerView.Adapter<SetDetailRecy
         ImageButton btnAddMissing;
         ImageButton btnAddDouble;
         View cardLayout;
-        View titleBar;
         MyClickListener listner;
         ImageView vStar1On;
         ImageView vStar2On;
@@ -160,7 +159,6 @@ public class SetDetailRecyclerAdapter extends RecyclerView.Adapter<SetDetailRecy
             btnAddMissing = v.findViewById(R.id.btn_item_add_missing);
             btnAddDouble = v.findViewById(R.id.btn_item_add_double);
             cardLayout = v.findViewById(R.id.set_detail_layout);
-            titleBar = v.findViewById(R.id.layout_item_titlebar);
             vStar1On = v.findViewById(R.id.img_item_star_1_on);
             vStar2On = v.findViewById(R.id.img_item_star_2_on);
             vStar3On = v.findViewById(R.id.img_item_star_3_on);

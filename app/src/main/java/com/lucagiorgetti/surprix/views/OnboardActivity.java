@@ -40,23 +40,15 @@ public class OnboardActivity extends AppCompatActivity {
 
         mSlideViewPager.addOnPageChangeListener(viewListener);
 
-        nextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (currentPage < (mDots.length - 1)) {
-                    mSlideViewPager.setCurrentItem(currentPage + 1);
-                } else {
-                    finish();
-                }
+        nextButton.setOnClickListener(v -> {
+            if (currentPage < (mDots.length - 1)) {
+                mSlideViewPager.setCurrentItem(currentPage + 1);
+            } else {
+                finish();
             }
         });
 
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mSlideViewPager.setCurrentItem(currentPage - 1);
-            }
-        });
+        backButton.setOnClickListener(v -> mSlideViewPager.setCurrentItem(currentPage - 1));
     }
 
     public void addDotsIndicator(int position) {

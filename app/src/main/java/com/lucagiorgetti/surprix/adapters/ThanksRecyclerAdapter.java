@@ -21,7 +21,7 @@ import java.util.ArrayList;
  */
 
 public class ThanksRecyclerAdapter extends RecyclerView.Adapter<ThanksRecyclerAdapter.SetViewHolder> {
-    private ArrayList<Sponsor> sponsorsList = new ArrayList<>();
+    private ArrayList<Sponsor> sponsorsList;
     private Context ctx;
 
     public ThanksRecyclerAdapter(Context context, ArrayList<Sponsor> sponsorsList) {

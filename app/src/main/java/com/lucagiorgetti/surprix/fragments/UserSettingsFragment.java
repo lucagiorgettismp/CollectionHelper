@@ -1,13 +1,7 @@
 package com.lucagiorgetti.surprix.fragments;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.fragment.app.Fragment;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AlertDialog;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,13 +11,17 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+
+import com.google.android.material.snackbar.Snackbar;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.listenerInterfaces.FragmentListenerInterface;
 import com.lucagiorgetti.surprix.model.User;
 import com.lucagiorgetti.surprix.utility.DatabaseUtility;
 import com.lucagiorgetti.surprix.utility.SystemUtility;
-import com.mikelau.countrypickerx.Country;
-import com.mikelau.countrypickerx.CountryPickerCallbacks;
 import com.mikelau.countrypickerx.CountryPickerDialog;
 
 import java.util.Objects;
@@ -35,7 +33,7 @@ public class UserSettingsFragment extends Fragment {
     private User currentUser;
     private Context mContext;
     private EditText edtNation;
-    CountryPickerDialog countryPicker = null;
+    private CountryPickerDialog countryPicker = null;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -47,12 +45,7 @@ public class UserSettingsFragment extends Fragment {
         ImageView emailImage = layout.findViewById(R.id.img_reg_email);
         TextView lblPrivacyPolicy = layout.findViewById(R.id.lbl_reg_policy);
 
-        lblPrivacyPolicy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showPrivacyPolicy();
-            }
-        });
+        lblPrivacyPolicy.setOnClickListener(v -> showPrivacyPolicy());
 
         edtUsername.setEnabled(false);
         edtEmail.setEnabled(false);
@@ -79,19 +72,13 @@ public class UserSettingsFragment extends Fragment {
         edtUsername.setText(currentUser.getUsername());
         edtNation.setText(currentUser.getCountry());
 
-        edtNation.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    countryPicker = new CountryPickerDialog(mContext, new CountryPickerCallbacks() {
-                        @Override
-                        public void onCountrySelected(Country country, int flagResId) {
-                            edtNation.setText(country.getCountryName(getApplicationContext()));
-                            countryPicker.dismiss();
-                        }
-                    }, false, 0);
-                    countryPicker.show();
-                }
+        edtNation.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                countryPicker = new CountryPickerDialog(mContext, (country, flagResId) -> {
+                    edtNation.setText(country.getCountryName(getApplicationContext()));
+                    countryPicker.dismiss();
+                }, false, 0);
+                countryPicker.show();
             }
         });
 
@@ -99,31 +86,18 @@ public class UserSettingsFragment extends Fragment {
         lblInfoFirstLogin.setVisibility(View.GONE);
         submit.setText(R.string.save);
 
-        submit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SystemUtility.closeKeyboard(Objects.requireNonNull(getActivity()));
-                String nation = edtNation.getText().toString();
-                DatabaseUtility.updateUser(nation);
-                listener.refreshUser();
-                currentUser = listener.getCurrentRetrievedUser();
-                Snackbar.make(v, R.string.user_added, Snackbar.LENGTH_SHORT).show();
-            }
+        submit.setOnClickListener(v -> {
+            SystemUtility.closeKeyboard(Objects.requireNonNull(getActivity()));
+            String nation = edtNation.getText().toString();
+            DatabaseUtility.updateUser(nation);
+            listener.refreshUser();
+            currentUser = listener.getCurrentRetrievedUser();
+            Snackbar.make(v, R.string.user_added, Snackbar.LENGTH_SHORT).show();
         });
 
-        changePwd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.openChangePwdDialog();
-            }
-        });
+        changePwd.setOnClickListener(v -> listener.openChangePwdDialog());
 
-        deleteUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.openDeleteUserDialog();
-            }
-        });
+        deleteUser.setOnClickListener(v -> listener.openDeleteUserDialog());
         return layout;
     }
 
@@ -138,11 +112,7 @@ public class UserSettingsFragment extends Fragment {
         }
 
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.dialog_positive),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        alertDialog.dismiss();
-                    }
-                });
+                (dialog, which) -> alertDialog.dismiss());
         alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.show();
     }

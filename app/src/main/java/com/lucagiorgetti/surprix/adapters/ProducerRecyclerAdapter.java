@@ -22,7 +22,7 @@ import java.util.ArrayList;
  */
 
 public class ProducerRecyclerAdapter extends RecyclerView.Adapter<ProducerRecyclerAdapter.SetViewHolder> {
-    private ArrayList<Producer> producers = new ArrayList<>();
+    private ArrayList<Producer> producers;
     private ArrayList<Producer> mFilterList;
     private Context ctx;
 
