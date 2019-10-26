@@ -43,7 +43,7 @@ import com.lucagiorgetti.surprix.fragments.ThanksToFragment;
 import com.lucagiorgetti.surprix.fragments.UserSettingsFragment;
 import com.lucagiorgetti.surprix.listenerInterfaces.FragmentListenerInterface;
 import com.lucagiorgetti.surprix.listenerInterfaces.OnGetDataListener;
-import com.lucagiorgetti.surprix.listenerInterfaces.OnGetListListener;
+import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseCallback;
 import com.lucagiorgetti.surprix.model.Colors;
 import com.lucagiorgetti.surprix.model.Fragments;
 import com.lucagiorgetti.surprix.model.Surprise;
@@ -53,6 +53,7 @@ import com.lucagiorgetti.surprix.utility.SystemUtility;
 import com.lucagiorgetti.surprix.utility.TitleHelper;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements
@@ -62,7 +63,6 @@ public class MainActivity extends AppCompatActivity implements
     private static FragmentManager fragmentManager;
     private LoginManager facebookLogin;
     private FirebaseAuth fireAuth;
-    private FirebaseAuth.AuthStateListener fireAuthStateListener;
 
     private User currentUser = null;
     private TextView nav_user;
@@ -78,13 +78,6 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         fireAuth = SurprixApplication.getInstance().getFirebaseAuth();
         facebookLogin = LoginManager.getInstance();
-
-        fireAuthStateListener = firebaseAuth -> {
-            FirebaseUser user = firebaseAuth.getCurrentUser();
-            if (user == null) {
-                SystemUtility.openNewActivityWithFinishing(MainActivity.this, LoginActivity.class, null);
-            }
-        };
 
         if (fireAuth.getCurrentUser() != null) {
             SystemUtility.enableFCM();
@@ -134,20 +127,6 @@ public class MainActivity extends AppCompatActivity implements
                     Toast.makeText(MainActivity.this, getResources().getString(R.string.data_sync_error), Toast.LENGTH_SHORT).show();
                 }
             }, fireAuth);
-        }
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        fireAuth.addAuthStateListener(fireAuthStateListener);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (fireAuthStateListener != null) {
-            fireAuth.removeAuthStateListener(fireAuthStateListener);
         }
     }
 
@@ -435,12 +414,12 @@ public class MainActivity extends AppCompatActivity implements
         final TextView emptyListTxv = view.findViewById(R.id.doubles_dialog_empty_list);
         dialogTitle.setBackgroundColor(ContextCompat.getColor(MainActivity.this, Colors.getHexColor(missing.getSet_producer_color())));
         dialogTitle.setText(String.format(getString(R.string.double_owners_dialog_title), missing.getCode(), missing.getDescription()));
-        mAdapter = new DoublesOwnersListAdapter(MainActivity.this, doubleOwners);
+        mAdapter = new DoublesOwnersListAdapter(MainActivity.this);
         final ListView listView = view.findViewById(R.id.doubles_dialog_list);
         listView.setAdapter(mAdapter);
-        DatabaseUtility.getDoubleOwners(missing.getId(), new OnGetListListener<User>() {
+        DatabaseUtility.getDoubleOwners(missing.getId(), new FirebaseCallback<User>() {
             @Override
-            public void onSuccess(ArrayList<User> users) {
+            public void onSuccess(List<User> users) {
                 if (users != null) {
                     if (!users.isEmpty()) {
                         final ArrayList<User> owners = new ArrayList<>();
@@ -453,7 +432,7 @@ public class MainActivity extends AppCompatActivity implements
                             }
                         }
                         owners.addAll(abroad_owners);
-                        mAdapter = new DoublesOwnersListAdapter(MainActivity.this, owners);
+                        mAdapter = new DoublesOwnersListAdapter(MainActivity.this);
                         emptyListTxv.setVisibility(View.GONE);
                         infoTxv.setVisibility(View.VISIBLE);
                         listView.setAdapter(mAdapter);

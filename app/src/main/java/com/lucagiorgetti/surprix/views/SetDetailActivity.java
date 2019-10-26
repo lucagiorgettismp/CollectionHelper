@@ -14,17 +14,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.adapters.SetDetailRecyclerAdapter;
-import com.lucagiorgetti.surprix.listenerInterfaces.OnGetListListener;
+import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseCallback;
 import com.lucagiorgetti.surprix.model.Surprise;
 import com.lucagiorgetti.surprix.utility.DatabaseUtility;
 import com.lucagiorgetti.surprix.utility.SystemUtility;
 import com.lucagiorgetti.surprix.utility.TitleHelper;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class SetDetailActivity extends AppCompatActivity {
-    ArrayList<Surprise> surprises = new ArrayList<>();
+    List<Surprise> surprises = new ArrayList<>();
     private SetDetailRecyclerAdapter mAdapter;
     private RecyclerView recyclerView;
     private String setId;
@@ -56,14 +57,14 @@ public class SetDetailActivity extends AppCompatActivity {
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(SetDetailActivity.this);
             recyclerView.setLayoutManager(layoutManager);
 
-            mAdapter = new SetDetailRecyclerAdapter(SetDetailActivity.this, surprises);
+            mAdapter = new SetDetailRecyclerAdapter();
             recyclerView.setAdapter(mAdapter);
 
-            DatabaseUtility.getSurprisesBySet(setId, new OnGetListListener<Surprise>() {
+            DatabaseUtility.getSurprisesBySet(setId, new FirebaseCallback<Surprise>() {
                 @Override
-                public void onSuccess(ArrayList<Surprise> surprisesList) {
+                public void onSuccess(List<Surprise> surprisesList) {
                     surprises = surprisesList;
-                    mAdapter = new SetDetailRecyclerAdapter(SetDetailActivity.this, surprises);
+                    mAdapter = new SetDetailRecyclerAdapter();
                     recyclerView.setAdapter(mAdapter);
                 }
 

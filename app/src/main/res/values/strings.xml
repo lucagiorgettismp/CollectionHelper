@@ -154,4 +154,11 @@
     <string name="difficulty">Rarity:</string>
     <string name="default_notification_channel_id">surprix_default</string>
     <string name="default_notification_channel_name">SurprixDefault</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="title_missing_list">Missing list</string>
+    <string name="title_double_list">Double list</string>
+    <string name="title_catalog">Catalog</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

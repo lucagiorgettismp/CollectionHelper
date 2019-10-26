@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.adapters.SetRecyclerAdapter;
-import com.lucagiorgetti.surprix.listenerInterfaces.OnGetListListener;
+import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseCallback;
 import com.lucagiorgetti.surprix.model.Categories;
 import com.lucagiorgetti.surprix.model.Set;
 import com.lucagiorgetti.surprix.utility.DatabaseUtility;
@@ -27,11 +27,12 @@ import com.lucagiorgetti.surprix.utility.TitleHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 
 public class SetsActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener {
 
-    ArrayList<Set> sets = new ArrayList<>();
+    List<Set> sets = new ArrayList<>();
     private SetRecyclerAdapter mAdapter;
     private RecyclerView recyclerView;
     private ProgressBar progress;
@@ -44,7 +45,6 @@ public class SetsActivity extends AppCompatActivity implements SearchView.OnQuer
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
@@ -61,7 +61,7 @@ public class SetsActivity extends AppCompatActivity implements SearchView.OnQuer
             recyclerView.setHasFixedSize(true);
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(SetsActivity.this);
             recyclerView.setLayoutManager(layoutManager);
-            mAdapter = new SetRecyclerAdapter(SetsActivity.this, sets);
+            mAdapter = new SetRecyclerAdapter();
             recyclerView.setAdapter(mAdapter);
             recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(SetsActivity.this, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
                         @Override
@@ -76,9 +76,9 @@ public class SetsActivity extends AppCompatActivity implements SearchView.OnQuer
                         }
                     })
             );
-            DatabaseUtility.getSetsFromYear(yearId, new OnGetListListener<Set>() {
+            DatabaseUtility.getSetsFromYear(yearId, new FirebaseCallback<Set>() {
                 @Override
-                public void onSuccess(ArrayList<Set> setsList) {
+                public void onSuccess(List<Set> setsList) {
                     if (setsList != null) {
                         Collections.sort(setsList, new Set.SortBySetName());
                     }
@@ -99,7 +99,7 @@ public class SetsActivity extends AppCompatActivity implements SearchView.OnQuer
                     handpaintedSets.addAll(compoSets);
                     sets = handpaintedSets;
 
-                    mAdapter = new SetRecyclerAdapter(SetsActivity.this, sets);
+                    mAdapter = new SetRecyclerAdapter();
                     recyclerView.setAdapter(mAdapter);
                     progress.setVisibility(View.GONE);
                 }
@@ -160,13 +160,13 @@ public class SetsActivity extends AppCompatActivity implements SearchView.OnQuer
                 filteredValues.remove(value);
             }
         }
-        mAdapter = new SetRecyclerAdapter(SetsActivity.this, filteredValues);
+        mAdapter = new SetRecyclerAdapter();
         recyclerView.setAdapter(mAdapter);
         return false;
     }
 
     public void resetSearch() {
-        mAdapter = new SetRecyclerAdapter(SetsActivity.this, sets);
+        mAdapter = new SetRecyclerAdapter();
         recyclerView.setAdapter(mAdapter);
     }
 

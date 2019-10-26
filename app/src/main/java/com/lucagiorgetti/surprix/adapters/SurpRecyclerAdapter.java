@@ -1,15 +1,17 @@
 package com.lucagiorgetti.surprix.adapters;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -21,7 +23,7 @@ import com.lucagiorgetti.surprix.model.Colors;
 import com.lucagiorgetti.surprix.model.ExtraLocales;
 import com.lucagiorgetti.surprix.model.Surprise;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -30,14 +32,24 @@ import java.util.Locale;
  * Created by Luca on 28/10/2017.
  */
 
-public class SurpRecyclerAdapter extends RecyclerView.Adapter<SurpRecyclerAdapter.SurpViewHolder> {
-    private ArrayList<Surprise> surprises;
-    private Context ctx;
+public class SurpRecyclerAdapter extends ListAdapter<Surprise, SurpRecyclerAdapter.SurpViewHolder> {
+    //private List<Surprise> surprises;
 
-    public SurpRecyclerAdapter(Context context, ArrayList<Surprise> surpList) {
-        surprises = surpList;
-        ctx = context;
+    public SurpRecyclerAdapter() {
+        super(DIFF_CALLBACK);
     }
+
+    private static final DiffUtil.ItemCallback<Surprise> DIFF_CALLBACK = new DiffUtil.ItemCallback<Surprise>() {
+        @Override
+        public boolean areItemsTheSame(@NonNull Surprise oldItem, @NonNull Surprise newItem) {
+            return oldItem.getId().equals(newItem.getId());
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull Surprise oldItem, @NonNull Surprise newItem) {
+            return oldItem.getId().equals(newItem.getId());
+        }
+    };
 
     @NonNull
     @Override
@@ -50,7 +62,7 @@ public class SurpRecyclerAdapter extends RecyclerView.Adapter<SurpRecyclerAdapte
     @Override
     public void onBindViewHolder(@NonNull SurpViewHolder holder, int position) {
 
-        Surprise surp = surprises.get(position);
+        Surprise surp = getItem(position);
         holder.vCode.setText(surp.getCode());
         holder.vSetName.setText(surp.getSet_name());
         holder.vDescription.setText(surp.getDescription());
@@ -67,20 +79,20 @@ public class SurpRecyclerAdapter extends RecyclerView.Adapter<SurpRecyclerAdapte
 
         holder.vNation.setText(nation);
 
-        holder.vLayout.setBackgroundColor(ContextCompat.getColor(ctx, Colors.getHexColor(surp.getSet_producer_color())));
+        holder.vLayout.setBackgroundColor(ContextCompat.getColor(SurprixApplication.getSurprixContext(), Colors.getHexColor(surp.getSet_producer_color())));
 
         String path = surp.getImg_path();
         if (path.startsWith("gs")) {
             FirebaseStorage storage = SurprixApplication.getInstance().getFirebaseStorage();
             StorageReference gsReference = storage.getReferenceFromUrl(path);
-            Glide.with(ctx).
+            Glide.with(SurprixApplication.getSurprixContext()).
                     load(gsReference).
                     apply(new RequestOptions()
                             .placeholder(R.drawable.ic_surprise_grey))
                     .into(holder.vImage);
 
         } else {
-            Glide.with(ctx).
+            Glide.with(SurprixApplication.getSurprixContext()).
                     load(path).
                     apply(new RequestOptions()
                             .placeholder(R.drawable.ic_surprise_grey))
@@ -118,23 +130,12 @@ public class SurpRecyclerAdapter extends RecyclerView.Adapter<SurpRecyclerAdapte
         }
     }
 
-    @Override
-    public int getItemCount() {
-        if (surprises == null) {
-            return 0;
-        }
-        return surprises.size();
-    }
-
     public Surprise getItemAtPosition(int position) {
-        return this.surprises.get(position);
+        return getItem(position);
     }
 
-    public void removeItem(int position) {
-        surprises.remove(position);
-        notifyItemRemoved(position);
-        notifyItemRangeChanged(position, surprises.size());
-        notifyDataSetChanged();
+    public void setMissingList(List<Surprise> missingList) {
+        missingList.
     }
 
     class SurpViewHolder extends RecyclerView.ViewHolder {

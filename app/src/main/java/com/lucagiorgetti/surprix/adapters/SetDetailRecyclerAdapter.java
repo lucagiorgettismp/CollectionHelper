@@ -1,10 +1,6 @@
 package com.lucagiorgetti.surprix.adapters;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +8,13 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.lucagiorgetti.surprix.R;
@@ -22,7 +23,7 @@ import com.lucagiorgetti.surprix.model.Colors;
 import com.lucagiorgetti.surprix.model.Surprise;
 import com.lucagiorgetti.surprix.utility.DatabaseUtility;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Adapter for showing a list of Surprises from a selected set.
@@ -32,13 +33,7 @@ import java.util.ArrayList;
 
 public class SetDetailRecyclerAdapter extends RecyclerView.Adapter<SetDetailRecyclerAdapter.SetDetailViewHolder> {
 
-    private ArrayList<Surprise> items;
-    private Context ctx;
-
-    public SetDetailRecyclerAdapter(Context context, ArrayList<Surprise> surpList) {
-        items = surpList;
-        ctx = context;
-    }
+    private List<Surprise> items;
 
     public Surprise getItemAtPosition(int position) {
         return this.items.get(position);
@@ -71,6 +66,7 @@ public class SetDetailRecyclerAdapter extends RecyclerView.Adapter<SetDetailRecy
     @Override
     public void onBindViewHolder(@NonNull SetDetailViewHolder holder, int position) {
         Surprise s = items.get(position);
+        Context ctx = SurprixApplication.getSurprixContext();
         holder.vCode.setText(s.getCode());
         holder.vDescription.setText(s.getDescription());
         holder.vLayout.setBackgroundColor(ContextCompat.getColor(ctx, Colors.getHexColor(s.getSet_producer_color())));
@@ -130,6 +126,10 @@ public class SetDetailRecyclerAdapter extends RecyclerView.Adapter<SetDetailRecy
             return 0;
         }
         return items.size();
+    }
+
+    public void setSurprises(List<Surprise> surprises) {
+        this.items = surprises;
     }
 
     static class SetDetailViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

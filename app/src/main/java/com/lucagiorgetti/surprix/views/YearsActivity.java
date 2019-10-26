@@ -11,13 +11,16 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.adapters.YearRecyclerAdapter;
-import com.lucagiorgetti.surprix.listenerInterfaces.OnGetListListener;
+import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseCallback;
 import com.lucagiorgetti.surprix.model.Year;
+import com.lucagiorgetti.surprix.ui.catalog.CatalogFragmentDirections;
+import com.lucagiorgetti.surprix.ui.year.YearFragmentDirections;
 import com.lucagiorgetti.surprix.utility.DatabaseUtility;
 import com.lucagiorgetti.surprix.utility.RecyclerItemClickListener;
 import com.lucagiorgetti.surprix.utility.SystemUtility;
@@ -25,6 +28,7 @@ import com.lucagiorgetti.surprix.utility.TitleHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class YearsActivity extends AppCompatActivity {
     ArrayList<Year> years = new ArrayList<>();
@@ -41,7 +45,6 @@ public class YearsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
@@ -54,12 +57,13 @@ public class YearsActivity extends AppCompatActivity {
             recyclerView.setHasFixedSize(true);
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(YearsActivity.this);
             recyclerView.setLayoutManager(layoutManager);
-            mAdapter = new YearRecyclerAdapter(YearsActivity.this, years);
+            mAdapter = new YearRecyclerAdapter();
             recyclerView.setAdapter(mAdapter);
             recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(YearsActivity.this, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
                         @Override
                         public void onItemClick(View view, int position) {
                             Year year = mAdapter.getItemAtPosition(position);
+
                             onYearClicked(year.getId(), year.getYear(), producer_name);
                             SystemUtility.closeKeyboard(YearsActivity.this);
                         }
@@ -72,11 +76,11 @@ public class YearsActivity extends AppCompatActivity {
                         }
                     })
             );
-            DatabaseUtility.getYearsFromProducer(producer_id, new OnGetListListener<Year>() {
+            DatabaseUtility.getYearsFromProducer(producer_id, new FirebaseCallback<Year>() {
                 @Override
-                public void onSuccess(ArrayList<Year> yearsList) {
+                public void onSuccess(List<Year> yearsList) {
                     Collections.sort(yearsList, new Year.SortByDescYear());
-                    mAdapter = new YearRecyclerAdapter(YearsActivity.this, yearsList);
+                    mAdapter = new YearRecyclerAdapter();
                     recyclerView.setAdapter(mAdapter);
                     progress.setVisibility(View.GONE);
                 }

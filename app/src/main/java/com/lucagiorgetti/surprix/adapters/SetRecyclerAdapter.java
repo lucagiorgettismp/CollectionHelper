@@ -1,14 +1,15 @@
 package com.lucagiorgetti.surprix.adapters;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -20,7 +21,7 @@ import com.lucagiorgetti.surprix.model.Colors;
 import com.lucagiorgetti.surprix.model.ExtraLocales;
 import com.lucagiorgetti.surprix.model.Set;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -30,15 +31,7 @@ import java.util.Locale;
  */
 
 public class SetRecyclerAdapter extends RecyclerView.Adapter<SetRecyclerAdapter.SetViewHolder> {
-    private ArrayList<Set> sets;
-    private ArrayList<Set> mStringFilterList;
-    private Context ctx;
-
-    public SetRecyclerAdapter(Context context, ArrayList<Set> setsList) {
-        sets = setsList;
-        mStringFilterList = setsList;
-        ctx = context;
-    }
+    private List<Set> sets;
 
     @NonNull
     @Override
@@ -51,6 +44,7 @@ public class SetRecyclerAdapter extends RecyclerView.Adapter<SetRecyclerAdapter.
     public void onBindViewHolder(@NonNull SetViewHolder holder, int position) {
         Set set = sets.get(position);
         holder.vName.setText(set.getName());
+        Context ctx = SurprixApplication.getSurprixContext();
 
         String nation;
         if (ExtraLocales.isExtraLocale(set.getNation())) {
@@ -83,11 +77,18 @@ public class SetRecyclerAdapter extends RecyclerView.Adapter<SetRecyclerAdapter.
 
     @Override
     public int getItemCount() {
-        return mStringFilterList.size();
+        if (sets != null){
+            return sets.size();
+        }
+        return 0;
     }
 
     public Set getItemAtPosition(int position) {
         return this.sets.get(position);
+    }
+
+    public void setSets(List<Set> sets) {
+        this.sets = sets;
     }
 
     static class SetViewHolder extends RecyclerView.ViewHolder {

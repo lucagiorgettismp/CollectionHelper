@@ -23,14 +23,16 @@ public class DoublesOwnersListAdapter extends BaseAdapter {
     private ArrayList<User> collectors;
     private LayoutInflater inflater;
 
-    public DoublesOwnersListAdapter(Context context, ArrayList<User> collectors) {
-        this.collectors = collectors;
+    public DoublesOwnersListAdapter(Context context) {
         this.inflater = LayoutInflater.from(context);
     }
 
     @Override
     public int getCount() {
-        return collectors.size();
+        if (collectors != null){
+            return collectors.size();
+        }
+        return 0;
     }
 
     @Override
@@ -53,5 +55,9 @@ public class DoublesOwnersListAdapter extends BaseAdapter {
         vUsername.setText(user.getUsername());
         vCountry.setText(user.getCountry());
         return v;
+    }
+
+    public void addOwners(ArrayList<User> owners) {
+        this.collectors = owners;
     }
 }

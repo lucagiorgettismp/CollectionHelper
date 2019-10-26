@@ -1,9 +1,9 @@
 package com.lucagiorgetti.surprix.utility;
 
+import android.view.View;
+
 import androidx.annotation.NonNull;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -11,15 +11,19 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.lucagiorgetti.surprix.SurprixApplication;
+import com.lucagiorgetti.surprix.adapters.ProducerRecyclerAdapter;
 import com.lucagiorgetti.surprix.listenerInterfaces.OnGetDataListener;
-import com.lucagiorgetti.surprix.listenerInterfaces.OnGetListListener;
+import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseCallback;
 import com.lucagiorgetti.surprix.listenerInterfaces.OnGetResultListener;
+import com.lucagiorgetti.surprix.model.Producer;
 import com.lucagiorgetti.surprix.model.Set;
 import com.lucagiorgetti.surprix.model.Surprise;
 import com.lucagiorgetti.surprix.model.User;
 import com.lucagiorgetti.surprix.model.Year;
+import com.lucagiorgetti.surprix.views.ProducersActivity;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -103,7 +107,7 @@ public class DatabaseUtility {
         reference.child("surprise_doubles").child(surpId).child(username).setValue(null);
     }
 
-    public static void getDoubleOwners(String surpId, final OnGetListListener<User> listen) {
+    public static void getDoubleOwners(String surpId, final FirebaseCallback<User> listen) {
         listen.onStart();
         final ArrayList<User> owners = new ArrayList<>();
         reference.child("surprise_doubles").child(surpId).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -139,7 +143,7 @@ public class DatabaseUtility {
         });
     }
 
-    public static void getDoublesForUsername(final OnGetListListener<Surprise> listen) {
+    public static void getDoublesForUsername(final FirebaseCallback<Surprise> listen) {
         listen.onStart();
         final ArrayList<Surprise> doubles = new ArrayList<>();
 
@@ -175,7 +179,7 @@ public class DatabaseUtility {
         });
     }
 
-    public static void getYearsFromProducer(String producerId, final OnGetListListener<Year> listen) {
+    public static void getYearsFromProducer(String producerId, final FirebaseCallback<Year> listen) {
         listen.onStart();
 
         final ArrayList<Year> years = new ArrayList<>();
@@ -212,12 +216,22 @@ public class DatabaseUtility {
         });
     }
 
-    public static void getProducers(final OnGetDataListener listen) {
+    public static void getProducers(final FirebaseCallback<Producer> listen) {
         listen.onStart();
+
+        final List<Producer> producers = new ArrayList<>();
+
         reference.child("producers").orderByChild("order").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                listen.onSuccess(dataSnapshot);
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot d : dataSnapshot.getChildren()) {
+                        Producer p = d.getValue(Producer.class);
+                        producers.add(p);
+                    }
+                }
+
+                listen.onSuccess(producers);
             }
 
             @Override
@@ -227,7 +241,7 @@ public class DatabaseUtility {
         });
     }
 
-    public static void getMissingsForUsername(final OnGetListListener<Surprise> listen) {
+    public static void getMissingsForUsername(final FirebaseCallback<Surprise> listen) {
         listen.onStart();
         if (username == null) {
             username = SystemUtility.getLoggedUserUsername();
@@ -267,7 +281,7 @@ public class DatabaseUtility {
         });
     }
 
-    public static void getSetsFromYear(String yearId, final OnGetListListener<Set> listen) {
+    public static void getSetsFromYear(String yearId, final FirebaseCallback<Set> listen) {
         listen.onStart();
 
         final ArrayList<Set> sets = new ArrayList<>();
@@ -306,7 +320,7 @@ public class DatabaseUtility {
         });
     }
 
-    public static void getSurprisesBySet(String setClicked, final OnGetListListener<Surprise> listen) {
+    public static void getSurprisesBySet(String setClicked, final FirebaseCallback<Surprise> listen) {
         listen.onStart();
         final ArrayList<Surprise> surprises = new ArrayList<>();
 
@@ -456,9 +470,9 @@ public class DatabaseUtility {
         if (user != null) {
             reference.child("emails").child(Objects.requireNonNull(user.getEmail()).replaceAll("\\.", ",")).setValue(null);
         }
-        getDoublesForUsername(new OnGetListListener<Surprise>() {
+        getDoublesForUsername(new FirebaseCallback<Surprise>() {
             @Override
-            public void onSuccess(ArrayList<Surprise> surprises) {
+            public void onSuccess(List<Surprise> surprises) {
                 if (surprises != null) {
                     for (Surprise double_surp : surprises) {
                         removeDouble(double_surp.getId());

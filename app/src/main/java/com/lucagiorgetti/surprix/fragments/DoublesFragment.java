@@ -30,19 +30,20 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.adapters.SurpRecyclerAdapter;
 import com.lucagiorgetti.surprix.listenerInterfaces.FragmentListenerInterface;
-import com.lucagiorgetti.surprix.listenerInterfaces.OnGetListListener;
+import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseCallback;
 import com.lucagiorgetti.surprix.model.Surprise;
 import com.lucagiorgetti.surprix.utility.DatabaseUtility;
 import com.lucagiorgetti.surprix.utility.SystemUtility;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 public class DoublesFragment extends Fragment implements SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener, View.OnClickListener {
     private FragmentListenerInterface listener;
 
-    private ArrayList<Surprise> doubles = new ArrayList<>();
+    private List<Surprise> doubles = new ArrayList<>();
     private SurpRecyclerAdapter mAdapter;
     private RecyclerView recyclerView;
     private Context mContext;
@@ -67,7 +68,7 @@ public class DoublesFragment extends Fragment implements SearchView.OnQueryTextL
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mContext);
         recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new SurpRecyclerAdapter(mContext, doubles);
+        mAdapter = new SurpRecyclerAdapter();
         recyclerView.setAdapter(mAdapter);
         if (doubles != null && !doubles.isEmpty()) {
             emptyList.setVisibility(View.GONE);
@@ -102,7 +103,7 @@ public class DoublesFragment extends Fragment implements SearchView.OnQueryTextL
                 alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.dialog_positive),
                         (dialog, which) -> {
                             listener.onSwipeRemoveDouble(s.getId());
-                            mAdapter.removeItem(position);
+                            mAdapter.notifyItemRemoved(position);
                             String asd = searchView.getQuery().toString();
                             if (!asd.isEmpty()) {
                                 FragmentTransaction ft = null;
@@ -200,13 +201,13 @@ public class DoublesFragment extends Fragment implements SearchView.OnQueryTextL
                 filteredValues.remove(value);
             }
         }
-        mAdapter = new SurpRecyclerAdapter(mContext, filteredValues);
+        mAdapter = new SurpRecyclerAdapter();
         recyclerView.setAdapter(mAdapter);
         return false;
     }
 
     private void resetSearch() {
-        mAdapter = new SurpRecyclerAdapter(mContext, doubles);
+        mAdapter = new SurpRecyclerAdapter();
         recyclerView.setAdapter(mAdapter);
     }
 
@@ -242,17 +243,17 @@ public class DoublesFragment extends Fragment implements SearchView.OnQueryTextL
 
 
     private void getData() {
-        mAdapter = new SurpRecyclerAdapter(mContext, null);
+        mAdapter = new SurpRecyclerAdapter();
         recyclerView.setAdapter(mAdapter);
 
-        DatabaseUtility.getDoublesForUsername(new OnGetListListener<Surprise>() {
+        DatabaseUtility.getDoublesForUsername(new FirebaseCallback<Surprise>() {
             @Override
-            public void onSuccess(ArrayList<Surprise> surprises) {
+            public void onSuccess(List<Surprise> surprises) {
                 doubles = surprises;
 
                 if (doubles != null) {
                     Collections.sort(doubles, new Surprise.SortByCode());
-                    mAdapter = new SurpRecyclerAdapter(mContext, doubles);
+                    mAdapter = new SurpRecyclerAdapter();
                     recyclerView.setAdapter(mAdapter);
                     if (listener != null) {
                         listener.setDoublesTitle(doubles.size());

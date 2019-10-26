@@ -1,19 +1,20 @@
 package com.lucagiorgetti.surprix.adapters;
 
-import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.lucagiorgetti.surprix.R;
+import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.model.Colors;
 import com.lucagiorgetti.surprix.model.Producer;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Adapter for showing a list of Producers.
@@ -22,15 +23,7 @@ import java.util.ArrayList;
  */
 
 public class ProducerRecyclerAdapter extends RecyclerView.Adapter<ProducerRecyclerAdapter.SetViewHolder> {
-    private ArrayList<Producer> producers;
-    private ArrayList<Producer> mFilterList;
-    private Context ctx;
-
-    public ProducerRecyclerAdapter(Context context, ArrayList<Producer> producersList) {
-        producers = producersList;
-        mFilterList = producersList;
-        ctx = context;
-    }
+    private List<Producer> producers;
 
     @NonNull
     @Override
@@ -45,16 +38,23 @@ public class ProducerRecyclerAdapter extends RecyclerView.Adapter<ProducerRecycl
         holder.vName.setText(producer.getName());
         holder.vProduct.setText(producer.getProduct());
 
-        holder.vLayout.setBackgroundColor(ContextCompat.getColor(ctx, Colors.getHexColor(producer.getColor())));
+        holder.vLayout.setBackgroundColor(ContextCompat.getColor(SurprixApplication.getSurprixContext(), Colors.getHexColor(producer.getColor())));
     }
 
     @Override
     public int getItemCount() {
-        return mFilterList.size();
+        if (producers == null) {
+            return 0;
+        }
+        return producers.size();
     }
 
     public Producer getItemAtPosition(int position) {
         return this.producers.get(position);
+    }
+
+    public void setYears(List<Producer> producers) {
+        this.producers = producers;
     }
 
     static class SetViewHolder extends RecyclerView.ViewHolder {

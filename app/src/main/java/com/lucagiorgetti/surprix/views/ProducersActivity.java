@@ -11,10 +11,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.database.DataSnapshot;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.adapters.ProducerRecyclerAdapter;
-import com.lucagiorgetti.surprix.listenerInterfaces.OnGetDataListener;
+import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseCallback;
 import com.lucagiorgetti.surprix.model.Producer;
 import com.lucagiorgetti.surprix.utility.DatabaseUtility;
 import com.lucagiorgetti.surprix.utility.RecyclerItemClickListener;
@@ -22,6 +21,7 @@ import com.lucagiorgetti.surprix.utility.SystemUtility;
 import com.lucagiorgetti.surprix.utility.TitleHelper;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ProducersActivity extends AppCompatActivity {
     ArrayList<Producer> producers = new ArrayList<>();
@@ -37,7 +37,6 @@ public class ProducersActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
@@ -47,7 +46,7 @@ public class ProducersActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(ProducersActivity.this);
         recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new ProducerRecyclerAdapter(ProducersActivity.this, producers);
+        mAdapter = new ProducerRecyclerAdapter();
         recyclerView.setAdapter(mAdapter);
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(ProducersActivity.this, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
@@ -66,24 +65,20 @@ public class ProducersActivity extends AppCompatActivity {
                     }
                 })
         );
-        DatabaseUtility.getProducers(new OnGetDataListener() {
-            @Override
-            public void onSuccess(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    for (DataSnapshot d : dataSnapshot.getChildren()) {
-                        Producer p = d.getValue(Producer.class);
-                        producers.add(p);
-                        mAdapter = new ProducerRecyclerAdapter(ProducersActivity.this, producers);
-                        recyclerView.setAdapter(mAdapter);
-                        progress.setVisibility(View.GONE);
-                    }
-                }
-            }
+        DatabaseUtility.getProducers(new FirebaseCallback<Producer>() {
+
 
             @Override
             public void onStart() {
                 producers.clear();
                 progress.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onSuccess(List<Producer> items) {
+                mAdapter = new ProducerRecyclerAdapter();
+                recyclerView.setAdapter(mAdapter);
+                progress.setVisibility(View.GONE);
             }
 
             @Override

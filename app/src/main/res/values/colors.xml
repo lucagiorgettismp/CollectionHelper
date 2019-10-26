@@ -38,5 +38,7 @@
 
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorTransparentWhite">#cccccc</color>
+
+    <color name="newColor">#006699</color>
 </resources>
 
