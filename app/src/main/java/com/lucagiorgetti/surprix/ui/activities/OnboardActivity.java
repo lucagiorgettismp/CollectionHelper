@@ -1,4 +1,4 @@
-package com.lucagiorgetti.surprix.views;
+package com.lucagiorgetti.surprix.ui.activities;
 
 import android.os.Bundle;
 import androidx.viewpager.widget.ViewPager;

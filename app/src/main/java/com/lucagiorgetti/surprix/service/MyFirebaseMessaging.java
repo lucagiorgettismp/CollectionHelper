@@ -10,8 +10,8 @@ import androidx.core.app.NotificationCompat;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.lucagiorgetti.surprix.ui.activities.MainActivity;
 import com.lucagiorgetti.surprix.R;
-import com.lucagiorgetti.surprix.views.MainActivity;
 
 import java.util.Objects;
 

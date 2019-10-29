@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,6 +25,7 @@ import com.lucagiorgetti.surprix.model.Colors;
 import com.lucagiorgetti.surprix.model.ExtraLocales;
 import com.lucagiorgetti.surprix.model.Surprise;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -32,7 +35,8 @@ import java.util.Locale;
  * Created by Luca on 28/10/2017.
  */
 
-public class SurpRecyclerAdapter extends ListAdapter<Surprise, SurpRecyclerAdapter.SurpViewHolder> {
+public class SurpRecyclerAdapter extends ListAdapter<Surprise, SurpRecyclerAdapter.SurpViewHolder>  implements Filterable {
+    private List<Surprise> filterableList;
     //private List<Surprise> surprises;
 
     public SurpRecyclerAdapter() {
@@ -134,10 +138,50 @@ public class SurpRecyclerAdapter extends ListAdapter<Surprise, SurpRecyclerAdapt
         return getItem(position);
     }
 
-    public void setMissingList(List<Surprise> missingList) {
-        missingList.
+    @Override
+    public Filter getFilter() {
+        return filter;
     }
 
+    private Filter filter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+            List<Surprise> filteredList = new ArrayList<>();
+
+            if (charSequence == null || charSequence.length() == 0){
+                filteredList.addAll(filterableList);
+            } else {
+                String pattern = charSequence.toString().toLowerCase().trim();
+
+                for (Surprise surprise: filterableList){
+                    if (surprise.getCode().toLowerCase().contains(pattern)
+                            || surprise.getDescription().toLowerCase().contains(pattern)
+                            || surprise.getSet_name().toLowerCase().contains(pattern)){
+                        filteredList.add(surprise);
+                    }
+                }
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            submitList((List<Surprise>)filterResults.values);
+        }
+    };
+
+    public void setFilterableList(List<Surprise> missingList) {
+        this.filterableList = missingList;
+    }
+
+    public void removeFilterableItem(Surprise surprise) {
+        this.filterableList.remove(surprise);
+    }
+    
     class SurpViewHolder extends RecyclerView.ViewHolder {
         TextView vCode;
         TextView vSetName;

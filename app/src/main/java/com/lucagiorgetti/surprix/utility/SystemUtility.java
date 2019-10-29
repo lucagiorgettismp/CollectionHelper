@@ -18,7 +18,9 @@ import android.widget.Toast;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
-import com.lucagiorgetti.surprix.views.OnboardActivity;
+import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseCallback;
+import com.lucagiorgetti.surprix.model.User;
+import com.lucagiorgetti.surprix.ui.activities.OnboardActivity;
 
 /**
  * Utility which contain all the implementations of methods which needs a connection with Firebase Database.
@@ -30,8 +32,6 @@ public class SystemUtility {
     public static final String FIRST_TIME_YEAR_HELP_SHOW = "showYearHelp";
     public static final String FIRST_TIME_SET_HELP_SHOW = "showSetHelp";
     public static final String PRIVACY_POLICY_ACCEPTED = "privacyPolicyAccepted";
-    public static final String USER_USERNAME = "loggedUsername";
-    public static final String USER_EMAIL = "loggedEmail";
     private static final String TAG = "SystemUtility";
 
     public static boolean checkNetworkAvailability(Context context) {
@@ -145,16 +145,30 @@ public class SystemUtility {
         context.startActivity(intent);
     }
 
-    public static void writeUserInfo(String username, String email) {
-        Context applicationContext = SurprixApplication.getSurprixContext();
-        SharedPreferences.Editor edit = PreferenceManager.getDefaultSharedPreferences(applicationContext).edit();
-        edit.putString(USER_USERNAME, username);
-        edit.putString(USER_EMAIL, email);
-        edit.apply();
+    public static void setSessionUser(String email, FirebaseCallback listener) {
+        DatabaseUtility.getCurrentUser(new FirebaseCallback<User>() {
+            @Override
+            public void onSuccess(User currentUser) {
+                if (currentUser != null) {
+                    SurprixApplication.getInstance().setUser(currentUser);
+                    DatabaseUtility.setUsername(currentUser.getUsername());
+                    listener.onSuccess(null);
+                }
+            }
+
+            @Override
+            public void onStart() {
+                listener.onStart();
+            }
+
+            @Override
+            public void onFailure() {
+                listener.onFailure();
+            }
+        }, email);
     }
 
-    static String getLoggedUserUsername() {
-        Context applicationContext = SurprixApplication.getSurprixContext();
-        return PreferenceManager.getDefaultSharedPreferences(applicationContext).getString(USER_USERNAME, null);
+    public static void removeSessionUser() {
+        SurprixApplication.getInstance().setUser(null);
     }
 }

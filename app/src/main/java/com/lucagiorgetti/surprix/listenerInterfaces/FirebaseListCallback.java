@@ -2,10 +2,10 @@ package com.lucagiorgetti.surprix.listenerInterfaces;
 
 import java.util.List;
 
-public interface FirebaseCallback<T> {
+public interface FirebaseListCallback<T> {
     void onStart();
 
-    void onSuccess(T item);
+    void onSuccess(List<T> items);
 
     void onFailure();
 }

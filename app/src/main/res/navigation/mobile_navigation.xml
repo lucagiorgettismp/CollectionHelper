@@ -52,7 +52,6 @@
         <action
             android:id="@+id/setSelectedAction"
             app:destination="@id/navigation_set_detail"
-            app:popUpTo="@+id/navigation_set_list"
             app:popUpToInclusive="false" />
     </fragment>
     <fragment

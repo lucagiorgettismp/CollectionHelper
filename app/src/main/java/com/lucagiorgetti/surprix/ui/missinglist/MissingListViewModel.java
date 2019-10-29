@@ -1,11 +1,12 @@
 package com.lucagiorgetti.surprix.ui.missinglist;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
-import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseCallback;
+import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseListCallback;
 import com.lucagiorgetti.surprix.model.Surprise;
 import com.lucagiorgetti.surprix.ui.BaseViewModel;
 import com.lucagiorgetti.surprix.utility.DatabaseUtility;
@@ -31,7 +32,7 @@ public class MissingListViewModel extends BaseViewModel {
     }
 
     public void loadMissingSurprises() {
-        DatabaseUtility.getMissingsForUsername(new FirebaseCallback<Surprise>() {
+        DatabaseUtility.getMissingsForUsername(new FirebaseListCallback<Surprise>() {
             @Override
             public void onStart() {
                 setLoading(true);

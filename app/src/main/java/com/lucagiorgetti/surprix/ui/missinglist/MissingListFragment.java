@@ -10,10 +10,14 @@ import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -30,7 +34,7 @@ import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.adapters.DoublesOwnersListAdapter;
 import com.lucagiorgetti.surprix.adapters.SurpRecyclerAdapter;
-import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseCallback;
+import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseListCallback;
 import com.lucagiorgetti.surprix.model.Colors;
 import com.lucagiorgetti.surprix.model.Surprise;
 import com.lucagiorgetti.surprix.model.User;
@@ -43,26 +47,31 @@ import java.util.Objects;
 
 public class MissingListFragment extends Fragment {
     private MissingListViewModel missingListViewModel;
+    private SurpRecyclerAdapter mAdapter;
+    SearchView searchView;
     Paint p = new Paint();
+    View root;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         missingListViewModel =
                 ViewModelProviders.of(this).get(MissingListViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_missing_list, container, false);
+        if (root == null) {
+            root = inflater.inflate(R.layout.fragment_missing_list, container, false);
+        }
         View emptyList = root.findViewById(R.id.missing_empty_list);
         ProgressBar progress = root.findViewById(R.id.missing_loading);
         RecyclerView recyclerView = root.findViewById(R.id.missing_recycler);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
-        SurpRecyclerAdapter mAdapter = new SurpRecyclerAdapter();
+        mAdapter = new SurpRecyclerAdapter();
         recyclerView.setAdapter(mAdapter);
 
         missingListViewModel.getMissingSurprises().observe(this, missingList -> {
-            emptyList.setVisibility(missingList.isEmpty() ? View.VISIBLE : View.GONE);
+            emptyList.setVisibility(missingList == null || missingList.isEmpty() ? View.VISIBLE : View.GONE);
             mAdapter.submitList(missingList);
-            mAdapter.notifyDataSetChanged();
+            mAdapter.setFilterableList(missingList);
         });
 
         missingListViewModel.isLoading().observe(this, isLoading -> {
@@ -70,7 +79,29 @@ public class MissingListFragment extends Fragment {
         });
 
         initSwipe(recyclerView);
+        setHasOptionsMenu(true);
         return root;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.search_menu, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        searchView = (SearchView) searchItem.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                mAdapter.getFilter().filter(s);
+                return false;
+            }
+        });
+        searchView.setQueryHint(getString(R.string.search));
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     private void initSwipe( RecyclerView recyclerView) {
@@ -94,11 +125,8 @@ public class MissingListFragment extends Fragment {
                         alertDialog.setMessage(getString(R.string.remove_missing_dialog_text) + " " + s.getDescription() + "?");
                         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.dialog_positive),
                                 (dialog, which) -> {
-                                    mAdapter.notifyItemRemoved(position);
-
+                                    deleteSurprise(mAdapter, position);
                                     alertDialog.dismiss();
-
-                                    //mAdapter.notifyDataSetChanged();
                                 });
                         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.dialog_negative),
                                 (dialog, which) -> {
@@ -125,7 +153,7 @@ public class MissingListFragment extends Fragment {
 
                     User currentUser = SurprixApplication.getInstance().getCurrentUser();
                     listView.setAdapter(adapter);
-                    DatabaseUtility.getDoubleOwners(missing.getId(), new FirebaseCallback<User>() {
+                    DatabaseUtility.getDoubleOwners(missing.getId(), new FirebaseListCallback<User>() {
                         @Override
                         public void onSuccess(List<User> users) {
                             if (users != null) {
@@ -229,5 +257,18 @@ public class MissingListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    private void deleteSurprise(SurpRecyclerAdapter mAdapter, int position) {
+        Surprise surprise = mAdapter.getItemAtPosition(position);
+        mAdapter.removeFilterableItem(surprise);
+
+        CharSequence query = searchView.getQuery();
+        if ( query != null && query.length() != 0 ){
+            mAdapter.getFilter().filter(query);
+        } else  {
+            mAdapter.notifyItemRemoved(position);
+        }
+        DatabaseUtility.removeMissing(surprise.getId());
     }
 }

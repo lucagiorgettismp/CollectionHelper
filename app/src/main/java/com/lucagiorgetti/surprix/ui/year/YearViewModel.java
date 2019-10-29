@@ -5,7 +5,7 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
-import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseCallback;
+import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseListCallback;
 import com.lucagiorgetti.surprix.model.Year;
 import com.lucagiorgetti.surprix.ui.BaseViewModel;
 import com.lucagiorgetti.surprix.utility.DatabaseUtility;
@@ -31,7 +31,7 @@ public class YearViewModel extends BaseViewModel {
     }
 
     private void loadYears(String producerId) {
-        DatabaseUtility.getYearsFromProducer(producerId, new FirebaseCallback<Year>() {
+        DatabaseUtility.getYearsFromProducer(producerId, new FirebaseListCallback<Year>() {
             @Override
             public void onStart() {
                 setLoading(true);

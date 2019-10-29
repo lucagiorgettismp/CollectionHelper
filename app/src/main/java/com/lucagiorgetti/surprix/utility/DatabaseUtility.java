@@ -1,7 +1,5 @@
 package com.lucagiorgetti.surprix.utility;
 
-import android.view.View;
-
 import androidx.annotation.NonNull;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -11,16 +9,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.lucagiorgetti.surprix.SurprixApplication;
-import com.lucagiorgetti.surprix.adapters.ProducerRecyclerAdapter;
-import com.lucagiorgetti.surprix.listenerInterfaces.OnGetDataListener;
 import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseCallback;
-import com.lucagiorgetti.surprix.listenerInterfaces.OnGetResultListener;
+import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseListCallback;
 import com.lucagiorgetti.surprix.model.Producer;
 import com.lucagiorgetti.surprix.model.Set;
+import com.lucagiorgetti.surprix.model.Sponsor;
 import com.lucagiorgetti.surprix.model.Surprise;
 import com.lucagiorgetti.surprix.model.User;
 import com.lucagiorgetti.surprix.model.Year;
-import com.lucagiorgetti.surprix.views.ProducersActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,11 +29,11 @@ import java.util.Objects;
  */
 
 public class DatabaseUtility {
-    private static String username = SystemUtility.getLoggedUserUsername();
+    private static String username;
 
     private static DatabaseReference reference = SurprixApplication.getInstance().getDatabaseReference();
 
-    public static void checkUserExisting(final String email, final OnGetResultListener listener) {
+    public static void checkUserExisting(final String email, final FirebaseCallback<Boolean> listener) {
         final String emailCod = email.replaceAll("\\.", ",");
 
         reference.child("emails").child(emailCod).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -57,9 +53,9 @@ public class DatabaseUtility {
         });
     }
 
-    public static void getCurrentUser(final OnGetDataListener listen, FirebaseAuth fireAuth) {
+    public static void getCurrentUser(final FirebaseCallback<User> listen, String email) {
         listen.onStart();
-        String emailCod = Objects.requireNonNull(Objects.requireNonNull(fireAuth.getCurrentUser()).getEmail()).replaceAll("\\.", ",");
+        String emailCod = email.replaceAll("\\.", ",");
         final String[] username = {null};
         reference.child("emails").child(emailCod).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -71,7 +67,7 @@ public class DatabaseUtility {
                     reference.child("users").child(username[0]).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            listen.onSuccess(dataSnapshot);
+                            listen.onSuccess(dataSnapshot.getValue(User.class));
                         }
 
                         @Override
@@ -107,7 +103,7 @@ public class DatabaseUtility {
         reference.child("surprise_doubles").child(surpId).child(username).setValue(null);
     }
 
-    public static void getDoubleOwners(String surpId, final FirebaseCallback<User> listen) {
+    public static void getDoubleOwners(String surpId, final FirebaseListCallback<User> listen) {
         listen.onStart();
         final ArrayList<User> owners = new ArrayList<>();
         reference.child("surprise_doubles").child(surpId).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -143,7 +139,7 @@ public class DatabaseUtility {
         });
     }
 
-    public static void getDoublesForUsername(final FirebaseCallback<Surprise> listen) {
+    public static void getDoublesForUsername(final FirebaseListCallback<Surprise> listen) {
         listen.onStart();
         final ArrayList<Surprise> doubles = new ArrayList<>();
 
@@ -179,7 +175,7 @@ public class DatabaseUtility {
         });
     }
 
-    public static void getYearsFromProducer(String producerId, final FirebaseCallback<Year> listen) {
+    public static void getYearsFromProducer(String producerId, final FirebaseListCallback<Year> listen) {
         listen.onStart();
 
         final ArrayList<Year> years = new ArrayList<>();
@@ -216,7 +212,7 @@ public class DatabaseUtility {
         });
     }
 
-    public static void getProducers(final FirebaseCallback<Producer> listen) {
+    public static void getProducers(final FirebaseListCallback<Producer> listen) {
         listen.onStart();
 
         final List<Producer> producers = new ArrayList<>();
@@ -241,47 +237,47 @@ public class DatabaseUtility {
         });
     }
 
-    public static void getMissingsForUsername(final FirebaseCallback<Surprise> listen) {
+    public static void getMissingsForUsername(final FirebaseListCallback<Surprise> listen) {
         listen.onStart();
-        if (username == null) {
-            username = SystemUtility.getLoggedUserUsername();
+
+        if (username != null){
+            final ArrayList<Surprise> missings = new ArrayList<>();
+
+            reference.child("missings").child(username).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        for (DataSnapshot d : dataSnapshot.getChildren()) {
+                            reference.child("surprises").child(Objects.requireNonNull(d.getKey())).orderByChild("code").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if (snapshot.exists()) {
+                                        Surprise s = snapshot.getValue(Surprise.class);
+                                        missings.add(s);
+                                    }
+                                    listen.onSuccess(missings);
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                    listen.onFailure();
+                                }
+                            });
+                        }
+                    } else {
+                        listen.onSuccess(null);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
+            });
         }
 
-        final ArrayList<Surprise> missings = new ArrayList<>();
-
-        reference.child("missings").child(username).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    for (DataSnapshot d : dataSnapshot.getChildren()) {
-                        reference.child("surprises").child(Objects.requireNonNull(d.getKey())).orderByChild("code").addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                if (snapshot.exists()) {
-                                    Surprise s = snapshot.getValue(Surprise.class);
-                                    missings.add(s);
-                                }
-                                listen.onSuccess(missings);
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-                                listen.onFailure();
-                            }
-                        });
-                    }
-                } else {
-                    listen.onSuccess(null);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
     }
 
-    public static void getSetsFromYear(String yearId, final FirebaseCallback<Set> listen) {
+    public static void getSetsFromYear(String yearId, final FirebaseListCallback<Set> listen) {
         listen.onStart();
 
         final ArrayList<Set> sets = new ArrayList<>();
@@ -320,7 +316,7 @@ public class DatabaseUtility {
         });
     }
 
-    public static void getSurprisesBySet(String setClicked, final FirebaseCallback<Surprise> listen) {
+    public static void getSurprisesBySet(String setClicked, final FirebaseListCallback<Surprise> listen) {
         listen.onStart();
         final ArrayList<Surprise> surprises = new ArrayList<>();
 
@@ -442,7 +438,7 @@ public class DatabaseUtility {
         reference.child("users").child(username).child("country").setValue(nation);
     }
 
-    public static void checkUsernameDontExists(String username, final OnGetResultListener listener) {
+    public static void checkUsernameDontExists(String username, final FirebaseCallback<Boolean> listener) {
         reference.child("users").child(username).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -460,17 +456,17 @@ public class DatabaseUtility {
         });
     }
 
-    public static void deleteUser(final OnGetDataListener listener) {
+    public static void deleteUser(final FirebaseCallback<Boolean> listener) {
         listener.onStart();
 
-        FirebaseUser user = SurprixApplication.getInstance().getFirebaseAuth().getCurrentUser();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         reference.child("missings").child(username).setValue(null);
         reference.child("users").child(username).setValue(null);
         if (user != null) {
             reference.child("emails").child(Objects.requireNonNull(user.getEmail()).replaceAll("\\.", ",")).setValue(null);
         }
-        getDoublesForUsername(new FirebaseCallback<Surprise>() {
+        getDoublesForUsername(new FirebaseListCallback<Surprise>() {
             @Override
             public void onSuccess(List<Surprise> surprises) {
                 if (surprises != null) {
@@ -494,19 +490,26 @@ public class DatabaseUtility {
             user.delete()
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            listener.onSuccess(null);
+                            listener.onSuccess(true);
                         }
                     });
         }
         listener.onFailure();
     }
 
-    public static void getSponsors(final OnGetDataListener listen) {
+    public static void getSponsors(final FirebaseCallback<List<Sponsor>> listen) {
         listen.onStart();
         reference.child("sponsors").orderByChild("order").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                listen.onSuccess(dataSnapshot);
+                List<Sponsor> sponsorsList = new ArrayList<>();
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot d : dataSnapshot.getChildren()) {
+                        Sponsor s = d.getValue(Sponsor.class);
+                        sponsorsList.add(s);
+                    }
+                }
+                listen.onSuccess(sponsorsList);
             }
 
             @Override
@@ -515,4 +518,9 @@ public class DatabaseUtility {
             }
         });
     }
+
+    public static void setUsername(String usrname) {
+        username = usrname;
+    }
+
 }

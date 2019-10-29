@@ -19,7 +19,6 @@ import com.lucagiorgetti.surprix.adapters.SetRecyclerAdapter;
 import com.lucagiorgetti.surprix.model.Set;
 import com.lucagiorgetti.surprix.utility.RecyclerItemClickListener;
 import com.lucagiorgetti.surprix.utility.SystemUtility;
-import com.lucagiorgetti.surprix.views.SetsActivity;
 
 public class SetListFragment extends Fragment {
 

@@ -5,7 +5,7 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
-import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseCallback;
+import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseListCallback;
 import com.lucagiorgetti.surprix.model.Categories;
 import com.lucagiorgetti.surprix.model.Set;
 import com.lucagiorgetti.surprix.ui.BaseViewModel;
@@ -33,7 +33,7 @@ public class SetListViewModel extends BaseViewModel {
     }
 
     private void loadSets(String yearId) {
-        DatabaseUtility.getSetsFromYear(yearId, new FirebaseCallback<Set>() {
+        DatabaseUtility.getSetsFromYear(yearId, new FirebaseListCallback<Set>() {
             @Override
             public void onStart() {
                 setLoading(true);

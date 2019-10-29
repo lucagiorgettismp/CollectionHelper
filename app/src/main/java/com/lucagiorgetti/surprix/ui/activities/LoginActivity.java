@@ -1,4 +1,4 @@
-package com.lucagiorgetti.surprix.views;
+package com.lucagiorgetti.surprix.ui.activities;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -28,8 +28,7 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.lucagiorgetti.surprix.R;
-import com.lucagiorgetti.surprix.SurprixApplication;
-import com.lucagiorgetti.surprix.listenerInterfaces.OnGetResultListener;
+import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseCallback;
 import com.lucagiorgetti.surprix.utility.DatabaseUtility;
 import com.lucagiorgetti.surprix.utility.SystemUtility;
 
@@ -61,9 +60,10 @@ public class LoginActivity extends AppCompatActivity {
         callbackManager = CallbackManager.Factory.create();
 
         Button facebookCustomLogin = findViewById(R.id.btn_start_facebook);
-        //final LoginButton facebookLoginButton = findViewById(R.id.btn_facebook_login);
+
+
         Button login = findViewById(R.id.btn_start_login);
-        Button registrate = findViewById(R.id.btn_start_registration);
+        Button registerBtn = findViewById(R.id.btn_start_registration);
 
         facebookCustomLogin.setOnClickListener(view -> {
             if (SystemUtility.checkNetworkAvailability(LoginActivity.this)) {
@@ -93,12 +93,12 @@ public class LoginActivity extends AppCompatActivity {
 
         login.setOnClickListener(v -> openLoginDialog());
 
-        registrate.setOnClickListener(v -> SystemUtility.openNewActivityWithFinishing(LoginActivity.this, RegistrateActivity.class, null));
+        registerBtn.setOnClickListener(v -> SystemUtility.openNewActivityWithFinishing(LoginActivity.this, RegistrateActivity.class, null));
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        fireAuth = SurprixApplication.getInstance().getFirebaseAuth();
+        fireAuth = FirebaseAuth.getInstance();
     }
 
     @SuppressLint("InflateParams")
@@ -137,8 +137,24 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.makeText(LoginActivity.this, R.string.wrong_email_or_password,
                                 Toast.LENGTH_SHORT).show();
                     } else {
-                        goToMainActivity();
-                        finish();
+                        SystemUtility.setSessionUser(email, new FirebaseCallback<Boolean>() {
+                            @Override
+                            public void onSuccess(Boolean success) {
+                                goToMainActivity();
+                                finish();
+                            }
+
+                            @Override
+                            public void onStart() {
+
+                            }
+
+                            @Override
+                            public void onFailure() {
+
+                            }
+                        });
+
                     }
                 });
             } else {
@@ -170,7 +186,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void sendPasswordResetEmail(String email) {
-        SurprixApplication.getInstance().getFirebaseAuth().sendPasswordResetEmail(email)
+        FirebaseAuth.getInstance().sendPasswordResetEmail(email)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Toast.makeText(LoginActivity.this, R.string.mail_successfully_sent, Toast.LENGTH_SHORT).show();
@@ -189,17 +205,37 @@ public class LoginActivity extends AppCompatActivity {
                     } else {
                         final String email = task.getResult().getUser().getEmail();
                         if (email != null) {
-                            DatabaseUtility.checkUserExisting(email, new OnGetResultListener() {
+                            DatabaseUtility.checkUserExisting(email, new FirebaseCallback<Boolean>() {
                                 @Override
-                                public void onSuccess(boolean result) {
+                                public void onSuccess(Boolean result) {
                                     if (result) {
-                                        goToMainActivity();
+                                        SystemUtility.setSessionUser(email, new FirebaseCallback<Boolean>() {
+                                            @Override
+                                            public void onSuccess(Boolean success) {
+                                                goToMainActivity();
+                                            }
+
+                                            @Override
+                                            public void onStart() {
+
+                                            }
+
+                                            @Override
+                                            public void onFailure() {
+
+                                            }
+                                        });
                                     } else {
                                         Bundle b = new Bundle();
                                         b.putBoolean("facebook", true);
                                         b.putString("email", email);
                                         goToRegistrateActivity(b);
                                     }
+                                }
+
+                                @Override
+                                public void onStart() {
+
                                 }
 
                                 @Override
@@ -222,10 +258,9 @@ public class LoginActivity extends AppCompatActivity {
         SystemUtility.openNewActivityWithFinishing(LoginActivity.this, MainActivity.class, null);
     }
 
-
-    // Override the onActivityResult method and pass its parameters to the callbackManager//
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         callbackManager.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

@@ -6,8 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
@@ -18,9 +18,6 @@ import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.adapters.ProducerRecyclerAdapter;
 import com.lucagiorgetti.surprix.model.Producer;
 import com.lucagiorgetti.surprix.utility.RecyclerItemClickListener;
-import com.lucagiorgetti.surprix.utility.SystemUtility;
-import com.lucagiorgetti.surprix.views.ProducersActivity;
-import com.lucagiorgetti.surprix.views.YearsActivity;
 
 public class CatalogFragment extends Fragment {
 

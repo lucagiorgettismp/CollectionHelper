@@ -1,4 +1,4 @@
-package com.lucagiorgetti.surprix.views;
+package com.lucagiorgetti.surprix.ui.activities;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.adapters.SetDetailRecyclerAdapter;
-import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseCallback;
+import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseListCallback;
 import com.lucagiorgetti.surprix.model.Surprise;
 import com.lucagiorgetti.surprix.utility.DatabaseUtility;
 import com.lucagiorgetti.surprix.utility.SystemUtility;
@@ -60,7 +60,7 @@ public class SetDetailActivity extends AppCompatActivity {
             mAdapter = new SetDetailRecyclerAdapter();
             recyclerView.setAdapter(mAdapter);
 
-            DatabaseUtility.getSurprisesBySet(setId, new FirebaseCallback<Surprise>() {
+            DatabaseUtility.getSurprisesBySet(setId, new FirebaseListCallback<Surprise>() {
                 @Override
                 public void onSuccess(List<Surprise> surprisesList) {
                     surprises = surprisesList;

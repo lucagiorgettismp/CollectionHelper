@@ -3,7 +3,6 @@ package com.lucagiorgetti.surprix;
 import android.app.Application;
 import android.content.Context;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -17,7 +16,6 @@ public class SurprixApplication extends Application {
     private FirebaseStorage firebaseStorage;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
-    private FirebaseAuth fireAuth;
     private static SurprixApplication mInstance;
     private User currentUser;
 
@@ -62,12 +60,4 @@ public class SurprixApplication extends Application {
 
         return databaseReference;
     }
-
-    synchronized public FirebaseAuth getFirebaseAuth() {
-        if (fireAuth == null) {
-            fireAuth = FirebaseAuth.getInstance();
-        }
-        return fireAuth;
-    }
-
 }

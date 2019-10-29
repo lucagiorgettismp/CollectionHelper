@@ -1,4 +1,4 @@
-package com.lucagiorgetti.surprix.views;
+package com.lucagiorgetti.surprix.ui.activities;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -21,8 +21,7 @@ import com.facebook.login.LoginManager;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.lucagiorgetti.surprix.R;
-import com.lucagiorgetti.surprix.SurprixApplication;
-import com.lucagiorgetti.surprix.listenerInterfaces.OnGetResultListener;
+import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseCallback;
 import com.lucagiorgetti.surprix.utility.DatabaseUtility;
 import com.lucagiorgetti.surprix.utility.SystemUtility;
 import com.mikelau.countrypickerx.CountryPickerDialog;
@@ -53,7 +52,7 @@ public class RegistrateActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         this.facebookLogin = LoginManager.getInstance();
-        this.fireAuth = SurprixApplication.getInstance().getFirebaseAuth();
+        this.fireAuth = FirebaseAuth.getInstance();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -138,9 +137,14 @@ public class RegistrateActivity extends AppCompatActivity {
                 progress.setVisibility(View.INVISIBLE);
                 Snackbar.make(Objects.requireNonNull(getCurrentFocus()), R.string.email_format, Snackbar.LENGTH_SHORT).show();
             } else {
-                DatabaseUtility.checkUsernameDontExists(username, new OnGetResultListener() {
+                DatabaseUtility.checkUsernameDontExists(username, new FirebaseCallback<Boolean>() {
                     @Override
-                    public void onSuccess(boolean result) {
+                    public void onStart() {
+
+                    }
+
+                    @Override
+                    public void onSuccess(Boolean result) {
                         if (result) {
                             fireAuth.createUserWithEmailAndPassword(email, password)
                                     .addOnCompleteListener(RegistrateActivity.this, task -> {
@@ -153,7 +157,6 @@ public class RegistrateActivity extends AppCompatActivity {
                                             DatabaseUtility.generateUser(email, username, nation, false);
                                             fireAuth.signInWithEmailAndPassword(email, password);
                                             progress.setVisibility(View.INVISIBLE);
-
                                             SystemUtility.firstTimeOpeningApp(RegistrateActivity.this, MainActivity.class, null);
                                         }
                                     });

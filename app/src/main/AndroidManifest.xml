@@ -19,10 +19,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity
-            android:name=".Main2Activity"
-            android:label="@string/title_activity_main2"></activity>
+            android:name=".ui.activities.SettingsActivity"
+            android:label="@string/title_activity_settings"></activity>
         <activity
-            android:name=".SplashActivity"
+            android:name=".ui.activities.MainActivity"
+            android:label="@string/title_activity_main2" />
+        <activity
+            android:name=".ui.activities.SplashActivity"
             android:theme="@style/AppTheme.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,19 +34,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".views.MainActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"></activity>
-        <activity
-            android:name=".views.LoginActivity"
+            android:name=".ui.activities.OldMainActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".views.RegistrateActivity"
+            android:name=".ui.activities.LoginActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".views.OnboardActivity"
+            android:name=".ui.activities.RegistrateActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".ui.activities.OnboardActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
 
@@ -69,11 +72,11 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".views.ProducersActivity" />
-        <activity android:name=".views.YearsActivity" />
-        <activity android:name=".views.SetsActivity" />
+        <activity android:name=".ui.activities.ProducersActivity" />
+        <activity android:name=".ui.activities.YearsActivity" />
+        <activity android:name=".ui.activities.SetsActivity" />
         <activity
-            android:name=".views.SetDetailActivity"
+            android:name=".ui.activities.SetDetailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <service android:name=".service.MyFirebaseMessaging">
