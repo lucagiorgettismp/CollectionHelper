@@ -1,11 +1,8 @@
-package com.lucagiorgetti.surprix.listenerInterfaces;
+package com.lucagiorgetti.surprix.ui.missinglist;
 
-import java.util.List;
+import com.lucagiorgetti.surprix.model.Surprise;
 
-public interface FirebaseCallback<T> {
-    void onStart();
+public interface SurpRecylerAdapterListener<T> {
+    void onShowMissingOwnerClick(Surprise surprise);
 
-    void onSuccess(T item);
-
-    void onFailure();
 }

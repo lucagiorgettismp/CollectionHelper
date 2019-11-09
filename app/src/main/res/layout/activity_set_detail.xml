@@ -44,6 +44,6 @@
         app:backgroundTint="@android:color/holo_green_light"
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="bottom|end"
-        app:srcCompat="@drawable/ic_missings" />
+        app:srcCompat="@drawable/ic_missing" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

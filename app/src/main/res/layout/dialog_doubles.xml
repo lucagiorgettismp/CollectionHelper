@@ -9,17 +9,22 @@
         android:id="@+id/doubles_dialog_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
         android:text="@string/surprise"
         android:textAlignment="center"
-        android:textColor="@android:color/white"
         android:textSize="18sp"
         android:textStyle="bold" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/colorPrimary" />
 
     <TextView
         android:id="@+id/doubles_dialog_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="10dp"
         android:text="@string/who_have_what_you_miss"
         android:textAlignment="center"
         android:textSize="16sp" />

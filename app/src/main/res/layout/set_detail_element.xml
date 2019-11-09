@@ -183,7 +183,7 @@
                             android:id="@+id/btn_item_add_double"
                             style="@style/ButtonAddDouble"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="36dp"
                             android:layout_weight="30"
                             android:contentDescription="@string/add_to_doubles"
                             android:tint="@color/cardview_light_background"
@@ -193,11 +193,12 @@
                             android:id="@+id/btn_item_add_missing"
                             style="@style/ButtonAddMissing"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="36dp"
                             android:layout_weight="30"
                             android:contentDescription="@string/add_to_missings"
+                            android:scaleType="fitCenter"
                             android:tint="@color/com_facebook_button_background_color_focused"
-                            app:srcCompat="@drawable/ic_missings" />
+                            app:srcCompat="@drawable/ic_missing" />
                     </LinearLayout>
 
                 </LinearLayout>

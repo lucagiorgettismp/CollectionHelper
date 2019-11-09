@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(MainActivity.this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
-        NavigationUI.setupWithNavController(toolbar, navController);
+        NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration);
     }
 
     public void logout() {

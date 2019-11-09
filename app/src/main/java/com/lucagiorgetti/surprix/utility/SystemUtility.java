@@ -126,18 +126,7 @@ public class SystemUtility {
         applicationContext.startActivity(i);
     }
 
-    public static void sendMail(Context context, String to, String subject, Spanned html_body) {
-        Intent intent = new Intent(Intent.ACTION_SENDTO);
-        intent.setDataAndType(Uri.parse("mailto:" + to),"text/plain");
-        if (subject != null && !subject.isEmpty()) {
-            intent.putExtra(Intent.EXTRA_SUBJECT, subject);
-        }
-        if (html_body != null && html_body.length() > 0) {
-            intent.putExtra(Intent.EXTRA_TEXT, html_body);
-        }
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // this will make such that when user returns to your app, your app is displayed, instead of the email app.
-        context.startActivity(intent);
-    }
+
 
     public static void openUrl(Context context, String url) {
         Uri uri = Uri.parse(url); // missing 'http://' will cause crashed

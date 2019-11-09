@@ -8,33 +8,19 @@ import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.adapters.SetDetailRecyclerAdapter;
-import com.lucagiorgetti.surprix.adapters.YearRecyclerAdapter;
-import com.lucagiorgetti.surprix.model.Set;
-import com.lucagiorgetti.surprix.model.Year;
-import com.lucagiorgetti.surprix.ui.setlist.SetListFragmentDirections;
-import com.lucagiorgetti.surprix.ui.year.YearFragmentDirections;
-import com.lucagiorgetti.surprix.ui.year.YearViewModel;
-import com.lucagiorgetti.surprix.utility.DatabaseUtility;
-import com.lucagiorgetti.surprix.utility.RecyclerItemClickListener;
-import com.lucagiorgetti.surprix.utility.SystemUtility;
 
 public class SetDetailFragment extends Fragment {
 
-    private SetDetailViewModel setDetailViewModel;
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        setDetailViewModel =
-                ViewModelProviders.of(this).get(SetDetailViewModel.class);
+        SetDetailViewModel setDetailViewModel = ViewModelProviders.of(this).get(SetDetailViewModel.class);
 
         View root = inflater.inflate(R.layout.fragment_set_detail, container, false);
 

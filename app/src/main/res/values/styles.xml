@@ -3,16 +3,9 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">#000367</item>
-        <item name="colorPrimaryDark">#000248</item>
-        <item name="colorAccent">#000367</item>
-    </style>
-
-    <style name="DarkTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">#000367</item>
-        <item name="colorPrimaryDark">#000248</item>
-        <item name="colorAccent">@android:color/white</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorSecondary</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -42,6 +35,14 @@
 
     <style name="ButtonAddDouble" parent="Base.Widget.AppCompat.ImageButton">
         <item name="backgroundTint">@android:color/holo_orange_light</item>
+    </style>
+
+    <style name="ButtonShowMissingOwner" parent="Base.Widget.AppCompat.ImageButton">
+        <item name="backgroundTint">@color/colorPrimary</item>
+    </style>
+
+    <style name="ButtonSaveNote" parent="Base.Widget.AppCompat.ImageButton">
+        <item name="backgroundTint">@color/colorSecondary</item>
     </style>
 
     <style name="AppTheme.NoActionBar.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

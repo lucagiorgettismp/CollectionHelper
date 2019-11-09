@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,6 +25,7 @@ import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.model.Colors;
 import com.lucagiorgetti.surprix.model.ExtraLocales;
 import com.lucagiorgetti.surprix.model.Surprise;
+import com.lucagiorgetti.surprix.ui.missinglist.SurpRecylerAdapterListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,12 +37,14 @@ import java.util.Locale;
  * Created by Luca on 28/10/2017.
  */
 
-public class SurpRecyclerAdapter extends ListAdapter<Surprise, SurpRecyclerAdapter.SurpViewHolder>  implements Filterable {
+public class SurpRecyclerAdapter extends ListAdapter<Surprise, SurpRecyclerAdapter.SurpViewHolder>  implements Filterable{
+    private SurpRecylerAdapterListener listener;
     private List<Surprise> filterableList;
-    //private List<Surprise> surprises;
+    private boolean fromMissing;
 
-    public SurpRecyclerAdapter() {
+    public SurpRecyclerAdapter(boolean fromMissing) {
         super(DIFF_CALLBACK);
+        this.fromMissing = fromMissing;
     }
 
     private static final DiffUtil.ItemCallback<Surprise> DIFF_CALLBACK = new DiffUtil.ItemCallback<Surprise>() {
@@ -58,7 +62,7 @@ public class SurpRecyclerAdapter extends ListAdapter<Surprise, SurpRecyclerAdapt
     @NonNull
     @Override
     public SurpViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.surprise_element, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.surprise_element_new, parent, false);
         return new SurpViewHolder(v);
     }
 
@@ -103,6 +107,15 @@ public class SurpRecyclerAdapter extends ListAdapter<Surprise, SurpRecyclerAdapt
                     .into(holder.vImage);
         }
 
+        holder.vBtnOwners.setOnClickListener(view -> {
+            listener.onShowMissingOwnerClick(surp);
+        });
+
+        if (fromMissing){
+            holder.vMissingBottom.setVisibility(View.VISIBLE);
+            holder.vBtnOwners.setVisibility(View.VISIBLE);
+        }
+
         Integer rarity = surp.getIntRarity();
         holder.vStar1On.setVisibility(View.GONE);
         holder.vStar2On.setVisibility(View.GONE);
@@ -110,6 +123,7 @@ public class SurpRecyclerAdapter extends ListAdapter<Surprise, SurpRecyclerAdapt
         holder.vStar1Off.setVisibility(View.VISIBLE);
         holder.vStar2Off.setVisibility(View.VISIBLE);
         holder.vStar3Off.setVisibility(View.VISIBLE);
+
         if (rarity != null) {
             switch (rarity) {
                 case 1:
@@ -181,7 +195,11 @@ public class SurpRecyclerAdapter extends ListAdapter<Surprise, SurpRecyclerAdapt
     public void removeFilterableItem(Surprise surprise) {
         this.filterableList.remove(surprise);
     }
-    
+
+    public void setListener(SurpRecylerAdapterListener listener) {
+        this.listener = listener;
+    }
+
     class SurpViewHolder extends RecyclerView.ViewHolder {
         TextView vCode;
         TextView vSetName;
@@ -196,6 +214,8 @@ public class SurpRecyclerAdapter extends ListAdapter<Surprise, SurpRecyclerAdapt
         ImageView vStar1Off;
         ImageView vStar2Off;
         ImageView vStar3Off;
+        ImageButton vBtnOwners;
+        View vMissingBottom;
 
         View vLayout;
 
@@ -216,6 +236,8 @@ public class SurpRecyclerAdapter extends ListAdapter<Surprise, SurpRecyclerAdapt
             vStar1Off = v.findViewById(R.id.img_surp_elem_star_1_off);
             vStar2Off = v.findViewById(R.id.img_surp_elem_star_2_off);
             vStar3Off = v.findViewById(R.id.img_surp_elem_star_3_off);
+            vBtnOwners = v.findViewById(R.id.show_owners_btn);
+            vMissingBottom = v.findViewById(R.id.missing_bottom_layout);
         }
     }
 }
