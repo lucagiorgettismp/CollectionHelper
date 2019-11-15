@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageButton;
@@ -24,6 +25,7 @@ import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.model.Colors;
 import com.lucagiorgetti.surprix.model.ExtraLocales;
+import com.lucagiorgetti.surprix.model.MissingDetail;
 import com.lucagiorgetti.surprix.model.Surprise;
 import com.lucagiorgetti.surprix.ui.missinglist.SurpRecylerAdapterListener;
 
@@ -37,12 +39,12 @@ import java.util.Locale;
  * Created by Luca on 28/10/2017.
  */
 
-public class SurpRecyclerAdapter extends ListAdapter<Surprise, SurpRecyclerAdapter.SurpViewHolder>  implements Filterable{
+public class SurpriseRecyclerAdapter extends ListAdapter<Surprise, SurpriseRecyclerAdapter.SurpViewHolder>  implements Filterable{
     private SurpRecylerAdapterListener listener;
     private List<Surprise> filterableList;
     private boolean fromMissing;
 
-    public SurpRecyclerAdapter(boolean fromMissing) {
+    public SurpriseRecyclerAdapter(boolean fromMissing) {
         super(DIFF_CALLBACK);
         this.fromMissing = fromMissing;
     }
@@ -62,7 +64,7 @@ public class SurpRecyclerAdapter extends ListAdapter<Surprise, SurpRecyclerAdapt
     @NonNull
     @Override
     public SurpViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.surprise_element_new, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.element_surprise_list, parent, false);
         return new SurpViewHolder(v);
     }
 
@@ -111,9 +113,18 @@ public class SurpRecyclerAdapter extends ListAdapter<Surprise, SurpRecyclerAdapt
             listener.onShowMissingOwnerClick(surp);
         });
 
-        if (fromMissing){
-            holder.vMissingBottom.setVisibility(View.VISIBLE);
-            holder.vBtnOwners.setVisibility(View.VISIBLE);
+
+        holder.vBtnAddNotes.setOnClickListener(view -> {
+            MissingDetail detail = new MissingDetail();
+            detail.setNotes(holder.vNotesText.getText().toString());
+
+            listener.onSaveNotesClick(surp, detail);
+        });
+
+
+        if (!fromMissing){
+            holder.vMissingBottom.setVisibility(View.GONE);
+            holder.vBtnOwners.setVisibility(View.GONE);
         }
 
         Integer rarity = surp.getIntRarity();
@@ -215,7 +226,9 @@ public class SurpRecyclerAdapter extends ListAdapter<Surprise, SurpRecyclerAdapt
         ImageView vStar2Off;
         ImageView vStar3Off;
         ImageButton vBtnOwners;
+        ImageButton vBtnAddNotes;
         View vMissingBottom;
+        EditText vNotesText;
 
         View vLayout;
 
@@ -237,7 +250,9 @@ public class SurpRecyclerAdapter extends ListAdapter<Surprise, SurpRecyclerAdapt
             vStar2Off = v.findViewById(R.id.img_surp_elem_star_2_off);
             vStar3Off = v.findViewById(R.id.img_surp_elem_star_3_off);
             vBtnOwners = v.findViewById(R.id.show_owners_btn);
+            vBtnAddNotes = v.findViewById(R.id.save_note_btn);
             vMissingBottom = v.findViewById(R.id.missing_bottom_layout);
+            vNotesText = v.findViewById(R.id.note_edit_text);
         }
     }
 }

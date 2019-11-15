@@ -22,13 +22,13 @@ import java.util.List;
  * Created by Luca on 24/10/2017.
  */
 
-public class ProducerRecyclerAdapter extends RecyclerView.Adapter<ProducerRecyclerAdapter.SetViewHolder> {
+public class CatalogRecyclerAdapter extends RecyclerView.Adapter<CatalogRecyclerAdapter.SetViewHolder> {
     private List<Producer> producers;
 
     @NonNull
     @Override
     public SetViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.producer_element, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.element_catalog, parent, false);
         return new SetViewHolder(v);
     }
 
@@ -36,9 +36,12 @@ public class ProducerRecyclerAdapter extends RecyclerView.Adapter<ProducerRecycl
     public void onBindViewHolder(@NonNull SetViewHolder holder, int position) {
         Producer producer = producers.get(position);
         holder.vName.setText(producer.getName());
-        holder.vProduct.setText(producer.getProduct());
-
-        holder.vLayout.setBackgroundColor(ContextCompat.getColor(SurprixApplication.getSurprixContext(), Colors.getHexColor(producer.getColor())));
+        String product = producer.getProduct();
+        if (product != null && !product.equals("")){
+            holder.vProduct.setText(producer.getProduct());
+        } else {
+            holder.vProduct.setVisibility(View.GONE);
+        }
     }
 
     @Override

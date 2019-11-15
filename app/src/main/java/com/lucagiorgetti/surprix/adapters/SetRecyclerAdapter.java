@@ -36,7 +36,7 @@ public class SetRecyclerAdapter extends RecyclerView.Adapter<SetRecyclerAdapter.
     @NonNull
     @Override
     public SetViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.set_element, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.element_set, parent, false);
         return new SetViewHolder(v);
     }
 
@@ -102,7 +102,7 @@ public class SetRecyclerAdapter extends RecyclerView.Adapter<SetRecyclerAdapter.
             vName = v.findViewById(R.id.txv_set_elem_name);
             vImage = v.findViewById(R.id.imgSet);
             vNation = v.findViewById(R.id.txv_set_elem_nation);
-            vLayout = v.findViewById(R.id.layout_set_elem_titlebar);
+            vLayout = v.findViewById(R.id.set_divider);
         }
     }
 }

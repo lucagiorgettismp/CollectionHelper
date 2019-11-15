@@ -152,29 +152,28 @@
     </string>
     <string name="terms_agree">I agree with terms</string>
     <string name="difficulty">Rarity:</string>
-    <string name="default_notification_channel_id">surprix_default</string>
-    <string name="default_notification_channel_name">SurprixDefault</string>
-    <string name="title_activity_main2">Main2Activity</string>
+    <string name="default_notification_channel_id" translatable="false">surprix_default</string>
+    <string name="default_notification_channel_name" translatable="false">SurprixDefault</string>
     <string name="title_missing_list">Missing list</string>
     <string name="title_double_list">Double list</string>
     <string name="title_catalog">Catalog</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_settings">Settings</string>
 
     <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
+    <string name="messages_header" translatable="false">Messages</string>
+    <string name="sync_header" translatable="false">Sync</string>
 
     <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
+    <string name="signature_title" translatable="false">Your signature</string>
+    <string name="reply_title" translatable="false">Default reply action</string>
 
     <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    <string name="sync_title" translatable="false">Sync email periodically</string>
+    <string name="attachment_title" translatable="false">Download incoming attachments</string>
+    <string name="attachment_summary_on" translatable="false">Automatically download attachments for incoming emails
     </string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="attachment_summary_off" translatable="false">Only download attachments when manually requested</string>
+    <string name="title_activity_main" translatable="false">MainActivity</string>
 </resources>

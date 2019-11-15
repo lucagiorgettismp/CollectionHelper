@@ -130,4 +130,8 @@
     </string>
     <string name="terms_agree">Accetto</string>
     <string name="difficulty">Rarità:</string>
+    <string name="title_missing_list">Mancanti</string>
+    <string name="title_double_list">Doppi</string>
+    <string name="title_catalog">Catalogo</string>
+    <string name="title_activity_settings">Impostazioni</string>
 </resources>

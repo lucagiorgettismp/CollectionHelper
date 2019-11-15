@@ -42,7 +42,7 @@ public class SetDetailRecyclerAdapter extends RecyclerView.Adapter<SetDetailRecy
     @NonNull
     @Override
     public SetDetailViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        final View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.set_detail_element, parent, false);
+        final View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.element_set_detail, parent, false);
 
         return new SetDetailViewHolder(v, new SetDetailViewHolder.MyClickListener() {
             @Override
@@ -139,7 +139,6 @@ public class SetDetailRecyclerAdapter extends RecyclerView.Adapter<SetDetailRecy
         ImageView vImage;
         ImageButton btnAddMissing;
         ImageButton btnAddDouble;
-        View cardLayout;
         MyClickListener listner;
         ImageView vStar1On;
         ImageView vStar2On;
@@ -158,7 +157,6 @@ public class SetDetailRecyclerAdapter extends RecyclerView.Adapter<SetDetailRecy
             vImage = v.findViewById(R.id.img_item);
             btnAddMissing = v.findViewById(R.id.btn_item_add_missing);
             btnAddDouble = v.findViewById(R.id.btn_item_add_double);
-            cardLayout = v.findViewById(R.id.set_detail_layout);
             vStar1On = v.findViewById(R.id.img_item_star_1_on);
             vStar2On = v.findViewById(R.id.img_item_star_2_on);
             vStar3On = v.findViewById(R.id.img_item_star_3_on);

@@ -93,7 +93,7 @@ public class LoginActivity extends AppCompatActivity {
 
         login.setOnClickListener(v -> openLoginDialog());
 
-        registerBtn.setOnClickListener(v -> SystemUtility.openNewActivityWithFinishing(LoginActivity.this, RegistrateActivity.class, null));
+        registerBtn.setOnClickListener(v -> SystemUtility.openNewActivityWithFinishing(LoginActivity.this, SignUpActivty.class, null));
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -251,7 +251,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void goToRegistrateActivity(Bundle bundle) {
-        SystemUtility.openNewActivityWithFinishing(LoginActivity.this, RegistrateActivity.class, bundle);
+        SystemUtility.openNewActivityWithFinishing(LoginActivity.this, SignUpActivty.class, bundle);
     }
 
     private void goToMainActivity() {

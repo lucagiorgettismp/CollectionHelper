@@ -30,7 +30,7 @@
         android:id="@+id/navigation_year"
         android:name="com.lucagiorgetti.surprix.ui.year.YearFragment"
         android:label="Years"
-        tools:layout="@layout/fragment_year" >
+        tools:layout="@layout/fragment_years" >
         <argument
             android:name="producer_id"
             app:argType="string" />

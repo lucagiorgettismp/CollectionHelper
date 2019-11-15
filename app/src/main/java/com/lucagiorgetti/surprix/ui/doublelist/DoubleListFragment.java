@@ -18,13 +18,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lucagiorgetti.surprix.R;
-import com.lucagiorgetti.surprix.adapters.SurpRecyclerAdapter;
+import com.lucagiorgetti.surprix.adapters.SurpriseRecyclerAdapter;
 import com.lucagiorgetti.surprix.model.Surprise;
 import com.lucagiorgetti.surprix.utility.DatabaseUtility;
 
 public class DoubleListFragment extends Fragment {
 
-    private SurpRecyclerAdapter mAdapter;
+    private SurpriseRecyclerAdapter mAdapter;
     private SearchView searchView;
     private View root;
 
@@ -41,7 +41,7 @@ public class DoubleListFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new SurpRecyclerAdapter(false);
+        mAdapter = new SurpriseRecyclerAdapter(false);
         recyclerView.setAdapter(mAdapter);
 
         doubleListViewModel.getDoubleSurprises().observe(this, doubleList -> {
@@ -96,7 +96,7 @@ public class DoubleListFragment extends Fragment {
         }).attachToRecyclerView(recyclerView);
     }
 
-    private void deleteSurprise(SurpRecyclerAdapter mAdapter, int position) {
+    private void deleteSurprise(SurpriseRecyclerAdapter mAdapter, int position) {
         Surprise surprise = mAdapter.getItemAtPosition(position);
         mAdapter.removeFilterableItem(surprise);
 

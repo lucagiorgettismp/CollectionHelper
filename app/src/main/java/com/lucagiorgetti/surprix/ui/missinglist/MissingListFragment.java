@@ -27,8 +27,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.adapters.DoublesOwnersListAdapter;
-import com.lucagiorgetti.surprix.adapters.SurpRecyclerAdapter;
+import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseCallback;
 import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseListCallback;
+import com.lucagiorgetti.surprix.model.MissingDetail;
+import com.lucagiorgetti.surprix.model.MissingPresenter;
 import com.lucagiorgetti.surprix.model.Surprise;
 import com.lucagiorgetti.surprix.model.User;
 import com.lucagiorgetti.surprix.utility.DatabaseUtility;
@@ -38,7 +40,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class MissingListFragment extends Fragment {
-    private SurpRecyclerAdapter mAdapter;
+    private MissingRecyclerAdapter mAdapter;
     private SearchView searchView;
     private View root;
     private MissingListViewModel missingListViewModel;
@@ -55,9 +57,19 @@ public class MissingListFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new SurpRecyclerAdapter(true);
+        mAdapter = new MissingRecyclerAdapter(true);
 
-        mAdapter.setListener(surprise -> showMissingOwners(surprise));
+        mAdapter.setListener(new SurpRecylerAdapterListener() {
+            @Override
+            public void onShowMissingOwnerClick(Surprise surprise) {
+                showMissingOwners(surprise);
+            }
+
+            @Override
+            public void onSaveNotesClick(Surprise surprise, MissingDetail detail) {
+                saveNotes(surprise, detail);
+            }
+        });
         recyclerView.setAdapter(mAdapter);
 
         missingListViewModel.getMissingSurprises().observe(this, missingList -> {
@@ -109,9 +121,9 @@ public class MissingListFragment extends Fragment {
         }).attachToRecyclerView(recyclerView);
     }
 
-    private void deleteSurprise(SurpRecyclerAdapter mAdapter, int position) {
-        Surprise surprise = mAdapter.getItemAtPosition(position);
-        mAdapter.removeFilterableItem(surprise);
+    private void deleteSurprise(MissingRecyclerAdapter mAdapter, int position) {
+        MissingPresenter mp = mAdapter.getItemAtPosition(position);
+        mAdapter.removeFilterableItem(mp);
 
         CharSequence query = searchView.getQuery();
         if ( query != null && query.length() != 0 ){
@@ -119,7 +131,7 @@ public class MissingListFragment extends Fragment {
         } else  {
             mAdapter.notifyItemRemoved(position);
         }
-        DatabaseUtility.removeMissing(surprise.getId());
+        DatabaseUtility.removeMissing(mp.getSurprise().getId());
     }
 
     private void showMissingOwners(final Surprise missing) {
@@ -170,6 +182,25 @@ public class MissingListFragment extends Fragment {
 
             @Override
             public void onStart() {
+            }
+
+            @Override
+            public void onFailure() {
+
+            }
+        });
+    }
+
+    private void saveNotes(Surprise surprise, MissingDetail detail) {
+        DatabaseUtility.addDetailForMissing(surprise.getId(), detail, new FirebaseCallback<Boolean>() {
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onSuccess(Boolean item) {
+
             }
 
             @Override

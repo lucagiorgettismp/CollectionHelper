@@ -15,11 +15,15 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.facebook.login.LoginManager;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseCallback;
 import com.lucagiorgetti.surprix.model.User;
+import com.lucagiorgetti.surprix.ui.activities.LoginActivity;
+import com.lucagiorgetti.surprix.ui.activities.MainActivity;
 import com.lucagiorgetti.surprix.ui.activities.OnboardActivity;
 
 /**
@@ -159,5 +163,15 @@ public class SystemUtility {
 
     public static void removeSessionUser() {
         SurprixApplication.getInstance().setUser(null);
+    }
+
+    public static void logout(Activity activity) {
+        SystemUtility.disableFCM();
+        SystemUtility.removeSessionUser();
+        FirebaseAuth.getInstance().signOut();
+        LoginManager.getInstance().logOut();
+        DatabaseUtility.setUsername(null);
+        SystemUtility.openNewActivityWithFinishing(activity, LoginActivity.class, null);
+        activity.finish();
     }
 }

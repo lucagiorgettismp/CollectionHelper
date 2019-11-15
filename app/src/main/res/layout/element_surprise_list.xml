@@ -6,10 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="8dp"
-    android:layout_marginTop="4dp"
+    android:layout_marginTop="8dp"
     android:layout_marginEnd="8dp"
-    android:layout_marginBottom="4dp"
-    app:cardCornerRadius="4dp">
+    app:cardCornerRadius="5dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -33,6 +32,7 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
                 android:layout_weight="75"
                 android:orientation="vertical">
 
@@ -142,7 +142,7 @@
                             android:layout_height="40dp"
                             android:scaleType="centerInside"
                             android:tint="@android:color/white"
-                            android:visibility="gone"
+                            android:visibility="visible"
                             app:srcCompat="@drawable/ic_double" />
                     </LinearLayout>
 
@@ -210,23 +210,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:visibility="gone"
+            android:visibility="visible"
             android:weightSum="1">
 
             <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:background="@drawable/round_corner_rectangle">
 
                 <EditText
-                    android:id="@+id/editText"
+                    android:id="@+id/note_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:gravity="start|top"
                     android:hint="Note"
-                    android:inputType="textMultiLine" />
+                    android:inputType="textMultiLine"
+                    android:textSize="14sp" />
             </RelativeLayout>
 
             <LinearLayout
@@ -241,6 +243,10 @@
                     style="@style/ButtonSaveNote"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
+                    android:adjustViewBounds="false"
+                    android:cropToPadding="false"
+                    android:filterTouchesWhenObscured="false"
+                    android:fitsSystemWindows="false"
                     android:scaleType="centerInside"
                     android:tint="@android:color/white"
                     app:srcCompat="@drawable/ic_save" />

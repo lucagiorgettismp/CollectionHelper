@@ -34,7 +34,7 @@ import java.util.Objects;
  * Created by Luca on 18/10/2017.
  */
 
-public class RegistrateActivity extends AppCompatActivity {
+public class SignUpActivty extends AppCompatActivity {
 
     private EditText edtEmail;
     private EditText edtPassword;
@@ -61,22 +61,26 @@ public class RegistrateActivity extends AppCompatActivity {
 
         edtEmail = findViewById(R.id.edit_reg_email);
         edtPassword = findViewById(R.id.edit_reg_password);
-
-        View layPassword = findViewById(R.id.layout_reg_password);
         edtUsername = findViewById(R.id.edit_reg_username);
         edtNation = findViewById(R.id.edit_reg_nation);
+
+        View layPassword = findViewById(R.id.layout_reg_password);
+        View laySettings = findViewById(R.id.layout_reg_setting);
+
         progress = findViewById(R.id.progress_bar);
         TextView lblInfoFacebook = findViewById(R.id.lbl_reg_info_facebook);
         TextView lblInfoFirstLogin = findViewById(R.id.lbl_reg_info_firstlogin);
+        TextView lblInfoSettings = findViewById(R.id.lbl_reg_settings_label);
         Button btnAccountCompleteFacebook = findViewById(R.id.btn_reg_complete_account);
         Button submit = findViewById(R.id.btn_reg_submit);
         TextView lblPrivacyPolicy = findViewById(R.id.lbl_reg_policy);
+        TextView logout = findViewById(R.id.lbl_reg_logout);
 
         lblPrivacyPolicy.setOnClickListener(v -> showPrivacyPolicy());
+
         Bundle b = getIntent().getExtras();
         boolean facebook = false;
         String facebook_email = null;
-
 
         if (b != null) {
             facebook = b.getBoolean("facebook");
@@ -88,12 +92,16 @@ public class RegistrateActivity extends AppCompatActivity {
             submit.setVisibility(View.GONE);
             lblInfoFirstLogin.setVisibility(View.GONE);
             layPassword.setVisibility(View.GONE);
-            btnAccountCompleteFacebook.setVisibility(View.VISIBLE);
-            lblInfoFacebook.setVisibility(View.VISIBLE);
 
             edtEmail.setText(facebook_email);
             edtEmail.setEnabled(false);
+        } else {
+            lblInfoFacebook.setVisibility(View.GONE);
+            btnAccountCompleteFacebook.setVisibility(View.GONE);
         }
+
+        laySettings.setVisibility(View.GONE);
+        lblInfoSettings.setVisibility(View.GONE);
 
         btnAccountCompleteFacebook.setOnClickListener(v -> {
             final String email = edtEmail.getText().toString().trim();
@@ -103,15 +111,15 @@ public class RegistrateActivity extends AppCompatActivity {
                     username.isEmpty() ||
                     nation.isEmpty()) {
                 progress.setVisibility(View.INVISIBLE);
-                Toast.makeText(RegistrateActivity.this, R.string.complete_all_fields, Toast.LENGTH_SHORT).show();
+                Toast.makeText(SignUpActivty.this, R.string.complete_all_fields, Toast.LENGTH_SHORT).show();
             } else {
                 DatabaseUtility.generateUser(email, username, nation, true);
-                SystemUtility.firstTimeOpeningApp(RegistrateActivity.this, MainActivity.class, null);
+                SystemUtility.firstTimeOpeningApp(SignUpActivty.this, MainActivity.class, null);
             }
         });
 
         submit.setOnClickListener(v -> {
-            SystemUtility.closeKeyboard(RegistrateActivity.this);
+            SystemUtility.closeKeyboard(SignUpActivty.this);
             progress.setVisibility(View.VISIBLE);
 
             final String email = edtEmail.getText().toString().trim();
@@ -119,7 +127,7 @@ public class RegistrateActivity extends AppCompatActivity {
             final String username = edtUsername.getText().toString().trim().toLowerCase();
             final String nation = edtNation.getText().toString();
 
-            if (!SystemUtility.checkNetworkAvailability(RegistrateActivity.this)) {
+            if (!SystemUtility.checkNetworkAvailability(SignUpActivty.this)) {
                 progress.setVisibility(View.INVISIBLE);
                 return;
             }
@@ -147,7 +155,7 @@ public class RegistrateActivity extends AppCompatActivity {
                     public void onSuccess(Boolean result) {
                         if (result) {
                             fireAuth.createUserWithEmailAndPassword(email, password)
-                                    .addOnCompleteListener(RegistrateActivity.this, task -> {
+                                    .addOnCompleteListener(SignUpActivty.this, task -> {
                                         if (!task.isSuccessful()) {
                                             //noinspection ThrowableResultOfMethodCallIgnored
                                             progress.setVisibility(View.INVISIBLE);
@@ -157,7 +165,7 @@ public class RegistrateActivity extends AppCompatActivity {
                                             DatabaseUtility.generateUser(email, username, nation, false);
                                             fireAuth.signInWithEmailAndPassword(email, password);
                                             progress.setVisibility(View.INVISIBLE);
-                                            SystemUtility.firstTimeOpeningApp(RegistrateActivity.this, MainActivity.class, null);
+                                            SystemUtility.firstTimeOpeningApp(SignUpActivty.this, MainActivity.class, null);
                                         }
                                     });
                         } else {
@@ -181,7 +189,7 @@ public class RegistrateActivity extends AppCompatActivity {
                 /* Set to false if you want to disable Dial Code in the results and true if you want to show it
                    Set to zero if you don't have a custom JSON list of countries in your raw file otherwise use
                    resourceId for your customly available countries */
-                countryPicker = new CountryPickerDialog(RegistrateActivity.this, (country, flagResId) -> {
+                countryPicker = new CountryPickerDialog(SignUpActivty.this, (country, flagResId) -> {
                     edtNation.setText(country.getCountryName(getApplicationContext()));
                     countryPicker.dismiss();
                 }, false, 0);
@@ -232,6 +240,6 @@ public class RegistrateActivity extends AppCompatActivity {
         facebookLogin.logOut();
         fireAuth.signOut();
 
-        SystemUtility.openNewActivityWithFinishing(RegistrateActivity.this, MainActivity.class, null);
+        SystemUtility.openNewActivityWithFinishing(SignUpActivty.this, LoginActivity.class, null);
     }
 }

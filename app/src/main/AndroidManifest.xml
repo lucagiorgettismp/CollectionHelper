@@ -20,10 +20,10 @@
         android:theme="@style/AppTheme.NoActionBar">
         <activity
             android:name=".ui.activities.SettingsActivity"
-            android:label="@string/title_activity_settings"></activity>
+            android:label="@string/title_activity_settings" />
         <activity
             android:name=".ui.activities.MainActivity"
-            android:label="@string/title_activity_main2" />
+            android:label="@string/title_activity_main" />
         <activity
             android:name=".ui.activities.SplashActivity"
             android:theme="@style/AppTheme.Launcher">
@@ -34,15 +34,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.activities.OldMainActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
             android:name=".ui.activities.LoginActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ui.activities.RegistrateActivity"
+            android:name=".ui.activities.SignUpActivty"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
@@ -72,9 +68,6 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activities.ProducersActivity" />
-        <activity android:name=".ui.activities.YearsActivity" />
-        <activity android:name=".ui.activities.SetsActivity" />
         <activity
             android:name=".ui.activities.SetDetailActivity"
             android:theme="@style/AppTheme.NoActionBar" />

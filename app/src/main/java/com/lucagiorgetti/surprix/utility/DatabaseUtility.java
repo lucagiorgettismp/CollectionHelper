@@ -11,9 +11,10 @@ import com.google.firebase.database.ValueEventListener;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseCallback;
 import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseListCallback;
+import com.lucagiorgetti.surprix.model.MissingDetail;
+import com.lucagiorgetti.surprix.model.MissingPresenter;
 import com.lucagiorgetti.surprix.model.Producer;
 import com.lucagiorgetti.surprix.model.Set;
-import com.lucagiorgetti.surprix.model.Sponsor;
 import com.lucagiorgetti.surprix.model.Surprise;
 import com.lucagiorgetti.surprix.model.User;
 import com.lucagiorgetti.surprix.model.Year;
@@ -237,23 +238,33 @@ public class DatabaseUtility {
         });
     }
 
-    public static void getMissingsForUsername(final FirebaseListCallback<Surprise> listen) {
+    public static void getMissingsForUsername(final FirebaseListCallback<MissingPresenter> listen) {
         listen.onStart();
 
-        if (username != null){
-            final ArrayList<Surprise> missings = new ArrayList<>();
+        if (username != null) {
+            final ArrayList<MissingPresenter> missings = new ArrayList<>();
 
             reference.child("missings").child(username).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
                         for (DataSnapshot d : dataSnapshot.getChildren()) {
-                            reference.child("surprises").child(Objects.requireNonNull(d.getKey())).orderByChild("code").addListenerForSingleValueEvent(new ValueEventListener() {
+                            String key = d.getKey();
+                            reference.child("surprises").child(Objects.requireNonNull(key)).orderByChild("code").addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     if (snapshot.exists()) {
                                         Surprise s = snapshot.getValue(Surprise.class);
-                                        missings.add(s);
+                                        MissingPresenter mp = new MissingPresenter();
+                                        mp.setSurprise(s);
+                                        MissingDetail md = null;
+                                        try {
+                                            md = d.getValue(MissingDetail.class);
+                                        } catch (Exception ignored) {
+
+                                        }
+                                        mp.setDetail(md);
+                                        missings.add(mp);
                                     }
                                     listen.onSuccess(missings);
                                 }
@@ -274,8 +285,65 @@ public class DatabaseUtility {
                 }
             });
         }
-
     }
+
+    /*
+    * public static void getMissingsForUsername(final FirebaseListCallback<MissingPresenter> listen) {
+        listen.onStart();
+        if (username != null){
+            final ArrayList<MissingPresenter> missings = new ArrayList<>();
+
+            reference.child("missings").child(username).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        for (DataSnapshot d : dataSnapshot.getChildren()) {
+                            MissingPresenter mp = new MissingPresenter();
+
+                            reference.child("surprises").child(Objects.requireNonNull(d.getKey())).orderByChild("code").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if (snapshot.exists()) {
+                                        Surprise s = snapshot.getValue(Surprise.class);
+
+                                        reference.child("missings_details").child(username).child(s.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                if (snapshot.exists()) {
+                                                    MissingDetail md = snapshot.getValue(MissingDetail.class);
+                                                    mp.setDetail(md);
+                                                }
+                                                mp.setSurprise(s);
+                                                missings.add(mp);
+                                                listen.onSuccess(missings);
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                                listen.onFailure();
+                                            }
+                                        });
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                    listen.onFailure();
+                                }
+                            });
+                        }
+
+                    } else {
+                        listen.onSuccess(null);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
+            });
+        }
+    }*/
 
     public static void getSetsFromYear(String yearId, final FirebaseListCallback<Set> listen) {
         listen.onStart();
@@ -497,30 +565,13 @@ public class DatabaseUtility {
         listener.onFailure();
     }
 
-    public static void getSponsors(final FirebaseCallback<List<Sponsor>> listen) {
-        listen.onStart();
-        reference.child("sponsors").orderByChild("order").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<Sponsor> sponsorsList = new ArrayList<>();
-                if (dataSnapshot.exists()) {
-                    for (DataSnapshot d : dataSnapshot.getChildren()) {
-                        Sponsor s = d.getValue(Sponsor.class);
-                        sponsorsList.add(s);
-                    }
-                }
-                listen.onSuccess(sponsorsList);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                listen.onFailure();
-            }
-        });
-    }
-
     public static void setUsername(String usrname) {
         username = usrname;
     }
 
+    public static void addDetailForMissing(String surpId, MissingDetail notes, FirebaseCallback<Boolean> listen) {
+        listen.onStart();
+        reference.child("missings").child(username).child(surpId).setValue(notes);
+        listen.onSuccess(true);
+    }
 }

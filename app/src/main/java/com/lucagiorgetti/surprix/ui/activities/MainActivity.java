@@ -12,11 +12,8 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.facebook.login.LoginManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseAuth;
 import com.lucagiorgetti.surprix.R;
-import com.lucagiorgetti.surprix.utility.DatabaseUtility;
 import com.lucagiorgetti.surprix.utility.SystemUtility;
 
 public class MainActivity extends AppCompatActivity {
@@ -48,8 +45,6 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-
-
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
 
@@ -69,12 +64,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void logout() {
-        SystemUtility.disableFCM();
-        SystemUtility.removeSessionUser();
-        FirebaseAuth.getInstance().signOut();
-        LoginManager.getInstance().logOut();
-        DatabaseUtility.setUsername(null);
-        SystemUtility.openNewActivityWithFinishing(MainActivity.this, LoginActivity.class, null);
-        finish();
+        SystemUtility.logout(MainActivity.this);
     }
 }

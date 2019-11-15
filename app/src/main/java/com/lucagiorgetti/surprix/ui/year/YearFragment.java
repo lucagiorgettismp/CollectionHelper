@@ -31,7 +31,7 @@ public class YearFragment extends Fragment {
         yearViewModel =
                 ViewModelProviders.of(this).get(YearViewModel.class);
 
-        View root = inflater.inflate(R.layout.fragment_year, container, false);
+        View root = inflater.inflate(R.layout.fragment_years, container, false);
 
         YearRecyclerAdapter mAdapter;
         ProgressBar progress = root.findViewById(R.id.year_loading);

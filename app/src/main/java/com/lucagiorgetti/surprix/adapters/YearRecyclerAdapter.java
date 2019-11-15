@@ -28,7 +28,7 @@ public class YearRecyclerAdapter extends RecyclerView.Adapter<YearRecyclerAdapte
     @NonNull
     @Override
     public SetViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.year_element, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.element_year, parent, false);
         return new SetViewHolder(v);
     }
 
@@ -37,7 +37,8 @@ public class YearRecyclerAdapter extends RecyclerView.Adapter<YearRecyclerAdapte
         Year year = years.get(position);
         holder.vName.setText(year.getDescr());
 
-        holder.vName.setTextColor(ContextCompat.getColor(SurprixApplication.getSurprixContext(), R.color.cardBackground));
+        /*
+        //holder.vName.setTextColor(ContextCompat.getColor(SurprixApplication.getSurprixContext(), R.color.cardBackground));
         switch (position % 2) {
             case 0:
                 holder.vLayout.setBackgroundColor(ContextCompat.getColor(SurprixApplication.getSurprixContext(), Colors.getHexColor(year.getProducer_color())));
@@ -46,6 +47,7 @@ public class YearRecyclerAdapter extends RecyclerView.Adapter<YearRecyclerAdapte
                 holder.vLayout.setBackgroundColor(ContextCompat.getColor(SurprixApplication.getSurprixContext(), Colors.getDarkHexColor(year.getProducer_color())));
                 break;
         }
+        */
     }
 
     @Override

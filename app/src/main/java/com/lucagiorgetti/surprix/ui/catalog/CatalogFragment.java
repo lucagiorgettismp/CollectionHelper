@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lucagiorgetti.surprix.R;
-import com.lucagiorgetti.surprix.adapters.ProducerRecyclerAdapter;
+import com.lucagiorgetti.surprix.adapters.CatalogRecyclerAdapter;
 import com.lucagiorgetti.surprix.model.Producer;
 import com.lucagiorgetti.surprix.utility.RecyclerItemClickListener;
 
@@ -29,13 +29,13 @@ public class CatalogFragment extends Fragment {
                 ViewModelProviders.of(this).get(CatalogViewModel.class);
         View root = inflater.inflate(R.layout.fragment_catalog, container, false);
 
-        ProducerRecyclerAdapter mAdapter;
+        CatalogRecyclerAdapter mAdapter;
         ProgressBar progress = root.findViewById(R.id.catalog_loading);
         RecyclerView recyclerView = root.findViewById(R.id.catalog_recycler);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new ProducerRecyclerAdapter();
+        mAdapter = new CatalogRecyclerAdapter();
         recyclerView.setAdapter(mAdapter);
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
