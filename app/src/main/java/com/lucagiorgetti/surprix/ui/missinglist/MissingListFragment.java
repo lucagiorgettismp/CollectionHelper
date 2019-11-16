@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.adapters.DoublesOwnersListAdapter;
@@ -132,6 +133,15 @@ public class MissingListFragment extends Fragment {
             mAdapter.notifyItemRemoved(position);
         }
         DatabaseUtility.removeMissing(mp.getSurprise().getId());
+        Snackbar.make(getView(), SurprixApplication.getInstance().getString(R.string.missing_removed), Snackbar.LENGTH_LONG)
+                .setAction(SurprixApplication.getInstance().getString(R.string.undo), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        DatabaseUtility.addMissing(mp.getSurprise().getId());
+                        missingListViewModel.addMissing(mp, position);
+                        mAdapter.notifyItemInserted(position);
+                    }
+                }).show();
     }
 
     private void showMissingOwners(final Surprise missing) {
@@ -200,7 +210,7 @@ public class MissingListFragment extends Fragment {
 
             @Override
             public void onSuccess(Boolean item) {
-
+                Snackbar.make(getView(), SurprixApplication.getInstance().getString(R.string.note_saved), Snackbar.LENGTH_SHORT ).show();
             }
 
             @Override

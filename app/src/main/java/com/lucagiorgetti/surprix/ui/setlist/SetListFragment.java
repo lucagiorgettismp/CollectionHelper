@@ -17,10 +17,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.adapters.SetRecyclerAdapter;
 import com.lucagiorgetti.surprix.model.Set;
+import com.lucagiorgetti.surprix.utility.BaseFragment;
 import com.lucagiorgetti.surprix.utility.RecyclerItemClickListener;
 import com.lucagiorgetti.surprix.utility.SystemUtility;
 
-public class SetListFragment extends Fragment {
+public class SetListFragment extends BaseFragment {
 
     private SetListViewModel setListViewModel;
 
@@ -44,7 +45,7 @@ public class SetListFragment extends Fragment {
                     @Override
                     public void onItemClick(View view, int position) {
                         Set set = mAdapter.getItemAtPosition(position);
-                        SetListFragmentDirections.SetSelectedAction action = SetListFragmentDirections.setSelectedAction(set.getId());
+                        SetListFragmentDirections.SetSelectedAction action = SetListFragmentDirections.setSelectedAction(set.getId(), set.getName());
                         Navigation.findNavController(view).navigate(action);
                         SystemUtility.closeKeyboard(getActivity());
                     }
@@ -58,6 +59,8 @@ public class SetListFragment extends Fragment {
         String yearId = null;
         if (getArguments() != null) {
             yearId = getArguments().getString("year_id");
+            String yearName = getArguments().getString("year_name");
+            setTitle(yearName);
         }
 
         setListViewModel.getSets(yearId).observe(this, sets -> {

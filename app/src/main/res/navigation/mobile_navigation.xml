@@ -29,8 +29,7 @@
     <fragment
         android:id="@+id/navigation_year"
         android:name="com.lucagiorgetti.surprix.ui.year.YearFragment"
-        android:label="Years"
-        tools:layout="@layout/fragment_years" >
+        tools:layout="@layout/fragment_years">
         <argument
             android:name="producer_id"
             app:argType="string" />
@@ -44,7 +43,6 @@
     <fragment
         android:id="@+id/navigation_set_list"
         android:name="com.lucagiorgetti.surprix.ui.setlist.SetListFragment"
-        android:label="Sets"
         tools:layout="@layout/fragment_set_list">
         <argument
             android:name="year_id"
@@ -53,14 +51,19 @@
             android:id="@+id/setSelectedAction"
             app:destination="@id/navigation_set_detail"
             app:popUpToInclusive="false" />
+        <argument
+            android:name="year_name"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/navigation_set_detail"
         android:name="com.lucagiorgetti.surprix.ui.setdetail.SetDetailFragment"
-        android:label="Details"
         tools:layout="@layout/fragment_set_detail">
         <argument
             android:name="set_id"
+            app:argType="string" />
+        <argument
+            android:name="set_name"
             app:argType="string" />
     </fragment>
 </navigation>

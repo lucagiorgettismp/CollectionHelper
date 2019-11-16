@@ -176,4 +176,11 @@
     </string>
     <string name="attachment_summary_off" translatable="false">Only download attachments when manually requested</string>
     <string name="title_activity_main" translatable="false">MainActivity</string>
+    <string name="title_years">Years</string>
+    <string name="title_sets">Sets</string>
+    <string name="title_details_list">Surprises</string>
+    <string name="note_saved">Note saved</string>
+    <string name="missing_removed">Missing surprise removed</string>
+    <string name="double_removed">Double surprise remove</string>
+    <string name="undo">Undo</string>
 </resources>

@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseListCallback;
+import com.lucagiorgetti.surprix.model.MissingPresenter;
 import com.lucagiorgetti.surprix.model.Surprise;
 import com.lucagiorgetti.surprix.ui.BaseViewModel;
 import com.lucagiorgetti.surprix.utility.DatabaseUtility;
@@ -54,5 +55,11 @@ public class DoubleListViewModel extends BaseViewModel {
                 loading.setValue(false);
             }
         });
+    }
+
+    public void addDouble(Surprise surprise, int position) {
+        List<Surprise> list = allDoubleSurprises.getValue();
+        list.add(position, surprise);
+        allDoubleSurprises.setValue(list);
     }
 }

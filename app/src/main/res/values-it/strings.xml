@@ -134,4 +134,11 @@
     <string name="title_double_list">Doppi</string>
     <string name="title_catalog">Catalogo</string>
     <string name="title_activity_settings">Impostazioni</string>
+    <string name="title_details_list">Sorpresine</string>
+    <string name="title_sets">Serie</string>
+    <string name="title_years">Anni</string>
+    <string name="note_saved">Nota salvata</string>
+    <string name="double_removed">Rimossa sorpresina doppia</string>
+    <string name="missing_removed">Rimossa sorpresina mancante</string>
+    <string name="undo">Annulla</string>
 </resources>

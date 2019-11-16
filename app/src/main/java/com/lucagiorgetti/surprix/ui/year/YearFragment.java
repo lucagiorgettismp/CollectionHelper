@@ -9,7 +9,6 @@ import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,11 +17,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.adapters.YearRecyclerAdapter;
 import com.lucagiorgetti.surprix.model.Year;
+import com.lucagiorgetti.surprix.utility.BaseFragment;
 import com.lucagiorgetti.surprix.utility.DatabaseUtility;
 import com.lucagiorgetti.surprix.utility.RecyclerItemClickListener;
 import com.lucagiorgetti.surprix.utility.SystemUtility;
 
-public class YearFragment extends Fragment {
+public class YearFragment extends BaseFragment {
 
     private YearViewModel yearViewModel;
 
@@ -32,7 +32,6 @@ public class YearFragment extends Fragment {
                 ViewModelProviders.of(this).get(YearViewModel.class);
 
         View root = inflater.inflate(R.layout.fragment_years, container, false);
-
         YearRecyclerAdapter mAdapter;
         ProgressBar progress = root.findViewById(R.id.year_loading);
         RecyclerView recyclerView = root.findViewById(R.id.year_recycler);
@@ -46,7 +45,7 @@ public class YearFragment extends Fragment {
                     @Override
                     public void onItemClick(View view, int position) {
                         Year year = mAdapter.getItemAtPosition(position);
-                        YearFragmentDirections.YearSelectedAction action = YearFragmentDirections.yearSelectedAction(year.getId());
+                        YearFragmentDirections.YearSelectedAction action = YearFragmentDirections.yearSelectedAction(year.getId(), year.getDescr());
                         Navigation.findNavController(view).navigate(action);
                         SystemUtility.closeKeyboard(getActivity());
                     }
@@ -63,6 +62,8 @@ public class YearFragment extends Fragment {
         String producerId = null;
         if (getArguments() != null) {
             producerId = getArguments().getString("producer_id");
+            String producerName = getArguments().getString("producer_name");
+            setTitle(producerName);
         }
 
         yearViewModel.getYears(producerId).observe(this, years -> {

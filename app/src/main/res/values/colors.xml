@@ -5,6 +5,7 @@
     <color name="colorPrimaryDark">#005661</color>
     <color name="colorSecondary">#ffa726</color>
     <color name="colorSecondaryLight">#ffd95b</color>
+    <color name="notesBackground">#9AFFD95B</color>
     <color name="c77800">#c77800</color>
     <color name="colorAccent">#000367</color>
     <color name="accent_material_light">#0297cf</color>
@@ -12,6 +13,7 @@
     <color name="cardBackground">#ffffff</color>
     <color name="disabledIcon">#ffd6d7d7</color>
     <color name="AppBackground">#e0e0e0</color>
+    <color name="textColor">#3C3F41</color>
 
     <color name="GreySet">#bdbdbd</color>
     <color name="DarkGreySet">#a4a4a4</color>
@@ -35,6 +37,7 @@
     <color name="DarkLightGreenSet">#09c306</color>
     <color name="BrownSet">#d84315</color>
     <color name="DarkBrownSet">#b93912</color>
+
 
 
     <color name="SwipeRed">#f11</color>

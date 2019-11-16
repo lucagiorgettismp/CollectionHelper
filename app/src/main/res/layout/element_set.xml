@@ -36,6 +36,7 @@
                 android:paddingEnd="10dp"
                 android:text="@string/name"
                 android:textAllCaps="false"
+                android:textColor="@color/textColor"
                 android:textColorHighlight="@android:color/black"
                 android:textSize="15sp"
                 android:textStyle="bold" />
@@ -50,6 +51,7 @@
                 android:paddingEnd="10dp"
                 android:text="@string/country"
                 android:textAlignment="textEnd"
+                android:textColor="@color/textColor"
                 android:textSize="15sp" />
 
             <LinearLayout
@@ -74,7 +76,6 @@
             android:id="@+id/set_divider"
             android:layout_width="match_parent"
             android:layout_height="3dp"
-            android:layout_marginBottom="2dp"
             android:background="@color/colorPrimary" />
 
         <ImageView
@@ -83,8 +84,8 @@
             android:layout_height="120dp"
             android:adjustViewBounds="true"
             android:contentDescription="@string/set_image"
-            android:paddingTop="2dp"
-            android:paddingBottom="2dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
             android:scaleType="fitCenter"
             tools:srcCompat="@drawable/ic_bpz_placeholder" />
 

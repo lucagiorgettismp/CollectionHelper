@@ -17,7 +17,9 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.lucagiorgetti.surprix.R;
+import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.adapters.SurpriseRecyclerAdapter;
 import com.lucagiorgetti.surprix.model.Surprise;
 import com.lucagiorgetti.surprix.utility.DatabaseUtility;
@@ -27,10 +29,11 @@ public class DoubleListFragment extends Fragment {
     private SurpriseRecyclerAdapter mAdapter;
     private SearchView searchView;
     private View root;
+    private DoubleListViewModel doubleListViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        DoubleListViewModel doubleListViewModel = ViewModelProviders.of(this).get(DoubleListViewModel.class);
+        doubleListViewModel = ViewModelProviders.of(this).get(DoubleListViewModel.class);
         if (root == null) {
             root = inflater.inflate(R.layout.fragment_double_list, container, false);
         }
@@ -107,6 +110,16 @@ public class DoubleListFragment extends Fragment {
             mAdapter.notifyItemRemoved(position);
         }
         DatabaseUtility.removeDouble(surprise.getId());
+        DatabaseUtility.removeMissing(surprise.getId());
+        Snackbar.make(getView(), SurprixApplication.getInstance().getString(R.string.double_removed), Snackbar.LENGTH_LONG)
+                .setAction(SurprixApplication.getInstance().getString(R.string.undo), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        DatabaseUtility.addMissing(surprise.getId());
+                        doubleListViewModel.addDouble(surprise, position);
+                        mAdapter.notifyItemInserted(position);
+                    }
+                }).show();
     }
 }
 

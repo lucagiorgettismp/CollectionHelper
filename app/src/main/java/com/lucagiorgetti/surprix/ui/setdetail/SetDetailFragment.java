@@ -15,8 +15,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.adapters.SetDetailRecyclerAdapter;
+import com.lucagiorgetti.surprix.utility.BaseFragment;
 
-public class SetDetailFragment extends Fragment {
+public class SetDetailFragment extends BaseFragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -36,6 +37,8 @@ public class SetDetailFragment extends Fragment {
         String setId = null;
         if (getArguments() != null) {
             setId = getArguments().getString("set_id");
+            String setName = getArguments().getString("set_name");
+            setTitle(setName);
         }
 
         setDetailViewModel.getSurprises(setId).observe(this, surprises -> {

@@ -50,4 +50,10 @@ public class MissingListViewModel extends BaseViewModel {
             }
         });
     }
+
+    public void addMissing(MissingPresenter mp, int position) {
+        List<MissingPresenter> list = allMissingSurprises.getValue();
+        list.add(position, mp);
+        allMissingSurprises.setValue(list);
+    }
 }

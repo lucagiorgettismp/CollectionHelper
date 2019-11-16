@@ -46,7 +46,7 @@ public class CatalogFragment extends Fragment {
                             prodName = prodName + " " + producer.getProduct();
                         }
 
-                        CatalogFragmentDirections.ProducerSelectedAction action = CatalogFragmentDirections.producerSelectedAction(producer.getId(), producer.getName());
+                        CatalogFragmentDirections.ProducerSelectedAction action = CatalogFragmentDirections.producerSelectedAction(producer.getId(), prodName);
                         Navigation.findNavController(view).navigate(action);
                     }
 
