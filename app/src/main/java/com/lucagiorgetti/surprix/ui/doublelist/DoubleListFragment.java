@@ -44,7 +44,7 @@ public class DoubleListFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new SurpriseRecyclerAdapter(false);
+        mAdapter = new SurpriseRecyclerAdapter();
         recyclerView.setAdapter(mAdapter);
 
         doubleListViewModel.getDoubleSurprises().observe(this, doubleList -> {

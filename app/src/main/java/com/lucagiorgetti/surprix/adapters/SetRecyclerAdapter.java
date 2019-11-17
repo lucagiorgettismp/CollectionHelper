@@ -4,11 +4,15 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -20,7 +24,9 @@ import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.model.Colors;
 import com.lucagiorgetti.surprix.model.ExtraLocales;
 import com.lucagiorgetti.surprix.model.Set;
+import com.lucagiorgetti.surprix.model.Surprise;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -30,8 +36,24 @@ import java.util.Locale;
  * Created by Luca on 24/10/2017.
  */
 
-public class SetRecyclerAdapter extends RecyclerView.Adapter<SetRecyclerAdapter.SetViewHolder> {
-    private List<Set> sets;
+public class SetRecyclerAdapter extends ListAdapter<Set, SetRecyclerAdapter.SetViewHolder> implements Filterable {
+    private List<Set> filterableList;
+
+    public SetRecyclerAdapter() {
+        super(DIFF_CALLBACK);
+    }
+
+    private static final DiffUtil.ItemCallback<Set> DIFF_CALLBACK = new DiffUtil.ItemCallback<Set>() {
+        @Override
+        public boolean areItemsTheSame(@NonNull Set oldItem, @NonNull Set newItem) {
+            return oldItem.getId().equals(newItem.getId());
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull Set oldItem, @NonNull Set newItem) {
+            return oldItem.getId().equals(newItem.getId());
+        }
+    };
 
     @NonNull
     @Override
@@ -42,7 +64,7 @@ public class SetRecyclerAdapter extends RecyclerView.Adapter<SetRecyclerAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull SetViewHolder holder, int position) {
-        Set set = sets.get(position);
+        Set set = getItem(position);
         holder.vName.setText(set.getName());
         Context ctx = SurprixApplication.getSurprixContext();
 
@@ -75,20 +97,47 @@ public class SetRecyclerAdapter extends RecyclerView.Adapter<SetRecyclerAdapter.
         }
     }
 
-    @Override
-    public int getItemCount() {
-        if (sets != null){
-            return sets.size();
-        }
-        return 0;
-    }
-
     public Set getItemAtPosition(int position) {
-        return this.sets.get(position);
+        return getItem(position);
     }
 
-    public void setSets(List<Set> sets) {
-        this.sets = sets;
+    public void setFilterableList(List<Set> sets) {
+        this.filterableList = sets;
+    }
+
+    private Filter filter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+            List<Set> filteredList = new ArrayList<>();
+
+            if (charSequence == null || charSequence.length() == 0){
+                filteredList.addAll(filterableList);
+            } else {
+                String pattern = charSequence.toString().toLowerCase().trim();
+
+                for (Set set: filterableList){
+                    if (set.getCode().toLowerCase().contains(pattern)
+                            || set.getName().toLowerCase().contains(pattern)){
+                        filteredList.add(set);
+                    }
+                }
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            submitList((List<Set>) filterResults.values);
+        }
+    };
+
+    @Override
+    public Filter getFilter() {
+        return filter;
     }
 
     static class SetViewHolder extends RecyclerView.ViewHolder {

@@ -25,9 +25,7 @@ import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.model.Colors;
 import com.lucagiorgetti.surprix.model.ExtraLocales;
-import com.lucagiorgetti.surprix.model.MissingDetail;
 import com.lucagiorgetti.surprix.model.Surprise;
-import com.lucagiorgetti.surprix.ui.missinglist.SurpRecylerAdapterListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,14 +37,11 @@ import java.util.Locale;
  * Created by Luca on 28/10/2017.
  */
 
-public class SurpriseRecyclerAdapter extends ListAdapter<Surprise, SurpriseRecyclerAdapter.SurpViewHolder>  implements Filterable{
-    private SurpRecylerAdapterListener listener;
-    private List<Surprise> filterableList;
-    private boolean fromMissing;
+public class SurpriseRecyclerAdapter extends ListAdapter<Surprise, SurpriseRecyclerAdapter.SurpViewHolder> implements Filterable {
+   private List<Surprise> filterableList;
 
-    public SurpriseRecyclerAdapter(boolean fromMissing) {
+    public SurpriseRecyclerAdapter() {
         super(DIFF_CALLBACK);
-        this.fromMissing = fromMissing;
     }
 
     private static final DiffUtil.ItemCallback<Surprise> DIFF_CALLBACK = new DiffUtil.ItemCallback<Surprise>() {
@@ -109,23 +104,9 @@ public class SurpriseRecyclerAdapter extends ListAdapter<Surprise, SurpriseRecyc
                     .into(holder.vImage);
         }
 
-        holder.vBtnOwners.setOnClickListener(view -> {
-            listener.onShowMissingOwnerClick(surp);
-        });
+        holder.vMissingBottom.setVisibility(View.GONE);
+        holder.vBtnOwners.setVisibility(View.GONE);
 
-
-        holder.vBtnAddNotes.setOnClickListener(view -> {
-            MissingDetail detail = new MissingDetail();
-            detail.setNotes(holder.vNotesText.getText().toString());
-
-            listener.onSaveNotesClick(surp, detail);
-        });
-
-
-        if (!fromMissing){
-            holder.vMissingBottom.setVisibility(View.GONE);
-            holder.vBtnOwners.setVisibility(View.GONE);
-        }
 
         Integer rarity = surp.getIntRarity();
         holder.vStar1On.setVisibility(View.GONE);
@@ -173,15 +154,15 @@ public class SurpriseRecyclerAdapter extends ListAdapter<Surprise, SurpriseRecyc
         protected FilterResults performFiltering(CharSequence charSequence) {
             List<Surprise> filteredList = new ArrayList<>();
 
-            if (charSequence == null || charSequence.length() == 0){
+            if (charSequence == null || charSequence.length() == 0) {
                 filteredList.addAll(filterableList);
             } else {
                 String pattern = charSequence.toString().toLowerCase().trim();
 
-                for (Surprise surprise: filterableList){
+                for (Surprise surprise : filterableList) {
                     if (surprise.getCode().toLowerCase().contains(pattern)
                             || surprise.getDescription().toLowerCase().contains(pattern)
-                            || surprise.getSet_name().toLowerCase().contains(pattern)){
+                            || surprise.getSet_name().toLowerCase().contains(pattern)) {
                         filteredList.add(surprise);
                     }
                 }
@@ -195,7 +176,7 @@ public class SurpriseRecyclerAdapter extends ListAdapter<Surprise, SurpriseRecyc
 
         @Override
         protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-            submitList((List<Surprise>)filterResults.values);
+            submitList((List<Surprise>) filterResults.values);
         }
     };
 
@@ -205,10 +186,6 @@ public class SurpriseRecyclerAdapter extends ListAdapter<Surprise, SurpriseRecyc
 
     public void removeFilterableItem(Surprise surprise) {
         this.filterableList.remove(surprise);
-    }
-
-    public void setListener(SurpRecylerAdapterListener listener) {
-        this.listener = listener;
     }
 
     class SurpViewHolder extends RecyclerView.ViewHolder {
