@@ -57,7 +57,7 @@ public class SignUpActivty extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        setContentView(R.layout.activity_registration);
+        setContentView(R.layout.activity_signup);
 
         edtEmail = findViewById(R.id.edit_reg_email);
         edtPassword = findViewById(R.id.edit_reg_password);

@@ -29,9 +29,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.nav_logout) {
-            logout();
-        } else if (id == R.id.nav_settings){
+        if (id == R.id.nav_settings){
             SystemUtility.openNewActivity(SettingsActivity.class, null);
         }
 

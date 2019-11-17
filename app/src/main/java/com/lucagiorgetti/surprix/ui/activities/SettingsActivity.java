@@ -33,7 +33,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registration);
+        setContentView(R.layout.activity_signup);
 
         currentUser = SurprixApplication.getInstance().getCurrentUser();
 
@@ -47,10 +47,10 @@ public class SettingsActivity extends AppCompatActivity {
 
         TextView lblInfoFacebook = findViewById(R.id.lbl_reg_info_facebook);
         TextView lblInfoFirstLogin = findViewById(R.id.lbl_reg_info_firstlogin);
-        TextView lblInfoSettings = findViewById(R.id.lbl_reg_settings_label);
 
         TextView changePwd = findViewById(R.id.btn_reg_change_pwd);
         TextView deleteUser = findViewById(R.id.btn_reg_delete_account);
+        TextView logoutUser = findViewById(R.id.lbl_reg_logout);
         Button submit = findViewById(R.id.btn_reg_submit);
         Button completeBtn = findViewById(R.id.btn_reg_complete_account);
         usernameImage.setColorFilter(ContextCompat.getColor(this, R.color.disabledIcon));
@@ -97,8 +97,8 @@ public class SettingsActivity extends AppCompatActivity {
         });
 
         changePwd.setOnClickListener(v -> openChangePwdDialog());
-
         deleteUser.setOnClickListener(v -> openDeleteUserDialog());
+        logoutUser.setOnClickListener(v -> SystemUtility.logout(SettingsActivity.this));
     }
 
 
