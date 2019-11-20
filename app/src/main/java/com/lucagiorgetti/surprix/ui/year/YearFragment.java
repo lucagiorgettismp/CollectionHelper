@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lucagiorgetti.surprix.R;
-import com.lucagiorgetti.surprix.adapters.YearRecyclerAdapter;
 import com.lucagiorgetti.surprix.model.Year;
 import com.lucagiorgetti.surprix.utility.BaseFragment;
 import com.lucagiorgetti.surprix.utility.DatabaseUtility;

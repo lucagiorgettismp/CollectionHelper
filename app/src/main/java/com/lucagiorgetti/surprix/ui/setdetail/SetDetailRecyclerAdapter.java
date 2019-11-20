@@ -1,4 +1,4 @@
-package com.lucagiorgetti.surprix.adapters;
+package com.lucagiorgetti.surprix.ui.setdetail;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -78,14 +78,14 @@ public class SetDetailRecyclerAdapter extends RecyclerView.Adapter<SetDetailRecy
             Glide.with(ctx).
                     load(gsReference).
                     apply(new RequestOptions()
-                            .placeholder(R.drawable.ic_surprise_grey))
+                            .placeholder(R.drawable.ic_logo_shape_primary))
                     .into(holder.vImage);
 
         } else {
             Glide.with(ctx).
                     load(s.getImg_path()).
                     apply(new RequestOptions()
-                            .placeholder(R.drawable.ic_surprise_grey))
+                            .placeholder(R.drawable.ic_logo_shape_primary))
                     .into(holder.vImage);
         }
 

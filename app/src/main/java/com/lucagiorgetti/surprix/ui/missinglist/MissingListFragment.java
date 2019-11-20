@@ -27,20 +27,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.snackbar.Snackbar;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
-import com.lucagiorgetti.surprix.adapters.DoublesOwnersListAdapter;
 import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseCallback;
 import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseListCallback;
 import com.lucagiorgetti.surprix.model.MissingDetail;
 import com.lucagiorgetti.surprix.model.MissingPresenter;
 import com.lucagiorgetti.surprix.model.Surprise;
 import com.lucagiorgetti.surprix.model.User;
+import com.lucagiorgetti.surprix.utility.BaseFragment;
 import com.lucagiorgetti.surprix.utility.DatabaseUtility;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class MissingListFragment extends Fragment {
+public class MissingListFragment extends BaseFragment {
     private MissingRecyclerAdapter mAdapter;
     private SearchView searchView;
     private View root;
@@ -70,6 +70,11 @@ public class MissingListFragment extends Fragment {
             public void onSaveNotesClick(Surprise surprise, MissingDetail detail) {
                 saveNotes(surprise, detail);
             }
+
+            @Override
+            public void onDeleteNoteClick(Surprise surp) {
+                deleteNotes(surp);
+            }
         });
         recyclerView.setAdapter(mAdapter);
 
@@ -77,12 +82,18 @@ public class MissingListFragment extends Fragment {
             emptyList.setVisibility(missingList == null || missingList.isEmpty() ? View.VISIBLE : View.GONE);
             mAdapter.submitList(missingList);
             mAdapter.setFilterableList(missingList);
+            if (mAdapter.getItemCount() > 0){
+                setTitle(getString(R.string.missings) + " (" + mAdapter.getItemCount() + ")");
+            } else {
+                setTitle(getString(R.string.missings));
+            }
         });
 
         missingListViewModel.isLoading().observe(this, isLoading -> progress.setVisibility(isLoading ? View.VISIBLE : View.GONE));
 
         initSwipe(recyclerView);
         setHasOptionsMenu(true);
+        setTitle(getString(R.string.missings));
         return root;
     }
 
@@ -133,6 +144,11 @@ public class MissingListFragment extends Fragment {
             mAdapter.notifyItemRemoved(position);
         }
         DatabaseUtility.removeMissing(mp.getSurprise().getId());
+        if (mAdapter.getItemCount() > 0){
+            setTitle(getString(R.string.missings) + " (" + mAdapter.getItemCount() + ")");
+        } else {
+            setTitle(getString(R.string.missings));
+        }
         Snackbar.make(getView(), SurprixApplication.getInstance().getString(R.string.missing_removed), Snackbar.LENGTH_LONG)
                 .setAction(SurprixApplication.getInstance().getString(R.string.undo), new View.OnClickListener() {
                     @Override
@@ -140,6 +156,11 @@ public class MissingListFragment extends Fragment {
                         DatabaseUtility.addMissing(mp.getSurprise().getId());
                         missingListViewModel.addMissing(mp, position);
                         mAdapter.notifyItemInserted(position);
+                        if (mAdapter.getItemCount() > 0){
+                            setTitle(getString(R.string.doubles) + " (" + mAdapter.getItemCount() + ")");
+                        } else {
+                            setTitle(getString(R.string.doubles));
+                        }
                     }
                 }).show();
     }
@@ -219,6 +240,28 @@ public class MissingListFragment extends Fragment {
             }
         });
     }
+
+    private void deleteNotes(Surprise surprise) {
+        MissingDetail detail = new MissingDetail();
+        detail.setNotes("");
+        DatabaseUtility.addDetailForMissing(surprise.getId(), detail, new FirebaseCallback<Boolean>() {
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onSuccess(Boolean item) {
+                Snackbar.make(getView(), SurprixApplication.getInstance().getString(R.string.note_removed), Snackbar.LENGTH_SHORT ).show();
+            }
+
+            @Override
+            public void onFailure() {
+
+            }
+        });
+    }
+
 
     private void sendEmailToUser(User owner, Surprise missing) {
         User currentUser = SurprixApplication.getInstance().getCurrentUser();

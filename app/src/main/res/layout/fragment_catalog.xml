@@ -26,6 +26,18 @@
             android:layout_height="34dp"
             android:layout_gravity="center_horizontal|center"
             android:visibility="gone" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/catalog_fab_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="32dp"
+            android:layout_marginEnd="32dp"
+            android:clickable="true"
+            android:tint="@color/colorWhite"
+            app:srcCompat="@drawable/ic_search"
+            android:focusable="true" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -8,13 +8,11 @@
     <fragment
         android:id="@+id/navigation_missing_list"
         android:name="com.lucagiorgetti.surprix.ui.missinglist.MissingListFragment"
-        android:label="@string/title_missing_list"
         tools:layout="@layout/fragment_missing_list" />
 
     <fragment
         android:id="@+id/navigation_double_list"
         android:name="com.lucagiorgetti.surprix.ui.doublelist.DoubleListFragment"
-        android:label="@string/title_double_list"
         tools:layout="@layout/fragment_double_list" />
 
     <fragment
@@ -25,6 +23,9 @@
         <action
             android:id="@+id/producerSelectedAction"
             app:destination="@id/navigation_year" />
+        <action
+            android:id="@+id/goToSearch"
+            app:destination="@id/navigation_search" />
     </fragment>
     <fragment
         android:id="@+id/navigation_year"
@@ -66,4 +67,8 @@
             android:name="set_name"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/navigation_search"
+        android:name="com.lucagiorgetti.surprix.ui.search.Search"
+        tools:layout="@layout/fragment_search" />
 </navigation>

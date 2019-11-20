@@ -1,4 +1,4 @@
-package com.lucagiorgetti.surprix.adapters;
+package com.lucagiorgetti.surprix.ui.setlist;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -24,7 +24,6 @@ import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.model.Colors;
 import com.lucagiorgetti.surprix.model.ExtraLocales;
 import com.lucagiorgetti.surprix.model.Set;
-import com.lucagiorgetti.surprix.model.Surprise;
 
 import java.util.ArrayList;
 import java.util.List;

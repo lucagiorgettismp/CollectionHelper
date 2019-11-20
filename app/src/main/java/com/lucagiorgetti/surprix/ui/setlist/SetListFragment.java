@@ -1,5 +1,6 @@
 package com.lucagiorgetti.surprix.ui.setlist;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,9 +19,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lucagiorgetti.surprix.R;
-import com.lucagiorgetti.surprix.adapters.SetRecyclerAdapter;
 import com.lucagiorgetti.surprix.model.Set;
 import com.lucagiorgetti.surprix.utility.BaseFragment;
+import com.lucagiorgetti.surprix.utility.DatabaseUtility;
 import com.lucagiorgetti.surprix.utility.RecyclerItemClickListener;
 import com.lucagiorgetti.surprix.utility.SystemUtility;
 
@@ -53,6 +54,9 @@ public class SetListFragment extends BaseFragment {
 
                     @Override
                     public void onLongItemClick(View view, int position) {
+                        Set set = mAdapter.getItemAtPosition(position);
+                        onLongSetClicked(set.getId(), set.getName());
+                        SystemUtility.closeKeyboard(getActivity());
                     }
                 })
         );
@@ -77,6 +81,20 @@ public class SetListFragment extends BaseFragment {
         setHasOptionsMenu(true);
 
         return root;
+    }
+
+    private void onLongSetClicked(String setId, String setName) {
+            final AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+            alertDialog.setTitle(getString(R.string.dialog_add_set_title));
+            alertDialog.setMessage(getString(R.string.dialog_add_set_text) + " " + setName + "?");
+            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.dialog_positive),
+                    (dialog, which) -> {
+                        DatabaseUtility.addMissingsFromSet(setId);
+                        alertDialog.dismiss();
+                    });
+            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.dialog_negative),
+                    (dialog, which) -> alertDialog.dismiss());
+            alertDialog.show();
     }
 
     @Override

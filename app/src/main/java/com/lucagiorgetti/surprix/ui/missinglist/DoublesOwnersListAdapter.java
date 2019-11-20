@@ -1,4 +1,4 @@
-package com.lucagiorgetti.surprix.adapters;
+package com.lucagiorgetti.surprix.ui.missinglist;
 
 import android.content.Context;
 import android.view.LayoutInflater;

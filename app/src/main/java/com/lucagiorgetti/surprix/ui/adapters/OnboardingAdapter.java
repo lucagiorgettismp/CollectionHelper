@@ -1,4 +1,4 @@
-package com.lucagiorgetti.surprix.adapters;
+package com.lucagiorgetti.surprix.ui.adapters;
 
 import android.content.Context;
 import androidx.annotation.NonNull;

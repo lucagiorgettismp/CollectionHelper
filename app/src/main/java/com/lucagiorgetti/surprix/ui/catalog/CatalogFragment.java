@@ -14,8 +14,8 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.lucagiorgetti.surprix.R;
-import com.lucagiorgetti.surprix.adapters.CatalogRecyclerAdapter;
 import com.lucagiorgetti.surprix.model.Producer;
 import com.lucagiorgetti.surprix.utility.RecyclerItemClickListener;
 
@@ -31,6 +31,8 @@ public class CatalogFragment extends Fragment {
 
         CatalogRecyclerAdapter mAdapter;
         ProgressBar progress = root.findViewById(R.id.catalog_loading);
+
+        FloatingActionButton fab = root.findViewById(R.id.catalog_fab_search);
         RecyclerView recyclerView = root.findViewById(R.id.catalog_recycler);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -65,6 +67,8 @@ public class CatalogFragment extends Fragment {
         catalogViewModel.isLoading().observe(this, isLoading -> {
             progress.setVisibility(isLoading ? View.VISIBLE : View.GONE);
         });
+
+        fab.setOnClickListener(view -> Navigation.findNavController(view).navigate(CatalogFragmentDirections.goToSearch()));
 
         return root;
     }

@@ -234,10 +234,11 @@
                     android:ems="10"
                     android:gravity="start|top"
                     android:hint="Note"
-                    android:inputType="textMultiLine"
                     android:textColor="@color/textColor"
                     android:textColorHint="#653C3F41"
                     android:textColorLink="@color/colorSecondary"
+                    android:singleLine="true"
+                    android:imeOptions="actionDone"
                     android:textSize="14sp" />
             </RelativeLayout>
 
@@ -249,7 +250,7 @@
                 android:orientation="vertical">
 
                 <ImageButton
-                    android:id="@+id/save_note_btn"
+                    android:id="@+id/delete_note_btn"
                     style="@style/ButtonSaveNote"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
@@ -259,7 +260,7 @@
                     android:fitsSystemWindows="false"
                     android:scaleType="centerInside"
                     android:tint="@android:color/white"
-                    app:srcCompat="@drawable/ic_save" />
+                    app:srcCompat="@drawable/ic_eraser" />
             </LinearLayout>
         </LinearLayout>
 

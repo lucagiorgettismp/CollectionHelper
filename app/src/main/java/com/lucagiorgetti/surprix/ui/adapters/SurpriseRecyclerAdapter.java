@@ -1,4 +1,4 @@
-package com.lucagiorgetti.surprix.adapters;
+package com.lucagiorgetti.surprix.ui.adapters;
 
 import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
@@ -93,14 +93,14 @@ public class SurpriseRecyclerAdapter extends ListAdapter<Surprise, SurpriseRecyc
             Glide.with(SurprixApplication.getSurprixContext()).
                     load(gsReference).
                     apply(new RequestOptions()
-                            .placeholder(R.drawable.ic_surprise_grey))
+                            .placeholder(R.drawable.ic_logo_shape_primary))
                     .into(holder.vImage);
 
         } else {
             Glide.with(SurprixApplication.getSurprixContext()).
                     load(path).
                     apply(new RequestOptions()
-                            .placeholder(R.drawable.ic_surprise_grey))
+                            .placeholder(R.drawable.ic_logo_shape_primary))
                     .into(holder.vImage);
         }
 
@@ -227,7 +227,7 @@ public class SurpriseRecyclerAdapter extends ListAdapter<Surprise, SurpriseRecyc
             vStar2Off = v.findViewById(R.id.img_surp_elem_star_2_off);
             vStar3Off = v.findViewById(R.id.img_surp_elem_star_3_off);
             vBtnOwners = v.findViewById(R.id.show_owners_btn);
-            vBtnAddNotes = v.findViewById(R.id.save_note_btn);
+            vBtnAddNotes = v.findViewById(R.id.delete_note_btn);
             vMissingBottom = v.findViewById(R.id.missing_bottom_layout);
             vNotesText = v.findViewById(R.id.note_edit_text);
         }

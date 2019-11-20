@@ -8,13 +8,11 @@ import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lucagiorgetti.surprix.R;
-import com.lucagiorgetti.surprix.adapters.SetDetailRecyclerAdapter;
 import com.lucagiorgetti.surprix.utility.BaseFragment;
 
 public class SetDetailFragment extends BaseFragment {

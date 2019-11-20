@@ -74,7 +74,7 @@ public class SignUpActivty extends AppCompatActivity {
         Button btnAccountCompleteFacebook = findViewById(R.id.btn_reg_complete_account);
         Button submit = findViewById(R.id.btn_reg_submit);
         TextView lblPrivacyPolicy = findViewById(R.id.lbl_reg_policy);
-        TextView logout = findViewById(R.id.lbl_reg_logout);
+        Button logout = findViewById(R.id.btn_reg_logout);
 
         lblPrivacyPolicy.setOnClickListener(v -> showPrivacyPolicy());
 
@@ -102,6 +102,7 @@ public class SignUpActivty extends AppCompatActivity {
 
         laySettings.setVisibility(View.GONE);
         lblInfoSettings.setVisibility(View.GONE);
+        logout.setVisibility(View.GONE);
 
         btnAccountCompleteFacebook.setOnClickListener(v -> {
             final String email = edtEmail.getText().toString().trim();

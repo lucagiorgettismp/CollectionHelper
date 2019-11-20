@@ -1,4 +1,4 @@
-package com.lucagiorgetti.surprix.adapters;
+package com.lucagiorgetti.surprix.ui.year;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -6,12 +6,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lucagiorgetti.surprix.R;
-import com.lucagiorgetti.surprix.SurprixApplication;
-import com.lucagiorgetti.surprix.model.Colors;
 import com.lucagiorgetti.surprix.model.Year;
 
 import java.util.List;

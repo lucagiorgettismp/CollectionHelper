@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.lucagiorgetti.surprix.R;
-import com.lucagiorgetti.surprix.adapters.OnboardingAdapter;
+import com.lucagiorgetti.surprix.ui.adapters.OnboardingAdapter;
 
 public class OnboardActivity extends AppCompatActivity {
     private ViewPager mSlideViewPager;

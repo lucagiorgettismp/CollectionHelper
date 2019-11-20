@@ -20,11 +20,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.snackbar.Snackbar;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
-import com.lucagiorgetti.surprix.adapters.SurpriseRecyclerAdapter;
+import com.lucagiorgetti.surprix.ui.adapters.SurpriseRecyclerAdapter;
 import com.lucagiorgetti.surprix.model.Surprise;
+import com.lucagiorgetti.surprix.utility.BaseFragment;
 import com.lucagiorgetti.surprix.utility.DatabaseUtility;
 
-public class DoubleListFragment extends Fragment {
+public class DoubleListFragment extends BaseFragment {
 
     private SurpriseRecyclerAdapter mAdapter;
     private SearchView searchView;
@@ -48,9 +49,14 @@ public class DoubleListFragment extends Fragment {
         recyclerView.setAdapter(mAdapter);
 
         doubleListViewModel.getDoubleSurprises().observe(this, doubleList -> {
-            emptyList.setVisibility(doubleList.isEmpty() ? View.VISIBLE : View.GONE);
+            emptyList.setVisibility(doubleList == null || doubleList.isEmpty() ? View.VISIBLE : View.GONE);
             mAdapter.submitList(doubleList);
             mAdapter.setFilterableList(doubleList);
+            if (mAdapter.getItemCount() > 0){
+                setTitle(getString(R.string.doubles) + " (" + mAdapter.getItemCount() + ")");
+            } else {
+                setTitle(getString(R.string.doubles));
+            }
         });
 
         doubleListViewModel.isLoading().observe(this, isLoading -> {
@@ -59,6 +65,7 @@ public class DoubleListFragment extends Fragment {
 
         initSwipe(recyclerView);
         setHasOptionsMenu(true);
+        setTitle(getString(R.string.doubles));
         return root;
     }
 
@@ -110,7 +117,13 @@ public class DoubleListFragment extends Fragment {
             mAdapter.notifyItemRemoved(position);
         }
         DatabaseUtility.removeDouble(surprise.getId());
-        DatabaseUtility.removeMissing(surprise.getId());
+
+        if (mAdapter.getItemCount() > 0){
+            setTitle(getString(R.string.doubles) + " (" + mAdapter.getItemCount() + ")");
+        } else {
+            setTitle(getString(R.string.doubles));
+        }
+
         Snackbar.make(getView(), SurprixApplication.getInstance().getString(R.string.double_removed), Snackbar.LENGTH_LONG)
                 .setAction(SurprixApplication.getInstance().getString(R.string.undo), new View.OnClickListener() {
                     @Override
@@ -118,6 +131,11 @@ public class DoubleListFragment extends Fragment {
                         DatabaseUtility.addMissing(surprise.getId());
                         doubleListViewModel.addDouble(surprise, position);
                         mAdapter.notifyItemInserted(position);
+                        if (mAdapter.getItemCount() > 0){
+                            setTitle(getString(R.string.doubles) + " (" + mAdapter.getItemCount() + ")");
+                        } else {
+                            setTitle(getString(R.string.doubles));
+                        }
                     }
                 }).show();
     }

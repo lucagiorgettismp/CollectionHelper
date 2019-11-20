@@ -1,9 +1,11 @@
 package com.lucagiorgetti.surprix.ui.missinglist;
 
 import android.annotation.SuppressLint;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -39,7 +41,7 @@ import java.util.Locale;
  * Created by Luca on 28/10/2017.
  */
 
-public class MissingRecyclerAdapter extends ListAdapter<MissingPresenter, MissingRecyclerAdapter.SurpViewHolder>  implements Filterable{
+public class MissingRecyclerAdapter extends ListAdapter<MissingPresenter, MissingRecyclerAdapter.SurpViewHolder> implements Filterable {
     private SurpRecylerAdapterListener listener;
     private List<MissingPresenter> filterableList;
     private boolean fromMissing;
@@ -78,11 +80,23 @@ public class MissingRecyclerAdapter extends ListAdapter<MissingPresenter, Missin
         holder.vDescription.setText(surp.getDescription());
         holder.vYear.setText(String.valueOf(surp.getSet_year()));
         holder.vProducer.setText(surp.getSet_producer_name() + " " + surp.getSet_product_name());
-        if (detail != null){
+        if (detail != null) {
             holder.vNotesText.setText(detail.getNotes());
         } else {
             holder.vNotesText.setText(null);
         }
+        holder.vNotesText.setOnEditorActionListener((textView, i, keyEvent) -> {
+
+            if (i == EditorInfo.IME_ACTION_DONE) {
+                MissingDetail md = new MissingDetail();
+                md.setNotes(textView.getText().toString());
+
+                listener.onSaveNotesClick(surp, md);
+                holder.vNotesText.clearFocus();
+            }
+
+            return false;
+        });
 
         String nation;
         if (ExtraLocales.isExtraLocale(surp.getSet_nation())) {
@@ -103,14 +117,14 @@ public class MissingRecyclerAdapter extends ListAdapter<MissingPresenter, Missin
             Glide.with(SurprixApplication.getSurprixContext()).
                     load(gsReference).
                     apply(new RequestOptions()
-                            .placeholder(R.drawable.ic_surprise_grey))
+                            .placeholder(R.drawable.ic_logo_shape_primary))
                     .into(holder.vImage);
 
         } else {
             Glide.with(SurprixApplication.getSurprixContext()).
                     load(path).
                     apply(new RequestOptions()
-                            .placeholder(R.drawable.ic_surprise_grey))
+                            .placeholder(R.drawable.ic_logo_shape_primary))
                     .into(holder.vImage);
         }
 
@@ -119,15 +133,13 @@ public class MissingRecyclerAdapter extends ListAdapter<MissingPresenter, Missin
         });
 
 
-        holder.vBtnAddNotes.setOnClickListener(view -> {
-            MissingDetail md = new MissingDetail();
-            md.setNotes(holder.vNotesText.getText().toString());
-
-            listener.onSaveNotesClick(surp, md);
+        holder.vBtnDeleteNotes.setOnClickListener(view -> {
+            holder.vNotesText.setText(null);
+            listener.onDeleteNoteClick(surp);
+            holder.vNotesText.clearFocus();
         });
 
-
-        if (!fromMissing){
+        if (!fromMissing) {
             holder.vMissingBottom.setVisibility(View.GONE);
             holder.vBtnOwners.setVisibility(View.GONE);
         }
@@ -178,16 +190,16 @@ public class MissingRecyclerAdapter extends ListAdapter<MissingPresenter, Missin
         protected FilterResults performFiltering(CharSequence charSequence) {
             List<MissingPresenter> filteredList = new ArrayList<>();
 
-            if (charSequence == null || charSequence.length() == 0){
+            if (charSequence == null || charSequence.length() == 0) {
                 filteredList.addAll(filterableList);
             } else {
                 String pattern = charSequence.toString().toLowerCase().trim();
 
-                for (MissingPresenter mp: filterableList){
+                for (MissingPresenter mp : filterableList) {
                     Surprise surprise = mp.getSurprise();
                     if (surprise.getCode().toLowerCase().contains(pattern)
                             || surprise.getDescription().toLowerCase().contains(pattern)
-                            || surprise.getSet_name().toLowerCase().contains(pattern)){
+                            || surprise.getSet_name().toLowerCase().contains(pattern)) {
                         filteredList.add(mp);
                     }
                 }
@@ -201,7 +213,7 @@ public class MissingRecyclerAdapter extends ListAdapter<MissingPresenter, Missin
 
         @Override
         protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-            submitList((List<MissingPresenter>)filterResults.values);
+            submitList((List<MissingPresenter>) filterResults.values);
         }
     };
 
@@ -232,7 +244,7 @@ public class MissingRecyclerAdapter extends ListAdapter<MissingPresenter, Missin
         ImageView vStar2Off;
         ImageView vStar3Off;
         ImageButton vBtnOwners;
-        ImageButton vBtnAddNotes;
+        ImageButton vBtnDeleteNotes;
         View vMissingBottom;
         EditText vNotesText;
 
@@ -256,7 +268,7 @@ public class MissingRecyclerAdapter extends ListAdapter<MissingPresenter, Missin
             vStar2Off = v.findViewById(R.id.img_surp_elem_star_2_off);
             vStar3Off = v.findViewById(R.id.img_surp_elem_star_3_off);
             vBtnOwners = v.findViewById(R.id.show_owners_btn);
-            vBtnAddNotes = v.findViewById(R.id.save_note_btn);
+            vBtnDeleteNotes = v.findViewById(R.id.delete_note_btn);
             vMissingBottom = v.findViewById(R.id.missing_bottom_layout);
             vNotesText = v.findViewById(R.id.note_edit_text);
         }

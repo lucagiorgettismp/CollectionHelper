@@ -67,7 +67,7 @@
     <string name="remove_double_dialog_title">Remove from doubles</string>
     <string name="remove_double_dialog_text">Do you want to remove from doubles</string>
     <string name="network_not_available">Network not available, check your internet connection</string>
-    <string name="list_is_empty">List is empty. You can add items by clicking the add button.</string>
+    <string name="list_is_empty">List is empty. You can add items from the catalog!</string>
     <string name="save">Save</string>
     <string name="tutorial">Tutorial</string>
     <string name="next">Next</string>
@@ -183,4 +183,8 @@
     <string name="missing_removed">Missing surprise removed</string>
     <string name="double_removed">Double surprise remove</string>
     <string name="undo">Undo</string>
+    <string name="note_removed">Note removed</string>
+    <string name="surprises">Surprises</string>
+    <string name="sets">Sets</string>
+    <string name="search_title">Search</string>
 </resources>

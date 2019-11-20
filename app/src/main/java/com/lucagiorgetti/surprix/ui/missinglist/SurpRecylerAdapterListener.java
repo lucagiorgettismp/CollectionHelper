@@ -8,4 +8,5 @@ public interface SurpRecylerAdapterListener<T> {
 
     void onSaveNotesClick(Surprise surprise, MissingDetail detail);
 
+    void onDeleteNoteClick(Surprise surp);
 }

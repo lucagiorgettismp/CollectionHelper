@@ -7,7 +7,7 @@
     <color name="colorSecondaryLight">#ffd95b</color>
     <color name="notesBackground">#9AFFD95B</color>
     <color name="c77800">#c77800</color>
-    <color name="colorAccent">#000367</color>
+    <color name="colorAccent">@color/colorSecondary</color>
     <color name="accent_material_light">#0297cf</color>
     <color name="facebookColor">#001fb9</color>
     <color name="cardBackground">#ffffff</color>
@@ -38,14 +38,7 @@
     <color name="BrownSet">#d84315</color>
     <color name="DarkBrownSet">#b93912</color>
 
-
-
-    <color name="SwipeRed">#f11</color>
-    <color name="SwipeGreen">#04ba01</color>
-
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorTransparentWhite">#cccccc</color>
-
-    <color name="newColor">@color/colorPrimary</color>
 </resources>
 

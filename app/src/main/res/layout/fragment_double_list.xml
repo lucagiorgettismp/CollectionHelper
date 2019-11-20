@@ -38,7 +38,7 @@
             android:cropToPadding="false"
             android:scaleType="fitCenter"
             android:tint="@color/cardview_dark_background"
-            app:srcCompat="@drawable/ic_playlist_add" />
+            app:srcCompat="@drawable/ic_catalog" />
 
         <TextView
             android:layout_width="match_parent"

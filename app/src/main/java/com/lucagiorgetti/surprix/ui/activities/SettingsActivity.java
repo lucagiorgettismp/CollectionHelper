@@ -27,7 +27,6 @@ import com.lucagiorgetti.surprix.utility.SystemUtility;
 import com.mikelau.countrypickerx.CountryPickerDialog;
 
 public class SettingsActivity extends AppCompatActivity {
-    private User currentUser;
     private EditText edtNation;
     private CountryPickerDialog countryPicker = null;
 
@@ -35,7 +34,7 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-        currentUser = SurprixApplication.getInstance().getCurrentUser();
+        User currentUser = SurprixApplication.getInstance().getCurrentUser();
 
         EditText edtEmail = findViewById(R.id.edit_reg_email);
         EditText edtUsername = findViewById(R.id.edit_reg_username);
@@ -50,7 +49,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         TextView changePwd = findViewById(R.id.btn_reg_change_pwd);
         TextView deleteUser = findViewById(R.id.btn_reg_delete_account);
-        TextView logoutUser = findViewById(R.id.lbl_reg_logout);
+        Button logoutUser = findViewById(R.id.btn_reg_logout);
         Button submit = findViewById(R.id.btn_reg_submit);
         Button completeBtn = findViewById(R.id.btn_reg_complete_account);
         usernameImage.setColorFilter(ContextCompat.getColor(this, R.color.disabledIcon));
