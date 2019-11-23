@@ -69,6 +69,10 @@
     </fragment>
     <fragment
         android:id="@+id/navigation_search"
-        android:name="com.lucagiorgetti.surprix.ui.search.Search"
-        tools:layout="@layout/fragment_search" />
+        android:name="com.lucagiorgetti.surprix.ui.search.SearchFragment"
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/onSearchedItemClick"
+            app:destination="@id/navigation_set_detail" />
+    </fragment>
 </navigation>

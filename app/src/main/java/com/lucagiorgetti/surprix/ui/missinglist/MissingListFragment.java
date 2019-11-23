@@ -18,7 +18,6 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -30,9 +29,10 @@ import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseCallback;
 import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseListCallback;
 import com.lucagiorgetti.surprix.model.MissingDetail;
-import com.lucagiorgetti.surprix.model.MissingPresenter;
+import com.lucagiorgetti.surprix.model.MissingSurprise;
 import com.lucagiorgetti.surprix.model.Surprise;
 import com.lucagiorgetti.surprix.model.User;
+import com.lucagiorgetti.surprix.ui.adapters.SurpRecylerAdapterListener;
 import com.lucagiorgetti.surprix.utility.BaseFragment;
 import com.lucagiorgetti.surprix.utility.DatabaseUtility;
 
@@ -82,7 +82,7 @@ public class MissingListFragment extends BaseFragment {
             emptyList.setVisibility(missingList == null || missingList.isEmpty() ? View.VISIBLE : View.GONE);
             mAdapter.submitList(missingList);
             mAdapter.setFilterableList(missingList);
-            if (mAdapter.getItemCount() > 0){
+            if (mAdapter.getItemCount() > 0) {
                 setTitle(getString(R.string.missings) + " (" + mAdapter.getItemCount() + ")");
             } else {
                 setTitle(getString(R.string.missings));
@@ -118,7 +118,7 @@ public class MissingListFragment extends BaseFragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    private void initSwipe( RecyclerView recyclerView) {
+    private void initSwipe(RecyclerView recyclerView) {
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -134,17 +134,17 @@ public class MissingListFragment extends BaseFragment {
     }
 
     private void deleteSurprise(MissingRecyclerAdapter mAdapter, int position) {
-        MissingPresenter mp = mAdapter.getItemAtPosition(position);
+        MissingSurprise mp = mAdapter.getItemAtPosition(position);
         mAdapter.removeFilterableItem(mp);
 
         CharSequence query = searchView.getQuery();
-        if ( query != null && query.length() != 0 ){
+        if (query != null && query.length() != 0) {
             mAdapter.getFilter().filter(query);
-        } else  {
+        } else {
             mAdapter.notifyItemRemoved(position);
         }
         DatabaseUtility.removeMissing(mp.getSurprise().getId());
-        if (mAdapter.getItemCount() > 0){
+        if (mAdapter.getItemCount() > 0) {
             setTitle(getString(R.string.missings) + " (" + mAdapter.getItemCount() + ")");
         } else {
             setTitle(getString(R.string.missings));
@@ -156,10 +156,10 @@ public class MissingListFragment extends BaseFragment {
                         DatabaseUtility.addMissing(mp.getSurprise().getId());
                         missingListViewModel.addMissing(mp, position);
                         mAdapter.notifyItemInserted(position);
-                        if (mAdapter.getItemCount() > 0){
-                            setTitle(getString(R.string.doubles) + " (" + mAdapter.getItemCount() + ")");
+                        if (mAdapter.getItemCount() > 0) {
+                            setTitle(getString(R.string.missings) + " (" + mAdapter.getItemCount() + ")");
                         } else {
-                            setTitle(getString(R.string.doubles));
+                            setTitle(getString(R.string.missings));
                         }
                     }
                 }).show();
@@ -179,7 +179,7 @@ public class MissingListFragment extends BaseFragment {
         DatabaseUtility.getDoubleOwners(missing.getId(), new FirebaseListCallback<User>() {
             @Override
             public void onSuccess(List<User> users) {
-                if (users == null || users.isEmpty()){
+                if (users == null || users.isEmpty()) {
                     emptyListTxv.setVisibility(View.VISIBLE);
                     infoTxv.setVisibility(View.GONE);
                 } else {
@@ -231,7 +231,7 @@ public class MissingListFragment extends BaseFragment {
 
             @Override
             public void onSuccess(Boolean item) {
-                Snackbar.make(getView(), SurprixApplication.getInstance().getString(R.string.note_saved), Snackbar.LENGTH_SHORT ).show();
+                Snackbar.make(getView(), SurprixApplication.getInstance().getString(R.string.note_saved), Snackbar.LENGTH_SHORT).show();
             }
 
             @Override
@@ -252,7 +252,7 @@ public class MissingListFragment extends BaseFragment {
 
             @Override
             public void onSuccess(Boolean item) {
-                Snackbar.make(getView(), SurprixApplication.getInstance().getString(R.string.note_removed), Snackbar.LENGTH_SHORT ).show();
+                Snackbar.make(getView(), SurprixApplication.getInstance().getString(R.string.note_removed), Snackbar.LENGTH_SHORT).show();
             }
 
             @Override
@@ -267,7 +267,14 @@ public class MissingListFragment extends BaseFragment {
         User currentUser = SurprixApplication.getInstance().getCurrentUser();
         String to = owner.getEmail().replaceAll(",", "\\.");
         String subject = SurprixApplication.getInstance().getString(R.string.mail_subject, currentUser.getUsername());
-        String html = SurprixApplication.getInstance().getString(R.string.mail_exchange_body, currentUser.getUsername(), missing.getCode(), missing.getDescription());
+
+        String html = "";
+        if (currentUser.getCountry().equals(owner.getCountry())) {
+            html = SurprixApplication.getInstance().getString(R.string.mail_exchange_body, currentUser.getUsername(), missing.getCode(), missing.getDescription());
+        } else {
+            html = SurprixApplication.getInstance().getString(R.string.mail_exchange_body_en, currentUser.getUsername(), missing.getCode(), missing.getDescription());
+        }
+
         Spanned body;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             body = Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY);
@@ -279,12 +286,9 @@ public class MissingListFragment extends BaseFragment {
     }
 
     public void sendMail(String recipient, String subject, Spanned html_body) {
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setData(Uri.parse("mail to:"));
-        intent.setType("text/plain");
-        ArrayList to = new ArrayList<String>();
-        to.add(recipient);
-        intent.putExtra(Intent.EXTRA_EMAIL, to);
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setType("message/rfc822");
+        intent.setData(Uri.parse("mailto:" + recipient));
         if (subject != null && !subject.isEmpty()) {
             intent.putExtra(Intent.EXTRA_SUBJECT, subject);
         }

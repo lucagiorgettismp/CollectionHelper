@@ -77,11 +77,6 @@ public class YearFragment extends BaseFragment {
         return root;
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-    }
-
     private void onLongYearClicked(final String yearId, int year) {
         final AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
         alertDialog.setTitle(getString(R.string.dialog_add_year_title));

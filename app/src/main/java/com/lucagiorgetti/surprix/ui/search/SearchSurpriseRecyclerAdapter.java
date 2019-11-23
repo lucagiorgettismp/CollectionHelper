@@ -1,10 +1,9 @@
-package com.lucagiorgetti.surprix.ui.missinglist;
+package com.lucagiorgetti.surprix.ui.search;
 
 import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -26,10 +25,7 @@ import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.model.Colors;
 import com.lucagiorgetti.surprix.model.ExtraLocales;
-import com.lucagiorgetti.surprix.model.MissingDetail;
-import com.lucagiorgetti.surprix.model.MissingSurprise;
 import com.lucagiorgetti.surprix.model.Surprise;
-import com.lucagiorgetti.surprix.ui.adapters.SurpRecylerAdapterListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,24 +37,21 @@ import java.util.Locale;
  * Created by Luca on 28/10/2017.
  */
 
-public class MissingRecyclerAdapter extends ListAdapter<MissingSurprise, MissingRecyclerAdapter.SurpViewHolder> implements Filterable {
-    private SurpRecylerAdapterListener listener;
-    private List<MissingSurprise> filterableList;
-    private boolean fromMissing;
+public class SearchSurpriseRecyclerAdapter extends ListAdapter<Surprise, SearchSurpriseRecyclerAdapter.SurpViewHolder> implements Filterable {
+    private List<Surprise> filterableList;
 
-    public MissingRecyclerAdapter(boolean fromMissing) {
+    public SearchSurpriseRecyclerAdapter() {
         super(DIFF_CALLBACK);
-        this.fromMissing = fromMissing;
     }
 
-    private static final DiffUtil.ItemCallback<MissingSurprise> DIFF_CALLBACK = new DiffUtil.ItemCallback<MissingSurprise>() {
+    private static final DiffUtil.ItemCallback<Surprise> DIFF_CALLBACK = new DiffUtil.ItemCallback<Surprise>() {
         @Override
-        public boolean areItemsTheSame(@NonNull MissingSurprise oldItem, @NonNull MissingSurprise newItem) {
+        public boolean areItemsTheSame(@NonNull Surprise oldItem, @NonNull Surprise newItem) {
             return false;
         }
 
         @Override
-        public boolean areContentsTheSame(@NonNull MissingSurprise oldItem, @NonNull MissingSurprise newItem) {
+        public boolean areContentsTheSame(@NonNull Surprise oldItem, @NonNull Surprise newItem) {
             return false;
         }
     };
@@ -73,30 +66,12 @@ public class MissingRecyclerAdapter extends ListAdapter<MissingSurprise, Missing
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull SurpViewHolder holder, int position) {
-        Surprise surp = getItem(position).getSurprise();
-        MissingDetail detail = getItem(position).getDetail();
+        Surprise surp = getItem(position);
         holder.vCode.setText(surp.getCode());
         holder.vSetName.setText(surp.getSet_name());
         holder.vDescription.setText(surp.getDescription());
         holder.vYear.setText(String.valueOf(surp.getSet_year()));
         holder.vProducer.setText(surp.getSet_producer_name() + " " + surp.getSet_product_name());
-        if (detail != null) {
-            holder.vNotesText.setText(detail.getNotes());
-        } else {
-            holder.vNotesText.setText(null);
-        }
-        holder.vNotesText.setOnEditorActionListener((textView, i, keyEvent) -> {
-
-            if (i == EditorInfo.IME_ACTION_DONE) {
-                MissingDetail md = new MissingDetail();
-                md.setNotes(textView.getText().toString());
-
-                listener.onSaveNotesClick(surp, md);
-                holder.vNotesText.clearFocus();
-            }
-
-            return false;
-        });
 
         String nation;
         if (ExtraLocales.isExtraLocale(surp.getSet_nation())) {
@@ -128,21 +103,8 @@ public class MissingRecyclerAdapter extends ListAdapter<MissingSurprise, Missing
                     .into(holder.vImage);
         }
 
-        holder.vBtnOwners.setOnClickListener(view -> {
-            listener.onShowMissingOwnerClick(surp);
-        });
-
-
-        holder.vBtnDeleteNotes.setOnClickListener(view -> {
-            holder.vNotesText.setText(null);
-            listener.onDeleteNoteClick(surp);
-            holder.vNotesText.clearFocus();
-        });
-
-        if (!fromMissing) {
-            holder.vMissingBottom.setVisibility(View.GONE);
-            holder.vBtnOwners.setVisibility(View.GONE);
-        }
+        holder.vMissingBottom.setVisibility(View.GONE);
+        holder.vBtnOwners.setVisibility(View.GONE);
 
         Integer rarity = surp.getIntRarity();
         holder.vStar1On.setVisibility(View.GONE);
@@ -176,7 +138,7 @@ public class MissingRecyclerAdapter extends ListAdapter<MissingSurprise, Missing
         }
     }
 
-    public MissingSurprise getItemAtPosition(int position) {
+    public Surprise getItemAtPosition(int position) {
         return getItem(position);
     }
 
@@ -188,19 +150,18 @@ public class MissingRecyclerAdapter extends ListAdapter<MissingSurprise, Missing
     private Filter filter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence charSequence) {
-            List<MissingSurprise> filteredList = new ArrayList<>();
+            List<Surprise> filteredList = new ArrayList<>();
 
             if (charSequence == null || charSequence.length() == 0) {
                 filteredList.addAll(filterableList);
             } else {
                 String pattern = charSequence.toString().toLowerCase().trim();
 
-                for (MissingSurprise mp : filterableList) {
-                    Surprise surprise = mp.getSurprise();
+                for (Surprise surprise : filterableList) {
                     if (surprise.getCode().toLowerCase().contains(pattern)
                             || surprise.getDescription().toLowerCase().contains(pattern)
                             || surprise.getSet_name().toLowerCase().contains(pattern)) {
-                        filteredList.add(mp);
+                        filteredList.add(surprise);
                     }
                 }
             }
@@ -213,20 +174,12 @@ public class MissingRecyclerAdapter extends ListAdapter<MissingSurprise, Missing
 
         @Override
         protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-            submitList((List<MissingSurprise>) filterResults.values);
+            submitList((List<Surprise>) filterResults.values);
         }
     };
 
-    public void setFilterableList(List<MissingSurprise> missingList) {
-        this.filterableList = missingList;
-    }
-
-    public void removeFilterableItem(MissingSurprise surprise) {
-        this.filterableList.remove(surprise);
-    }
-
-    public void setListener(SurpRecylerAdapterListener listener) {
-        this.listener = listener;
+    public void setFilterableList(List<Surprise> surprises) {
+        this.filterableList = surprises;
     }
 
     class SurpViewHolder extends RecyclerView.ViewHolder {

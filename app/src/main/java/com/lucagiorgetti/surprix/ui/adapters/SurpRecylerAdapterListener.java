@@ -1,4 +1,4 @@
-package com.lucagiorgetti.surprix.ui.missinglist;
+package com.lucagiorgetti.surprix.ui.adapters;
 
 import com.lucagiorgetti.surprix.model.MissingDetail;
 import com.lucagiorgetti.surprix.model.Surprise;

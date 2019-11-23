@@ -125,17 +125,14 @@ public class DoubleListFragment extends BaseFragment {
         }
 
         Snackbar.make(getView(), SurprixApplication.getInstance().getString(R.string.double_removed), Snackbar.LENGTH_LONG)
-                .setAction(SurprixApplication.getInstance().getString(R.string.undo), new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        DatabaseUtility.addMissing(surprise.getId());
-                        doubleListViewModel.addDouble(surprise, position);
-                        mAdapter.notifyItemInserted(position);
-                        if (mAdapter.getItemCount() > 0){
-                            setTitle(getString(R.string.doubles) + " (" + mAdapter.getItemCount() + ")");
-                        } else {
-                            setTitle(getString(R.string.doubles));
-                        }
+                .setAction(SurprixApplication.getInstance().getString(R.string.undo), view -> {
+                    DatabaseUtility.addDouble(surprise.getId());
+                    doubleListViewModel.addDouble(surprise, position);
+                    mAdapter.notifyItemInserted(position);
+                    if (mAdapter.getItemCount() > 0){
+                        setTitle(getString(R.string.doubles) + " (" + mAdapter.getItemCount() + ")");
+                    } else {
+                        setTitle(getString(R.string.doubles));
                     }
                 }).show();
     }

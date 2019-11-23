@@ -53,17 +53,17 @@
     <string name="password_lenght">Password must be a minimum of 6 characters</string>
     <string name="delete_account">Delete Account</string>
     <string name="dialog_add_set_title">Add set</string>
-    <string name="dialog_add_set_text">Do you want to add to missings the complete set</string>
+    <string name="dialog_add_set_text">Do you want to add to the missing list the complete set</string>
     <string name="dialog_positive">OK</string>
     <string name="dialog_negative">Discard</string>
     <string name="dialog_add_year_title">Add year</string>
-    <string name="dialog_add_year_text">Do you want to add to missings the complete year</string>
+    <string name="dialog_add_year_text">Do you want to add to the missing list the complete year</string>
     <string name="dialod_delete_user_text">Do you want to delete you user account finally?</string>
     <string name="dateFormat" translatable="false">dd/MM/yyyy</string>
     <string name="welcome_info">"Welcome in "</string>
     <string name="username_existing">Username existing</string>
     <string name="remove_missing_dialog_title">Remove from missing</string>
-    <string name="remove_missing_dialog_text">Do you want to remove from missings</string>
+    <string name="remove_missing_dialog_text">Do you want to remove from the missing list</string>
     <string name="remove_double_dialog_title">Remove from doubles</string>
     <string name="remove_double_dialog_text">Do you want to remove from doubles</string>
     <string name="network_not_available">Network not available, check your internet connection</string>
@@ -96,15 +96,7 @@
     <string name="set_image">set image</string>
     <string name="banner">banner</string>
     <string name="mail_subject" translatable="false">Surprix - %1$s</string>
-    <string name="mail_exchange_body" translatable="false"><![CDATA[Ciao,
-        <div>Sono %1$s, tramite Surprix ho visto che tra i doppi hai %2$s - %3$s, a cui sono interessato.</div>
-        <div>Ti andrebbe di scambiare?</div>
-        <div>_______________________________</div>
-        Hi,
-        <div>I\'m %1$s, thanks to Surprix I\'ve seen you have %2$s - %3$s available into your doubles, and I\'m interested in it.</div>
-        <div>Would you like to make an exchange?</div>
-        <div><br/></div>
-        <div>[E-mail sent with Surprix]</div>]]></string>
+    <string name="mail_exchange_body"><![CDATA[Hi,         <div>I\'m %1$s, thanks to Surprix I\'ve seen you have %2$s - %3$s available into your doubles, and I\'m interested in it.</div>         <div>Would you like to make an exchange?</div>]]></string>
     <string name="info_images_dialog_title">Info e images</string>
     <string name="info_images_dialog_content">Do you need any info about Surprix or want to help the growth of the catalog? Send an e-mail to info.surprix@gmail.com</string>
     <string name="info_send_images">Info and send images</string>
@@ -187,4 +179,5 @@
     <string name="surprises">Surprises</string>
     <string name="sets">Sets</string>
     <string name="search_title">Search</string>
+    <string name="mail_exchange_body_en" translatable="false"><![CDATA[Hi,         <div>I\'m %1$s, thanks to Surprix I\'ve seen you have %2$s - %3$s available into your doubles, and I\'m interested in it.</div>         <div>Would you like to make an exchange?</div>]]></string>
 </resources>

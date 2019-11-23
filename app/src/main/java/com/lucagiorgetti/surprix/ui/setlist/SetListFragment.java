@@ -71,7 +71,6 @@ public class SetListFragment extends BaseFragment {
         setListViewModel.getSets(yearId).observe(this, sets -> {
             mAdapter.submitList(sets);
             mAdapter.setFilterableList(sets);
-            mAdapter.notifyDataSetChanged();
         });
 
         setListViewModel.isLoading().observe(this, isLoading -> {

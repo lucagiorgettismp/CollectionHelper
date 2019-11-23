@@ -36,7 +36,7 @@ public class SplashActivity extends AppCompatActivity {
 
                     @Override
                     public void onSuccess(Boolean success) {
-                        SystemUtility.openNewActivityWithFinishing(SplashActivity.this, MainActivity.class, null);
+                        SystemUtility.openNewActivityWithFinishing(SplashActivity.this, OnboardActivity.class, null);
                     }
                 });
             } else {

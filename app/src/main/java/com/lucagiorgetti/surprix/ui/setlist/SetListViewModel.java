@@ -41,22 +41,6 @@ public class SetListViewModel extends BaseViewModel {
 
             @Override
             public void onSuccess(List<Set> sets) {
-                ArrayList<Set> handpaintedSets = new ArrayList<>();
-                ArrayList<Set> compoSets = new ArrayList<>();
-
-                if (sets != null) {
-                    for (Set s : sets) {
-                        if (s.getCategory().equals(Categories.HANDPAINTED)) {
-                            handpaintedSets.add(s);
-                        } else {
-                            compoSets.add(s);
-                        }
-                    }
-                }
-
-                handpaintedSets.addAll(compoSets);
-                sets = handpaintedSets;
-
                 allSets.setValue(sets);
                 setLoading(false);
             }

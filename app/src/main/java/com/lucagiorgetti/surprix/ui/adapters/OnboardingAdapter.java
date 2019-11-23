@@ -55,7 +55,7 @@ public class OnboardingAdapter extends PagerAdapter {
                 imageView = view.findViewById(R.id.image);
                 title.setText(R.string.catalog);
                 content.setText(R.string.onboarding_catalog_content);
-                imageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.onboard_catalog));
+                imageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.onboarding_catalog));
                 break;
             case 2:
                 view = layoutInflater.inflate(R.layout.onboarding_adding, container, false);

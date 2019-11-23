@@ -1,14 +1,10 @@
 package com.lucagiorgetti.surprix.model;
 
-import androidx.annotation.Nullable;
-
-import java.util.Comparator;
-
 /**
  * Created by Utente on 17/04/2017.
  */
 
-public class MissingPresenter {
+public class MissingSurprise{
     private Surprise surprise;
     private MissingDetail detail;
 

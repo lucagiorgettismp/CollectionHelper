@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseListCallback;
-import com.lucagiorgetti.surprix.model.MissingPresenter;
+import com.lucagiorgetti.surprix.model.MissingSurprise;
 import com.lucagiorgetti.surprix.ui.BaseViewModel;
 import com.lucagiorgetti.surprix.utility.DatabaseUtility;
 
@@ -14,14 +14,14 @@ import java.util.List;
 
 public class MissingListViewModel extends BaseViewModel {
 
-    private MutableLiveData<List<MissingPresenter>> allMissingSurprises;
+    private MutableLiveData<List<MissingSurprise>> allMissingSurprises;
 
     public MissingListViewModel(@NonNull Application application) {
         super(application);
         this.setLoading(false);
     }
 
-    public MutableLiveData<List<MissingPresenter>> getMissingSurprises() {
+    public MutableLiveData<List<MissingSurprise>> getMissingSurprises() {
         if (allMissingSurprises == null) {
             allMissingSurprises = new MutableLiveData<>();
             loadMissingSurprises();
@@ -31,14 +31,14 @@ public class MissingListViewModel extends BaseViewModel {
     }
 
     public void loadMissingSurprises() {
-        DatabaseUtility.getMissingsForUsername(new FirebaseListCallback<MissingPresenter>() {
+        DatabaseUtility.getMissingsForUsername(new FirebaseListCallback<MissingSurprise>() {
             @Override
             public void onStart() {
                 setLoading(true);
             }
 
             @Override
-            public void onSuccess(List<MissingPresenter> missingSurprises) {
+            public void onSuccess(List<MissingSurprise> missingSurprises) {
                 allMissingSurprises.setValue(missingSurprises);
                 setLoading(false);
             }
@@ -51,8 +51,8 @@ public class MissingListViewModel extends BaseViewModel {
         });
     }
 
-    public void addMissing(MissingPresenter mp, int position) {
-        List<MissingPresenter> list = allMissingSurprises.getValue();
+    public void addMissing(MissingSurprise mp, int position) {
+        List<MissingSurprise> list = allMissingSurprises.getValue();
         list.add(position, mp);
         allMissingSurprises.setValue(list);
     }

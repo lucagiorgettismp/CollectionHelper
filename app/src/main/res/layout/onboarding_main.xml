@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    android:background="@drawable/onboarding_background"
     android:orientation="vertical"
     tools:context=".ui.activities.OnboardActivity">
 
@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/dotsLayout"
-        android:layout_alignParentStart="true" />
+        android:layout_marginBottom="-17dp" />
 
     <LinearLayout
         android:id="@+id/dotsLayout"
@@ -27,8 +27,8 @@
         android:id="@+id/previous"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
         android:layout_marginStart="5dp"
         android:background="@android:color/transparent"
         android:text="@string/back"
@@ -40,8 +40,8 @@
         android:id="@+id/next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
         android:layout_alignTop="@+id/previous"
+        android:layout_alignParentEnd="true"
         android:layout_marginEnd="5dp"
         android:background="@android:color/transparent"
         android:text="@string/next"

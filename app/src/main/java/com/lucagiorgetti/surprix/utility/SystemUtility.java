@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -15,6 +16,8 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -25,6 +28,8 @@ import com.lucagiorgetti.surprix.model.User;
 import com.lucagiorgetti.surprix.ui.activities.LoginActivity;
 import com.lucagiorgetti.surprix.ui.activities.MainActivity;
 import com.lucagiorgetti.surprix.ui.activities.OnboardActivity;
+
+import java.util.Locale;
 
 /**
  * Utility which contain all the implementations of methods which needs a connection with Firebase Database.
@@ -136,6 +141,13 @@ public class SystemUtility {
         Uri uri = Uri.parse(url); // missing 'http://' will cause crashed
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         context.startActivity(intent);
+    }
+
+    @NonNull
+    public static String getStringByLocal(Activity context, int id, String locale) {
+        Configuration configuration = new Configuration(context.getResources().getConfiguration());
+        configuration.setLocale(new Locale(locale));
+        return context.createConfigurationContext(configuration).getResources().getString(id);
     }
 
     public static void setSessionUser(String email, FirebaseCallback listener) {

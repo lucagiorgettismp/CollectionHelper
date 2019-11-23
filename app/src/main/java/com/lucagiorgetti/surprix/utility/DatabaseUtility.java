@@ -12,7 +12,7 @@ import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseCallback;
 import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseListCallback;
 import com.lucagiorgetti.surprix.model.MissingDetail;
-import com.lucagiorgetti.surprix.model.MissingPresenter;
+import com.lucagiorgetti.surprix.model.MissingSurprise;
 import com.lucagiorgetti.surprix.model.Producer;
 import com.lucagiorgetti.surprix.model.Set;
 import com.lucagiorgetti.surprix.model.Surprise;
@@ -238,11 +238,11 @@ public class DatabaseUtility {
         });
     }
 
-    public static void getMissingsForUsername(final FirebaseListCallback<MissingPresenter> listen) {
+    public static void getMissingsForUsername(final FirebaseListCallback<MissingSurprise> listen) {
         listen.onStart();
 
         if (username != null) {
-            final ArrayList<MissingPresenter> missings = new ArrayList<>();
+            final ArrayList<MissingSurprise> missings = new ArrayList<>();
 
             reference.child("missings").child(username).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -255,7 +255,7 @@ public class DatabaseUtility {
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     if (snapshot.exists()) {
                                         Surprise s = snapshot.getValue(Surprise.class);
-                                        MissingPresenter mp = new MissingPresenter();
+                                        MissingSurprise mp = new MissingSurprise();
                                         mp.setSurprise(s);
                                         MissingDetail md = null;
                                         try {
@@ -287,64 +287,6 @@ public class DatabaseUtility {
         }
     }
 
-    /*
-    * public static void getMissingsForUsername(final FirebaseListCallback<MissingPresenter> listen) {
-        listen.onStart();
-        if (username != null){
-            final ArrayList<MissingPresenter> missings = new ArrayList<>();
-
-            reference.child("missings").child(username).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.exists()) {
-                        for (DataSnapshot d : dataSnapshot.getChildren()) {
-                            MissingPresenter mp = new MissingPresenter();
-
-                            reference.child("surprises").child(Objects.requireNonNull(d.getKey())).orderByChild("code").addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    if (snapshot.exists()) {
-                                        Surprise s = snapshot.getValue(Surprise.class);
-
-                                        reference.child("missings_details").child(username).child(s.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                if (snapshot.exists()) {
-                                                    MissingDetail md = snapshot.getValue(MissingDetail.class);
-                                                    mp.setDetail(md);
-                                                }
-                                                mp.setSurprise(s);
-                                                missings.add(mp);
-                                                listen.onSuccess(missings);
-                                            }
-
-                                            @Override
-                                            public void onCancelled(@NonNull DatabaseError databaseError) {
-                                                listen.onFailure();
-                                            }
-                                        });
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
-                                    listen.onFailure();
-                                }
-                            });
-                        }
-
-                    } else {
-                        listen.onSuccess(null);
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                }
-            });
-        }
-    }*/
-
     public static void getSetsFromYear(String yearId, final FirebaseListCallback<Set> listen) {
         listen.onStart();
 
@@ -356,7 +298,7 @@ public class DatabaseUtility {
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot d : dataSnapshot.getChildren()) {
 
-                        reference.child("sets").child(Objects.requireNonNull(d.getKey())).orderByChild("year").addListenerForSingleValueEvent(new ValueEventListener() {
+                        reference.child("sets").child(Objects.requireNonNull(d.getKey())).orderByChild("name").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 if (snapshot.exists()) {
@@ -416,6 +358,53 @@ public class DatabaseUtility {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+    }
+
+    public static void getAllSurprises(final FirebaseListCallback<Surprise> listen) {
+        listen.onStart();
+        final ArrayList<Surprise> surprises = new ArrayList<>();
+
+        reference.child("surprises").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    for(DataSnapshot dataSnapshot: snapshot.getChildren()){
+                        Surprise s = dataSnapshot.getValue(Surprise.class);
+                        surprises.add(s);
+                    }
+                }
+                listen.onSuccess(surprises);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                listen.onFailure();
+            }
+        });
+    }
+
+    public static void getAllSets( final FirebaseListCallback<Set> listen) {
+        listen.onStart();
+
+        final ArrayList<Set> sets = new ArrayList<>();
+
+        reference.child("sets").orderByChild("name").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    for(DataSnapshot dataSnapshot: snapshot.getChildren()) {
+                        Set s = dataSnapshot.getValue(Set.class);
+                        sets.add(s);
+                    }
+                }
+                listen.onSuccess(sets);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                listen.onFailure();
             }
         });
     }
