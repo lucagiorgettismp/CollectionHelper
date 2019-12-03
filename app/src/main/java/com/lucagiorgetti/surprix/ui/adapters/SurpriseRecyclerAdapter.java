@@ -68,11 +68,16 @@ public class SurpriseRecyclerAdapter extends ListAdapter<Surprise, SurpriseRecyc
     public void onBindViewHolder(@NonNull SurpViewHolder holder, int position) {
 
         Surprise surp = getItem(position);
-        holder.vCode.setText(surp.getCode());
-        holder.vSetName.setText(surp.getSet_name());
+        if (surp.has_set_effective_code()){
+            holder.vSetName.setText(surp.getCode() + " - " +surp.getSet_name());
+        } else {
+            holder.vSetName.setText(surp.getSet_name());
+        }
         holder.vDescription.setText(surp.getDescription());
         holder.vYear.setText(String.valueOf(surp.getSet_year()));
-        holder.vProducer.setText(surp.getSet_producer_name() + " " + surp.getSet_product_name());
+        String productName = surp.getSet_product_name();
+        productName = (productName != null && !productName.equals("")) ? productName : "";
+        holder.vProducer.setText(surp.getSet_producer_name() + " " + productName);
 
         String nation;
         if (ExtraLocales.isExtraLocale(surp.getSet_nation())) {
@@ -188,8 +193,11 @@ public class SurpriseRecyclerAdapter extends ListAdapter<Surprise, SurpriseRecyc
         this.filterableList.remove(surprise);
     }
 
+    public void addFilterableItem(Surprise surprise, int position) {
+        this.filterableList.add(position, surprise);
+    }
+
     class SurpViewHolder extends RecyclerView.ViewHolder {
-        TextView vCode;
         TextView vSetName;
         TextView vDescription;
         TextView vYear;
@@ -212,7 +220,6 @@ public class SurpriseRecyclerAdapter extends ListAdapter<Surprise, SurpriseRecyc
 
         SurpViewHolder(View v) {
             super(v);
-            vCode = v.findViewById(R.id.txv_surp_elem_code);
             vSetName = v.findViewById(R.id.txv_surp_elem_set);
             vDescription = v.findViewById(R.id.txv_surp_elem_desc);
             vYear = v.findViewById(R.id.txv_surp_elem_year);

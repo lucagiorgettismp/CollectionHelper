@@ -54,12 +54,24 @@ public class MissingRecyclerAdapter extends ListAdapter<MissingSurprise, Missing
     private static final DiffUtil.ItemCallback<MissingSurprise> DIFF_CALLBACK = new DiffUtil.ItemCallback<MissingSurprise>() {
         @Override
         public boolean areItemsTheSame(@NonNull MissingSurprise oldItem, @NonNull MissingSurprise newItem) {
-            return false;
+            MissingDetail oldDetail = oldItem.getDetail();
+            MissingDetail newDetail = newItem.getDetail();
+            if (oldDetail != null && newDetail != null) {
+                return oldItem.getSurprise().getId().equals(newItem.getSurprise().getId()) && oldItem.getDetail().getNotes().equals(newItem.getDetail().getNotes());
+            } else {
+                return oldItem.getSurprise().getId().equals(newItem.getSurprise().getId());
+            }
         }
 
         @Override
         public boolean areContentsTheSame(@NonNull MissingSurprise oldItem, @NonNull MissingSurprise newItem) {
-            return false;
+            MissingDetail oldDetail = oldItem.getDetail();
+            MissingDetail newDetail = newItem.getDetail();
+            if (oldDetail != null && newDetail != null) {
+                return oldItem.getSurprise().getId().equals(newItem.getSurprise().getId()) && oldItem.getDetail().getNotes().equals(newItem.getDetail().getNotes());
+            } else {
+                return oldItem.getSurprise().getId().equals(newItem.getSurprise().getId());
+            }
         }
     };
 
@@ -75,11 +87,18 @@ public class MissingRecyclerAdapter extends ListAdapter<MissingSurprise, Missing
     public void onBindViewHolder(@NonNull SurpViewHolder holder, int position) {
         Surprise surp = getItem(position).getSurprise();
         MissingDetail detail = getItem(position).getDetail();
-        holder.vCode.setText(surp.getCode());
         holder.vSetName.setText(surp.getSet_name());
-        holder.vDescription.setText(surp.getDescription());
+
+        if (surp.has_set_effective_code()) {
+            holder.vDescription.setText(surp.getCode() + " - " + surp.getDescription());
+        } else {
+            holder.vDescription.setText(surp.getDescription());
+        }
+
         holder.vYear.setText(String.valueOf(surp.getSet_year()));
-        holder.vProducer.setText(surp.getSet_producer_name() + " " + surp.getSet_product_name());
+        String productName = surp.getSet_product_name();
+        productName = (productName != null && !productName.equals("")) ? productName : "";
+        holder.vProducer.setText(surp.getSet_producer_name() + " " + productName);
         if (detail != null) {
             holder.vNotesText.setText(detail.getNotes());
         } else {
@@ -225,12 +244,15 @@ public class MissingRecyclerAdapter extends ListAdapter<MissingSurprise, Missing
         this.filterableList.remove(surprise);
     }
 
+    public void addFilterableItem(MissingSurprise surprise, int position) {
+        this.filterableList.add(position, surprise);
+    }
+
     public void setListener(SurpRecylerAdapterListener listener) {
         this.listener = listener;
     }
 
     class SurpViewHolder extends RecyclerView.ViewHolder {
-        TextView vCode;
         TextView vSetName;
         TextView vDescription;
         TextView vYear;
@@ -253,7 +275,6 @@ public class MissingRecyclerAdapter extends ListAdapter<MissingSurprise, Missing
 
         SurpViewHolder(View v) {
             super(v);
-            vCode = v.findViewById(R.id.txv_surp_elem_code);
             vSetName = v.findViewById(R.id.txv_surp_elem_set);
             vDescription = v.findViewById(R.id.txv_surp_elem_desc);
             vYear = v.findViewById(R.id.txv_surp_elem_year);

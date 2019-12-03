@@ -49,8 +49,8 @@
     <string name="something_went_wrong">Something went wrong</string>
     <string name="password_changed">Password successfully changed</string>
     <string name="old_password_wrong">Old password incorrect</string>
-    <string name="complete_all_fields">Complete all fields before submit registration</string>
-    <string name="password_lenght">Password must be a minimum of 6 characters</string>
+    <string name="signup_complete_all_fields">Complete all fields before submit registration</string>
+    <string name="signup_password_lenght">Password must be a minimum of 6 characters</string>
     <string name="delete_account">Delete Account</string>
     <string name="dialog_add_set_title">Add set</string>
     <string name="dialog_add_set_text">Do you want to add to the missing list the complete set</string>
@@ -110,7 +110,7 @@
     <string name="info_privacy_1">Surprix takes care about your privacy and requires only very little infos about you.</string>
     <string name="info_privacy_2">Your e-mail address is used to authenticate you, recover your credentials and to be contacted for exchanges.</string>
     <string name="info_privacy_3">The nation is used to show you the collectors of your country first.</string>
-    <string name="email_format">Please check the e-mail format</string>
+    <string name="signup_email_format">Please check the e-mail format</string>
     <string name="privacy_policy">Privacy policy</string>
     <string name="privacy_policy_text"><![CDATA[<p>This privacy policy has been compiled to inform users about which personal data are collected in Surprix. Please read our privacy policy carefully to get a clear understanding of how we collect, use, protect or otherwise handle your Personally Identifiable Information.</p>
         <div><strong>What personal information do we collect from the people that register to Surprix?</strong></div>
@@ -180,4 +180,8 @@
     <string name="sets">Sets</string>
     <string name="search_title">Search</string>
     <string name="mail_exchange_body_en" translatable="false"><![CDATA[Hi,         <div>I\'m %1$s, thanks to Surprix I\'ve seen you have %2$s - %3$s available into your doubles, and I\'m interested in it.</div>         <div>Would you like to make an exchange?</div>]]></string>
+    <string name="email_app_chooser">Select the email app</string>
+    <string name="signup_mail_existinig">The mail is just present in our database. Maybe you have already signed up?</string>
+    <string name="signup_weak_password">The password you entered is too weak.</string>
+    <string name="signup_default_error">Something went wrong.. please try again!</string>
 </resources>

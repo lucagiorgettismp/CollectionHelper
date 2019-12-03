@@ -250,7 +250,7 @@ public class DatabaseUtility {
                     if (dataSnapshot.exists()) {
                         for (DataSnapshot d : dataSnapshot.getChildren()) {
                             String key = d.getKey();
-                            reference.child("surprises").child(Objects.requireNonNull(key)).orderByChild("code").addListenerForSingleValueEvent(new ValueEventListener() {
+                            reference.child("surprises").child(Objects.requireNonNull(key)).orderByChild("description").addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     if (snapshot.exists()) {

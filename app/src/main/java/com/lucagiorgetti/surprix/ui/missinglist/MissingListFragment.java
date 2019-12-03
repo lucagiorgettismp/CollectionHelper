@@ -115,6 +115,14 @@ public class MissingListFragment extends BaseFragment {
             }
         });
         searchView.setQueryHint(getString(R.string.search));
+        searchView.setOnCloseListener(() -> {
+            if (mAdapter.getItemCount() > 0) {
+                setTitle(getString(R.string.missings) + " (" + mAdapter.getItemCount() + ")");
+            } else {
+                setTitle(getString(R.string.missings));
+            }
+            return false;
+        });
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -135,34 +143,35 @@ public class MissingListFragment extends BaseFragment {
 
     private void deleteSurprise(MissingRecyclerAdapter mAdapter, int position) {
         MissingSurprise mp = mAdapter.getItemAtPosition(position);
-        mAdapter.removeFilterableItem(mp);
-
         CharSequence query = searchView.getQuery();
+        DatabaseUtility.removeMissing(mp.getSurprise().getId());
+        mAdapter.removeFilterableItem(mp);
         if (query != null && query.length() != 0) {
             mAdapter.getFilter().filter(query);
         } else {
             mAdapter.notifyItemRemoved(position);
         }
-        DatabaseUtility.removeMissing(mp.getSurprise().getId());
         if (mAdapter.getItemCount() > 0) {
             setTitle(getString(R.string.missings) + " (" + mAdapter.getItemCount() + ")");
         } else {
             setTitle(getString(R.string.missings));
         }
-        Snackbar.make(getView(), SurprixApplication.getInstance().getString(R.string.missing_removed), Snackbar.LENGTH_LONG)
-                .setAction(SurprixApplication.getInstance().getString(R.string.undo), new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
+
+        if (query != null && query.length() != 0) {
+            Snackbar.make(getView(), SurprixApplication.getInstance().getString(R.string.missing_removed), Snackbar.LENGTH_LONG).show();
+        } else {
+            Snackbar.make(getView(), SurprixApplication.getInstance().getString(R.string.missing_removed), Snackbar.LENGTH_LONG)
+                    .setAction(SurprixApplication.getInstance().getString(R.string.undo), view -> {
                         DatabaseUtility.addMissing(mp.getSurprise().getId());
-                        missingListViewModel.addMissing(mp, position);
+                        mAdapter.addFilterableItem(mp, position);
                         mAdapter.notifyItemInserted(position);
                         if (mAdapter.getItemCount() > 0) {
                             setTitle(getString(R.string.missings) + " (" + mAdapter.getItemCount() + ")");
                         } else {
                             setTitle(getString(R.string.missings));
                         }
-                    }
-                }).show();
+                    }).show();
+        }
     }
 
     private void showMissingOwners(final Surprise missing) {
@@ -295,6 +304,6 @@ public class MissingListFragment extends BaseFragment {
         if (html_body != null && html_body.length() > 0) {
             intent.putExtra(Intent.EXTRA_TEXT, html_body);
         }
-        startActivity(Intent.createChooser(intent, "Scegli con quale app inviare una mail:"));
+        startActivity(Intent.createChooser(intent, getString(R.string.email_app_chooser)));
     }
 }

@@ -49,7 +49,8 @@ public class SetDetailRecyclerAdapter extends RecyclerView.Adapter<SetDetailRecy
             public void onAddMissingClick(int p) {
                 Surprise s = getItemAtPosition(p);
                 DatabaseUtility.addMissing(s.getId());
-                Snackbar.make(v, SurprixApplication.getInstance().getString(R.string.added_to_missings) + ": " + s.getDescription(), Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(v, SurprixApplication.getInstance().getString(R.string.added_to_missings) + ": " + s.getDescription(), Snackbar.LENGTH_LONG)
+                        .setAction(SurprixApplication.getInstance().getString(R.string.undo), view -> DatabaseUtility.removeMissing(s.getId())).show();
 
             }
 
@@ -57,7 +58,8 @@ public class SetDetailRecyclerAdapter extends RecyclerView.Adapter<SetDetailRecy
             public void onAddDoubleClick(int p) {
                 Surprise s = getItemAtPosition(p);
                 DatabaseUtility.addDouble(s.getId());
-                Snackbar.make(v, SurprixApplication.getInstance().getString(R.string.added_to_doubles) + ": " + s.getDescription(), Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(v, SurprixApplication.getInstance().getString(R.string.added_to_doubles) + ": " + s.getDescription(), Snackbar.LENGTH_LONG)
+                        .setAction(SurprixApplication.getInstance().getString(R.string.undo), view -> DatabaseUtility.removeDouble(s.getId())).show();
 
             }
         });
@@ -67,8 +69,11 @@ public class SetDetailRecyclerAdapter extends RecyclerView.Adapter<SetDetailRecy
     public void onBindViewHolder(@NonNull SetDetailViewHolder holder, int position) {
         Surprise s = items.get(position);
         Context ctx = SurprixApplication.getSurprixContext();
-        holder.vCode.setText(s.getCode());
-        holder.vDescription.setText(s.getDescription());
+        if (s.has_set_effective_code()){
+            holder.vDescription.setText(s.getCode() + " - " + s.getDescription());
+        } else {
+            holder.vDescription.setText(s.getDescription());
+        }
         holder.vLayout.setBackgroundColor(ContextCompat.getColor(ctx, Colors.getHexColor(s.getSet_producer_color())));
 
         String path = s.getImg_path();
@@ -134,7 +139,6 @@ public class SetDetailRecyclerAdapter extends RecyclerView.Adapter<SetDetailRecy
 
     static class SetDetailViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         View vLayout;
-        TextView vCode;
         TextView vDescription;
         ImageView vImage;
         ImageButton btnAddMissing;
@@ -152,7 +156,6 @@ public class SetDetailRecyclerAdapter extends RecyclerView.Adapter<SetDetailRecy
 
             this.listner = listener;
             vLayout = v.findViewById(R.id.layout_item_titlebar);
-            vCode = v.findViewById(R.id.txv_item_code);
             vDescription = v.findViewById(R.id.txv_item_desc);
             vImage = v.findViewById(R.id.img_item);
             btnAddMissing = v.findViewById(R.id.btn_item_add_missing);

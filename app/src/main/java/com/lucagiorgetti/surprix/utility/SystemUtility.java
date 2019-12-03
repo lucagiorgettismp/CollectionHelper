@@ -10,7 +10,6 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.text.Spanned;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -26,8 +25,6 @@ import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseCallback;
 import com.lucagiorgetti.surprix.model.User;
 import com.lucagiorgetti.surprix.ui.activities.LoginActivity;
-import com.lucagiorgetti.surprix.ui.activities.MainActivity;
-import com.lucagiorgetti.surprix.ui.activities.OnboardActivity;
 
 import java.util.Locale;
 
@@ -104,7 +101,7 @@ public class SystemUtility {
         edit.apply();
 
         openNewActivityWithFinishing(activity, cls, b);
-        openNewActivity(OnboardActivity.class, null);
+        //openNewActivity(OnboardActivity.class, null);
     }
 
 

@@ -15,11 +15,10 @@ import java.util.List;
 public class DoubleListViewModel extends BaseViewModel {
 
     private MutableLiveData<List<Surprise>> allDoubleSurprises;
-    private MutableLiveData<Boolean> loading = new MutableLiveData<>();
 
     public DoubleListViewModel(@NonNull Application application) {
         super(application);
-        this.loading.setValue(false);
+        this.setLoading(false);
     }
 
     public MutableLiveData<List<Surprise>> getDoubleSurprises() {
@@ -31,27 +30,24 @@ public class DoubleListViewModel extends BaseViewModel {
         return allDoubleSurprises;
     }
 
-    public MutableLiveData<Boolean> isLoading() {
-        return loading;
-    }
 
     public void loadDoubleSurprises() {
         DatabaseUtility.getDoublesForUsername(new FirebaseListCallback<Surprise>() {
             @Override
             public void onStart() {
-                loading.setValue(true);
+                setLoading(true);
             }
 
             @Override
             public void onSuccess(List<Surprise> doubleSurprises) {
                 allDoubleSurprises.setValue(doubleSurprises);
-                loading.setValue(false);
+                setLoading(false);
             }
 
             @Override
             public void onFailure() {
                 allDoubleSurprises.setValue(null);
-                loading.setValue(false);
+                setLoading(false);
             }
         });
     }

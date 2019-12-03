@@ -5,11 +5,14 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
+import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseCallback;
 import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseListCallback;
 import com.lucagiorgetti.surprix.model.MissingSurprise;
+import com.lucagiorgetti.surprix.model.Surprise;
 import com.lucagiorgetti.surprix.ui.BaseViewModel;
 import com.lucagiorgetti.surprix.utility.DatabaseUtility;
 
+import java.util.Collections;
 import java.util.List;
 
 public class MissingListViewModel extends BaseViewModel {
@@ -53,7 +56,10 @@ public class MissingListViewModel extends BaseViewModel {
 
     public void addMissing(MissingSurprise mp, int position) {
         List<MissingSurprise> list = allMissingSurprises.getValue();
-        list.add(position, mp);
+        list.add(mp);
         allMissingSurprises.setValue(list);
+    }
+
+    public void reloadMissingSurprises(FirebaseCallback<Boolean> booleanFirebaseCallback) {
     }
 }

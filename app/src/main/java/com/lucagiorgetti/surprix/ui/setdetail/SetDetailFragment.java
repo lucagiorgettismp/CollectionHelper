@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.utility.BaseFragment;
 
+import java.util.Collections;
+
 public class SetDetailFragment extends BaseFragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,

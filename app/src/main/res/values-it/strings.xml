@@ -38,7 +38,7 @@
     <string name="who_have_what_you_miss">Utenti che hanno quello che cerchi:</string>
     <string name="wrong_email_or_password">E-mail o Password errata</string>
     <string name="year">Anno</string>
-    <string name="complete_all_fields">Completa tutti i campi prima di procedere alla registrazione</string>
+    <string name="signup_complete_all_fields">Completa tutti i campi prima di procedere alla registrazione</string>
     <string name="delete_account">Elimina account</string>
     <string name="dialod_delete_user_text">Vuoi eliminare il tuo account definitivamente?</string>
     <string name="dialog_add_set_text">"Vuoi aggiungere ai mancanti la serie "</string>
@@ -47,7 +47,7 @@
     <string name="dialog_add_year_title">Aggiungi anno</string>
     <string name="dialog_negative">Annulla</string>
     <string name="dialog_positive">Ok</string>
-    <string name="password_lenght">La password deve essere lunga almeno 6 caratteri</string>
+    <string name="signup_password_lenght">La password deve essere lunga almeno 6 caratteri</string>
     <string name="welcome_info">"Benvenuto in "</string>
     <string name="username_existing">Username già esistente</string>
     <string name="remove_double_dialog_text">Vuoi rimuovere dai doppi</string>
@@ -94,7 +94,7 @@
     <string name="info_privacy_1">Surprix ci tiene alla tua privacy e richiede solo poche informazioni personali.</string>
     <string name="info_privacy_2">L\'indirizzo e-mail è utilizzato per l\'autenticazione, per il recupero delle credenziali e per essere contattato per eventuali scambi.</string>
     <string name="info_privacy_3">La nazione serve a mostrati prima i collezionisti del tuo Paese.</string>
-    <string name="email_format">Controlla il formato della e-mail</string>
+    <string name="signup_email_format">Controlla il formato della e-mail</string>
     <string name="privacy_policy">Termini e condizioni</string>
     <string name="privacy_policy_text"><![CDATA[<p>I termini e condizioni per la protezione dei dati personali sono stati scritti per informare gli utenti riguardo ai dati personali che vengono raccolti in Surprix. Ti preghiamo di leggere i termini e le condizioni attentamente, per essere consapevole di come raccogliamo, utilizziamo, proteggiamo o gestiamo le tue informazioni personali.</p>
         <div><strong>Quali informazioni raccogliamo al momento della iscrizione a Surprix?</strong></div>
@@ -146,4 +146,8 @@
     <string name="sets">Serie</string>
     <string name="search_title">Ricerca</string>
     <string name="mail_exchange_body" translatable="false"><![CDATA[Ciao,         <div>Sono %1$s, tramite Surprix ho visto che tra i doppi hai %2$s - %3$s, a cui sono interessato.</div>         <div>Ti andrebbe di scambiare?</div>]]></string>
+    <string name="email_app_chooser">Seleziona l\' app per inviare le email</string>
+    <string name="signup_mail_existinig">La mail è già presente nel nostro databese. Sicuro di non esserti già iscritto?</string>
+    <string name="signup_weak_password">La password inserito è troppo semplice.</string>
+    <string name="signup_default_error" translatable="false">Qualcosa è andato storto.. riprova!</string>
 </resources>

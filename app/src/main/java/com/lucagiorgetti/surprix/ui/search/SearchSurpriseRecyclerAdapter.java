@@ -67,8 +67,11 @@ public class SearchSurpriseRecyclerAdapter extends ListAdapter<Surprise, SearchS
     @Override
     public void onBindViewHolder(@NonNull SurpViewHolder holder, int position) {
         Surprise surp = getItem(position);
-        holder.vCode.setText(surp.getCode());
-        holder.vSetName.setText(surp.getSet_name());
+        if (surp.has_set_effective_code()){
+            holder.vSetName.setText(surp.getCode() + " - " + surp.getSet_name());
+        } else {
+            holder.vSetName.setText(surp.getSet_name());
+        }
         holder.vDescription.setText(surp.getDescription());
         holder.vYear.setText(String.valueOf(surp.getSet_year()));
         holder.vProducer.setText(surp.getSet_producer_name() + " " + surp.getSet_product_name());
@@ -206,7 +209,6 @@ public class SearchSurpriseRecyclerAdapter extends ListAdapter<Surprise, SearchS
 
         SurpViewHolder(View v) {
             super(v);
-            vCode = v.findViewById(R.id.txv_surp_elem_code);
             vSetName = v.findViewById(R.id.txv_surp_elem_set);
             vDescription = v.findViewById(R.id.txv_surp_elem_desc);
             vYear = v.findViewById(R.id.txv_surp_elem_year);

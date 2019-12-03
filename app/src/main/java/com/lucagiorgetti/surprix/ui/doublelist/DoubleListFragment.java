@@ -11,7 +11,6 @@ import android.widget.ProgressBar;
 import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,8 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.snackbar.Snackbar;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
-import com.lucagiorgetti.surprix.ui.adapters.SurpriseRecyclerAdapter;
 import com.lucagiorgetti.surprix.model.Surprise;
+import com.lucagiorgetti.surprix.ui.adapters.SurpriseRecyclerAdapter;
 import com.lucagiorgetti.surprix.utility.BaseFragment;
 import com.lucagiorgetti.surprix.utility.DatabaseUtility;
 
@@ -52,7 +51,7 @@ public class DoubleListFragment extends BaseFragment {
             emptyList.setVisibility(doubleList == null || doubleList.isEmpty() ? View.VISIBLE : View.GONE);
             mAdapter.submitList(doubleList);
             mAdapter.setFilterableList(doubleList);
-            if (mAdapter.getItemCount() > 0){
+            if (mAdapter.getItemCount() > 0) {
                 setTitle(getString(R.string.doubles) + " (" + mAdapter.getItemCount() + ")");
             } else {
                 setTitle(getString(R.string.doubles));
@@ -86,12 +85,19 @@ public class DoubleListFragment extends BaseFragment {
                 return false;
             }
         });
-
+        searchView.setOnCloseListener(() -> {
+            if (mAdapter.getItemCount() > 0) {
+                setTitle(getString(R.string.doubles) + " (" + mAdapter.getItemCount() + ")");
+            } else {
+                setTitle(getString(R.string.doubles));
+            }
+            return false;
+        });
         searchView.setQueryHint("Search");
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    private void initSwipe( RecyclerView recyclerView) {
+    private void initSwipe(RecyclerView recyclerView) {
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -106,6 +112,7 @@ public class DoubleListFragment extends BaseFragment {
         }).attachToRecyclerView(recyclerView);
     }
 
+
     private void deleteSurprise(SurpriseRecyclerAdapter mAdapter, int position) {
         Surprise surprise = mAdapter.getItemAtPosition(position);
         mAdapter.removeFilterableItem(surprise);
@@ -118,23 +125,27 @@ public class DoubleListFragment extends BaseFragment {
         }
         DatabaseUtility.removeDouble(surprise.getId());
 
-        if (mAdapter.getItemCount() > 0){
+        if (mAdapter.getItemCount() > 0) {
             setTitle(getString(R.string.doubles) + " (" + mAdapter.getItemCount() + ")");
         } else {
             setTitle(getString(R.string.doubles));
         }
 
-        Snackbar.make(getView(), SurprixApplication.getInstance().getString(R.string.double_removed), Snackbar.LENGTH_LONG)
-                .setAction(SurprixApplication.getInstance().getString(R.string.undo), view -> {
-                    DatabaseUtility.addDouble(surprise.getId());
-                    doubleListViewModel.addDouble(surprise, position);
-                    mAdapter.notifyItemInserted(position);
-                    if (mAdapter.getItemCount() > 0){
-                        setTitle(getString(R.string.doubles) + " (" + mAdapter.getItemCount() + ")");
-                    } else {
-                        setTitle(getString(R.string.doubles));
-                    }
-                }).show();
+        if (query != null && query.length() != 0) {
+            Snackbar.make(getView(), SurprixApplication.getInstance().getString(R.string.missing_removed), Snackbar.LENGTH_LONG).show();
+        } else {
+            Snackbar.make(getView(), SurprixApplication.getInstance().getString(R.string.missing_removed), Snackbar.LENGTH_LONG)
+                    .setAction(SurprixApplication.getInstance().getString(R.string.undo), view -> {
+                        DatabaseUtility.addMissing(surprise.getId());
+                        mAdapter.addFilterableItem(surprise, position);
+                        mAdapter.notifyItemInserted(position);
+                        if (mAdapter.getItemCount() > 0) {
+                            setTitle(getString(R.string.doubles) + " (" + mAdapter.getItemCount() + ")");
+                        } else {
+                            setTitle(getString(R.string.doubles));
+                        }
+                    }).show();
+        }
     }
 }
 

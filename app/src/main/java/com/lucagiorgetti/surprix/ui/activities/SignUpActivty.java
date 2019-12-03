@@ -20,6 +20,9 @@ import androidx.appcompat.widget.Toolbar;
 import com.facebook.login.LoginManager;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseCallback;
 import com.lucagiorgetti.surprix.utility.DatabaseUtility;
@@ -112,10 +115,10 @@ public class SignUpActivty extends AppCompatActivity {
                     username.isEmpty() ||
                     nation.isEmpty()) {
                 progress.setVisibility(View.INVISIBLE);
-                Toast.makeText(SignUpActivty.this, R.string.complete_all_fields, Toast.LENGTH_SHORT).show();
+                Toast.makeText(SignUpActivty.this, R.string.signup_complete_all_fields, Toast.LENGTH_SHORT).show();
             } else {
                 DatabaseUtility.generateUser(email, username, nation, true);
-                SystemUtility.firstTimeOpeningApp(SignUpActivty.this, MainActivity.class, null);
+                SystemUtility.firstTimeOpeningApp(SignUpActivty.this, SplashActivity.class, null);
             }
         });
 
@@ -138,13 +141,13 @@ public class SignUpActivty extends AppCompatActivity {
                     username.isEmpty() ||
                     nation.isEmpty()) {
                 progress.setVisibility(View.INVISIBLE);
-                Snackbar.make(Objects.requireNonNull(getCurrentFocus()), R.string.complete_all_fields, Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(Objects.requireNonNull(getCurrentFocus()), R.string.signup_complete_all_fields, Snackbar.LENGTH_SHORT).show();
             } else if (password.length() < 6) {
                 progress.setVisibility(View.INVISIBLE);
-                Snackbar.make(Objects.requireNonNull(getCurrentFocus()), R.string.password_lenght, Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(Objects.requireNonNull(getCurrentFocus()), R.string.signup_password_lenght, Snackbar.LENGTH_SHORT).show();
             } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                 progress.setVisibility(View.INVISIBLE);
-                Snackbar.make(Objects.requireNonNull(getCurrentFocus()), R.string.email_format, Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(Objects.requireNonNull(getCurrentFocus()), R.string.signup_email_format, Snackbar.LENGTH_SHORT).show();
             } else {
                 DatabaseUtility.checkUsernameDontExists(username, new FirebaseCallback<Boolean>() {
                     @Override
@@ -158,15 +161,26 @@ public class SignUpActivty extends AppCompatActivity {
                             fireAuth.createUserWithEmailAndPassword(email, password)
                                     .addOnCompleteListener(SignUpActivty.this, task -> {
                                         if (!task.isSuccessful()) {
-                                            //noinspection ThrowableResultOfMethodCallIgnored
                                             progress.setVisibility(View.INVISIBLE);
-                                            Snackbar.make(Objects.requireNonNull(getCurrentFocus()), getString(R.string.auth_failed),
-                                                    Snackbar.LENGTH_SHORT).show();
+                                            String message;
+                                            Exception exception = task.getException();
+                                            if (exception instanceof FirebaseAuthWeakPasswordException){
+                                                message = getString(R.string.signup_weak_password);
+                                            } else if (exception instanceof FirebaseAuthInvalidCredentialsException){
+                                                message = getString(R.string.signup_email_format);
+                                            } else if (exception instanceof FirebaseAuthUserCollisionException){
+                                                message = getString(R.string.signup_mail_existinig);
+                                            } else {
+                                                message = getString(R.string.signup_default_error);
+                                            }
+
+                                            Snackbar.make(Objects.requireNonNull(getCurrentFocus()), message,
+                                                    Snackbar.LENGTH_LONG).show();
                                         } else {
                                             DatabaseUtility.generateUser(email, username, nation, false);
                                             fireAuth.signInWithEmailAndPassword(email, password);
                                             progress.setVisibility(View.INVISIBLE);
-                                            SystemUtility.firstTimeOpeningApp(SignUpActivty.this, MainActivity.class, null);
+                                            SystemUtility.firstTimeOpeningApp(SignUpActivty.this, SplashActivity.class, null);
                                         }
                                     });
                         } else {

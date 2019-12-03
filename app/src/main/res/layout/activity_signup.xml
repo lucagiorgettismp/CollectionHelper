@@ -212,7 +212,7 @@
             android:id="@+id/btn_reg_change_pwd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10sp"
+            android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:text="@string/change_password"
             android:textAlignment="textEnd"
@@ -224,6 +224,7 @@
             android:id="@+id/btn_reg_delete_account"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:text="@string/delete_account"
             android:textAlignment="textEnd"
@@ -236,7 +237,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="10sp"
-        android:gravity="start|end"
+        android:gravity="bottom|start|end"
         android:orientation="vertical">
 
 

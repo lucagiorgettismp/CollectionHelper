@@ -90,12 +90,14 @@ public class SearchFragment extends BaseFragment {
 
             @Override
             public boolean onQueryTextChange(String s) {
+                searchSetRecyclerAdapter.getFilter().filter(s);
+                searchSurpriseRecyclerAdapter.getFilter().filter(s);
                 switch (mode) {
                     case SURPRISE:
-                        searchSurpriseRecyclerAdapter.getFilter().filter(s);
+
                         break;
                     case SET:
-                        searchSetRecyclerAdapter.getFilter().filter(s);
+
                         break;
                 }
                 return false;
@@ -139,8 +141,6 @@ public class SearchFragment extends BaseFragment {
 
     private void changeMode(SearchMode mode) {
         this.mode = mode;
-        searchView.setQuery("", false);
-        searchView.clearFocus();
         switch (mode) {
             case SURPRISE:
                 recyclerView.setAdapter(searchSurpriseRecyclerAdapter);

@@ -57,7 +57,7 @@ public class SearchSetRecyclerAdapter extends ListAdapter<Set, SearchSetRecycler
     @NonNull
     @Override
     public SetViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.element_set, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.element_set_search, parent, false);
         return new SetViewHolder(v);
     }
 
@@ -75,6 +75,8 @@ public class SearchSetRecyclerAdapter extends ListAdapter<Set, SearchSetRecycler
             nation = l.getDisplayCountry();
         }
         holder.vNation.setText(nation);
+        holder.vProducer.setText(set.getProducer_name());
+        holder.vYear.setText(String.valueOf(set.getYear()));
         holder.vLayout.setBackgroundColor(ContextCompat.getColor(ctx, Colors.getHexColor(set.getProducer_color())));
 
         String path = set.getImg_path();
@@ -142,6 +144,8 @@ public class SearchSetRecyclerAdapter extends ListAdapter<Set, SearchSetRecycler
     static class SetViewHolder extends RecyclerView.ViewHolder {
         TextView vName;
         TextView vNation;
+        TextView vProducer;
+        TextView vYear;
         ImageView vImage;
         View vLayout;
 
@@ -150,6 +154,8 @@ public class SearchSetRecyclerAdapter extends ListAdapter<Set, SearchSetRecycler
             vName = v.findViewById(R.id.txv_set_elem_name);
             vImage = v.findViewById(R.id.imgSet);
             vNation = v.findViewById(R.id.txv_set_elem_nation);
+            vProducer = v.findViewById(R.id.txv_set_elem_producer);
+            vYear = v.findViewById(R.id.txv_set_elem_year);
             vLayout = v.findViewById(R.id.set_divider);
         }
     }
