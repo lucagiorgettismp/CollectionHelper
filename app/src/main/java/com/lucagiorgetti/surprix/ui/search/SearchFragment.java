@@ -71,12 +71,12 @@ public class SearchFragment extends BaseFragment {
         });
 
 
-        searchViewModel.getSurprises().observe(this, surprises -> {
+        searchViewModel.getSurprises().observe(getViewLifecycleOwner(), surprises -> {
             searchSurpriseRecyclerAdapter.submitList(surprises);
             searchSurpriseRecyclerAdapter.setFilterableList(surprises);
         });
 
-        searchViewModel.getSets().observe(this, sets -> {
+        searchViewModel.getSets().observe(getViewLifecycleOwner(), sets -> {
             searchSetRecyclerAdapter.submitList(sets);
             searchSetRecyclerAdapter.setFilterableList(sets);
         });
@@ -92,14 +92,6 @@ public class SearchFragment extends BaseFragment {
             public boolean onQueryTextChange(String s) {
                 searchSetRecyclerAdapter.getFilter().filter(s);
                 searchSurpriseRecyclerAdapter.getFilter().filter(s);
-                switch (mode) {
-                    case SURPRISE:
-
-                        break;
-                    case SET:
-
-                        break;
-                }
                 return false;
             }
         });
@@ -123,6 +115,7 @@ public class SearchFragment extends BaseFragment {
                                 setName = set.getName();
                                 break;
                         }
+                        searchView.setQuery("", false);
                         SearchFragmentDirections.OnSearchedItemClick action = SearchFragmentDirections.onSearchedItemClick(setId, setName);
                         Navigation.findNavController(view).navigate(action);
                         SystemUtility.closeKeyboard(getActivity());

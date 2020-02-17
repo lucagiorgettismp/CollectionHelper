@@ -29,6 +29,7 @@ public class DoubleListFragment extends BaseFragment {
     private SurpriseRecyclerAdapter mAdapter;
     private SearchView searchView;
     private View root;
+    private View emptyList;
     private DoubleListViewModel doubleListViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -38,7 +39,7 @@ public class DoubleListFragment extends BaseFragment {
             root = inflater.inflate(R.layout.fragment_double_list, container, false);
         }
 
-        View emptyList = root.findViewById(R.id.double_empty_list);
+        emptyList = root.findViewById(R.id.double_empty_list);
         ProgressBar progress = root.findViewById(R.id.double_loading);
         RecyclerView recyclerView = root.findViewById(R.id.double_recycler);
         recyclerView.setHasFixedSize(true);
@@ -126,8 +127,10 @@ public class DoubleListFragment extends BaseFragment {
         DatabaseUtility.removeDouble(surprise.getId());
 
         if (mAdapter.getItemCount() > 0) {
+            emptyList.setVisibility(View.GONE);
             setTitle(getString(R.string.doubles) + " (" + mAdapter.getItemCount() + ")");
         } else {
+            emptyList.setVisibility(View.VISIBLE);
             setTitle(getString(R.string.doubles));
         }
 
@@ -141,8 +144,10 @@ public class DoubleListFragment extends BaseFragment {
                         mAdapter.notifyItemInserted(position);
                         if (mAdapter.getItemCount() > 0) {
                             setTitle(getString(R.string.doubles) + " (" + mAdapter.getItemCount() + ")");
+                            emptyList.setVisibility(View.GONE);
                         } else {
                             setTitle(getString(R.string.doubles));
+                            emptyList.setVisibility(View.VISIBLE);
                         }
                     }).show();
         }

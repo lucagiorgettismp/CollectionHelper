@@ -55,6 +55,7 @@ public class MissingListFragment extends BaseFragment {
     private MissingRecyclerAdapter mAdapter;
     private SearchView searchView;
     private View root;
+    private View emptyList;
     private MissingListViewModel missingListViewModel;
     private List<MissingSurprise> missingSurprises = new ArrayList<>();
 
@@ -64,7 +65,7 @@ public class MissingListFragment extends BaseFragment {
         if (root == null) {
             root = inflater.inflate(R.layout.fragment_missing_list, container, false);
         }
-        View emptyList = root.findViewById(R.id.missing_empty_list);
+        emptyList = root.findViewById(R.id.missing_empty_list);
         ProgressBar progress = root.findViewById(R.id.missing_loading);
         RecyclerView recyclerView = root.findViewById(R.id.missing_recycler);
         recyclerView.setHasFixedSize(true);
@@ -208,8 +209,10 @@ public class MissingListFragment extends BaseFragment {
             mAdapter.notifyItemRemoved(position);
         }
         if (mAdapter.getItemCount() > 0) {
+            emptyList.setVisibility(View.GONE);
             setTitle(getString(R.string.missings) + " (" + mAdapter.getItemCount() + ")");
         } else {
+            emptyList.setVisibility(View.VISIBLE);
             setTitle(getString(R.string.missings));
         }
 
@@ -222,8 +225,10 @@ public class MissingListFragment extends BaseFragment {
                         mAdapter.addFilterableItem(mp, position);
                         mAdapter.notifyItemInserted(position);
                         if (mAdapter.getItemCount() > 0) {
+                            emptyList.setVisibility(View.GONE);
                             setTitle(getString(R.string.missings) + " (" + mAdapter.getItemCount() + ")");
                         } else {
+                            emptyList.setVisibility(View.VISIBLE);
                             setTitle(getString(R.string.missings));
                         }
                     }).show();
