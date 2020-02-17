@@ -1,18 +1,13 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">#000367</item>
-        <item name="colorPrimaryDark">#000248</item>
-        <item name="colorAccent">#000367</item>
-    </style>
-
-    <style name="DarkTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">#000367</item>
-        <item name="colorPrimaryDark">#000248</item>
-        <item name="colorAccent">@android:color/white</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorSecondary</item>
+        <item name="editTextColor">@color/textColor</item>
+        <item name="android:colorBackground">@color/colorPrimaryLight</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -44,7 +39,22 @@
         <item name="backgroundTint">@android:color/holo_orange_light</item>
     </style>
 
+    <style name="ButtonShowMissingOwner" parent="Base.Widget.AppCompat.ImageButton">
+        <item name="backgroundTint">@color/colorPrimary</item>
+    </style>
+
+    <style name="ButtonSaveNote" parent="Base.Widget.AppCompat.ImageButton">
+        <item name="backgroundTint">@color/colorSecondary</item>
+    </style>
+
     <style name="AppTheme.NoActionBar.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.NoActionBar.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="AppTheme.Launcher" parent="NoStatusBar">
+        <item name="android:windowTranslucentStatus">true</item>
+    <item name="android:windowBackground">@drawable/splash_screen</item>
+    <!-- Optional, on Android 5+ you can modify the colorPrimaryDark color to match the windowBackground color for further branding-->
+    <!-- <item name="colorPrimaryDark">@android:color/white</item> -->
+    </style>
 </resources>

@@ -1,14 +1,12 @@
 package com.lucagiorgetti.surprix.model;
 
-import android.support.annotation.Nullable;
-
-import java.util.Comparator;
+import androidx.annotation.Nullable;
 
 /**
  * Created by Utente on 17/04/2017.
  */
 
-public class Surprise {
+public class Surprise implements Comparable<Surprise>{
     private String id = null;
     private String description = null;
     private String img_path = null;
@@ -22,6 +20,8 @@ public class Surprise {
     private String set_id = null;
     private String rarity = null;
 
+    private boolean set_effective_code = true;
+
     public Surprise(){
     }
 
@@ -34,11 +34,14 @@ public class Surprise {
         this.set_producer_color = set.getProducer_color();
         this.set_producer_name = set.getProducer_name();
         this.set_product_name = set.getProduct();
+        this.set_effective_code = set.hasEffectiveCode();
         this.set_nation = set.getNation();
         this.id = set_producer_name + "_" + set_year + "_" + set.getCode() + "_" + code;
         this.set_id = set.getId();
         this.rarity = rarity != null ? String.valueOf(rarity) : null;
+        this.set_effective_code = set.hasEffectiveCode();
     }
+
 
     public String getId() {
         return id;
@@ -84,20 +87,40 @@ public class Surprise {
         return set_producer_color;
     }
 
-    public static class SortByCode implements Comparator<Surprise> {
-        @Override
-        public int compare(Surprise o1, Surprise o2) {
-            return o1.getCode().compareTo(o2.getCode());
-        }
-    }
-
     public String getRarity(){
         return rarity;
     }
 
+    public boolean isSet_effective_code() {
+        return set_effective_code;
+    }
+
+    public void setSet_effective_code(boolean set_effective_code) {
+        this.set_effective_code = set_effective_code;
+    }
+
     public Integer getIntRarity(){
-        return rarity != null ? Integer.valueOf(rarity) : null;
+        return rarity != null ? Integer.parseInt(this.getRarity()) : null;
+    }
+
+    public boolean has_set_effective_code() {
+        return set_effective_code;
+    }
+
+    @Override
+    public int compareTo(Surprise surprise) {
+        try {
+            int a = Integer.parseInt(this.getCode());
+            int b = Integer.parseInt(surprise.getCode());
+            return a - b;
+        } catch (Exception ignored) {
+
+        }
+        return getCode().compareTo(surprise.getCode());
     }
 }
+
+
+
 
 

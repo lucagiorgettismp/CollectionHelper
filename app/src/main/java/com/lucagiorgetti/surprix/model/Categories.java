@@ -8,5 +8,6 @@ public final class Categories {
     public static final String COMPO = "Compo";
     public static final String HANDPAINTED = "Hand_painted";
 
-    private Categories(){}
+    private Categories() {
+    }
 }

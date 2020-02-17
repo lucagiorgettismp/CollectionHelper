@@ -1,7 +1,7 @@
 package com.lucagiorgetti.surprix;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.GlideBuilder;
@@ -29,6 +29,6 @@ public class SurprixAppGlideModule extends AppGlideModule {
 
     @Override
     public void applyOptions(@NonNull Context context, @NonNull GlideBuilder builder) {
-        builder.setDiskCache(new InternalCacheDiskCacheFactory(context,  31457280));
+        builder.setDiskCache(new InternalCacheDiskCacheFactory(context, 31457280));
     }
 }

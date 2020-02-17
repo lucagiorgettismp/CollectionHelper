@@ -4,35 +4,41 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.text.Spanned;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
+import com.facebook.login.LoginManager;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
-import com.lucagiorgetti.surprix.views.OnboardActivity;
+import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseCallback;
+import com.lucagiorgetti.surprix.model.User;
+import com.lucagiorgetti.surprix.ui.activities.LoginActivity;
+
+import java.util.Locale;
 
 /**
  * Utility which contain all the implementations of methods which needs a connection with Firebase Database.
- *
+ * <p>
  * Created by Luca on 13/11/2017.
  */
 
 public class SystemUtility {
-    public static final String FIRST_TIME_YEAR_HELP_SHOW= "showYearHelp";
+    public static final String FIRST_TIME_YEAR_HELP_SHOW = "showYearHelp";
     public static final String FIRST_TIME_SET_HELP_SHOW = "showSetHelp";
     public static final String PRIVACY_POLICY_ACCEPTED = "privacyPolicyAccepted";
-    public static final String USER_USERNAME = "loggedUsername";
-    public static final String USER_EMAIL = "loggedEmail";
-    public static final String TAG = "SystemUtility";
+    private static final String TAG = "SystemUtility";
 
     public static boolean checkNetworkAvailability(Context context) {
         boolean available = false;
@@ -54,14 +60,20 @@ public class SystemUtility {
             available = false;
         }
 
-        if (!available){
+        if (!available) {
             Toast.makeText(context, R.string.network_not_available, Toast.LENGTH_SHORT).show();
         }
         return available;
     }
 
-    public static void closeKeyboard(Activity activity, View view) {
+    public static void closeKeyboard(Activity activity) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        View view = activity.getCurrentFocus();
+
+        if (view == null) {
+            view = new View(activity);
+        }
         if (imm != null) {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
@@ -71,7 +83,7 @@ public class SystemUtility {
         Context applicationContext = SurprixApplication.getSurprixContext();
         Intent i = new Intent(applicationContext, cls);
 
-        if (b != null){
+        if (b != null) {
             i.putExtras(b);
         }
 
@@ -89,18 +101,18 @@ public class SystemUtility {
         edit.apply();
 
         openNewActivityWithFinishing(activity, cls, b);
-        openNewActivity(OnboardActivity.class, null);
+        //openNewActivity(OnboardActivity.class, null);
     }
 
 
-    public static void enableFCM(){
+    public static void enableFCM() {
         // Enable FCM via enable Auto-init service which generate new token and receive in FCMService
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
         Log.i(TAG, "FCM enable");
         FirebaseMessaging.getInstance().subscribeToTopic("global");
     }
 
-    public static void disableFCM(){
+    public static void disableFCM() {
         // Disable auto init
         FirebaseMessaging.getInstance().setAutoInitEnabled(false);
         new Thread(() -> {
@@ -114,25 +126,13 @@ public class SystemUtility {
         Context applicationContext = SurprixApplication.getSurprixContext();
         Intent i = new Intent(applicationContext, cls);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        if (b != null){
+        if (b != null) {
             i.putExtras(b);
         }
         applicationContext.startActivity(i);
     }
 
-    public static void sendMail(Context context, String to, String subject, Spanned html_body) {
-        Intent intent = new Intent(Intent.ACTION_SENDTO);
-        intent.setType("text/plain");
-        if (subject != null && !subject.isEmpty()){
-            intent.putExtra(Intent.EXTRA_SUBJECT, subject);
-        }
-        if (html_body != null && html_body.length() > 0){
-            intent.putExtra(Intent.EXTRA_TEXT, html_body);
-        }
-        intent.setData(Uri.parse("mailto:" + to));
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // this will make such that when user returns to your app, your app is displayed, instead of the email app.
-        context.startActivity(intent);
-    }
+
 
     public static void openUrl(Context context, String url) {
         Uri uri = Uri.parse(url); // missing 'http://' will cause crashed
@@ -140,16 +140,47 @@ public class SystemUtility {
         context.startActivity(intent);
     }
 
-    public static void writeUserInfo(String username, String email) {
-        Context applicationContext = SurprixApplication.getSurprixContext();
-        SharedPreferences.Editor edit = PreferenceManager.getDefaultSharedPreferences(applicationContext).edit();
-        edit.putString(USER_USERNAME, username);
-        edit.putString(USER_EMAIL, email);
-        edit.apply();
+    @NonNull
+    public static String getStringByLocal(Activity context, int id, String locale) {
+        Configuration configuration = new Configuration(context.getResources().getConfiguration());
+        configuration.setLocale(new Locale(locale));
+        return context.createConfigurationContext(configuration).getResources().getString(id);
     }
 
-    public static String getLoggedUserUsername(){
-        Context applicationContext = SurprixApplication.getSurprixContext();
-        return PreferenceManager.getDefaultSharedPreferences(applicationContext).getString(USER_USERNAME, null);
+    public static void setSessionUser(String email, FirebaseCallback listener) {
+        DatabaseUtility.getCurrentUser(new FirebaseCallback<User>() {
+            @Override
+            public void onSuccess(User currentUser) {
+                if (currentUser != null) {
+                    SurprixApplication.getInstance().setUser(currentUser);
+                    DatabaseUtility.setUsername(currentUser.getUsername());
+                    listener.onSuccess(null);
+                }
+            }
+
+            @Override
+            public void onStart() {
+                listener.onStart();
+            }
+
+            @Override
+            public void onFailure() {
+                listener.onFailure();
+            }
+        }, email);
+    }
+
+    public static void removeSessionUser() {
+        SurprixApplication.getInstance().setUser(null);
+    }
+
+    public static void logout(Activity activity) {
+        SystemUtility.disableFCM();
+        SystemUtility.removeSessionUser();
+        FirebaseAuth.getInstance().signOut();
+        LoginManager.getInstance().logOut();
+        DatabaseUtility.setUsername(null);
+        SystemUtility.openNewActivityWithFinishing(activity, LoginActivity.class, null);
+        activity.finish();
     }
 }

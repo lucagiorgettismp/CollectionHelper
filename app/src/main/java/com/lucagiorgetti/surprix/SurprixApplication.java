@@ -3,21 +3,29 @@ package com.lucagiorgetti.surprix;
 import android.app.Application;
 import android.content.Context;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
+import com.lucagiorgetti.surprix.model.User;
 
 /**
  * Created by Luca Giorgetti on 11/04/2018.
  */
 
-public class SurprixApplication extends Application{
+public class SurprixApplication extends Application {
     private FirebaseStorage firebaseStorage;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
-    private FirebaseAuth fireAuth;
     private static SurprixApplication mInstance;
+    private User currentUser;
+
+    public void setUser(User currentUser) {
+        this.currentUser = currentUser;
+    }
+
+    public User getCurrentUser() {
+        return currentUser;
+    }
 
     @Override
     public void onCreate() {
@@ -29,7 +37,7 @@ public class SurprixApplication extends Application{
         return mInstance;
     }
 
-    public static synchronized Context getSurprixContext(){
+    public static synchronized Context getSurprixContext() {
         return mInstance.getApplicationContext();
     }
 
@@ -45,19 +53,11 @@ public class SurprixApplication extends Application{
             firebaseDatabase = FirebaseDatabase.getInstance();
             firebaseDatabase.setPersistenceEnabled(true);
         }
-        if (databaseReference == null){
+        if (databaseReference == null) {
             databaseReference = firebaseDatabase.getReference();
             databaseReference.keepSynced(true);
         }
 
         return databaseReference;
     }
-
-    synchronized public FirebaseAuth getFirebaseAuth() {
-        if (fireAuth == null) {
-            fireAuth = FirebaseAuth.getInstance();
-        }
-        return fireAuth;
-    }
-    
 }

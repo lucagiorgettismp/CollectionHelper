@@ -1,7 +1,5 @@
 package com.lucagiorgetti.surprix.model;
 
-import java.text.ParseException;
-
 /**
  * Created by Utente on 17/04/2017.
  */

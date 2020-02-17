@@ -6,16 +6,16 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.support.v4.app.NotificationCompat;
+import androidx.core.app.NotificationCompat;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.lucagiorgetti.surprix.ui.activities.MainActivity;
 import com.lucagiorgetti.surprix.R;
-import com.lucagiorgetti.surprix.views.MainActivity;
 
 import java.util.Objects;
 
-public class MyFirebaseMessaging extends FirebaseMessagingService{
+public class MyFirebaseMessaging extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
@@ -26,14 +26,14 @@ public class MyFirebaseMessaging extends FirebaseMessagingService{
     private void showNotification(RemoteMessage.Notification notification) {
         Intent i = new Intent(this, MainActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , i, PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, i, PendingIntent.FLAG_ONE_SHOT);
 
         String channelId = getString(R.string.default_notification_channel_id);
         String channelName = getString(R.string.default_notification_channel_name);
 
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, channelId)
-                        .setSmallIcon(R.drawable.ic_surprise)
+                        .setSmallIcon(R.drawable.ic_logo)
                         .setContentTitle(notification.getTitle())
                         .setContentText(notification.getBody())
                         .setAutoCancel(true)

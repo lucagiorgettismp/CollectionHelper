@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#000367</color>
-    <color name="colorPrimaryDark">#000248</color>
-    <color name="colorAccent">#000367</color>
+    <color name="colorPrimary">#00838f</color>
+    <color name="colorPrimaryLight">#4fb3be</color>
+    <color name="colorPrimaryDark">#005661</color>
+    <color name="colorSecondary">#ffa726</color>
+    <color name="colorSecondaryLight">#ffd95b</color>
+    <color name="notesBackground">#9AFFD95B</color>
+    <color name="c77800">#c77800</color>
+    <color name="colorAccent">@color/colorSecondary</color>
     <color name="accent_material_light">#0297cf</color>
     <color name="facebookColor">#001fb9</color>
     <color name="cardBackground">#ffffff</color>
     <color name="disabledIcon">#ffd6d7d7</color>
     <color name="AppBackground">#e0e0e0</color>
+    <color name="textColor">#3C3F41</color>
 
     <color name="GreySet">#bdbdbd</color>
     <color name="DarkGreySet">#a4a4a4</color>
@@ -31,10 +37,6 @@
     <color name="DarkLightGreenSet">#09c306</color>
     <color name="BrownSet">#d84315</color>
     <color name="DarkBrownSet">#b93912</color>
-
-
-    <color name="SwipeRed">#f11</color>
-    <color name="SwipeGreen">#04ba01</color>
 
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorTransparentWhite">#cccccc</color>

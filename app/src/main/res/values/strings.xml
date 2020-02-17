@@ -49,25 +49,25 @@
     <string name="something_went_wrong">Something went wrong</string>
     <string name="password_changed">Password successfully changed</string>
     <string name="old_password_wrong">Old password incorrect</string>
-    <string name="complete_all_fields">Complete all fields before submit registration</string>
-    <string name="password_lenght">Password must be a minimum of 6 characters</string>
+    <string name="signup_complete_all_fields">Complete all fields before submit registration</string>
+    <string name="signup_password_lenght">Password must be a minimum of 6 characters</string>
     <string name="delete_account">Delete Account</string>
     <string name="dialog_add_set_title">Add set</string>
-    <string name="dialog_add_set_text">Do you want to add to missings the complete set</string>
+    <string name="dialog_add_set_text">Do you want to add to the missing list the complete set</string>
     <string name="dialog_positive">OK</string>
     <string name="dialog_negative">Discard</string>
     <string name="dialog_add_year_title">Add year</string>
-    <string name="dialog_add_year_text">Do you want to add to missings the complete year</string>
+    <string name="dialog_add_year_text">Do you want to add to the missing list the complete year</string>
     <string name="dialod_delete_user_text">Do you want to delete you user account finally?</string>
     <string name="dateFormat" translatable="false">dd/MM/yyyy</string>
     <string name="welcome_info">"Welcome in "</string>
     <string name="username_existing">Username existing</string>
     <string name="remove_missing_dialog_title">Remove from missing</string>
-    <string name="remove_missing_dialog_text">Do you want to remove from missings</string>
+    <string name="remove_missing_dialog_text">Do you want to remove from the missing list</string>
     <string name="remove_double_dialog_title">Remove from doubles</string>
     <string name="remove_double_dialog_text">Do you want to remove from doubles</string>
     <string name="network_not_available">Network not available, check your internet connection</string>
-    <string name="list_is_empty">List is empty. You can add items by clicking the add button.</string>
+    <string name="list_is_empty">List is empty. You can add items from the catalog!</string>
     <string name="save">Save</string>
     <string name="tutorial">Tutorial</string>
     <string name="next">Next</string>
@@ -96,15 +96,7 @@
     <string name="set_image">set image</string>
     <string name="banner">banner</string>
     <string name="mail_subject" translatable="false">Surprix - %1$s</string>
-    <string name="mail_exchange_body" translatable="false"><![CDATA[Ciao,
-        <div>Sono %1$s, tramite Surprix ho visto che tra i doppi hai %2$s - %3$s, a cui sono interessato.</div>
-        <div>Ti andrebbe di scambiare?</div>
-        <div>_______________________________</div>
-        Hi,
-        <div>I\'m %1$s, thanks to Surprix I\'ve seen you have %2$s - %3$s available into your doubles, and I\'m interested in it.</div>
-        <div>Would you like to make an exchange?</div>
-        <div><br/></div>
-        <div>[E-mail sent with Surprix]</div>]]></string>
+    <string name="mail_exchange_body"><![CDATA[Hi,         <div>I\'m %1$s, thanks to Surprix I\'ve seen you have %2$s - %3$s available into your doubles, and I\'m interested in it.</div>         <div>Would you like to make an exchange?</div>]]></string>
     <string name="info_images_dialog_title">Info e images</string>
     <string name="info_images_dialog_content">Do you need any info about Surprix or want to help the growth of the catalog? Send an e-mail to info.surprix@gmail.com</string>
     <string name="info_send_images">Info and send images</string>
@@ -118,7 +110,7 @@
     <string name="info_privacy_1">Surprix takes care about your privacy and requires only very little infos about you.</string>
     <string name="info_privacy_2">Your e-mail address is used to authenticate you, recover your credentials and to be contacted for exchanges.</string>
     <string name="info_privacy_3">The nation is used to show you the collectors of your country first.</string>
-    <string name="email_format">Please check the e-mail format</string>
+    <string name="signup_email_format">Please check the e-mail format</string>
     <string name="privacy_policy">Privacy policy</string>
     <string name="privacy_policy_text"><![CDATA[<p>This privacy policy has been compiled to inform users about which personal data are collected in Surprix. Please read our privacy policy carefully to get a clear understanding of how we collect, use, protect or otherwise handle your Personally Identifiable Information.</p>
         <div><strong>What personal information do we collect from the people that register to Surprix?</strong></div>
@@ -152,6 +144,44 @@
     </string>
     <string name="terms_agree">I agree with terms</string>
     <string name="difficulty">Rarity:</string>
-    <string name="default_notification_channel_id">surprix_default</string>
-    <string name="default_notification_channel_name">SurprixDefault</string>
+    <string name="default_notification_channel_id" translatable="false">surprix_default</string>
+    <string name="default_notification_channel_name" translatable="false">SurprixDefault</string>
+    <string name="title_missing_list">Missing list</string>
+    <string name="title_double_list">Double list</string>
+    <string name="title_catalog">Catalog</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Preference Titles -->
+    <string name="messages_header" translatable="false">Messages</string>
+    <string name="sync_header" translatable="false">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title" translatable="false">Your signature</string>
+    <string name="reply_title" translatable="false">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title" translatable="false">Sync email periodically</string>
+    <string name="attachment_title" translatable="false">Download incoming attachments</string>
+    <string name="attachment_summary_on" translatable="false">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off" translatable="false">Only download attachments when manually requested</string>
+    <string name="title_activity_main" translatable="false">MainActivity</string>
+    <string name="title_years">Years</string>
+    <string name="title_sets">Sets</string>
+    <string name="title_details_list">Surprises</string>
+    <string name="note_saved">Note saved</string>
+    <string name="missing_removed">Missing surprise removed</string>
+    <string name="double_removed">Double surprise remove</string>
+    <string name="undo">Undo</string>
+    <string name="note_removed">Note removed</string>
+    <string name="surprises">Surprises</string>
+    <string name="sets">Sets</string>
+    <string name="search_title">Search</string>
+    <string name="mail_exchange_body_en" translatable="false"><![CDATA[Hi,         <div>I\'m %1$s, thanks to Surprix I\'ve seen you have %2$s - %3$s available into your doubles, and I\'m interested in it.</div>         <div>Would you like to make an exchange?</div>]]></string>
+    <string name="email_app_chooser">Select the email app</string>
+    <string name="signup_mail_existinig">The mail is just present in our database. Maybe you have already signed up?</string>
+    <string name="signup_weak_password">The password you entered is too weak.</string>
+    <string name="signup_default_error">Something went wrong.. please try again!</string>
 </resources>

@@ -21,7 +21,7 @@ public class Year {
         this.id = producer.getId() + "_" + String.valueOf(year);
     }
 
-    public Year (){
+    public Year() {
 
     }
 
@@ -45,8 +45,7 @@ public class Year {
         return producer_color;
     }
 
-    public static class SortByDescYear implements Comparator<Year>
-    {
+    public static class SortByDescYear implements Comparator<Year> {
         @Override
         public int compare(Year o1, Year o2) {
             return o2.getYear() - o1.getYear();
