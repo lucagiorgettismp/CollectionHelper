@@ -48,4 +48,17 @@
             android:textSize="18sp" />
     </LinearLayout>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/missing_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|left"
+        android:layout_margin="8dp"
+        android:clickable="true"
+        android:tint="@color/colorWhite"
+        app:backgroundTint="@color/colorPrimary"
+        app:fabSize="mini"
+        app:maxImageSize="24dp"
+        app:srcCompat="@drawable/ic_export" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,9 +1,11 @@
 package com.lucagiorgetti.surprix.ui.activities;
 
+import android.Manifest;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -13,8 +15,37 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.draw.LineSeparator;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 import com.lucagiorgetti.surprix.R;
+import com.lucagiorgetti.surprix.SurprixApplication;
+import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseListCallback;
+import com.lucagiorgetti.surprix.model.MissingSurprise;
+import com.lucagiorgetti.surprix.utility.Common;
+import com.lucagiorgetti.surprix.utility.DatabaseUtility;
 import com.lucagiorgetti.surprix.utility.SystemUtility;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -61,7 +92,5 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration);
     }
 
-    public void logout() {
-        SystemUtility.logout(MainActivity.this);
-    }
+
 }

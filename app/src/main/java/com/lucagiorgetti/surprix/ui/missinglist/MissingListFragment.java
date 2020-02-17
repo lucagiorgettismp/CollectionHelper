@@ -1,5 +1,6 @@
 package com.lucagiorgetti.surprix.ui.missinglist;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -23,7 +24,14 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseCallback;
@@ -34,8 +42,11 @@ import com.lucagiorgetti.surprix.model.Surprise;
 import com.lucagiorgetti.surprix.model.User;
 import com.lucagiorgetti.surprix.ui.adapters.SurpRecylerAdapterListener;
 import com.lucagiorgetti.surprix.utility.BaseFragment;
+import com.lucagiorgetti.surprix.utility.Common;
 import com.lucagiorgetti.surprix.utility.DatabaseUtility;
+import com.lucagiorgetti.surprix.utility.PDFUtils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -45,6 +56,7 @@ public class MissingListFragment extends BaseFragment {
     private SearchView searchView;
     private View root;
     private MissingListViewModel missingListViewModel;
+    private List<MissingSurprise> missingSurprises = new ArrayList<>();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -58,6 +70,29 @@ public class MissingListFragment extends BaseFragment {
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
+
+        FloatingActionButton fab = root.findViewById(R.id.missing_fab);
+        fab.setOnClickListener(view -> Dexter.withActivity(getActivity()).withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE).withListener(new PermissionListener() {
+            @Override
+            public void onPermissionGranted(PermissionGrantedResponse response) {
+                try {
+                    PDFUtils.createMissingListPdfFile(getActivity(), missingSurprises, Common.getAppPath(SurprixApplication.getSurprixContext()) + "SurprixExport.pdf");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onPermissionDenied(PermissionDeniedResponse response) {
+
+            }
+
+            @Override
+            public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+
+            }
+        }).check());
+
         mAdapter = new MissingRecyclerAdapter(true);
 
         mAdapter.setListener(new SurpRecylerAdapterListener() {
@@ -78,18 +113,39 @@ public class MissingListFragment extends BaseFragment {
         });
         recyclerView.setAdapter(mAdapter);
 
-        missingListViewModel.getMissingSurprises().observe(this, missingList -> {
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0 || dy < 0) {
+                    fab.hide();
+                }
+                super.onScrolled(recyclerView, dx, dy);
+            }
+
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    if (missingSurprises != null && !missingSurprises.isEmpty()){
+                        fab.show();
+                    }
+                }
+            }
+        });
+
+        missingListViewModel.getMissingSurprises().observe(getActivity(), missingList -> {
             emptyList.setVisibility(missingList == null || missingList.isEmpty() ? View.VISIBLE : View.GONE);
+            missingSurprises = missingList;
             mAdapter.submitList(missingList);
             mAdapter.setFilterableList(missingList);
             if (mAdapter.getItemCount() > 0) {
                 setTitle(getString(R.string.missings) + " (" + mAdapter.getItemCount() + ")");
             } else {
                 setTitle(getString(R.string.missings));
+                fab.setVisibility(View.GONE);
             }
         });
 
-        missingListViewModel.isLoading().observe(this, isLoading -> progress.setVisibility(isLoading ? View.VISIBLE : View.GONE));
+        missingListViewModel.isLoading().observe(getActivity(), isLoading -> progress.setVisibility(isLoading ? View.VISIBLE : View.GONE));
 
         initSwipe(recyclerView);
         setHasOptionsMenu(true);
