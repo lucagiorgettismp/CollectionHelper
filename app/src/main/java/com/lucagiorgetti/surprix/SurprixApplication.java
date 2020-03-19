@@ -8,6 +8,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.lucagiorgetti.surprix.model.User;
 
+import timber.log.Timber;
+
 /**
  * Created by Luca Giorgetti on 11/04/2018.
  */
@@ -31,6 +33,9 @@ public class SurprixApplication extends Application {
     public void onCreate() {
         super.onCreate();
         mInstance = this;
+        if(BuildConfig.DEBUG){
+            Timber.plant(new Timber.DebugTree());
+        }
     }
 
     public static synchronized SurprixApplication getInstance() {

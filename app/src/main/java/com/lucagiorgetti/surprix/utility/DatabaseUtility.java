@@ -56,34 +56,36 @@ public class DatabaseUtility {
 
     public static void getCurrentUser(final FirebaseCallback<User> listen, String email) {
         listen.onStart();
-        String emailCod = email.replaceAll("\\.", ",");
-        final String[] username = {null};
-        reference.child("emails").child(emailCod).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot d : dataSnapshot.getChildren()) {
-                    username[0] = d.getKey();
-                }
-                if (username[0] != null) {
-                    reference.child("users").child(username[0]).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            listen.onSuccess(dataSnapshot.getValue(User.class));
-                        }
+        if ( email != null && !email.isEmpty()) {
+            String emailCod = email.replaceAll("\\.", ",");
+            final String[] username = {null};
+            reference.child("emails").child(emailCod).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot d : dataSnapshot.getChildren()) {
+                        username[0] = d.getKey();
+                    }
+                    if (username[0] != null) {
+                        reference.child("users").child(username[0]).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                listen.onSuccess(dataSnapshot.getValue(User.class));
+                            }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                            listen.onFailure();
-                        }
-                    });
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                listen.onFailure();
+                            }
+                        });
+                    }
                 }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                listen.onFailure();
-            }
-        });
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    listen.onFailure();
+                }
+            });
+        }
     }
 
     public static void addMissing(String surpId) {
@@ -144,36 +146,39 @@ public class DatabaseUtility {
         listen.onStart();
         final ArrayList<Surprise> doubles = new ArrayList<>();
 
-        reference.child("user_doubles").child(username).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    for (DataSnapshot d : dataSnapshot.getChildren()) {
-                        reference.child("surprises").child(Objects.requireNonNull(d.getKey())).orderByChild("code").addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                if (snapshot.exists()) {
-                                    Surprise s = snapshot.getValue(Surprise.class);
-                                    doubles.add(s);
+        if (username != null){
+            reference.child("user_doubles").child(username).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        for (DataSnapshot d : dataSnapshot.getChildren()) {
+                            reference.child("surprises").child(Objects.requireNonNull(d.getKey())).orderByChild("code").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if (snapshot.exists()) {
+                                        Surprise s = snapshot.getValue(Surprise.class);
+                                        doubles.add(s);
+                                    }
+                                    listen.onSuccess(doubles);
                                 }
-                                listen.onSuccess(doubles);
-                            }
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-                                listen.onFailure();
-                            }
-                        });
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                    listen.onFailure();
+                                }
+                            });
+                        }
+                    } else {
+                        listen.onSuccess(null);
                     }
-                } else {
-                    listen.onSuccess(null);
                 }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
+            });
+        }
+
     }
 
     public static void getYearsFromProducer(String producerId, final FirebaseListCallback<Year> listen) {
@@ -554,8 +559,8 @@ public class DatabaseUtility {
         listener.onFailure();
     }
 
-    public static void setUsername(String usrname) {
-        username = usrname;
+    public static void setUsername(String username) {
+        DatabaseUtility.username = username;
     }
 
     public static void addDetailForMissing(String surpId, MissingDetail notes, FirebaseCallback<Boolean> listen) {

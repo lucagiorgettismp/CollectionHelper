@@ -72,7 +72,7 @@ public class Surprise implements Comparable<Surprise>{
     }
 
     public String getSet_product_name() {
-        return set_product_name;
+        return set_product_name != null ? set_product_name : "";
     }
 
     public String getSet_nation() {

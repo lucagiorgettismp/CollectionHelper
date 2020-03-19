@@ -33,9 +33,6 @@ public class SettingsActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
-
-        User currentUser = SurprixApplication.getInstance().getCurrentUser();
-
         EditText edtEmail = findViewById(R.id.edit_reg_email);
         EditText edtUsername = findViewById(R.id.edit_reg_username);
         ImageView usernameImage = findViewById(R.id.img_reg_username);
@@ -57,19 +54,22 @@ public class SettingsActivity extends AppCompatActivity {
 
         lblPrivacyPolicy.setOnClickListener(v -> showPrivacyPolicy());
 
+        User currentUser = SurprixApplication.getInstance().getCurrentUser();
+        if (currentUser != null){
+            if (currentUser.isFacebook()) {
+                changePwd.setVisibility(View.GONE);
+            }
+            deleteUser.setVisibility(View.VISIBLE);
+
+            edtEmail.setText(currentUser.getEmail().replaceAll(",", "\\."));
+            edtUsername.setText(currentUser.getUsername());
+            edtNation.setText(currentUser.getCountry());
+        }
+
         edtUsername.setEnabled(false);
         edtEmail.setEnabled(false);
 
         layPassword.setVisibility(View.GONE);
-
-        if (currentUser.isFacebook()) {
-            changePwd.setVisibility(View.GONE);
-        }
-        deleteUser.setVisibility(View.VISIBLE);
-
-        edtEmail.setText(currentUser.getEmail().replaceAll(",", "\\."));
-        edtUsername.setText(currentUser.getUsername());
-        edtNation.setText(currentUser.getCountry());
 
         lblInfoFirstLogin.setVisibility(View.GONE);
         lblInfoFacebook.setVisibility(View.GONE);
@@ -85,14 +85,13 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
-
         submit.setText(R.string.save);
 
         submit.setOnClickListener(v -> {
             SystemUtility.closeKeyboard(this);
             String nation = edtNation.getText().toString();
             DatabaseUtility.updateUser(nation);
-            Snackbar.make(v, R.string.user_added, Snackbar.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), R.string.user_added, Toast.LENGTH_SHORT).show();
         });
 
         changePwd.setOnClickListener(v -> openChangePwdDialog());
@@ -177,7 +176,9 @@ public class SettingsActivity extends AppCompatActivity {
 
                         @Override
                         public void onSuccess(Boolean item) {
-
+                            alertDialog.dismiss();
+                            SystemUtility.logout(SettingsActivity.this);
+                            Toast.makeText(getApplicationContext(), R.string.username_delete_success, Toast.LENGTH_LONG).show();
                         }
 
                         @Override
@@ -185,8 +186,7 @@ public class SettingsActivity extends AppCompatActivity {
 
                         }
                     });
-                    alertDialog.dismiss();
-                    SystemUtility.logout(SettingsActivity.this);
+
                 });
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.dialog_negative),
                 (dialog, which) -> alertDialog.dismiss());

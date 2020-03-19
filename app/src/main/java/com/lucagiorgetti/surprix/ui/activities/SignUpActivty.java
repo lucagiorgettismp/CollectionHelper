@@ -18,7 +18,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.facebook.login.LoginManager;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
@@ -28,8 +27,6 @@ import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseCallback;
 import com.lucagiorgetti.surprix.utility.DatabaseUtility;
 import com.lucagiorgetti.surprix.utility.SystemUtility;
 import com.mikelau.countrypickerx.CountryPickerDialog;
-
-import java.util.Objects;
 
 /**
  * Allows user to get registered.
@@ -141,13 +138,13 @@ public class SignUpActivty extends AppCompatActivity {
                     username.isEmpty() ||
                     nation.isEmpty()) {
                 progress.setVisibility(View.INVISIBLE);
-                Snackbar.make(Objects.requireNonNull(getCurrentFocus()), R.string.signup_complete_all_fields, Snackbar.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.signup_complete_all_fields, Toast.LENGTH_SHORT).show();
             } else if (password.length() < 6) {
                 progress.setVisibility(View.INVISIBLE);
-                Snackbar.make(Objects.requireNonNull(getCurrentFocus()), R.string.signup_password_lenght, Snackbar.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.signup_password_lenght, Toast.LENGTH_SHORT).show();
             } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                 progress.setVisibility(View.INVISIBLE);
-                Snackbar.make(Objects.requireNonNull(getCurrentFocus()), R.string.signup_email_format, Snackbar.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.signup_email_format, Toast.LENGTH_SHORT).show();
             } else {
                 DatabaseUtility.checkUsernameDontExists(username, new FirebaseCallback<Boolean>() {
                     @Override
@@ -174,8 +171,7 @@ public class SignUpActivty extends AppCompatActivity {
                                                 message = getString(R.string.signup_default_error);
                                             }
 
-                                            Snackbar.make(Objects.requireNonNull(getCurrentFocus()), message,
-                                                    Snackbar.LENGTH_LONG).show();
+                                            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
                                         } else {
                                             DatabaseUtility.generateUser(email, username, nation, false);
                                             fireAuth.signInWithEmailAndPassword(email, password);
@@ -185,13 +181,13 @@ public class SignUpActivty extends AppCompatActivity {
                                     });
                         } else {
                             progress.setVisibility(View.INVISIBLE);
-                            Snackbar.make(Objects.requireNonNull(getCurrentFocus()), R.string.username_existing, Snackbar.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), R.string.username_existing, Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onFailure() {
-                        Snackbar.make(Objects.requireNonNull(getCurrentFocus()), R.string.data_sync_error, Snackbar.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), R.string.data_sync_error, Toast.LENGTH_SHORT).show();
                     }
                 });
             }

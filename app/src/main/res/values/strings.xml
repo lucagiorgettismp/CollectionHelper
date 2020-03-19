@@ -120,7 +120,7 @@
         <div>
         <div><strong>How do we use your information?</strong></div>
         <div>We use your email address to&nbsp;authenticate you inside the app. The using of the email is necessary for password recovery and to be contacted by other users for making exchanges.</div>
-        <div>We ask your country to improve your experience on the app, like showing you, when necessary, users of your country first.</div>
+        <div>We ask your country to improve your experience on the app, like showing you, when necessary, users of your country at first.</div>
         <div><strong>How do we protect your information?</strong></div>
         <div>We implement a variety of security measures when a user enters, submits, or accesses their information to maintain the safety of your personal information.</div>
         <div>To do so, all the Authentication is handled by Google Firebase Authentication, which stores, protect and provide services for password recovery and data deletion.</div>
@@ -184,4 +184,5 @@
     <string name="signup_mail_existinig">The mail is just present in our database. Maybe you have already signed up?</string>
     <string name="signup_weak_password">The password you entered is too weak.</string>
     <string name="signup_default_error">Something went wrong.. please try again!</string>
+    <string name="username_delete_success">Username successfully deleted</string>
 </resources>

@@ -97,7 +97,6 @@ public class MissingRecyclerAdapter extends ListAdapter<MissingSurprise, Missing
 
         holder.vYear.setText(String.valueOf(surp.getSet_year()));
         String productName = surp.getSet_product_name();
-        productName = (productName != null && !productName.equals("")) ? productName : "";
         holder.vProducer.setText(surp.getSet_producer_name() + " " + productName);
         if (detail != null) {
             holder.vNotesText.setText(detail.getNotes());

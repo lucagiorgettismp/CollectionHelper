@@ -35,6 +35,8 @@ import com.lucagiorgetti.surprix.utility.SystemUtility;
 import java.util.Collections;
 import java.util.Objects;
 
+import timber.log.Timber;
+
 /**
  * Activity for loggin user into App.
  * <p>
@@ -61,7 +63,6 @@ public class LoginActivity extends AppCompatActivity {
 
         Button facebookCustomLogin = findViewById(R.id.btn_start_facebook);
 
-
         Button login = findViewById(R.id.btn_start_login);
         Button registerBtn = findViewById(R.id.btn_start_registration);
 
@@ -72,19 +73,19 @@ public class LoginActivity extends AppCompatActivity {
                 LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
-                        Log.d("FACEBOOK", "facebook:onSuccess:" + loginResult);
+                        Timber.d("facebook:onSuccess: %s", loginResult);
                         signInWithFacebookToken(loginResult.getAccessToken());
                     }
 
                     @Override
                     public void onCancel() {
-                        Snackbar.make(Objects.requireNonNull(getCurrentFocus()), "Facebook login cancelled", Snackbar.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Facebook login cancelled", Toast.LENGTH_SHORT).show();
                         progressBar.setVisibility(View.INVISIBLE);
                     }
 
                     @Override
                     public void onError(FacebookException error) {
-                        Snackbar.make(Objects.requireNonNull(getCurrentFocus()), "Facebook login error", Snackbar.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Facebook login error", Toast.LENGTH_SHORT).show();
                         progressBar.setVisibility(View.INVISIBLE);
                     }
                 });
@@ -123,13 +124,13 @@ public class LoginActivity extends AppCompatActivity {
         loginDialog.show();
         loginBtn.setOnClickListener(v -> {
             if (!SystemUtility.checkNetworkAvailability(LoginActivity.this)) {
-                Snackbar.make(view, R.string.network_unavailable, Snackbar.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.network_unavailable, Toast.LENGTH_SHORT).show();
                 return;
             }
             String email = inEmail.getText().toString().trim();
-            Log.w("LOGIN", "input email : " + email);
+            Timber.w("Input email : %s", email);
             String pwd = inPassword.getText().toString().trim();
-            Log.w("LOGIN", "input pwd : " + pwd);
+            Timber.w("Input pwd : %s", pwd);
 
             if (!email.equals("") && !pwd.equals("")) {
                 fireAuth.signInWithEmailAndPassword(email, pwd).addOnCompleteListener(LoginActivity.this, task -> {
@@ -229,7 +230,7 @@ public class LoginActivity extends AppCompatActivity {
                                         Bundle b = new Bundle();
                                         b.putBoolean("facebook", true);
                                         b.putString("email", email);
-                                        goToRegistrateActivity(b);
+                                        goToSignUpActivity(b);
                                     }
                                 }
 
@@ -250,7 +251,7 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
-    private void goToRegistrateActivity(Bundle bundle) {
+    private void goToSignUpActivity(Bundle bundle) {
         SystemUtility.openNewActivityWithFinishing(LoginActivity.this, SignUpActivty.class, bundle);
     }
 

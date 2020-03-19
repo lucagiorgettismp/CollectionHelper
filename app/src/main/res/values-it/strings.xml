@@ -150,4 +150,5 @@
     <string name="signup_mail_existinig">La mail è già presente nel nostro databese. Sicuro di non esserti già iscritto?</string>
     <string name="signup_weak_password">La password inserito è troppo semplice.</string>
     <string name="signup_default_error" translatable="false">Qualcosa è andato storto.. riprova!</string>
+    <string name="username_delete_success">Username eliminato con successo</string>
 </resources>

@@ -28,6 +28,8 @@ import com.lucagiorgetti.surprix.ui.activities.LoginActivity;
 
 import java.util.Locale;
 
+import timber.log.Timber;
+
 /**
  * Utility which contain all the implementations of methods which needs a connection with Firebase Database.
  * <p>
@@ -108,7 +110,7 @@ public class SystemUtility {
     public static void enableFCM() {
         // Enable FCM via enable Auto-init service which generate new token and receive in FCMService
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
-        Log.i(TAG, "FCM enable");
+        Timber.i("FCM enable");
         FirebaseMessaging.getInstance().subscribeToTopic("global");
     }
 
@@ -118,7 +120,7 @@ public class SystemUtility {
         new Thread(() -> {
             // Remove InstanceID initiate to unsubscribe all topic
             FirebaseMessaging.getInstance().unsubscribeFromTopic("global");
-            Log.i(TAG, "FCM disable");
+            Timber.i("FCM disable");
         }).start();
     }
 
@@ -131,7 +133,6 @@ public class SystemUtility {
         }
         applicationContext.startActivity(i);
     }
-
 
 
     public static void openUrl(Context context, String url) {
