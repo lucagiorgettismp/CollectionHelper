@@ -25,7 +25,7 @@
     <color name="textColor">@color/grey70</color>
 
     <color name="background">@color/grey15</color>
-    <color name="surprisePlaceHolder">@color/grey70</color>
+    <color name="surprisePlaceHolder">@color/colorPrimary</color>
 
     <color name="notesTextColor">@color/grey70</color>
     <color name="notesBackground">@color/grey30</color>
