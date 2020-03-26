@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorAccent">@color/colorSecondary</color>
     <color name="loginBackground">@color/grey10</color>
     <color name="loginSignUp">@color/grey80</color>
     <color name="loginSignUpText">@color/grey30</color>
@@ -24,13 +23,6 @@
     <color name="cardTitle">@color/colorWhite</color>
     <color name="cardDivider">@color/colorWhite</color>
     <color name="textColor">@color/grey70</color>
-    <color name="starColor">@color/colorPrimary</color>
-
-    <color name="btnAddDouble">@color/colorSecondary</color>
-    <color name="btnAddMissing">@android:color/holo_green_light</color>
-
-    <color name="btnShowMissingOwner">@color/colorPrimary</color>
-    <color name="btnEditNotes">@color/colorSecondary</color>
 
     <color name="background">@color/grey15</color>
     <color name="surprisePlaceHolder">@color/grey70</color>
@@ -42,7 +34,5 @@
     <color name="navbarItem">@color/grey20</color>
 
     <color name="colorPrimaryDark">@color/grey10</color>
-
-
 </resources>
 
