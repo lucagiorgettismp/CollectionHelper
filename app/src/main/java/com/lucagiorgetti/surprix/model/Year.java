@@ -18,7 +18,7 @@ public class Year {
         this.producer_id = producer.getId();
         this.descr = descr;
         this.producer_color = producer.getColor();
-        this.id = producer.getId() + "_" + String.valueOf(year);
+        this.id = producer.getId() + "_" + year;
     }
 
     public Year() {

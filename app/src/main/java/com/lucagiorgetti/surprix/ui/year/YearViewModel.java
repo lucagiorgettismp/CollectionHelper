@@ -10,6 +10,7 @@ import com.lucagiorgetti.surprix.model.Year;
 import com.lucagiorgetti.surprix.ui.BaseViewModel;
 import com.lucagiorgetti.surprix.utility.DatabaseUtility;
 
+import java.util.Collections;
 import java.util.List;
 
 public class YearViewModel extends BaseViewModel {
@@ -38,8 +39,8 @@ public class YearViewModel extends BaseViewModel {
             }
 
             @Override
-            public void onSuccess(List<Year> producers) {
-                allYears.setValue(producers);
+            public void onSuccess(List<Year> years) {
+                allYears.setValue(years);
                 setLoading(false);
             }
 

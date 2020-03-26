@@ -6,11 +6,11 @@
     android:layout_marginStart="8dp"
     android:layout_marginTop="8dp"
     android:layout_marginEnd="8dp"
-    app:strokeColor="@color/RedSet"
-    app:strokeWidth="2dp"
     android:orientation="vertical"
     android:weightSum="1"
-    app:cardCornerRadius="5dp">
+    app:cardBackgroundColor="@color/cardBackground"
+    app:cardCornerRadius="5dp"
+    app:strokeWidth="2dp">
 
     <LinearLayout
         android:id="@+id/layout_prd_select"
@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:text="@string/name"
             android:textAlignment="center"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/cardTitle"
             android:textSize="26sp"
             android:textStyle="bold" />
 
@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:text="@string/product"
             android:textAlignment="center"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/cardTitle"
             android:textSize="22sp"
             android:textStyle="bold" />
 

@@ -68,7 +68,7 @@ public class SurpriseRecyclerAdapter extends ListAdapter<Surprise, SurpriseRecyc
     public void onBindViewHolder(@NonNull SurpViewHolder holder, int position) {
 
         Surprise surp = getItem(position);
-        if (surp.has_set_effective_code()){
+        if (surp.isSet_effective_code()){
             holder.vSetName.setText(surp.getCode() + " - " +surp.getSet_name());
         } else {
             holder.vSetName.setText(surp.getSet_name());

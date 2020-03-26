@@ -9,6 +9,7 @@
     android:layout_marginEnd="8dp"
     android:orientation="vertical"
     android:weightSum="1"
+    app:cardBackgroundColor="@color/cardBackground"
     app:cardCornerRadius="5dp">
 
 
@@ -36,8 +37,7 @@
                 android:paddingEnd="10dp"
                 android:text="@string/name"
                 android:textAllCaps="false"
-                android:textColor="@color/textColor"
-                android:textColorHighlight="@android:color/black"
+                android:textColor="@color/titleColor"
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
@@ -50,7 +50,7 @@
                 android:gravity="center_vertical|end"
                 android:text="@string/country"
                 android:textAlignment="textEnd"
-                android:textColor="@color/textColor"
+                android:textColor="@color/titleColor"
                 android:textSize="15sp" />
 
             <LinearLayout
@@ -75,7 +75,9 @@
             android:id="@+id/set_divider"
             android:layout_width="match_parent"
             android:layout_height="3dp"
-            android:background="@color/colorPrimary" />
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:background="@color/cardDivider" />
 
         <ImageView
             android:id="@+id/imgSet"

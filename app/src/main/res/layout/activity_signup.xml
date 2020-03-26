@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/background_light"
+    android:background="@color/settingsBackground"
     android:orientation="vertical"
     android:padding="10dp"
     android:paddingTop="20dp">
@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:text="@string/create_your_account"
         android:textAlignment="viewStart"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/titleColor"
         android:textSize="16sp"
         android:textStyle="bold" />
 
@@ -24,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/settings"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/titleColor"
         android:textSize="16sp"
         android:textStyle="bold"
         android:visibility="visible" />
@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:text="@string/complete_account"
         android:textAlignment="viewStart"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/titleColor"
         android:textSize="16sp"
         android:textStyle="bold"
         android:visibility="visible" />
@@ -52,7 +52,7 @@
             android:contentDescription="@string/icon_email"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
-            android:tint="@color/colorPrimary"
+            android:tint="@color/signUpIcon"
             app:srcCompat="@drawable/ic_mail" />
 
         <EditText
@@ -79,7 +79,7 @@
             android:contentDescription="@string/icon_username"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
-            android:tint="@color/colorPrimary"
+            android:tint="@color/signUpIcon"
             app:srcCompat="@drawable/ic_person_black" />
 
         <EditText
@@ -87,9 +87,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890_"
             android:ems="10"
             android:hint="@string/username"
-            android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890_"
             android:inputType="textFilter"
             android:textSize="16sp" />
     </LinearLayout>
@@ -106,7 +106,7 @@
             android:contentDescription="@string/icon_password"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
-            android:tint="@color/colorPrimary"
+            android:tint="@color/signUpIcon"
             app:srcCompat="@drawable/ic_key" />
 
         <EditText
@@ -132,7 +132,7 @@
             android:contentDescription="@string/icon_password"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
-            android:tint="@color/colorPrimary"
+            android:tint="@color/signUpIcon"
             app:srcCompat="@drawable/ic_flag" />
 
         <EditText
@@ -162,9 +162,9 @@
             style="@style/Widget.AppCompat.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
+            android:background="@color/btnImportantBackground"
             android:text="@string/next"
-            android:textColor="@android:color/background_light"
+            android:textColor="@color/btnImportantText"
             android:textSize="16sp"
             android:visibility="visible" />
 
@@ -173,10 +173,10 @@
             style="@style/Widget.AppCompat.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
+            android:background="@color/btnImportantBackground"
             android:foregroundGravity="top"
             android:text="@string/sign_up"
-            android:textColor="@android:color/white"
+            android:textColor="@color/btnImportantText"
             android:textSize="16sp" />
 
     </LinearLayout>
@@ -204,7 +204,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/stroke_rectangle"
             android:text="@string/logout"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/btnSecondaryText"
             android:textSize="16sp"
             android:visibility="visible" />
 
@@ -216,7 +216,7 @@
             android:layout_weight="1"
             android:text="@string/change_password"
             android:textAlignment="textEnd"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/linkColor"
             android:textSize="16sp"
             android:visibility="visible" />
 
@@ -228,7 +228,7 @@
             android:layout_weight="1"
             android:text="@string/delete_account"
             android:textAlignment="textEnd"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/linkColor"
             android:textSize="16sp"
             android:visibility="visible" />
     </LinearLayout>
@@ -247,7 +247,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10sp"
             android:text="@string/privacy_policy"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/linkColor"
             android:textSize="16sp" />
 
     </LinearLayout>

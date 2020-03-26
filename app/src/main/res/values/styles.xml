@@ -7,7 +7,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorSecondary</item>
         <item name="editTextColor">@color/textColor</item>
-        <item name="android:colorBackground">@color/colorPrimaryLight</item>
+        <item name="android:colorBackground">@color/background</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -32,19 +32,19 @@
     </style>
 
     <style name="ButtonAddMissing" parent="Base.Widget.AppCompat.ImageButton">
-        <item name="backgroundTint">@android:color/holo_green_light</item>
+        <item name="backgroundTint">@color/btnAddMissing</item>
     </style>
 
     <style name="ButtonAddDouble" parent="Base.Widget.AppCompat.ImageButton">
-        <item name="backgroundTint">@android:color/holo_orange_light</item>
+        <item name="backgroundTint">@color/btnAddDouble</item>
     </style>
 
     <style name="ButtonShowMissingOwner" parent="Base.Widget.AppCompat.ImageButton">
-        <item name="backgroundTint">@color/colorPrimary</item>
+        <item name="backgroundTint">@color/btnShowMissingOwner</item>
     </style>
 
     <style name="ButtonSaveNote" parent="Base.Widget.AppCompat.ImageButton">
-        <item name="backgroundTint">@color/colorSecondary</item>
+        <item name="backgroundTint">@color/btnEditNotes</item>
     </style>
 
     <style name="AppTheme.NoActionBar.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

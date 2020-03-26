@@ -67,14 +67,16 @@ public class SearchSurpriseRecyclerAdapter extends ListAdapter<Surprise, SearchS
     @Override
     public void onBindViewHolder(@NonNull SurpViewHolder holder, int position) {
         Surprise surp = getItem(position);
-        if (surp.has_set_effective_code()){
-            holder.vSetName.setText(surp.getCode() + " - " + surp.getSet_name());
+
+        if (surp.isSet_effective_code()){
+            holder.vDescription.setText(surp.getCode() + " - " + surp.getDescription());
         } else {
-            holder.vSetName.setText(surp.getSet_name());
+            holder.vDescription.setText(surp.getDescription());
+
         }
-        holder.vDescription.setText(surp.getDescription());
         holder.vYear.setText(String.valueOf(surp.getSet_year()));
         holder.vProducer.setText(surp.getSet_producer_name() + " " + surp.getSet_product_name());
+        holder.vSetName.setText(surp.getSet_name());
 
         String nation;
         if (ExtraLocales.isExtraLocale(surp.getSet_nation())) {

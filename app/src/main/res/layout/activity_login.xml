@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
+    android:background="@color/loginBackground"
     android:gravity="center_vertical"
     android:orientation="vertical"
     android:padding="10dp"
@@ -17,6 +17,7 @@
         android:layout_height="0dp"
         android:layout_marginBottom="30dp"
         android:layout_weight="0.50"
+        android:tint="@color/logo"
         app:srcCompat="@drawable/ic_logo" />
 
     <Button
@@ -26,10 +27,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="3dp"
         android:layout_marginBottom="3dp"
-        android:background="@color/colorWhite"
+        android:background="@color/loginSignUp"
         android:elevation="2dp"
         android:text="@string/sign_up"
-        android:textColor="@color/colorPrimaryDark"
+        android:textColor="@color/loginSignUpText"
         android:textSize="18sp" />
 
     <Button
@@ -39,7 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="3dp"
         android:layout_marginBottom="3dp"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/loginSignIn"
         android:elevation="2dp"
         android:text="@string/login"
         android:textColor="@android:color/background_light"
@@ -49,10 +50,10 @@
         android:id="@+id/btn_facebook_login"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="3dp"
         android:layout_marginTop="3dp"
-        android:paddingBottom="15dp"
+        android:layout_marginBottom="3dp"
         android:paddingTop="15dp"
+        android:paddingBottom="15dp"
         android:textSize="18sp"
         android:visibility="gone" />
 
@@ -63,7 +64,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="3dp"
         android:layout_marginBottom="3dp"
-        android:background="#002f6c "
+        android:background="@color/loginFacebook"
         android:elevation="2dp"
         android:text="@string/login_with_facebook"
         android:textColor="@android:color/background_light"

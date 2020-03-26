@@ -89,7 +89,7 @@ public class MissingRecyclerAdapter extends ListAdapter<MissingSurprise, Missing
         MissingDetail detail = getItem(position).getDetail();
         holder.vSetName.setText(surp.getSet_name());
 
-        if (surp.has_set_effective_code()) {
+        if (surp.isSet_effective_code()) {
             holder.vDescription.setText(surp.getCode() + " - " + surp.getDescription());
         } else {
             holder.vDescription.setText(surp.getDescription());

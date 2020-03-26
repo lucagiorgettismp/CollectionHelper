@@ -185,4 +185,5 @@
     <string name="signup_weak_password">The password you entered is too weak.</string>
     <string name="signup_default_error">Something went wrong.. please try again!</string>
     <string name="username_delete_success">Username successfully deleted</string>
+    <string name="pdf_file_name">SurprixMissingList</string>
 </resources>

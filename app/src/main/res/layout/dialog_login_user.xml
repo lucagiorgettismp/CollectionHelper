@@ -26,10 +26,10 @@
         android:id="@+id/login_dialog_submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
+        android:background="@color/btnImportantBackground"
         android:text="@string/login"
         android:textAllCaps="false"
-        android:textColor="@android:color/white"
+        android:textColor="@color/btnImportantText"
         android:textSize="18sp" />
 
     <TextView
@@ -40,6 +40,6 @@
         android:padding="5dp"
         android:text="@string/forgot_yout_password"
         android:textAlignment="center"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/linkColor"
         android:textSize="16sp" />
 </LinearLayout>

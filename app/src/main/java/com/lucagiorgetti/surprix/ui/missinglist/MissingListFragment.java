@@ -77,7 +77,7 @@ public class MissingListFragment extends BaseFragment {
             @Override
             public void onPermissionGranted(PermissionGrantedResponse response) {
                 try {
-                    PDFUtils.createMissingListPdfFile(getActivity(), missingSurprises, Common.getAppPath(SurprixApplication.getSurprixContext()) + "SurprixExport.pdf");
+                    PDFUtils.createMissingListPdfFile(getActivity(), missingSurprises, Common.getAppPath(SurprixApplication.getSurprixContext()) + getResources().getString(R.string.pdf_file_name) + ".pdf");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

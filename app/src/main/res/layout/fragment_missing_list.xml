@@ -55,8 +55,8 @@
         android:layout_gravity="bottom|left"
         android:layout_margin="8dp"
         android:clickable="true"
-        android:tint="@color/colorWhite"
-        app:backgroundTint="@color/colorPrimary"
+        android:tint="@color/btnIcon"
+        app:backgroundTint="@color/btnImportantBackground"
         app:fabSize="mini"
         app:maxImageSize="24dp"
         app:srcCompat="@drawable/ic_export" />

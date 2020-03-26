@@ -69,7 +69,7 @@ public class SetDetailRecyclerAdapter extends RecyclerView.Adapter<SetDetailRecy
     public void onBindViewHolder(@NonNull SetDetailViewHolder holder, int position) {
         Surprise s = items.get(position);
         Context ctx = SurprixApplication.getSurprixContext();
-        if (s.has_set_effective_code()){
+        if (s.isSet_effective_code()){
             holder.vDescription.setText(s.getCode() + " - " + s.getDescription());
         } else {
             holder.vDescription.setText(s.getDescription());

@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.model.Year;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -61,6 +63,7 @@ public class YearRecyclerAdapter extends RecyclerView.Adapter<YearRecyclerAdapte
     }
 
     public void setYears(List<Year> years) {
+        Collections.sort(years, new Year.SortByDescYear());
         this.years = years;
     }
 

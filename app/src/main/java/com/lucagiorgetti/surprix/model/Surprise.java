@@ -91,19 +91,12 @@ public class Surprise implements Comparable<Surprise>{
         return rarity;
     }
 
-    public boolean isSet_effective_code() {
-        return set_effective_code;
-    }
-
-    public void setSet_effective_code(boolean set_effective_code) {
-        this.set_effective_code = set_effective_code;
-    }
 
     public Integer getIntRarity(){
         return rarity != null ? Integer.parseInt(this.getRarity()) : null;
     }
 
-    public boolean has_set_effective_code() {
+    public boolean isSet_effective_code() {
         return set_effective_code;
     }
 
