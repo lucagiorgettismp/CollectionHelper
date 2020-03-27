@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_missing_list">
+
+    <fragment
+        android:id="@+id/navigation_missing_list"
+        android:name="com.lucagiorgetti.surprix.ui.mainfragments.missinglist.MissingListFragment"
+        tools:layout="@layout/fragment_missing_list" />
+
+    <fragment
+        android:id="@+id/navigation_double_list"
+        android:name="com.lucagiorgetti.surprix.ui.mainfragments.doublelist.DoubleListFragment"
+        tools:layout="@layout/fragment_double_list" />
+
+    <fragment
+        android:id="@+id/navigation_catalog"
+        android:name="com.lucagiorgetti.surprix.ui.mainfragments.catalog.CatalogFragment"
+        android:label="@string/title_catalog"
+        tools:layout="@layout/fragment_catalog" >
+        <action
+            android:id="@+id/producerSelectedAction"
+            app:destination="@id/navigation_year" />
+        <action
+            android:id="@+id/goToSearch"
+            app:destination="@id/navigation_search" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_year"
+        android:name="com.lucagiorgetti.surprix.ui.mainfragments.year.YearFragment"
+        tools:layout="@layout/fragment_years">
+        <argument
+            android:name="producer_id"
+            app:argType="string" />
+        <argument
+            android:name="producer_name"
+            app:argType="string" />
+        <action
+            android:id="@+id/yearSelectedAction"
+            app:destination="@id/navigation_set_list" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_set_list"
+        android:name="com.lucagiorgetti.surprix.ui.mainfragments.setlist.SetListFragment"
+        tools:layout="@layout/fragment_set_list">
+        <argument
+            android:name="year_id"
+            app:argType="string" />
+        <action
+            android:id="@+id/setSelectedAction"
+            app:destination="@id/navigation_set_detail"
+            app:popUpToInclusive="false" />
+        <argument
+            android:name="year_name"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_set_detail"
+        android:name="com.lucagiorgetti.surprix.ui.mainfragments.setdetail.SetDetailFragment"
+        tools:layout="@layout/fragment_set_detail">
+        <argument
+            android:name="set_id"
+            app:argType="string" />
+        <argument
+            android:name="set_name"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_search"
+        android:name="com.lucagiorgetti.surprix.ui.mainfragments.search.SearchFragment"
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/onSearchedItemClick"
+            app:destination="@id/navigation_set_detail" />
+    </fragment>
+</navigation>

@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,17 +22,15 @@ import com.facebook.FacebookException;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseCallback;
-import com.lucagiorgetti.surprix.utility.DatabaseUtility;
-import com.lucagiorgetti.surprix.utility.SystemUtility;
+import com.lucagiorgetti.surprix.utility.DatabaseUtils;
+import com.lucagiorgetti.surprix.utility.SystemUtils;
 
 import java.util.Collections;
-import java.util.Objects;
 
 import timber.log.Timber;
 
@@ -67,7 +64,7 @@ public class LoginActivity extends AppCompatActivity {
         Button registerBtn = findViewById(R.id.btn_start_registration);
 
         facebookCustomLogin.setOnClickListener(view -> {
-            if (SystemUtility.checkNetworkAvailability(LoginActivity.this)) {
+            if (SystemUtils.checkNetworkAvailability(LoginActivity.this)) {
                 progressBar.setVisibility(View.VISIBLE);
                 LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Collections.singletonList("email"));
                 LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
@@ -94,7 +91,7 @@ public class LoginActivity extends AppCompatActivity {
 
         login.setOnClickListener(v -> openLoginDialog());
 
-        registerBtn.setOnClickListener(v -> SystemUtility.openNewActivityWithFinishing(LoginActivity.this, SignUpActivty.class, null));
+        registerBtn.setOnClickListener(v -> SystemUtils.openNewActivityWithFinishing(LoginActivity.this, SignUpActivty.class, null));
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -123,7 +120,7 @@ public class LoginActivity extends AppCompatActivity {
 
         loginDialog.show();
         loginBtn.setOnClickListener(v -> {
-            if (!SystemUtility.checkNetworkAvailability(LoginActivity.this)) {
+            if (!SystemUtils.checkNetworkAvailability(LoginActivity.this)) {
                 Toast.makeText(getApplicationContext(), R.string.network_unavailable, Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -138,7 +135,7 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.makeText(LoginActivity.this, R.string.wrong_email_or_password,
                                 Toast.LENGTH_SHORT).show();
                     } else {
-                        SystemUtility.setSessionUser(email, new FirebaseCallback<Boolean>() {
+                        SystemUtils.setSessionUser(email, new FirebaseCallback<Boolean>() {
                             @Override
                             public void onSuccess(Boolean success) {
                                 goToMainActivity();
@@ -206,11 +203,11 @@ public class LoginActivity extends AppCompatActivity {
                     } else {
                         final String email = task.getResult().getUser().getEmail();
                         if (email != null) {
-                            DatabaseUtility.checkUserExisting(email, new FirebaseCallback<Boolean>() {
+                            DatabaseUtils.checkUserExisting(email, new FirebaseCallback<Boolean>() {
                                 @Override
                                 public void onSuccess(Boolean result) {
                                     if (result) {
-                                        SystemUtility.setSessionUser(email, new FirebaseCallback<Boolean>() {
+                                        SystemUtils.setSessionUser(email, new FirebaseCallback<Boolean>() {
                                             @Override
                                             public void onSuccess(Boolean success) {
                                                 goToMainActivity();
@@ -252,11 +249,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void goToSignUpActivity(Bundle bundle) {
-        SystemUtility.openNewActivityWithFinishing(LoginActivity.this, SignUpActivty.class, bundle);
+        SystemUtils.openNewActivityWithFinishing(LoginActivity.this, SignUpActivty.class, bundle);
     }
 
     private void goToMainActivity() {
-        SystemUtility.openNewActivityWithFinishing(LoginActivity.this, MainActivity.class, null);
+        SystemUtils.openNewActivityWithFinishing(LoginActivity.this, MainActivity.class, null);
     }
 
     @Override

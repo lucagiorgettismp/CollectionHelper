@@ -8,7 +8,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseCallback;
-import com.lucagiorgetti.surprix.utility.SystemUtility;
+import com.lucagiorgetti.surprix.utility.SystemUtils;
 
 public class SplashActivity extends AppCompatActivity {
     private FirebaseAuth fireAuth;
@@ -23,7 +23,7 @@ public class SplashActivity extends AppCompatActivity {
         fireAuthStateListener = firebaseAuth -> {
             FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
             if (firebaseUser != null){
-                SystemUtility.setSessionUser(firebaseUser.getEmail(), new FirebaseCallback<Boolean>() {
+                SystemUtils.setSessionUser(firebaseUser.getEmail(), new FirebaseCallback<Boolean>() {
                     @Override
                     public void onStart() {
 
@@ -36,11 +36,11 @@ public class SplashActivity extends AppCompatActivity {
 
                     @Override
                     public void onSuccess(Boolean success) {
-                        SystemUtility.openNewActivityWithFinishing(SplashActivity.this, MainActivity.class, null);
+                        SystemUtils.openNewActivityWithFinishing(SplashActivity.this, MainActivity.class, null);
                     }
                 });
             } else {
-                SystemUtility.openNewActivityWithFinishing(this, LoginActivity.class, null);
+                SystemUtils.openNewActivityWithFinishing(this, LoginActivity.class, null);
             }
         };
 

@@ -13,7 +13,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,8 +21,8 @@ import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseCallback;
 import com.lucagiorgetti.surprix.model.User;
-import com.lucagiorgetti.surprix.utility.DatabaseUtility;
-import com.lucagiorgetti.surprix.utility.SystemUtility;
+import com.lucagiorgetti.surprix.utility.DatabaseUtils;
+import com.lucagiorgetti.surprix.utility.SystemUtils;
 import com.mikelau.countrypickerx.CountryPickerDialog;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -88,15 +87,15 @@ public class SettingsActivity extends AppCompatActivity {
         submit.setText(R.string.save);
 
         submit.setOnClickListener(v -> {
-            SystemUtility.closeKeyboard(this);
+            SystemUtils.closeKeyboard(this);
             String nation = edtNation.getText().toString();
-            DatabaseUtility.updateUser(nation);
+            DatabaseUtils.updateUser(nation);
             Toast.makeText(getApplicationContext(), R.string.user_added, Toast.LENGTH_SHORT).show();
         });
 
         changePwd.setOnClickListener(v -> openChangePwdDialog());
         deleteUser.setOnClickListener(v -> openDeleteUserDialog());
-        logoutUser.setOnClickListener(v -> SystemUtility.logout(SettingsActivity.this));
+        logoutUser.setOnClickListener(v -> SystemUtils.logout(SettingsActivity.this));
     }
 
 
@@ -168,7 +167,7 @@ public class SettingsActivity extends AppCompatActivity {
         alertDialog.setMessage(getString(R.string.dialod_delete_user_text));
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.dialog_positive),
                 (dialog, which) -> {
-                    DatabaseUtility.deleteUser(new FirebaseCallback<Boolean>() {
+                    DatabaseUtils.deleteUser(new FirebaseCallback<Boolean>() {
                         @Override
                         public void onStart() {
 
@@ -177,7 +176,7 @@ public class SettingsActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(Boolean item) {
                             alertDialog.dismiss();
-                            SystemUtility.logout(SettingsActivity.this);
+                            SystemUtils.logout(SettingsActivity.this);
                             Toast.makeText(getApplicationContext(), R.string.username_delete_success, Toast.LENGTH_LONG).show();
                         }
 

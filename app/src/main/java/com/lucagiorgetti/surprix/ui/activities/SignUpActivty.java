@@ -24,8 +24,8 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseCallback;
-import com.lucagiorgetti.surprix.utility.DatabaseUtility;
-import com.lucagiorgetti.surprix.utility.SystemUtility;
+import com.lucagiorgetti.surprix.utility.DatabaseUtils;
+import com.lucagiorgetti.surprix.utility.SystemUtils;
 import com.mikelau.countrypickerx.CountryPickerDialog;
 
 /**
@@ -114,13 +114,13 @@ public class SignUpActivty extends AppCompatActivity {
                 progress.setVisibility(View.INVISIBLE);
                 Toast.makeText(SignUpActivty.this, R.string.signup_complete_all_fields, Toast.LENGTH_SHORT).show();
             } else {
-                DatabaseUtility.generateUser(email, username, nation, true);
-                SystemUtility.firstTimeOpeningApp(SignUpActivty.this, SplashActivity.class, null);
+                DatabaseUtils.generateUser(email, username, nation, true);
+                SystemUtils.firstTimeOpeningApp(SignUpActivty.this, SplashActivity.class, null);
             }
         });
 
         submit.setOnClickListener(v -> {
-            SystemUtility.closeKeyboard(SignUpActivty.this);
+            SystemUtils.closeKeyboard(SignUpActivty.this);
             progress.setVisibility(View.VISIBLE);
 
             final String email = edtEmail.getText().toString().trim();
@@ -128,7 +128,7 @@ public class SignUpActivty extends AppCompatActivity {
             final String username = edtUsername.getText().toString().trim().toLowerCase();
             final String nation = edtNation.getText().toString();
 
-            if (!SystemUtility.checkNetworkAvailability(SignUpActivty.this)) {
+            if (!SystemUtils.checkNetworkAvailability(SignUpActivty.this)) {
                 progress.setVisibility(View.INVISIBLE);
                 return;
             }
@@ -146,7 +146,7 @@ public class SignUpActivty extends AppCompatActivity {
                 progress.setVisibility(View.INVISIBLE);
                 Toast.makeText(getApplicationContext(), R.string.signup_email_format, Toast.LENGTH_SHORT).show();
             } else {
-                DatabaseUtility.checkUsernameDontExists(username, new FirebaseCallback<Boolean>() {
+                DatabaseUtils.checkUsernameDontExists(username, new FirebaseCallback<Boolean>() {
                     @Override
                     public void onStart() {
 
@@ -173,10 +173,10 @@ public class SignUpActivty extends AppCompatActivity {
 
                                             Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
                                         } else {
-                                            DatabaseUtility.generateUser(email, username, nation, false);
+                                            DatabaseUtils.generateUser(email, username, nation, false);
                                             fireAuth.signInWithEmailAndPassword(email, password);
                                             progress.setVisibility(View.INVISIBLE);
-                                            SystemUtility.firstTimeOpeningApp(SignUpActivty.this, SplashActivity.class, null);
+                                            SystemUtils.firstTimeOpeningApp(SignUpActivty.this, SplashActivity.class, null);
                                         }
                                     });
                         } else {
@@ -211,7 +211,7 @@ public class SignUpActivty extends AppCompatActivity {
 
     private void showFirstTimePolicy() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        boolean accepted = prefs.getBoolean(SystemUtility.PRIVACY_POLICY_ACCEPTED, false);
+        boolean accepted = prefs.getBoolean(SystemUtils.PRIVACY_POLICY_ACCEPTED, false);
         if (!accepted) {
             showPrivacyPolicy();
         }
@@ -230,14 +230,14 @@ public class SignUpActivty extends AppCompatActivity {
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.terms_agree),
                 (dialog, which) -> {
                     SharedPreferences.Editor edit = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
-                    edit.putBoolean(SystemUtility.PRIVACY_POLICY_ACCEPTED, true);
+                    edit.putBoolean(SystemUtils.PRIVACY_POLICY_ACCEPTED, true);
                     edit.apply();
                     alertDialog.dismiss();
                 });
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.back),
                 (dialog, which) -> {
                     SharedPreferences.Editor edit = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
-                    edit.putBoolean(SystemUtility.PRIVACY_POLICY_ACCEPTED, false);
+                    edit.putBoolean(SystemUtils.PRIVACY_POLICY_ACCEPTED, false);
                     edit.apply();
                     alertDialog.dismiss();
                     onBackPressed();
@@ -251,6 +251,6 @@ public class SignUpActivty extends AppCompatActivity {
         facebookLogin.logOut();
         fireAuth.signOut();
 
-        SystemUtility.openNewActivityWithFinishing(SignUpActivty.this, LoginActivity.class, null);
+        SystemUtils.openNewActivityWithFinishing(SignUpActivty.this, LoginActivity.class, null);
     }
 }
