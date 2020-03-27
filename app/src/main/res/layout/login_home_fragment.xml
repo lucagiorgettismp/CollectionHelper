@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/loginBackground"
+    android:gravity="center_vertical"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:weightSum="1">
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="30dp"
+        android:layout_weight="0.50"
+        android:tint="@color/logo"
+        app:srcCompat="@drawable/ic_logo" />
+
+    <Button
+        android:id="@+id/btn_sign_up"
+        style="@style/RoundedButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:backgroundTint="@color/loginSignUp"
+        android:text="@string/sign_up"
+        android:textColor="@color/loginSignUpText"/>
+
+    <Button
+        android:id="@+id/btn_sign_in"
+        style="@style/RoundedButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:backgroundTint="@color/loginSignIn"
+        android:text="@string/login"
+        android:textColor="@android:color/background_light"/>
+
+    <Button
+        android:id="@+id/btn_start_facebook"
+        style="@style/RoundedButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:backgroundTint="@color/loginFacebook"
+        android:text="@string/login_with_facebook"
+        android:textColor="@android:color/background_light"/>
+
+    <ProgressBar
+        android:id="@+id/login_loading"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|center"
+        android:layout_marginTop="20dp"
+        tools:visibility="invisible" />
+
+</LinearLayout>

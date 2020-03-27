@@ -34,7 +34,7 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
-import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseCallback;
+import com.lucagiorgetti.surprix.listenerInterfaces.CallbackInterface;
 import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseListCallback;
 import com.lucagiorgetti.surprix.model.MissingDetail;
 import com.lucagiorgetti.surprix.model.MissingSurprise;
@@ -293,7 +293,7 @@ public class MissingListFragment extends BaseFragment {
     }
 
     private void saveNotes(Surprise surprise, MissingDetail detail) {
-        DatabaseUtils.addDetailForMissing(surprise.getId(), detail, new FirebaseCallback<Boolean>() {
+        DatabaseUtils.addDetailForMissing(surprise.getId(), detail, new CallbackInterface<Boolean>() {
             @Override
             public void onStart() {
 
@@ -314,7 +314,7 @@ public class MissingListFragment extends BaseFragment {
     private void deleteNotes(Surprise surprise) {
         MissingDetail detail = new MissingDetail();
         detail.setNotes("");
-        DatabaseUtils.addDetailForMissing(surprise.getId(), detail, new FirebaseCallback<Boolean>() {
+        DatabaseUtils.addDetailForMissing(surprise.getId(), detail, new CallbackInterface<Boolean>() {
             @Override
             public void onStart() {
 

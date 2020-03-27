@@ -111,7 +111,7 @@
                     android:layout_height="wrap_content"
                     android:text="TextView"
                     android:textAlignment="center"
-                    android:textColor="@color/textColor"
+                    android:textColor="@color/cardTextColor"
                     android:textStyle="bold" />
 
                 <TextView
@@ -120,7 +120,7 @@
                     android:layout_height="wrap_content"
                     android:text="TextView"
                     android:textAlignment="center"
-                    android:textColor="@color/textColor" />
+                    android:textColor="@color/cardTextColor" />
             </LinearLayout>
 
         </LinearLayout>

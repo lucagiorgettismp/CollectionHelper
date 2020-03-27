@@ -19,7 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
-import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseCallback;
+import com.lucagiorgetti.surprix.listenerInterfaces.CallbackInterface;
 import com.lucagiorgetti.surprix.model.User;
 import com.lucagiorgetti.surprix.utility.DatabaseUtils;
 import com.lucagiorgetti.surprix.utility.SystemUtils;
@@ -95,7 +95,10 @@ public class SettingsActivity extends AppCompatActivity {
 
         changePwd.setOnClickListener(v -> openChangePwdDialog());
         deleteUser.setOnClickListener(v -> openDeleteUserDialog());
-        logoutUser.setOnClickListener(v -> SystemUtils.logout(SettingsActivity.this));
+        logoutUser.setOnClickListener(v -> {
+            SystemUtils.logout();
+            SystemUtils.openNewActivityWithFinishing(this, LoginActivity.class, null);
+        });
     }
 
 
@@ -167,7 +170,7 @@ public class SettingsActivity extends AppCompatActivity {
         alertDialog.setMessage(getString(R.string.dialod_delete_user_text));
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.dialog_positive),
                 (dialog, which) -> {
-                    DatabaseUtils.deleteUser(new FirebaseCallback<Boolean>() {
+                    DatabaseUtils.deleteUser(new CallbackInterface<Boolean>() {
                         @Override
                         public void onStart() {
 
@@ -176,7 +179,7 @@ public class SettingsActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(Boolean item) {
                             alertDialog.dismiss();
-                            SystemUtils.logout(SettingsActivity.this);
+                            SystemUtils.logout();
                             Toast.makeText(getApplicationContext(), R.string.username_delete_success, Toast.LENGTH_LONG).show();
                         }
 

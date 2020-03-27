@@ -17,7 +17,6 @@ import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.utility.SystemUtils;
 
 public class MainActivity extends AppCompatActivity {
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -38,13 +37,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         SystemUtils.enableFCM();

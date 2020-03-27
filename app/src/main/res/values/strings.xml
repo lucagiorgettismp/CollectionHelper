@@ -25,7 +25,6 @@
     <string name="year">Year</string>
     <string name="producer">Product</string>
     <string name="country">From</string>
-    <string name="sample_mail" translatable="false">email@email.com</string>
     <string name="name">Name</string>
     <string name="product">Product</string>
     <string name="create_your_account">Create your account and become a member of Surprix!</string>
@@ -36,7 +35,7 @@
     <string name="missings">Missings</string>
     <string name="doubles">Doubles</string>
     <string name="settings">Settings</string>
-    <string name="logout" translatable="false">Logout</string>
+    <string name="logout">Logout</string>
     <string name="search">Search</string>
     <string name="data_sync_error">Data synchronization error</string>
     <string name="added_to_missings">Added to missings</string>
@@ -61,7 +60,7 @@
     <string name="dialod_delete_user_text">Do you want to delete you user account finally?</string>
     <string name="dateFormat" translatable="false">dd/MM/yyyy</string>
     <string name="welcome_info">"Welcome in "</string>
-    <string name="username_existing">Username existing</string>
+    <string name="username_existing">Username already exists</string>
     <string name="remove_missing_dialog_title">Remove from missing</string>
     <string name="remove_missing_dialog_text">Do you want to remove from the missing list</string>
     <string name="remove_double_dialog_title">Remove from doubles</string>
@@ -186,4 +185,8 @@
     <string name="signup_default_error">Something went wrong.. please try again!</string>
     <string name="username_delete_success">Username successfully deleted</string>
     <string name="pdf_file_name">SurprixMissingList</string>
+    <string name="your_email">Your e-mail</string>
+    <string name="choose_your_username">Choose your username</string>
+    <string name="select_your_country">Select your country</string>
+    <string name="cannot_send_recovery_email">Cannot send the password recovery e-mail</string>
 </resources>

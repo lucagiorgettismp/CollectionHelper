@@ -21,9 +21,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
-import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseCallback;
+import com.lucagiorgetti.surprix.listenerInterfaces.CallbackInterface;
 import com.lucagiorgetti.surprix.model.User;
-import com.lucagiorgetti.surprix.ui.activities.LoginActivity;
 
 import java.util.Locale;
 
@@ -41,8 +40,10 @@ public class SystemUtils {
     public static final String PRIVACY_POLICY_ACCEPTED = "privacyPolicyAccepted";
     private static final String TAG = "SystemUtility";
 
-    public static boolean checkNetworkAvailability(Context context) {
+    public static boolean checkNetworkAvailability() {
         boolean available = false;
+
+        Context context = SurprixApplication.getSurprixContext();
         int[] networkTypes = {ConnectivityManager.TYPE_MOBILE,
                 ConnectivityManager.TYPE_WIFI};
         try {
@@ -61,9 +62,6 @@ public class SystemUtils {
             available = false;
         }
 
-        if (!available) {
-            Toast.makeText(context, R.string.network_not_available, Toast.LENGTH_SHORT).show();
-        }
         return available;
     }
 
@@ -94,17 +92,13 @@ public class SystemUtils {
         activity.finish();
     }
 
-    public static void firstTimeOpeningApp(Activity activity, Class<?> cls, Bundle b) {
+    public static void firstTimeOpeningApp() {
         Context applicationContext = SurprixApplication.getSurprixContext();
         SharedPreferences.Editor edit = PreferenceManager.getDefaultSharedPreferences(applicationContext).edit();
         edit.putBoolean(FIRST_TIME_SET_HELP_SHOW, true);
         edit.putBoolean(FIRST_TIME_YEAR_HELP_SHOW, true);
         edit.apply();
-
-        openNewActivityWithFinishing(activity, cls, b);
-        //openNewActivity(OnboardActivity.class, null);
     }
-
 
     public static void enableFCM() {
         // Enable FCM via enable Auto-init service which generate new token and receive in FCMService
@@ -147,14 +141,14 @@ public class SystemUtils {
         return context.createConfigurationContext(configuration).getResources().getString(id);
     }
 
-    public static void setSessionUser(String email, FirebaseCallback listener) {
-        DatabaseUtils.getCurrentUser(new FirebaseCallback<User>() {
+    public static void setSessionUser(String email, CallbackInterface<Boolean> listener) {
+        DatabaseUtils.getCurrentUser(new CallbackInterface<User>() {
             @Override
             public void onSuccess(User currentUser) {
                 if (currentUser != null) {
                     SurprixApplication.getInstance().setUser(currentUser);
                     DatabaseUtils.setUsername(currentUser.getUsername());
-                    listener.onSuccess(null);
+                    listener.onSuccess(true);
                 }
             }
 
@@ -174,13 +168,11 @@ public class SystemUtils {
         SurprixApplication.getInstance().setUser(null);
     }
 
-    public static void logout(Activity activity) {
+    public static void logout() {
         SystemUtils.disableFCM();
         SystemUtils.removeSessionUser();
         FirebaseAuth.getInstance().signOut();
         LoginManager.getInstance().logOut();
         DatabaseUtils.setUsername(null);
-        SystemUtils.openNewActivityWithFinishing(activity, LoginActivity.class, null);
-        activity.finish();
     }
 }

@@ -152,4 +152,7 @@
     <string name="signup_default_error" translatable="false">Qualcosa è andato storto.. riprova!</string>
     <string name="username_delete_success">Username eliminato con successo</string>
     <string name="pdf_file_name">MancantiSurprix</string>
+    <string name="your_email">La tua e-mail</string>
+    <string name="choose_your_username">Scegli il tuo username</string>
+    <string name="logout">Esci</string>
 </resources>

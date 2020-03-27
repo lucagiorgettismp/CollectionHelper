@@ -6,6 +6,7 @@
     <color name="loginSignUpText">@color/colorPrimaryDark</color>
     <color name="loginSignIn">@color/colorPrimaryDark</color>
     <color name="loginFacebook">@color/facebookColor</color>
+    <color name="loginSecondBackground">@color/colorSecondary</color>
     <color name="logo">@color/colorWhite</color>
 
     <color name="signUpIcon">@color/colorPrimary</color>
@@ -24,6 +25,7 @@
     <color name="cardTitle">@color/colorPrimary</color>
     <color name="cardDivider">@color/colorPrimary</color>
     <color name="textColor">@color/grey20</color>
+    <color name="cardTextColor">@color/grey20</color>
     <color name="starColor">@color/colorPrimary</color>
 
     <color name="btnAddDouble">@color/colorSecondary</color>
@@ -41,6 +43,8 @@
 
     <color name="navbarItemSelected">@color/colorSecondary</color>
     <color name="navbarItem">@color/colorPrimary</color>
+
+    <color name="hintTextColor">@color/grey70</color>
 
     <color name="lightYellowNotes">#9AFFD95B</color>
     <color name="colorPrimary">#00838f</color>

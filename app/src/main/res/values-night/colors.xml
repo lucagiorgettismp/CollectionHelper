@@ -4,10 +4,11 @@
     <color name="loginSignUp">@color/grey80</color>
     <color name="loginSignUpText">@color/grey30</color>
     <color name="loginSignIn">@color/grey50</color>
+    <color name="loginSecondBackground">@color/grey50</color>
     <color name="loginFacebook">@color/grey30</color>
     <color name="logo">@color/colorWhite</color>
 
-    <color name="signUpIcon">@color/colorWhite</color>
+    <color name="signUpIcon">@color/grey30</color>
     <color name="settingsBackground">@color/grey10</color>
 
     <color name="loginProgress">@color/colorWhite</color>
@@ -22,7 +23,7 @@
     <color name="cardBackground">@color/grey10</color>
     <color name="cardTitle">@color/colorWhite</color>
     <color name="cardDivider">@color/colorWhite</color>
-    <color name="textColor">@color/grey70</color>
+    <color name="cardTextColor">@color/grey70</color>
 
     <color name="background">@color/grey15</color>
     <color name="surprisePlaceHolder">@color/colorPrimary</color>

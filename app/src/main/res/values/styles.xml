@@ -57,4 +57,23 @@
     <!-- Optional, on Android 5+ you can modify the colorPrimaryDark color to match the windowBackground color for further branding-->
     <!-- <item name="colorPrimaryDark">@android:color/white</item> -->
     </style>
+    
+    <style name="UserFormEditText" parent="Widget.AppCompat.EditText">
+        <item name="android:drawableTint">@color/signUpIcon</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:ems">10</item>
+        <item name="android:backgroundTint">@color/textColor</item>
+        <item name="android:textColor">@color/textColor</item>
+        <item name="android:textColorHint">@color/hintTextColor</item>
+    </style>
+    
+    <style name="RoundedButton" parent="@style/Widget.AppCompat.Button.Borderless">
+        <item name="android:background">@drawable/rec_gradient</item>
+        <item name="android:elevation">0dp</item>
+        <item name="android:textSize">18sp</item>
+        <item name="textAllCaps">false</item>
+        <item name="paddingStart">20dp</item>
+        <item name="paddingEnd">20dp</item>
+    </style>
 </resources>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/login_navigation"
+    app:startDestination="@id/navigation_login_home">
+
+    <fragment
+        android:id="@+id/navigation_login_home"
+        android:name="com.lucagiorgetti.surprix.ui.loginfragments.home.LoginHomeFragment" >
+        <action
+            android:id="@+id/action_navigation_login_home_to_navigation_login_signin"
+            app:destination="@id/navigation_login_signin" />
+        <action
+            android:id="@+id/action_navigation_login_home_to_mainActivity"
+            app:destination="@id/mainActivity" />
+        <action
+            android:id="@+id/action_navigation_login_home_to_navigation_login_privacy"
+            app:destination="@id/navigation_login_privacy" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_login_signin"
+        android:name="com.lucagiorgetti.surprix.ui.loginfragments.signin.SignInFragment"
+        tools:layout="@layout/sign_in_fragment" >
+        <action
+            android:id="@+id/action_navigation_login_signin_to_mainActivity"
+            app:destination="@id/mainActivity" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_login_signup"
+        android:name="com.lucagiorgetti.surprix.ui.loginfragments.signup.SignUpFragment"
+        tools:layout="@layout/sign_up_fragment" >
+        <argument android:name="email"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="fromFacebook"
+            app:argType="boolean" />
+        <action
+            android:id="@+id/action_navigation_login_signup_to_mainActivity"
+            app:destination="@id/mainActivity" />
+        <action
+            android:id="@+id/action_navigation_login_signup_to_navigation_login_home2"
+            app:destination="@id/navigation_login_home"
+            app:popUpTo="@id/navigation_login_home" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_login_privacy"
+        android:name="com.lucagiorgetti.surprix.ui.loginfragments.privacypolicy.PrivacyPolicyFragment"
+        tools:layout="@layout/privacy_policy_fragment">
+        <argument android:name="email"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="fromFacebook"
+            app:argType="boolean" />
+        <action
+            android:id="@+id/action_navigation_login_privacy_to_navigation_login_signup"
+            app:destination="@id/navigation_login_signup" />
+        <action
+            android:id="@+id/action_navigation_login_privacy_to_navigation_login_home"
+            app:destination="@id/navigation_login_home"
+            app:popUpTo="@id/navigation_login_home" />
+    </fragment>
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.lucagiorgetti.surprix.ui.activities.MainActivity"
+        android:label="MainActivity" />
+</navigation>

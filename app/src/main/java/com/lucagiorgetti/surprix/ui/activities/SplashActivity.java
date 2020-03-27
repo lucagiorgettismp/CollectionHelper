@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.lucagiorgetti.surprix.R;
-import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseCallback;
+import com.lucagiorgetti.surprix.listenerInterfaces.CallbackInterface;
 import com.lucagiorgetti.surprix.utility.SystemUtils;
 
 public class SplashActivity extends AppCompatActivity {
@@ -23,7 +23,7 @@ public class SplashActivity extends AppCompatActivity {
         fireAuthStateListener = firebaseAuth -> {
             FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
             if (firebaseUser != null){
-                SystemUtils.setSessionUser(firebaseUser.getEmail(), new FirebaseCallback<Boolean>() {
+                SystemUtils.setSessionUser(firebaseUser.getEmail(), new CallbackInterface<Boolean>() {
                     @Override
                     public void onStart() {
 

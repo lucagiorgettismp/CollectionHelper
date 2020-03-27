@@ -9,7 +9,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.lucagiorgetti.surprix.SurprixApplication;
-import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseCallback;
+import com.lucagiorgetti.surprix.listenerInterfaces.CallbackInterface;
 import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseListCallback;
 import com.lucagiorgetti.surprix.model.MissingDetail;
 import com.lucagiorgetti.surprix.model.MissingSurprise;
@@ -34,7 +34,7 @@ public class DatabaseUtils {
 
     private static DatabaseReference reference = SurprixApplication.getInstance().getDatabaseReference();
 
-    public static void checkUserExisting(final String email, final FirebaseCallback<Boolean> listener) {
+    public static void isAnExistingUser(final String email, final CallbackInterface<Boolean> listener) {
         final String emailCod = email.replaceAll("\\.", ",");
 
         reference.child("emails").child(emailCod).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -54,7 +54,7 @@ public class DatabaseUtils {
         });
     }
 
-    public static void getCurrentUser(final FirebaseCallback<User> listen, String email) {
+    public static void getCurrentUser(final CallbackInterface<User> listen, String email) {
         listen.onStart();
         if ( email != null && !email.isEmpty()) {
             String emailCod = email.replaceAll("\\.", ",");
@@ -500,7 +500,7 @@ public class DatabaseUtils {
         reference.child("users").child(username).child("country").setValue(nation);
     }
 
-    public static void checkUsernameDontExists(String username, final FirebaseCallback<Boolean> listener) {
+    public static void checkUsernameDoesntExist(String username, final CallbackInterface<Boolean> listener) {
         reference.child("users").child(username).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -518,7 +518,7 @@ public class DatabaseUtils {
         });
     }
 
-    public static void deleteUser(final FirebaseCallback<Boolean> listener) {
+    public static void deleteUser(final CallbackInterface<Boolean> listener) {
         listener.onStart();
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -563,7 +563,7 @@ public class DatabaseUtils {
         DatabaseUtils.username = username;
     }
 
-    public static void addDetailForMissing(String surpId, MissingDetail notes, FirebaseCallback<Boolean> listen) {
+    public static void addDetailForMissing(String surpId, MissingDetail notes, CallbackInterface<Boolean> listen) {
         listen.onStart();
         reference.child("missings").child(username).child(surpId).setValue(notes);
         listen.onSuccess(true);
