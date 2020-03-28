@@ -51,7 +51,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/description"
-                    android:textColor="@color/titleColor"
+                    android:textColor="@color/cardTextColor"
                     android:textSize="16sp"
                     android:textStyle="bold" />
             </LinearLayout>

@@ -1,8 +1,14 @@
 package com.lucagiorgetti.surprix.ui.activities;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.util.AttributeSet;
+import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -43,7 +49,6 @@ public class SplashActivity extends AppCompatActivity {
                 SystemUtils.openNewActivityWithFinishing(this, LoginActivity.class, null);
             }
         };
-
     }
 
     @Override
@@ -59,4 +64,5 @@ public class SplashActivity extends AppCompatActivity {
             fireAuth.removeAuthStateListener(fireAuthStateListener);
         }
     }
+
 }

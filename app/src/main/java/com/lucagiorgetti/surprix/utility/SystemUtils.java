@@ -9,17 +9,15 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.preference.PreferenceManager;
 
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.listenerInterfaces.CallbackInterface;
 import com.lucagiorgetti.surprix.model.User;
@@ -38,6 +36,7 @@ public class SystemUtils {
     public static final String FIRST_TIME_YEAR_HELP_SHOW = "showYearHelp";
     public static final String FIRST_TIME_SET_HELP_SHOW = "showSetHelp";
     public static final String PRIVACY_POLICY_ACCEPTED = "privacyPolicyAccepted";
+    public static final String THEME_DARK_SELECTED = "darkThemeSelected";
     private static final String TAG = "SystemUtility";
 
     public static boolean checkNetworkAvailability() {
@@ -100,6 +99,17 @@ public class SystemUtils {
         edit.apply();
     }
 
+    public static void setDarkThemePreference(boolean darkEnabled) {
+        Context applicationContext = SurprixApplication.getSurprixContext();
+        SharedPreferences.Editor edit = PreferenceManager.getDefaultSharedPreferences(applicationContext).edit();
+        edit.putBoolean(THEME_DARK_SELECTED, darkEnabled);
+        edit.apply();
+    }
+
+    public static boolean getDarkThemePreference() {
+        return PreferenceManager.getDefaultSharedPreferences(SurprixApplication.getSurprixContext()).getBoolean(THEME_DARK_SELECTED, false);
+    }
+
     public static void enableFCM() {
         // Enable FCM via enable Auto-init service which generate new token and receive in FCMService
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
@@ -127,19 +137,6 @@ public class SystemUtils {
         applicationContext.startActivity(i);
     }
 
-
-    public static void openUrl(Context context, String url) {
-        Uri uri = Uri.parse(url); // missing 'http://' will cause crashed
-        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-        context.startActivity(intent);
-    }
-
-    @NonNull
-    public static String getStringByLocal(Activity context, int id, String locale) {
-        Configuration configuration = new Configuration(context.getResources().getConfiguration());
-        configuration.setLocale(new Locale(locale));
-        return context.createConfigurationContext(configuration).getResources().getString(id);
-    }
 
     public static void setSessionUser(String email, CallbackInterface<Boolean> listener) {
         DatabaseUtils.getCurrentUser(new CallbackInterface<User>() {
@@ -174,5 +171,11 @@ public class SystemUtils {
         FirebaseAuth.getInstance().signOut();
         LoginManager.getInstance().logOut();
         DatabaseUtils.setUsername(null);
+    }
+
+    public static void setPrivacyPolicyAccepted(boolean accepted) {
+        SharedPreferences.Editor edit = PreferenceManager.getDefaultSharedPreferences(SurprixApplication.getSurprixContext()).edit();
+        edit.putBoolean(PRIVACY_POLICY_ACCEPTED, accepted);
+        edit.apply();
     }
 }

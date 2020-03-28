@@ -1,0 +1,17 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/settings_category_theme">
+        <SwitchPreferenceCompat
+            app:key="@string/settings_night_mode_key"
+            app:title="@string/settings_night_mode_title" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/settings_category_links">
+        <Preference
+            app:key="@string/settings_contact_us_key"
+            app:summary="@string/settings_contact_us_summary"
+            app:title="@string/settings_contact_us_title" />
+        <Preference app:title="@string/privacy_policy" />
+    </PreferenceCategory>
+</PreferenceScreen>
+

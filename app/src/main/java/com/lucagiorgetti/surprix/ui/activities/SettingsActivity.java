@@ -1,199 +1,94 @@
 package com.lucagiorgetti.surprix.ui.activities;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.Toolbar;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.SwitchPreferenceCompat;
 
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.EmailAuthProvider;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.lucagiorgetti.surprix.R;
-import com.lucagiorgetti.surprix.SurprixApplication;
-import com.lucagiorgetti.surprix.listenerInterfaces.CallbackInterface;
-import com.lucagiorgetti.surprix.model.User;
-import com.lucagiorgetti.surprix.utility.DatabaseUtils;
 import com.lucagiorgetti.surprix.utility.SystemUtils;
-import com.mikelau.countrypickerx.CountryPickerDialog;
 
 public class SettingsActivity extends AppCompatActivity {
-    private EditText edtNation;
-    private CountryPickerDialog countryPicker = null;
 
-    public void onCreate(Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signup);
-        EditText edtEmail = findViewById(R.id.edit_reg_email);
-        EditText edtUsername = findViewById(R.id.edit_reg_username);
-        ImageView usernameImage = findViewById(R.id.img_reg_username);
-        ImageView emailImage = findViewById(R.id.img_reg_email);
-        TextView lblPrivacyPolicy = findViewById(R.id.lbl_reg_policy);
-        edtNation = findViewById(R.id.edit_reg_nation);
-        View layPassword = findViewById(R.id.layout_reg_password);
+        setContentView(R.layout.settings_activity);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.settings, new SettingsFragment())
+                .commit();
 
-        TextView lblInfoFacebook = findViewById(R.id.lbl_reg_info_facebook);
-        TextView lblInfoFirstLogin = findViewById(R.id.lbl_reg_info_firstlogin);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        TextView changePwd = findViewById(R.id.btn_reg_change_pwd);
-        TextView deleteUser = findViewById(R.id.btn_reg_delete_account);
-        Button logoutUser = findViewById(R.id.btn_reg_logout);
-        Button submit = findViewById(R.id.btn_reg_submit);
-        Button completeBtn = findViewById(R.id.btn_reg_complete_account);
-        usernameImage.setColorFilter(ContextCompat.getColor(this, R.color.disabledIcon));
-        emailImage.setColorFilter(ContextCompat.getColor(this, R.color.disabledIcon));
-
-        lblPrivacyPolicy.setOnClickListener(v -> showPrivacyPolicy());
-
-        User currentUser = SurprixApplication.getInstance().getCurrentUser();
-        if (currentUser != null){
-            if (currentUser.isFacebook()) {
-                changePwd.setVisibility(View.GONE);
-            }
-            deleteUser.setVisibility(View.VISIBLE);
-
-            edtEmail.setText(currentUser.getEmail().replaceAll(",", "\\."));
-            edtUsername.setText(currentUser.getUsername());
-            edtNation.setText(currentUser.getCountry());
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowHomeEnabled(true);
         }
 
-        edtUsername.setEnabled(false);
-        edtEmail.setEnabled(false);
-
-        layPassword.setVisibility(View.GONE);
-
-        lblInfoFirstLogin.setVisibility(View.GONE);
-        lblInfoFacebook.setVisibility(View.GONE);
-        completeBtn.setVisibility(View.GONE);
-
-        edtNation.setOnFocusChangeListener((v, hasFocus) -> {
-            if (hasFocus) {
-                countryPicker = new CountryPickerDialog(this, (country, flagResId) -> {
-                    edtNation.setText(country.getCountryName(getApplicationContext()));
-                    countryPicker.dismiss();
-                }, false, 0);
-                countryPicker.show();
-            }
+        toolbar.setNavigationOnClickListener(v -> {
+            finish();
         });
 
-        submit.setText(R.string.save);
-
-        submit.setOnClickListener(v -> {
-            SystemUtils.closeKeyboard(this);
-            String nation = edtNation.getText().toString();
-            DatabaseUtils.updateUser(nation);
-            Toast.makeText(getApplicationContext(), R.string.user_added, Toast.LENGTH_SHORT).show();
-        });
-
-        changePwd.setOnClickListener(v -> openChangePwdDialog());
-        deleteUser.setOnClickListener(v -> openDeleteUserDialog());
-        logoutUser.setOnClickListener(v -> {
-            SystemUtils.logout();
-            SystemUtils.openNewActivityWithFinishing(this, LoginActivity.class, null);
-        });
+        setTitle(getResources().getString(R.string.settings));
     }
 
+    public static class SettingsFragment extends PreferenceFragmentCompat {
+        @Override
+        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+            setPreferencesFromResource(R.xml.root_preferences, rootKey);
 
-    private void showPrivacyPolicy() {
-        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-        alertDialog.setTitle(getString(R.string.privacy_policy));
+            Preference privacyPolicy = findPreference(getResources().getString(R.string.settings_privacy_key));
+            Preference contactUs = findPreference(getResources().getString(R.string.settings_contact_us_key));
+            SwitchPreferenceCompat nightMode = findPreference(getResources().getString(R.string.settings_night_mode_key));
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            alertDialog.setMessage(Html.fromHtml(getString(R.string.privacy_policy_text), Html.FROM_HTML_MODE_LEGACY));
-        } else {
-            alertDialog.setMessage(Html.fromHtml(getString(R.string.privacy_policy_text)));
-        }
+            Intent intent = new Intent(Intent.ACTION_SENDTO);
+            intent.setData(Uri.parse(getResources().getString(R.string.mailto_surprix)));
 
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.dialog_positive),
-                (dialog, which) -> alertDialog.dismiss());
-        alertDialog.setCanceledOnTouchOutside(false);
-        alertDialog.show();
-    }
-
-    public void openChangePwdDialog() {
-        final View view = getLayoutInflater().inflate(R.layout.dialog_change_password, null);
-
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setView(view);
-        builder.setTitle(R.string.change_password);
-
-        final EditText oldPassword = view.findViewById(R.id.edt_dialog_old_pwd);
-        final EditText newPassword = view.findViewById(R.id.edt_dialog_new_pwd);
-        Button btnChangePwd = view.findViewById(R.id.btn_dialog_submit);
-
-        final AlertDialog changePwd = builder.create();
-
-        changePwd.show();
-        btnChangePwd.setOnClickListener(v -> {
-            String oldPwd = oldPassword.getText().toString().trim();
-            final String newPwd = newPassword.getText().toString().trim();
-
-            final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-            String email = null;
-            if (user != null) {
-                email = user.getEmail();
+            if (contactUs != null) {
+                contactUs.setIntent(intent);
             }
-            if (email != null) {
 
-                AuthCredential credential = EmailAuthProvider.getCredential(email, oldPwd);
+            if (privacyPolicy != null) {
+                privacyPolicy.setOnPreferenceClickListener(p -> {
+                    final AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+                    alertDialog.setTitle(getString(R.string.privacy_policy));
 
-                user.reauthenticate(credential).addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        user.updatePassword(newPwd).addOnCompleteListener(task1 -> {
-                            if (!task1.isSuccessful()) {
-                                Toast.makeText(this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(this, R.string.password_changed, Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                        alertDialog.setMessage(Html.fromHtml(getString(R.string.privacy_policy_text), Html.FROM_HTML_MODE_LEGACY));
                     } else {
-                        Toast.makeText(this, R.string.old_password_wrong, Toast.LENGTH_SHORT).show();
+                        alertDialog.setMessage(Html.fromHtml(getString(R.string.privacy_policy_text)));
                     }
+
+                    alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.dialog_positive),
+                            (dialog, which) -> alertDialog.dismiss());
+                    alertDialog.setCanceledOnTouchOutside(true);
+                    alertDialog.show();
+
+                    return true;
                 });
             }
-            changePwd.dismiss();
-        });
-    }
 
-    public void openDeleteUserDialog() {
-        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-        alertDialog.setTitle(getString(R.string.delete_account));
-        alertDialog.setMessage(getString(R.string.dialod_delete_user_text));
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.dialog_positive),
-                (dialog, which) -> {
-                    DatabaseUtils.deleteUser(new CallbackInterface<Boolean>() {
-                        @Override
-                        public void onStart() {
-
-                        }
-
-                        @Override
-                        public void onSuccess(Boolean item) {
-                            alertDialog.dismiss();
-                            SystemUtils.logout();
-                            Toast.makeText(getApplicationContext(), R.string.username_delete_success, Toast.LENGTH_LONG).show();
-                        }
-
-                        @Override
-                        public void onFailure() {
-
-                        }
-                    });
-
+            if (nightMode != null) {
+                nightMode.setChecked(SystemUtils.getDarkThemePreference());
+                nightMode.setOnPreferenceChangeListener((p, state) -> {
+                    boolean checked = (Boolean) state;
+                    SystemUtils.setDarkThemePreference(checked);
+                    AppCompatDelegate.setDefaultNightMode(checked ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
+                    return true;
                 });
-        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.dialog_negative),
-                (dialog, which) -> alertDialog.dismiss());
-        alertDialog.show();
+            }
+        }
     }
 }
-
-

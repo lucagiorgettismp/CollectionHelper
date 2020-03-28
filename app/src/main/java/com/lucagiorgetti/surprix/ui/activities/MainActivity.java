@@ -6,6 +6,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -40,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+        boolean dark = SystemUtils.getDarkThemePreference();
+        AppCompatDelegate.setDefaultNightMode(dark ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         SystemUtils.enableFCM();
@@ -55,6 +58,4 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navView, navController);
         NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration);
     }
-
-
 }

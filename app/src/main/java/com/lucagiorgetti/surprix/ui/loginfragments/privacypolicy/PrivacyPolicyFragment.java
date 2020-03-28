@@ -51,18 +51,12 @@ public class PrivacyPolicyFragment extends Fragment {
         }
 
         accept.setOnClickListener(view -> {
-            SharedPreferences.Editor edit = PreferenceManager.getDefaultSharedPreferences(SurprixApplication.getSurprixContext()).edit();
-            edit.putBoolean(SystemUtils.PRIVACY_POLICY_ACCEPTED, true);
-            edit.apply();
-
+            SystemUtils.setPrivacyPolicyAccepted(true);
             Navigation.findNavController(view).navigate(PrivacyPolicyFragmentDirections.actionNavigationLoginPrivacyToNavigationLoginSignup(email, fromFacebook));
         });
 
         refuse.setOnClickListener(view -> {
-            SharedPreferences.Editor edit = PreferenceManager.getDefaultSharedPreferences(SurprixApplication.getSurprixContext()).edit();
-            edit.putBoolean(SystemUtils.PRIVACY_POLICY_ACCEPTED, false);
-            edit.apply();
-
+            SystemUtils.setPrivacyPolicyAccepted(true);
             Navigation.findNavController(view).navigate(PrivacyPolicyFragmentDirections.actionNavigationLoginPrivacyToNavigationLoginHome());
         });
 
