@@ -11,13 +11,10 @@
     <color name="signUpIcon">@color/grey30</color>
     <color name="settingsBackground">@color/grey10</color>
 
-    <color name="loginProgress">@color/colorWhite</color>
     <color name="titleColor">@color/colorWhite</color>
-    <color name="linkColor">@color/colorWhite</color>
     <color name="btnImportantBackground">@color/grey30</color>
     <color name="btnImportantText">@color/colorWhite</color>
     <color name="btnIcon">@color/colorWhite</color>
-    <color name="btnSecondaryText">@color/grey30</color>
 
     <color name="toolbarColor">@color/grey20</color>
     <color name="cardBackground">@color/grey10</color>

@@ -8,7 +8,6 @@
     tools:context=".ui.loginfragments.signin.SignInFragment">
     <ImageView
         android:layout_above="@id/form_layout"
-        android:id="@+id/logo"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_marginBottom="20dp"

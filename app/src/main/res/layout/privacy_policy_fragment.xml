@@ -48,8 +48,9 @@
                 android:textAllCaps="false"
                 android:text="@string/terms_agree"
                 style="@style/RoundedButton"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
                 android:textColor="@android:color/background_light"/>
-
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
