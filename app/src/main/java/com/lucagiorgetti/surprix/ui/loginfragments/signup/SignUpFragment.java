@@ -25,13 +25,14 @@ import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.listenerInterfaces.CallbackInterface;
 import com.lucagiorgetti.surprix.listenerInterfaces.CallbackWithExceptionInterface;
 import com.lucagiorgetti.surprix.utility.AuthUtils;
+import com.lucagiorgetti.surprix.utility.BaseFragment;
 import com.lucagiorgetti.surprix.utility.DatabaseUtils;
 import com.lucagiorgetti.surprix.utility.SystemUtils;
 import com.mikelau.countrypickerx.CountryPickerDialog;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
-public class SignUpFragment extends Fragment {
+public class SignUpFragment extends BaseFragment {
     private EditText edtEmail;
     private EditText edtPassword;
     private EditText edtUsername;
@@ -56,6 +57,7 @@ public class SignUpFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.sign_up_fragment, container, false);
 
+        setProgressBar(root.findViewById(R.id.progress_bar));
 
         edtEmail = root.findViewById(R.id.edit_reg_email);
         edtPassword = root.findViewById(R.id.edit_reg_password);
@@ -112,20 +114,19 @@ public class SignUpFragment extends Fragment {
                 }
             } else {
                 if (email.isEmpty() || password.isEmpty() || username.isEmpty() || nation.isEmpty()) {
-
-                    //progress.setVisibility(View.INVISIBLE);
+                    hideLoading();
                     Toast.makeText(getApplicationContext(), R.string.signup_complete_all_fields, Toast.LENGTH_SHORT).show();
                 } else if (password.length() < 6) {
-                    //progress.setVisibility(View.INVISIBLE);
+                    hideLoading();
                     Toast.makeText(getApplicationContext(), R.string.signup_password_lenght, Toast.LENGTH_SHORT).show();
                 } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                    //progress.setVisibility(View.INVISIBLE);
+                    hideLoading();
                     Toast.makeText(getApplicationContext(), R.string.signup_email_format, Toast.LENGTH_SHORT).show();
                 } else {
                     DatabaseUtils.checkUsernameDoesntExist(username, new CallbackInterface<Boolean>() {
                         @Override
                         public void onStart() {
-
+                            showLoading();
                         }
 
                         @Override
@@ -148,6 +149,7 @@ public class SignUpFragment extends Fragment {
 
                                             @Override
                                             public void onSuccess(Boolean item) {
+                                                hideLoading();
                                                 SystemUtils.firstTimeOpeningApp();
                                                 Navigation.findNavController(view).navigate(SignUpFragmentDirections.actionNavigationLoginSignupToMainActivity());
                                                 activity.finish();
@@ -155,15 +157,15 @@ public class SignUpFragment extends Fragment {
 
                                             @Override
                                             public void onFailure() {
-
+                                                hideLoading();
                                             }
                                         });
                                     }
 
                                     @Override
                                     public void onFailure(Exception exception) {
+                                        hideLoading();
                                         String message;
-                                        //progress.setVisibility(View.INVISIBLE);
                                         if (exception instanceof FirebaseAuthWeakPasswordException) {
                                             message = getString(R.string.signup_weak_password);
                                         } else if (exception instanceof FirebaseAuthInvalidCredentialsException) {
@@ -178,13 +180,14 @@ public class SignUpFragment extends Fragment {
                                 });
 
                             } else {
-                                //progress.setVisibility(View.INVISIBLE);
+                                hideLoading();
                                 Toast.makeText(getApplicationContext(), R.string.username_existing, Toast.LENGTH_SHORT).show();
                             }
                         }
 
                         @Override
                         public void onFailure() {
+                            hideLoading();
                             Toast.makeText(getApplicationContext(), R.string.data_sync_error, Toast.LENGTH_SHORT).show();
                         }
                     });

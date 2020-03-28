@@ -17,16 +17,16 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.lucagiorgetti.surprix.R;
-import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.listenerInterfaces.CallbackInterface;
 import com.lucagiorgetti.surprix.utility.AuthUtils;
+import com.lucagiorgetti.surprix.utility.BaseFragment;
 import com.lucagiorgetti.surprix.utility.SystemUtils;
 
 import timber.log.Timber;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
-public class SignInFragment extends Fragment {
+public class SignInFragment extends BaseFragment {
     private EditText inEmail;
     private EditText inPassword;
     private Activity activity;
@@ -44,6 +44,7 @@ public class SignInFragment extends Fragment {
 
         inEmail = root.findViewById(R.id.sign_in_email);
         inPassword = root.findViewById(R.id.sign_in_password);
+        setProgressBar(root.findViewById(R.id.progress_bar));
 
         Button loginBtn = root.findViewById(R.id.login_button);
         TextView forgotPwd = root.findViewById(R.id.login_forgot_password);
@@ -74,17 +75,19 @@ public class SignInFragment extends Fragment {
                 AuthUtils.sendPasswordResetEmail(inEmail.getText().toString().trim(), new CallbackInterface<Boolean>() {
                     @Override
                     public void onStart() {
-
+                        showLoading();
                     }
 
                     @Override
                     public void onSuccess(Boolean item) {
                         Toast.makeText(getContext(), R.string.mail_successfully_sent, Toast.LENGTH_SHORT).show();
+                        hideLoading();
                     }
 
                     @Override
                     public void onFailure() {
                         Toast.makeText(getContext(), R.string.cannot_send_recovery_email, Toast.LENGTH_SHORT).show();
+                        hideLoading();
                     }
                 });
             }
@@ -110,12 +113,13 @@ public class SignInFragment extends Fragment {
                 AuthUtils.signInWithEmailAndPassword(getActivity(), email, pwd, new CallbackInterface<Boolean>() {
                     @Override
                     public void onStart() {
-
+                        showLoading();
                     }
 
                     @Override
                     public void onSuccess(Boolean success) {
                         if (success) {
+                            hideLoading();
                             Navigation.findNavController(view).navigate(SignInFragmentDirections.actionNavigationLoginSigninToMainActivity());
                             activity.finish();
                         }
@@ -123,6 +127,7 @@ public class SignInFragment extends Fragment {
 
                     @Override
                     public void onFailure() {
+                        hideLoading();
                         Toast.makeText(getContext(), R.string.wrong_email_or_password,
                                 Toast.LENGTH_SHORT).show();
                     }
