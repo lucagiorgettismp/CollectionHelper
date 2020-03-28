@@ -11,7 +11,8 @@
             app:key="@string/settings_contact_us_key"
             app:summary="@string/settings_contact_us_summary"
             app:title="@string/settings_contact_us_title" />
-        <Preference app:title="@string/privacy_policy" />
+        <Preference app:title="@string/privacy_policy"
+            app:key="@string/settings_privacy_key"/>
     </PreferenceCategory>
 </PreferenceScreen>
 

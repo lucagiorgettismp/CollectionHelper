@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/settings_navigation"
+    app:startDestination="@id/navigation_settings">
+
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="com.lucagiorgetti.surprix.ui.settingsfragments.SettingsFragment"
+        android:label="@string/settings">
+        <action
+            android:id="@+id/action_settingsFragment_to_privacyPolicyFragment"
+            app:destination="@id/navigation_privacy" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_privacy"
+        android:name="com.lucagiorgetti.surprix.ui.settingsfragments.ShowPrivacyPolicyFragment"
+        android:label="@string/privacy_policy" />
+</navigation>
