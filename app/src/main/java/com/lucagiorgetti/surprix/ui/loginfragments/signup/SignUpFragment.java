@@ -3,6 +3,7 @@ package com.lucagiorgetti.surprix.ui.loginfragments.signup;
 import android.app.Activity;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -17,6 +18,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
@@ -50,6 +52,16 @@ public class SignUpFragment extends BaseFragment {
         fromFacebook = SignUpFragmentArgs.fromBundle(getArguments()).getFromFacebook();
         facebookEmail = SignUpFragmentArgs.fromBundle(getArguments()).getEmail();
 
+        // This callback will only be called when MyFragment is at least Started.
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                FirebaseAuth.getInstance().signOut();
+                LoginManager.getInstance().logOut();
+                Navigation.findNavController(getView()).popBackStack();
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
     }
 
     @Override

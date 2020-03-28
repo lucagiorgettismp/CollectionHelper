@@ -39,10 +39,6 @@
         <action
             android:id="@+id/action_navigation_login_signup_to_mainActivity"
             app:destination="@id/mainActivity" />
-        <action
-            android:id="@+id/action_navigation_login_signup_to_navigation_login_home2"
-            app:destination="@id/navigation_login_home"
-            app:popUpTo="@id/navigation_login_home" />
     </fragment>
     <fragment
         android:id="@+id/navigation_login_privacy"
@@ -56,10 +52,7 @@
             app:argType="boolean" />
         <action
             android:id="@+id/action_navigation_login_privacy_to_navigation_login_signup"
-            app:destination="@id/navigation_login_signup" />
-        <action
-            android:id="@+id/action_navigation_login_privacy_to_navigation_login_home"
-            app:destination="@id/navigation_login_home"
+            app:destination="@id/navigation_login_signup"
             app:popUpTo="@id/navigation_login_home" />
     </fragment>
     <activity

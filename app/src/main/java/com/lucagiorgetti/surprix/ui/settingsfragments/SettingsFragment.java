@@ -23,6 +23,7 @@ import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.listenerInterfaces.CallbackInterface;
 import com.lucagiorgetti.surprix.model.User;
+import com.lucagiorgetti.surprix.ui.activities.LoginActivity;
 import com.lucagiorgetti.surprix.utility.DatabaseUtils;
 import com.lucagiorgetti.surprix.utility.SystemUtils;
 import com.mikelau.countrypickerx.CountryPickerDialog;
@@ -40,10 +41,19 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         Preference deleteAccount = findPreference(getResources().getString(R.string.settings_delete_user_key));
         Preference changePassword = findPreference(getResources().getString(R.string.settings_change_password_key));
         Preference countryEdit = findPreference(getResources().getString(R.string.settings_change_country_key));
+        Preference logout = findPreference(getResources().getString(R.string.settings_logout_key));
         SwitchPreferenceCompat nightMode = findPreference(getResources().getString(R.string.settings_night_mode_key));
 
         Intent intent = new Intent(Intent.ACTION_SENDTO);
         intent.setData(Uri.parse(getResources().getString(R.string.mailto_surprix)));
+
+        if (logout != null) {
+            logout.setOnPreferenceClickListener(p -> {
+                SystemUtils.logout();
+                SystemUtils.openNewActivityWithFinishing(getActivity(), LoginActivity.class);
+                return true;
+            });
+        }
 
         if (contactUs != null) {
             contactUs.setIntent(intent);
@@ -66,7 +76,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             });
         }
 
-        if (countryEdit != null){
+        if (countryEdit != null) {
             User user = SurprixApplication.getInstance().getCurrentUser();
             countryEdit.setSummary(user.getCountry());
 
@@ -161,7 +171,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                                         Toast.makeText(getContext(), R.string.old_password_wrong, Toast.LENGTH_SHORT).show();
                                     }
                                 });
-                            } else  {
+                            } else {
                                 Toast.makeText(getContext(), R.string.password_cannot_be_null, Toast.LENGTH_SHORT).show();
                             }
                         }

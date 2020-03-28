@@ -104,7 +104,7 @@
     <string name="choose_your_username">Scegli il tuo username</string>
     <string name="settings_contact_us_title">Contattaci</string>
     <string name="settings_category_theme">Tema</string>
-    <string name="settings_night_mode_title">Modalità nott</string>
+    <string name="settings_night_mode_title">Modalità notte</string>
     <string name="change_country">Cambia nazione</string>
     <string name="password_cannot_be_null">La password non può essere vuota</string>
     <string name="settings_delete_user_summary">Questa operazione cancella l\'utente dal nostro database</string>

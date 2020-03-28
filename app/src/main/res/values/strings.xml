@@ -131,4 +131,6 @@
     <string name="password_cannot_be_null">Password cannot be null</string>
     <string name="settings_change_country_key" translatable="false">settings_change_country</string>
     <string name="change_country">Change country</string>
+    <string name="settings_logout_key">settings_logout</string>
+    <string name="logout">Logout</string>
 </resources>

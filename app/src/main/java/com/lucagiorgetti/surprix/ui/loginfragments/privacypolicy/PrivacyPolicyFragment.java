@@ -57,7 +57,7 @@ public class PrivacyPolicyFragment extends Fragment {
 
         refuse.setOnClickListener(view -> {
             SystemUtils.setPrivacyPolicyAccepted(true);
-            Navigation.findNavController(view).navigate(PrivacyPolicyFragmentDirections.actionNavigationLoginPrivacyToNavigationLoginHome());
+            Navigation.findNavController(view).popBackStack();
         });
 
         return root;

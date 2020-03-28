@@ -13,6 +13,9 @@
         <Preference
             app:key="@string/settings_change_country_key"
             app:title="@string/change_country"/>
+        <Preference
+            app:key="@string/settings_logout_key"
+            app:title="@string/logout"/>
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/settings_category_links">

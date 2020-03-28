@@ -33,10 +33,10 @@ import timber.log.Timber;
  */
 
 public class SystemUtils {
-    public static final String FIRST_TIME_YEAR_HELP_SHOW = "showYearHelp";
-    public static final String FIRST_TIME_SET_HELP_SHOW = "showSetHelp";
-    public static final String PRIVACY_POLICY_ACCEPTED = "privacyPolicyAccepted";
-    public static final String THEME_DARK_SELECTED = "darkThemeSelected";
+    private static final String FIRST_TIME_YEAR_HELP_SHOW = "showYearHelp";
+    private static final String FIRST_TIME_SET_HELP_SHOW = "showSetHelp";
+    private static final String PRIVACY_POLICY_ACCEPTED = "privacyPolicyAccepted";
+    private static final String THEME_DARK_SELECTED = "darkThemeSelected";
     private static final String TAG = "SystemUtility";
 
     public static boolean checkNetworkAvailability() {
@@ -77,13 +77,9 @@ public class SystemUtils {
         }
     }
 
-    public static void openNewActivityWithFinishing(Activity activity, Class<?> cls, Bundle bundle) {
+    public static void openNewActivityWithFinishing(Activity activity, Class<?> cls) {
         Context applicationContext = SurprixApplication.getSurprixContext();
         Intent i = new Intent(applicationContext, cls);
-
-        if (bundle != null) {
-            i.putExtras(bundle);
-        }
 
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
