@@ -13,7 +13,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.lucagiorgetti.surprix.R;
@@ -49,14 +48,14 @@ public class SignInFragment extends BaseFragment {
         Button loginBtn = root.findViewById(R.id.login_button);
         TextView forgotPwd = root.findViewById(R.id.login_forgot_password);
 
-        forgotPwd.setOnClickListener(v -> openResetPwdDialog());
+        forgotPwd.setOnClickListener(v -> openResetPwdDialog(v, container));
 
         loginBtn.setOnClickListener(new LoginOnClick());
         return root;
     }
 
-    private void openResetPwdDialog() {
-        final View view = getLayoutInflater().inflate(R.layout.dialog_password_reset, null);
+    private void openResetPwdDialog(View parentView, ViewGroup container) {
+        final View view = getLayoutInflater().inflate(R.layout.dialog_password_reset, container, false);
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setView(view);
@@ -69,7 +68,7 @@ public class SignInFragment extends BaseFragment {
         resetDialog.show();
 
         resetBtn.setOnClickListener(v -> {
-            if (inEmail == null || inEmail.equals("")) {
+            if (inEmail == null || inEmail.getText().toString().equals("")) {
                 Toast.makeText(getContext(), R.string.signup_complete_all_fields, Toast.LENGTH_SHORT).show();
             } else {
                 AuthUtils.sendPasswordResetEmail(inEmail.getText().toString().trim(), new CallbackInterface<Boolean>() {
@@ -82,16 +81,18 @@ public class SignInFragment extends BaseFragment {
                     public void onSuccess(Boolean item) {
                         Toast.makeText(getContext(), R.string.mail_successfully_sent, Toast.LENGTH_SHORT).show();
                         hideLoading();
+                        resetDialog.dismiss();
+                        Navigation.findNavController(parentView).popBackStack();
                     }
 
                     @Override
                     public void onFailure() {
                         Toast.makeText(getContext(), R.string.cannot_send_recovery_email, Toast.LENGTH_SHORT).show();
+                        resetDialog.dismiss();
                         hideLoading();
                     }
                 });
             }
-            resetDialog.dismiss();
         });
     }
 

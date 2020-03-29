@@ -1,7 +1,5 @@
 package com.lucagiorgetti.surprix.ui.mainfragments.missinglist;
 
-import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -21,11 +19,6 @@ import java.util.ArrayList;
 public class DoublesOwnersListAdapter extends BaseAdapter {
 
     private ArrayList<User> collectors;
-    private LayoutInflater inflater;
-
-    public DoublesOwnersListAdapter(Context context) {
-        this.inflater = LayoutInflater.from(context);
-    }
 
     @Override
     public int getCount() {
@@ -46,8 +39,6 @@ public class DoublesOwnersListAdapter extends BaseAdapter {
     }
 
     public View getView(final int position, View v, final ViewGroup parent) {
-        v = inflater.inflate(R.layout.dialog_doubles_element, parent, false);
-
         TextView vUsername = v.findViewById(R.id.txv_collector_username);
         TextView vCountry = v.findViewById(R.id.txv_collector_country);
         User user = getItem(position);
@@ -57,7 +48,7 @@ public class DoublesOwnersListAdapter extends BaseAdapter {
         return v;
     }
 
-    public void addOwners(ArrayList<User> owners) {
+    void addOwners(ArrayList<User> owners) {
         this.collectors = owners;
     }
 }

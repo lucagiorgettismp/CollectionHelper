@@ -53,7 +53,7 @@ public class CatalogRecyclerAdapter extends RecyclerView.Adapter<CatalogRecycler
         return this.producers.get(position);
     }
 
-    public void setYears(List<Producer> producers) {
+    void setYears(List<Producer> producers) {
         this.producers = producers;
     }
 

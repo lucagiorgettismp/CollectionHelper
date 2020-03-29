@@ -21,7 +21,7 @@ public class CatalogViewModel extends BaseViewModel {
         this.setLoading(false);
     }
 
-    public MutableLiveData<List<Producer>> getProducers() {
+    MutableLiveData<List<Producer>> getProducers() {
         if (allProducers == null) {
             allProducers = new MutableLiveData<>();
             loadProducers();

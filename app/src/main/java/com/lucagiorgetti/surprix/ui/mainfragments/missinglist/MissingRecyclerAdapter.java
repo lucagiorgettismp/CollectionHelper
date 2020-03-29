@@ -44,11 +44,9 @@ import java.util.Locale;
 public class MissingRecyclerAdapter extends ListAdapter<MissingSurprise, MissingRecyclerAdapter.SurpViewHolder> implements Filterable {
     private SurpRecylerAdapterListener listener;
     private List<MissingSurprise> filterableList;
-    private boolean fromMissing;
 
-    public MissingRecyclerAdapter(boolean fromMissing) {
+    MissingRecyclerAdapter() {
         super(DIFF_CALLBACK);
-        this.fromMissing = fromMissing;
     }
 
     private static final DiffUtil.ItemCallback<MissingSurprise> DIFF_CALLBACK = new DiffUtil.ItemCallback<MissingSurprise>() {
@@ -104,7 +102,6 @@ public class MissingRecyclerAdapter extends ListAdapter<MissingSurprise, Missing
             holder.vNotesText.setText(null);
         }
         holder.vNotesText.setOnEditorActionListener((textView, i, keyEvent) -> {
-
             if (i == EditorInfo.IME_ACTION_DONE) {
                 MissingDetail md = new MissingDetail();
                 md.setNotes(textView.getText().toString());
@@ -112,9 +109,9 @@ public class MissingRecyclerAdapter extends ListAdapter<MissingSurprise, Missing
                 listener.onSaveNotesClick(surp, md);
                 holder.vNotesText.clearFocus();
             }
-
             return false;
         });
+
 
         String nation;
         if (ExtraLocales.isExtraLocale(surp.getSet_nation())) {
@@ -146,9 +143,7 @@ public class MissingRecyclerAdapter extends ListAdapter<MissingSurprise, Missing
                     .into(holder.vImage);
         }
 
-        holder.vBtnOwners.setOnClickListener(view -> {
-            listener.onShowMissingOwnerClick(surp);
-        });
+        holder.vBtnOwners.setOnClickListener(view -> listener.onShowMissingOwnerClick(surp));
 
 
         holder.vBtnDeleteNotes.setOnClickListener(view -> {
@@ -156,11 +151,6 @@ public class MissingRecyclerAdapter extends ListAdapter<MissingSurprise, Missing
             listener.onDeleteNoteClick(surp);
             holder.vNotesText.clearFocus();
         });
-
-        if (!fromMissing) {
-            holder.vMissingBottom.setVisibility(View.GONE);
-            holder.vBtnOwners.setVisibility(View.GONE);
-        }
 
         Integer rarity = surp.getIntRarity();
         holder.vStar1On.setVisibility(View.GONE);
@@ -235,23 +225,23 @@ public class MissingRecyclerAdapter extends ListAdapter<MissingSurprise, Missing
         }
     };
 
-    public void setFilterableList(List<MissingSurprise> missingList) {
+    void setFilterableList(List<MissingSurprise> missingList) {
         this.filterableList = missingList;
     }
 
-    public void removeFilterableItem(MissingSurprise surprise) {
+    void removeFilterableItem(MissingSurprise surprise) {
         this.filterableList.remove(surprise);
     }
 
-    public void addFilterableItem(MissingSurprise surprise, int position) {
+    void addFilterableItem(MissingSurprise surprise, int position) {
         this.filterableList.add(position, surprise);
     }
 
-    public void setListener(SurpRecylerAdapterListener listener) {
+    void setListener(SurpRecylerAdapterListener listener) {
         this.listener = listener;
     }
 
-    class SurpViewHolder extends RecyclerView.ViewHolder {
+    static class SurpViewHolder extends RecyclerView.ViewHolder {
         TextView vSetName;
         TextView vDescription;
         TextView vYear;

@@ -40,7 +40,7 @@ import java.util.Locale;
 public class SearchSurpriseRecyclerAdapter extends ListAdapter<Surprise, SearchSurpriseRecyclerAdapter.SurpViewHolder> implements Filterable {
     private List<Surprise> filterableList;
 
-    public SearchSurpriseRecyclerAdapter() {
+    SearchSurpriseRecyclerAdapter() {
         super(DIFF_CALLBACK);
     }
 
@@ -183,12 +183,11 @@ public class SearchSurpriseRecyclerAdapter extends ListAdapter<Surprise, SearchS
         }
     };
 
-    public void setFilterableList(List<Surprise> surprises) {
+    void setFilterableList(List<Surprise> surprises) {
         this.filterableList = surprises;
     }
 
-    class SurpViewHolder extends RecyclerView.ViewHolder {
-        TextView vCode;
+    static class SurpViewHolder extends RecyclerView.ViewHolder {
         TextView vSetName;
         TextView vDescription;
         TextView vYear;

@@ -2,13 +2,6 @@ package com.lucagiorgetti.surprix.ui.loginfragments.signup;
 
 import android.app.Activity;
 import android.os.Bundle;
-
-import androidx.activity.OnBackPressedCallback;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
-
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +9,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.navigation.Navigation;
 
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
@@ -39,7 +37,6 @@ public class SignUpFragment extends BaseFragment {
     private EditText edtPassword;
     private EditText edtUsername;
     private EditText edtNation;
-    private LoginManager facebookLogin;
     private CountryPickerDialog countryPicker = null;
     private Activity activity;
     private boolean fromFacebook;
@@ -121,6 +118,7 @@ public class SignUpFragment extends BaseFragment {
                 } else {
                     DatabaseUtils.generateUser(email, username, nation, true);
                     SystemUtils.firstTimeOpeningApp();
+                    SystemUtils.enableFCM();
                     Navigation.findNavController(view).navigate(SignUpFragmentDirections.actionNavigationLoginSignupToMainActivity());
                     activity.finish();
                 }

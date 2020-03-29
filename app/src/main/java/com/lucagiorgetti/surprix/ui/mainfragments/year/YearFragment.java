@@ -8,7 +8,7 @@ import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,7 +24,7 @@ public class YearFragment extends BaseFragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        YearViewModel yearViewModel = ViewModelProviders.of(this).get(YearViewModel.class);
+        YearViewModel yearViewModel = new ViewModelProvider(this).get(YearViewModel.class);
 
         View root = inflater.inflate(R.layout.fragment_years, container, false);
         YearRecyclerAdapter mAdapter;
@@ -66,9 +66,7 @@ public class YearFragment extends BaseFragment {
             mAdapter.notifyDataSetChanged();
         });
 
-        yearViewModel.isLoading().observe(getViewLifecycleOwner(), isLoading -> {
-            progress.setVisibility(isLoading ? View.VISIBLE : View.GONE);
-        });
+        yearViewModel.isLoading().observe(getViewLifecycleOwner(), isLoading -> progress.setVisibility(isLoading ? View.VISIBLE : View.GONE));
 
         return root;
     }

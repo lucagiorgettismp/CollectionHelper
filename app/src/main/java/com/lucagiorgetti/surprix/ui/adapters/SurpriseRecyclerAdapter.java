@@ -197,7 +197,7 @@ public class SurpriseRecyclerAdapter extends ListAdapter<Surprise, SurpriseRecyc
         this.filterableList.add(position, surprise);
     }
 
-    class SurpViewHolder extends RecyclerView.ViewHolder {
+    static class SurpViewHolder extends RecyclerView.ViewHolder {
         TextView vSetName;
         TextView vDescription;
         TextView vYear;

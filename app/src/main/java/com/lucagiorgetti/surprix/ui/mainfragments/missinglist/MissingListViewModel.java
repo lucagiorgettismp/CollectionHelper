@@ -22,7 +22,7 @@ public class MissingListViewModel extends BaseViewModel {
         this.setLoading(false);
     }
 
-    public MutableLiveData<List<MissingSurprise>> getMissingSurprises() {
+    MutableLiveData<List<MissingSurprise>> getMissingSurprises() {
         if (allMissingSurprises == null) {
             allMissingSurprises = new MutableLiveData<>();
             loadMissingSurprises();
@@ -31,7 +31,7 @@ public class MissingListViewModel extends BaseViewModel {
         return allMissingSurprises;
     }
 
-    public void loadMissingSurprises() {
+    void loadMissingSurprises() {
         DatabaseUtils.getMissingsForUsername(new FirebaseListCallback<MissingSurprise>() {
             @Override
             public void onStart() {

@@ -12,19 +12,23 @@ import java.util.Objects;
 public class BaseFragment extends Fragment {
     private ProgressBar progressBar;
 
-    public void setTitle(String title){
+    protected void setTitle(String title){
         Objects.requireNonNull(((MainActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setTitle(title);
     }
 
-    public void setProgressBar(ProgressBar progressBar) {
+    protected void setProgressBar(ProgressBar progressBar) {
         this.progressBar = progressBar;
     }
 
-    public void showLoading(){
-        progressBar.setVisibility(View.VISIBLE);
+    protected void showLoading(){
+        if (progressBar != null) {
+            progressBar.setVisibility(View.VISIBLE);
+        }
     }
 
-    public void hideLoading(){
-        progressBar.setVisibility(View.INVISIBLE);
+    protected void hideLoading(){
+        if (progressBar != null) {
+            progressBar.setVisibility(View.INVISIBLE);
+        }
     }
 }

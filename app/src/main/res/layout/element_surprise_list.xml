@@ -245,7 +245,7 @@
 
                 <ImageButton
                     android:id="@+id/delete_note_btn"
-                    style="@style/ButtonSaveNote"
+                    style="@style/ButtonDeleteNote"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:adjustViewBounds="false"

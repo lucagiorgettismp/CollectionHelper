@@ -6,6 +6,8 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * Implements method for items clicked in RecyclerView.
  * <p>
@@ -52,7 +54,7 @@ public class RecyclerItemClickListener implements RecyclerView.OnItemTouchListen
     }
 
     @Override
-    public void onTouchEvent(RecyclerView view, MotionEvent motionEvent) {
+    public void onTouchEvent(@NotNull RecyclerView view, @NotNull MotionEvent motionEvent) {
     }
 
     @Override

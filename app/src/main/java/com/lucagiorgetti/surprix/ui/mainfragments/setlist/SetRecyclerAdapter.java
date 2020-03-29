@@ -38,7 +38,7 @@ import java.util.Locale;
 public class SetRecyclerAdapter extends ListAdapter<Set, SetRecyclerAdapter.SetViewHolder> implements Filterable {
     private List<Set> filterableList;
 
-    public SetRecyclerAdapter() {
+    SetRecyclerAdapter() {
         super(DIFF_CALLBACK);
     }
 
@@ -100,7 +100,7 @@ public class SetRecyclerAdapter extends ListAdapter<Set, SetRecyclerAdapter.SetV
         return getItem(position);
     }
 
-    public void setFilterableList(List<Set> sets) {
+    void setFilterableList(List<Set> sets) {
         this.filterableList = sets;
     }
 

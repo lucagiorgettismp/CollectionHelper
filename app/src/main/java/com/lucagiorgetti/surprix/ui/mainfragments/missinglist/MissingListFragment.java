@@ -19,7 +19,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -56,12 +56,11 @@ public class MissingListFragment extends BaseFragment {
     private SearchView searchView;
     private View root;
     private View emptyList;
-    private MissingListViewModel missingListViewModel;
     private List<MissingSurprise> missingSurprises = new ArrayList<>();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        missingListViewModel = ViewModelProviders.of(this).get(MissingListViewModel.class);
+        MissingListViewModel missingListViewModel = new ViewModelProvider(this).get(MissingListViewModel.class);
         if (root == null) {
             root = inflater.inflate(R.layout.fragment_missing_list, container, false);
         }
@@ -94,22 +93,24 @@ public class MissingListFragment extends BaseFragment {
             }
         }).check());
 
-        mAdapter = new MissingRecyclerAdapter(true);
+        mAdapter = new MissingRecyclerAdapter();
 
         mAdapter.setListener(new SurpRecylerAdapterListener() {
             @Override
             public void onShowMissingOwnerClick(Surprise surprise) {
-                showMissingOwners(surprise);
+                showMissingOwners(surprise, container);
             }
 
             @Override
             public void onSaveNotesClick(Surprise surprise, MissingDetail detail) {
                 saveNotes(surprise, detail);
+                missingListViewModel.loadMissingSurprises();
             }
 
             @Override
             public void onDeleteNoteClick(Surprise surp) {
                 deleteNotes(surp);
+                missingListViewModel.loadMissingSurprises();
             }
         });
         recyclerView.setAdapter(mAdapter);
@@ -117,7 +118,7 @@ public class MissingListFragment extends BaseFragment {
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                if (dy > 0 || dy < 0) {
+                if (dy != 0) {
                     fab.hide();
                 }
                 super.onScrolled(recyclerView, dx, dy);
@@ -235,9 +236,9 @@ public class MissingListFragment extends BaseFragment {
         }
     }
 
-    private void showMissingOwners(final Surprise missing) {
-        final DoublesOwnersListAdapter adapter = new DoublesOwnersListAdapter(SurprixApplication.getSurprixContext());
-        final View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_doubles, null);
+    private void showMissingOwners(final Surprise missing, ViewGroup container) {
+        final DoublesOwnersListAdapter adapter = new DoublesOwnersListAdapter();
+        final View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_doubles,  container, false);
         TextView dialogTitle = view.findViewById(R.id.doubles_dialog_title);
         final TextView infoTxv = view.findViewById(R.id.doubles_dialog_info);
         final TextView emptyListTxv = view.findViewById(R.id.doubles_dialog_empty_list);
@@ -338,7 +339,7 @@ public class MissingListFragment extends BaseFragment {
         String to = owner.getEmail().replaceAll(",", "\\.");
         String subject = SurprixApplication.getInstance().getString(R.string.mail_subject, currentUser.getUsername());
 
-        String html = "";
+        String html;
         if (currentUser.getCountry().equals(owner.getCountry())) {
             html = SurprixApplication.getInstance().getString(R.string.mail_exchange_body, currentUser.getUsername(), missing.getCode(), missing.getDescription());
         } else {

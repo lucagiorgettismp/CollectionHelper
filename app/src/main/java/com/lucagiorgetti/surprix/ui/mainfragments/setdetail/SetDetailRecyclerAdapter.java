@@ -24,6 +24,7 @@ import com.lucagiorgetti.surprix.model.Surprise;
 import com.lucagiorgetti.surprix.utility.DatabaseUtils;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Adapter for showing a list of Surprises from a selected set.
@@ -70,7 +71,7 @@ public class SetDetailRecyclerAdapter extends RecyclerView.Adapter<SetDetailRecy
         Surprise s = items.get(position);
         Context ctx = SurprixApplication.getSurprixContext();
         if (s.isSet_effective_code()){
-            holder.vDescription.setText(s.getCode() + " - " + s.getDescription());
+            holder.vDescription.setText(String.format(Locale.getDefault(), "%s - %s", s.getCode(),s.getDescription()));
         } else {
             holder.vDescription.setText(s.getDescription());
         }

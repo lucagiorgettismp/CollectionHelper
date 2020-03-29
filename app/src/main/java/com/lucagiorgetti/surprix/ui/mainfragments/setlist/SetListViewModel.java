@@ -21,7 +21,7 @@ public class SetListViewModel extends BaseViewModel {
         this.setLoading(false);
     }
 
-    public MutableLiveData<List<Set>> getSets(String setId) {
+    MutableLiveData<List<Set>> getSets(String setId) {
         if (allSets == null) {
             allSets = new MutableLiveData<>();
             loadSets(setId);

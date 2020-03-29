@@ -54,7 +54,7 @@ public class DatabaseUtils {
         });
     }
 
-    public static void getCurrentUser(final CallbackInterface<User> listen, String email) {
+    static void getCurrentUser(final CallbackInterface<User> listen, String email) {
         listen.onStart();
         if ( email != null && !email.isEmpty()) {
             String emailCod = email.replaceAll("\\.", ",");
@@ -559,7 +559,7 @@ public class DatabaseUtils {
         listener.onFailure();
     }
 
-    public static void setUsername(String username) {
+    static void setUsername(String username) {
         DatabaseUtils.username = username;
     }
 

@@ -11,7 +11,7 @@ import android.widget.ProgressBar;
 import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,11 +30,10 @@ public class DoubleListFragment extends BaseFragment {
     private SearchView searchView;
     private View root;
     private View emptyList;
-    private DoubleListViewModel doubleListViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        doubleListViewModel = ViewModelProviders.of(this).get(DoubleListViewModel.class);
+        DoubleListViewModel doubleListViewModel = new ViewModelProvider(this).get(DoubleListViewModel.class);
         if (root == null) {
             root = inflater.inflate(R.layout.fragment_double_list, container, false);
         }
@@ -48,7 +47,7 @@ public class DoubleListFragment extends BaseFragment {
         mAdapter = new SurpriseRecyclerAdapter();
         recyclerView.setAdapter(mAdapter);
 
-        doubleListViewModel.getDoubleSurprises().observe(this, doubleList -> {
+        doubleListViewModel.getDoubleSurprises().observe(getViewLifecycleOwner(), doubleList -> {
             emptyList.setVisibility(doubleList == null || doubleList.isEmpty() ? View.VISIBLE : View.GONE);
             mAdapter.submitList(doubleList);
             mAdapter.setFilterableList(doubleList);
@@ -59,9 +58,7 @@ public class DoubleListFragment extends BaseFragment {
             }
         });
 
-        doubleListViewModel.isLoading().observe(this, isLoading -> {
-            progress.setVisibility(isLoading ? View.VISIBLE : View.GONE);
-        });
+        doubleListViewModel.isLoading().observe(getViewLifecycleOwner(), isLoading -> progress.setVisibility(isLoading ? View.VISIBLE : View.GONE));
 
         initSwipe(recyclerView);
         setHasOptionsMenu(true);

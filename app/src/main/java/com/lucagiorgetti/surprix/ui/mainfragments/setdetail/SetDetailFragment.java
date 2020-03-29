@@ -8,7 +8,7 @@ import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,7 +19,7 @@ public class SetDetailFragment extends BaseFragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        SetDetailViewModel setDetailViewModel = ViewModelProviders.of(this).get(SetDetailViewModel.class);
+        SetDetailViewModel setDetailViewModel = new ViewModelProvider(this).get(SetDetailViewModel.class);
 
         View root = inflater.inflate(R.layout.fragment_set_detail, container, false);
 
@@ -39,14 +39,12 @@ public class SetDetailFragment extends BaseFragment {
             setTitle(setName);
         }
 
-        setDetailViewModel.getSurprises(setId).observe(this, surprises -> {
+        setDetailViewModel.getSurprises(setId).observe(getViewLifecycleOwner(), surprises -> {
             mAdapter.setSurprises(surprises);
             mAdapter.notifyDataSetChanged();
         });
 
-        setDetailViewModel.isLoading().observe(this, isLoading -> {
-            progress.setVisibility(isLoading ? View.VISIBLE : View.GONE);
-        });
+        setDetailViewModel.isLoading().observe(getViewLifecycleOwner(), isLoading -> progress.setVisibility(isLoading ? View.VISIBLE : View.GONE));
 
         return root;
     }

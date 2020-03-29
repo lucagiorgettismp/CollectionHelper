@@ -21,7 +21,6 @@ import com.facebook.FacebookException;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.google.firebase.auth.FirebaseAuth;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.listenerInterfaces.CallbackInterface;
@@ -53,9 +52,6 @@ public class LoginHomeFragment extends Fragment {
         callbackManager = CallbackManager.Factory.create();
 
         progressBar = root.findViewById(R.id.login_loading);
-        progressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.colorWhite),
-                android.graphics.PorterDuff.Mode.MULTIPLY);
-        progressBar.setVisibility(View.INVISIBLE);
 
         Button facebookCustomLogin = root.findViewById(R.id.btn_start_facebook);
 
@@ -92,6 +88,7 @@ public class LoginHomeFragment extends Fragment {
                                                     SystemUtils.setSessionUser(email, new CallbackInterface<Boolean>() {
                                                         @Override
                                                         public void onSuccess(Boolean b) {
+                                                            SystemUtils.enableFCM();
                                                             progressBar.setVisibility(View.INVISIBLE);
                                                             Navigation.findNavController(view).navigate(LoginHomeFragmentDirections.actionNavigationLoginHomeToMainActivity());
                                                             activity.finish();

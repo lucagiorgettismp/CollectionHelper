@@ -19,13 +19,21 @@
         android:id="@+id/navigation_catalog"
         android:name="com.lucagiorgetti.surprix.ui.mainfragments.catalog.CatalogFragment"
         android:label="@string/title_catalog"
-        tools:layout="@layout/fragment_catalog" >
+        tools:layout="@layout/fragment_catalog">
         <action
             android:id="@+id/producerSelectedAction"
-            app:destination="@id/navigation_year" />
+            app:destination="@id/navigation_year"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
         <action
             android:id="@+id/goToSearch"
-            app:destination="@id/navigation_search" />
+            app:destination="@id/navigation_search"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
     </fragment>
     <fragment
         android:id="@+id/navigation_year"
@@ -39,7 +47,11 @@
             app:argType="string" />
         <action
             android:id="@+id/yearSelectedAction"
-            app:destination="@id/navigation_set_list" />
+            app:destination="@id/navigation_set_list"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
     </fragment>
     <fragment
         android:id="@+id/navigation_set_list"
@@ -51,6 +63,10 @@
         <action
             android:id="@+id/setSelectedAction"
             app:destination="@id/navigation_set_detail"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right"
             app:popUpToInclusive="false" />
         <argument
             android:name="year_name"
@@ -70,9 +86,13 @@
     <fragment
         android:id="@+id/navigation_search"
         android:name="com.lucagiorgetti.surprix.ui.mainfragments.search.SearchFragment"
-        tools:layout="@layout/fragment_search" >
+        tools:layout="@layout/fragment_search">
         <action
             android:id="@+id/onSearchedItemClick"
-            app:destination="@id/navigation_set_detail" />
+            app:destination="@id/navigation_set_detail"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
     </fragment>
 </navigation>

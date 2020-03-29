@@ -4,15 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
-import androidx.annotation.NonNull;
 import androidx.preference.PreferenceManager;
 
 import com.facebook.login.LoginManager;
@@ -21,8 +18,6 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.listenerInterfaces.CallbackInterface;
 import com.lucagiorgetti.surprix.model.User;
-
-import java.util.Locale;
 
 import timber.log.Timber;
 
@@ -113,7 +108,7 @@ public class SystemUtils {
         FirebaseMessaging.getInstance().subscribeToTopic("global");
     }
 
-    public static void disableFCM() {
+    private static void disableFCM() {
         // Disable auto init
         FirebaseMessaging.getInstance().setAutoInitEnabled(false);
         new Thread(() -> {
@@ -157,7 +152,7 @@ public class SystemUtils {
         }, email);
     }
 
-    public static void removeSessionUser() {
+    private static void removeSessionUser() {
         SurprixApplication.getInstance().setUser(null);
     }
 

@@ -13,7 +13,7 @@ import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,7 +31,7 @@ public class SetListFragment extends BaseFragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        SetListViewModel setListViewModel = ViewModelProviders.of(this).get(SetListViewModel.class);
+        SetListViewModel setListViewModel = new ViewModelProvider(this).get(SetListViewModel.class);
 
         View root = inflater.inflate(R.layout.fragment_set_list, container, false);
 
@@ -68,14 +68,12 @@ public class SetListFragment extends BaseFragment {
             setTitle(yearName);
         }
 
-        setListViewModel.getSets(yearId).observe(this, sets -> {
+        setListViewModel.getSets(yearId).observe(getViewLifecycleOwner(), sets -> {
             mAdapter.submitList(sets);
             mAdapter.setFilterableList(sets);
         });
 
-        setListViewModel.isLoading().observe(this, isLoading -> {
-            progress.setVisibility(isLoading ? View.VISIBLE : View.GONE);
-        });
+        setListViewModel.isLoading().observe(getViewLifecycleOwner(), isLoading -> progress.setVisibility(isLoading ? View.VISIBLE : View.GONE));
 
         setHasOptionsMenu(true);
 

@@ -83,13 +83,5 @@ public class SearchViewModel extends BaseViewModel {
         });
     }
 
-    public void changeMode(SearchMode mode) {
-        /*switch(mode){
-            case SURPRISE:
-                loadSurprises();
-            case SET:
-                loadSets();
-        }*/
-    }
 }
 

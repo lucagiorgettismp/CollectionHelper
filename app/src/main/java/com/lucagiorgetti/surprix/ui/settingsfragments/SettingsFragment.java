@@ -1,5 +1,6 @@
 package com.lucagiorgetti.surprix.ui.settingsfragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.navigation.Navigation;
@@ -30,6 +32,13 @@ import com.mikelau.countrypickerx.CountryPickerDialog;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
 
+    private Activity activity;
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        activity = getActivity();
+    }
+
     private CountryPickerDialog countryPicker = null;
 
     @Override
@@ -50,7 +59,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         if (logout != null) {
             logout.setOnPreferenceClickListener(p -> {
                 SystemUtils.logout();
-                SystemUtils.openNewActivityWithFinishing(getActivity(), LoginActivity.class);
+                SystemUtils.openNewActivityWithFinishing(activity, LoginActivity.class);
                 return true;
             });
         }
@@ -71,7 +80,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
         if (privacyPolicy != null) {
             privacyPolicy.setOnPreferenceClickListener(v -> {
-                Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(SettingsFragmentDirections.actionSettingsFragmentToPrivacyPolicyFragment());
+                Navigation.findNavController(activity, R.id.nav_host_fragment).navigate(SettingsFragmentDirections.actionSettingsFragmentToPrivacyPolicyFragment());
                 return true;
             });
         }
@@ -96,31 +105,28 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         if (deleteAccount != null) {
             deleteAccount.setOnPreferenceClickListener(preference -> {
 
-                final AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+                final AlertDialog alertDialog = new AlertDialog.Builder(activity).create();
                 alertDialog.setTitle(getString(R.string.delete_account));
                 alertDialog.setMessage(getString(R.string.dialod_delete_user_text));
                 alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.dialog_positive),
-                        (dialog, which) -> {
-                            DatabaseUtils.deleteUser(new CallbackInterface<Boolean>() {
-                                @Override
-                                public void onStart() {
+                        (dialog, which) -> DatabaseUtils.deleteUser(new CallbackInterface<Boolean>() {
+                            @Override
+                            public void onStart() {
 
-                                }
+                            }
 
-                                @Override
-                                public void onSuccess(Boolean item) {
-                                    alertDialog.dismiss();
-                                    SystemUtils.logout();
-                                    Toast.makeText(getContext(), R.string.username_delete_success, Toast.LENGTH_LONG).show();
-                                }
+                            @Override
+                            public void onSuccess(Boolean item) {
+                                alertDialog.dismiss();
+                                SystemUtils.logout();
+                                Toast.makeText(getContext(), R.string.username_delete_success, Toast.LENGTH_LONG).show();
+                            }
 
-                                @Override
-                                public void onFailure() {
+                            @Override
+                            public void onFailure() {
 
-                                }
-                            });
-
-                        });
+                            }
+                        }));
                 alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.dialog_negative),
                         (dialog, which) -> alertDialog.dismiss());
                 alertDialog.show();
@@ -133,7 +139,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             changePassword.setOnPreferenceClickListener(preference -> {
                 final View view = getLayoutInflater().inflate(R.layout.dialog_change_password, null);
 
-                final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
                 builder.setView(view);
                 builder.setTitle(R.string.change_password);
 

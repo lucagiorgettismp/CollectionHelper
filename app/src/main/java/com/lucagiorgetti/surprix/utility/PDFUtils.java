@@ -126,7 +126,7 @@ public class PDFUtils {
     protected static class MyEvent extends PdfPageEventHelper {
         Image image;
 
-        public MyEvent(String path) throws IOException, BadElementException {
+        MyEvent(String path) throws IOException, BadElementException {
             InputStream is = SurprixApplication.getInstance().getAssets().open(path);
             BufferedInputStream bufferedInputStream = new BufferedInputStream(is);
             Bitmap bmp = BitmapFactory.decodeStream(bufferedInputStream);

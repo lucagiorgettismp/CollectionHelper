@@ -10,13 +10,25 @@
         android:name="com.lucagiorgetti.surprix.ui.loginfragments.home.LoginHomeFragment" >
         <action
             android:id="@+id/action_navigation_login_home_to_navigation_login_signin"
-            app:destination="@id/navigation_login_signin" />
+            app:destination="@id/navigation_login_signin"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
         <action
             android:id="@+id/action_navigation_login_home_to_mainActivity"
-            app:destination="@id/mainActivity" />
+            app:destination="@id/mainActivity"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
         <action
             android:id="@+id/action_navigation_login_home_to_navigation_login_privacy"
-            app:destination="@id/navigation_login_privacy" />
+            app:destination="@id/navigation_login_privacy"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
     </fragment>
     <fragment
         android:id="@+id/navigation_login_signin"
@@ -24,7 +36,11 @@
         tools:layout="@layout/sign_in_fragment" >
         <action
             android:id="@+id/action_navigation_login_signin_to_mainActivity"
-            app:destination="@id/mainActivity" />
+            app:destination="@id/mainActivity"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
     </fragment>
     <fragment
         android:id="@+id/navigation_login_signup"
@@ -38,7 +54,11 @@
             app:argType="boolean" />
         <action
             android:id="@+id/action_navigation_login_signup_to_mainActivity"
-            app:destination="@id/mainActivity" />
+            app:destination="@id/mainActivity"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
     </fragment>
     <fragment
         android:id="@+id/navigation_login_privacy"
@@ -53,6 +73,10 @@
         <action
             android:id="@+id/action_navigation_login_privacy_to_navigation_login_signup"
             app:destination="@id/navigation_login_signup"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right"
             app:popUpTo="@id/navigation_login_home" />
     </fragment>
     <activity

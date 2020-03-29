@@ -9,7 +9,7 @@ import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,12 +21,9 @@ import com.lucagiorgetti.surprix.utility.RecyclerItemClickListener;
 
 public class CatalogFragment extends Fragment {
 
-    private CatalogViewModel catalogViewModel;
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        catalogViewModel =
-                ViewModelProviders.of(this).get(CatalogViewModel.class);
+        CatalogViewModel catalogViewModel = new ViewModelProvider(this).get(CatalogViewModel.class);
         View root = inflater.inflate(R.layout.fragment_catalog, container, false);
 
         CatalogRecyclerAdapter mAdapter;
@@ -59,14 +56,12 @@ public class CatalogFragment extends Fragment {
                 })
         );
 
-        catalogViewModel.getProducers().observe(this, producers -> {
+        catalogViewModel.getProducers().observe(getViewLifecycleOwner(), producers -> {
             mAdapter.setYears(producers);
             mAdapter.notifyDataSetChanged();
         });
 
-        catalogViewModel.isLoading().observe(this, isLoading -> {
-            progress.setVisibility(isLoading ? View.VISIBLE : View.GONE);
-        });
+        catalogViewModel.isLoading().observe(getViewLifecycleOwner(), isLoading -> progress.setVisibility(isLoading ? View.VISIBLE : View.GONE));
 
         fab.setOnClickListener(view -> Navigation.findNavController(view).navigate(CatalogFragmentDirections.goToSearch()));
 

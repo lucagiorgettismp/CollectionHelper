@@ -21,7 +21,7 @@ public class SetDetailViewModel extends BaseViewModel {
         this.setLoading(false);
     }
 
-    public MutableLiveData<List<Surprise>> getSurprises(String setId) {
+    MutableLiveData<List<Surprise>> getSurprises(String setId) {
         if (allSurprises == null) {
             allSurprises = new MutableLiveData<>();
             loadSurprises(setId);

@@ -21,7 +21,7 @@ public class YearViewModel extends BaseViewModel {
         this.setLoading(false);
     }
 
-    public MutableLiveData<List<Year>> getYears(String producerId) {
+    MutableLiveData<List<Year>> getYears(String producerId) {
         if (allYears == null) {
             allYears = new MutableLiveData<>();
             loadYears(producerId);
