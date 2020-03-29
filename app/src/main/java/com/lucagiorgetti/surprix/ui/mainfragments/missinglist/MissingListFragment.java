@@ -237,7 +237,7 @@ public class MissingListFragment extends BaseFragment {
     }
 
     private void showMissingOwners(final Surprise missing, ViewGroup container) {
-        final DoublesOwnersListAdapter adapter = new DoublesOwnersListAdapter();
+        final DoublesOwnersListAdapter adapter = new DoublesOwnersListAdapter(getContext() );
         final View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_doubles,  container, false);
         TextView dialogTitle = view.findViewById(R.id.doubles_dialog_title);
         final TextView infoTxv = view.findViewById(R.id.doubles_dialog_info);

@@ -19,13 +19,10 @@ public class ShowPrivacyPolicyFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.privacy_policy_fragment, container, false);
+        View root = inflater.inflate(R.layout.show_privacy_policy_fragment, container, false);
 
         TextView policyText = root.findViewById(R.id.policy_text);
         policyText.setMovementMethod(new ScrollingMovementMethod());
-
-        Button accept = root.findViewById(R.id.btn_accept);
-        TextView refuse = root.findViewById(R.id.btn_refuse);
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             policyText.setText(Html.fromHtml(getString(R.string.privacy_policy_text), Html.FROM_HTML_MODE_LEGACY));
@@ -33,8 +30,6 @@ public class ShowPrivacyPolicyFragment extends Fragment {
             policyText.setText(Html.fromHtml(getString(R.string.privacy_policy_text)));
         }
 
-        accept.setVisibility(View.GONE);
-        refuse.setVisibility(View.GONE);
         return root;
     }
 }

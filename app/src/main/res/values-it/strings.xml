@@ -4,7 +4,7 @@
     <string name="added_to_missings">Aggiunto ai mancanti</string>
     <string name="auth_failed">Errore di autenticazione</string>
     <string name="change_password">Cambia password</string>
-    <string name="country">Origine</string>
+    <string name="country">Nazione</string>
     <string name="data_sync_error">Errore di sincronizzazione dei dati</string>
     <string name="description">Descrizione</string>
     <string name="doubles">Doppi</string>

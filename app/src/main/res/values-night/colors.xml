@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="loginBackground">@color/grey10</color>
-    <color name="loginSignUp">@color/grey80</color>
-    <color name="loginSignUpText">@color/grey30</color>
-    <color name="loginSignIn">@color/grey50</color>
-    <color name="loginSecondBackground">@color/colorPrimary</color>
-    <color name="loginFacebook">@color/grey30</color>
+    <color name="loginSignIn">@color/colorPrimaryDark_copy</color>
+    <color name="loginSecondBackground">@color/colorPrimaryDark_copy</color>
+
     <color name="logo">@color/colorWhite</color>
 
     <color name="signUpIcon">@color/grey30</color>
@@ -21,6 +19,8 @@
     <color name="cardTitle">@color/colorWhite</color>
     <color name="cardDivider">@color/colorWhite</color>
     <color name="cardTextColor">@color/grey70</color>
+
+    <color name="dialogTextColor">@color/grey80</color>
 
     <color name="background">@color/grey15</color>
     <color name="surprisePlaceHolder">@color/colorPrimary</color>

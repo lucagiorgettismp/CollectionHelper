@@ -63,6 +63,16 @@
         <item name="android:textColor">@color/textColor</item>
         <item name="android:textColorHint">@color/hintTextColor</item>
     </style>
+
+    <style name="DialogEditText" parent="Widget.AppCompat.EditText">
+        <item name="android:drawableTint">@color/signUpIcon</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:ems">10</item>
+        <item name="android:backgroundTint">@color/textColor</item>
+        <item name="android:textColor">@color/dialogTextColor</item>
+        <item name="android:textColorHint">@color/hintTextColor</item>
+    </style>
     
     <style name="RoundedButton" parent="@style/Widget.AppCompat.Button.Borderless">
         <item name="android:background">@drawable/rec_gradient</item>

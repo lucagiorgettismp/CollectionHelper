@@ -21,6 +21,7 @@
     <color name="cardTitle">@color/colorPrimary</color>
     <color name="cardDivider">@color/colorPrimary</color>
     <color name="textColor">@color/grey20</color>
+    <color name="dialogTextColor">@color/grey20</color>
     <color name="cardTextColor">@color/grey20</color>
     <color name="starColor">@color/colorPrimary</color>
 
@@ -46,6 +47,7 @@
     <color name="colorPrimary">#00838f</color>
     <color name="colorPrimaryLight">#4fb3be</color>
     <color name="colorPrimaryDark">#005661</color>
+    <color name="colorPrimaryDark_copy">#005661</color>
     <color name="colorSecondary">#ffa726</color>
     <color name="facebookColor">#002f6c</color>
     <color name="colorWhite">#FFFFFF</color>
