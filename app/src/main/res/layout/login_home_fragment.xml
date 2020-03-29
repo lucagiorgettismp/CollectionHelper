@@ -2,7 +2,6 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/loginBackground"
@@ -43,6 +42,7 @@
 
     <Button
         android:id="@+id/btn_start_facebook"
+        android:drawableStart="@drawable/com_facebook_button_icon"
         style="@style/RoundedButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -50,6 +50,8 @@
         android:layout_marginBottom="4dp"
         android:backgroundTint="@color/loginFacebook"
         android:text="@string/login_with_facebook"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
         android:textColor="@android:color/background_light"/>
 
     <ProgressBar
@@ -60,6 +62,6 @@
         android:layout_gravity="center_horizontal|center"
         android:layout_marginTop="20dp"
         android:indeterminateTint="@color/colorWhite"
-        tools:visibility="invisible" />
+        android:visibility="invisible"/>
 
 </LinearLayout>

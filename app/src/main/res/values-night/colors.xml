@@ -4,7 +4,7 @@
     <color name="loginSignUp">@color/grey80</color>
     <color name="loginSignUpText">@color/grey30</color>
     <color name="loginSignIn">@color/grey50</color>
-    <color name="loginSecondBackground">@color/grey50</color>
+    <color name="loginSecondBackground">@color/colorPrimary</color>
     <color name="loginFacebook">@color/grey30</color>
     <color name="logo">@color/colorWhite</color>
 
