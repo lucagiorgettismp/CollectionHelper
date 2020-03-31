@@ -1,7 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -10,25 +10,29 @@
         <item name="android:colorBackground">@color/background</item>
     </style>
 
-    <style name="AppTheme.NoActionBar">
+    <style name="AppTheme.NoActionBar" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="FullyTranslucent" parent="android:Theme.Translucent.NoTitleBar.Fullscreen">
-        <item name="android:progressBarStyle">@style/InvisibleProgress</item>
+    <style name="FullyTranslucent" parent="Translucent.Base">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
+
+    <style name="Translucent" parent="Translucent.Base"/>
 
     <style name="InvisibleProgress">
         <item name="android:visibility">gone</item>
     </style>
 
-    <style name="NoStatusBar" parent="AppTheme.NoActionBar">
-        <item name="android:windowTranslucentStatus">true</item>
+    <style name="Translucent.Base" parent="android:Theme.Translucent.NoTitleBar">
+        <item name="android:progressBarStyle">@style/InvisibleProgress</item>
     </style>
 
     <style name="ButtonAddMissing" parent="Base.Widget.AppCompat.ImageButton">
@@ -47,7 +51,7 @@
         <item name="backgroundTint">@color/btnEditNotes</item>
     </style>
 
-    <style name="AppTheme.Launcher" parent="NoStatusBar">
+    <style name="AppTheme.SplashScreenTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="android:windowTranslucentStatus">true</item>
     <item name="android:windowBackground">@drawable/splash_screen</item>
     <!-- Optional, on Android 5+ you can modify the colorPrimaryDark color to match the windowBackground color for further branding-->
