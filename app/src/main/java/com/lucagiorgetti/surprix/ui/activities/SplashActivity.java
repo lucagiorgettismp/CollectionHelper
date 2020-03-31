@@ -22,9 +22,6 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        boolean dark = SystemUtils.getDarkThemePreference();
-        AppCompatDelegate.setDefaultNightMode(dark ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
-
         fireAuth = FirebaseAuth.getInstance();
         fireAuthStateListener = firebaseAuth -> {
             FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();

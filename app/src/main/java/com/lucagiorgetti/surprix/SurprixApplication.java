@@ -3,10 +3,13 @@ package com.lucagiorgetti.surprix;
 import android.app.Application;
 import android.content.Context;
 
+import androidx.appcompat.app.AppCompatDelegate;
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.lucagiorgetti.surprix.model.User;
+import com.lucagiorgetti.surprix.utility.SystemUtils;
 
 import timber.log.Timber;
 
@@ -33,6 +36,8 @@ public class SurprixApplication extends Application {
     public void onCreate() {
         super.onCreate();
         mInstance = this;
+        boolean dark = SystemUtils.getDarkThemePreference();
+        AppCompatDelegate.setDefaultNightMode(dark ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
         if(BuildConfig.DEBUG){
             Timber.plant(new Timber.DebugTree());
         }
