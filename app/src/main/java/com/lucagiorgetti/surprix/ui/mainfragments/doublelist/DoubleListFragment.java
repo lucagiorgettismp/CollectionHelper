@@ -20,13 +20,12 @@ import com.google.android.material.snackbar.Snackbar;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.model.Surprise;
-import com.lucagiorgetti.surprix.ui.adapters.SurpriseRecyclerAdapter;
 import com.lucagiorgetti.surprix.utility.BaseFragment;
 import com.lucagiorgetti.surprix.utility.DatabaseUtils;
 
 public class DoubleListFragment extends BaseFragment {
 
-    private SurpriseRecyclerAdapter mAdapter;
+    private DoubleRecyclerAdapter mAdapter;
     private SearchView searchView;
     private View root;
     private View emptyList;
@@ -44,7 +43,8 @@ public class DoubleListFragment extends BaseFragment {
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new SurpriseRecyclerAdapter();
+        mAdapter = new DoubleRecyclerAdapter();
+        mAdapter.setListener(position -> deleteSurprise(mAdapter, position));
         recyclerView.setAdapter(mAdapter);
 
         doubleListViewModel.getDoubleSurprises().observe(getViewLifecycleOwner(), doubleList -> {
@@ -111,7 +111,7 @@ public class DoubleListFragment extends BaseFragment {
     }
 
 
-    private void deleteSurprise(SurpriseRecyclerAdapter mAdapter, int position) {
+    private void deleteSurprise(DoubleRecyclerAdapter mAdapter, int position) {
         Surprise surprise = mAdapter.getItemAtPosition(position);
         mAdapter.removeFilterableItem(surprise);
 
@@ -132,11 +132,11 @@ public class DoubleListFragment extends BaseFragment {
         }
 
         if (query != null && query.length() != 0) {
-            Snackbar.make(getView(), SurprixApplication.getInstance().getString(R.string.missing_removed), Snackbar.LENGTH_LONG).show();
+            Snackbar.make(getView(), SurprixApplication.getInstance().getString(R.string.double_removed), Snackbar.LENGTH_LONG).show();
         } else {
-            Snackbar.make(getView(), SurprixApplication.getInstance().getString(R.string.missing_removed), Snackbar.LENGTH_LONG)
+            Snackbar.make(getView(), SurprixApplication.getInstance().getString(R.string.double_removed), Snackbar.LENGTH_LONG)
                     .setAction(SurprixApplication.getInstance().getString(R.string.undo), view -> {
-                        DatabaseUtils.addMissing(surprise.getId());
+                        DatabaseUtils.addDouble(surprise.getId());
                         mAdapter.addFilterableItem(surprise, position);
                         mAdapter.notifyItemInserted(position);
                         if (mAdapter.getItemCount() > 0) {

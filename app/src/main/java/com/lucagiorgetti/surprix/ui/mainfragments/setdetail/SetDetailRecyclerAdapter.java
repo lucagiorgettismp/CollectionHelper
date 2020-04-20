@@ -4,7 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,14 +14,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.model.Colors;
 import com.lucagiorgetti.surprix.model.Surprise;
-import com.lucagiorgetti.surprix.utility.DatabaseUtils;
 
 import java.util.List;
 import java.util.Locale;
@@ -35,6 +33,7 @@ import java.util.Locale;
 public class SetDetailRecyclerAdapter extends RecyclerView.Adapter<SetDetailRecyclerAdapter.SetDetailViewHolder> {
 
     private List<Surprise> items;
+    private SetDetailFragment.MyClickListener listener;
 
     public Surprise getItemAtPosition(int position) {
         return this.items.get(position);
@@ -42,36 +41,18 @@ public class SetDetailRecyclerAdapter extends RecyclerView.Adapter<SetDetailRecy
 
     @NonNull
     @Override
-    public SetDetailViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public SetDetailViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int position) {
         final View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.element_set_detail, parent, false);
 
-        return new SetDetailViewHolder(v, new SetDetailViewHolder.MyClickListener() {
-            @Override
-            public void onAddMissingClick(int p) {
-                Surprise s = getItemAtPosition(p);
-                DatabaseUtils.addMissing(s.getId());
-                Snackbar.make(v, SurprixApplication.getInstance().getString(R.string.added_to_missings) + ": " + s.getDescription(), Snackbar.LENGTH_LONG)
-                        .setAction(SurprixApplication.getInstance().getString(R.string.undo), view -> DatabaseUtils.removeMissing(s.getId())).show();
-
-            }
-
-            @Override
-            public void onAddDoubleClick(int p) {
-                Surprise s = getItemAtPosition(p);
-                DatabaseUtils.addDouble(s.getId());
-                Snackbar.make(v, SurprixApplication.getInstance().getString(R.string.added_to_doubles) + ": " + s.getDescription(), Snackbar.LENGTH_LONG)
-                        .setAction(SurprixApplication.getInstance().getString(R.string.undo), view -> DatabaseUtils.removeDouble(s.getId())).show();
-
-            }
-        });
+        return new SetDetailViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull SetDetailViewHolder holder, int position) {
         Surprise s = items.get(position);
         Context ctx = SurprixApplication.getSurprixContext();
-        if (s.isSet_effective_code()){
-            holder.vDescription.setText(String.format(Locale.getDefault(), "%s - %s", s.getCode(),s.getDescription()));
+        if (s.isSet_effective_code()) {
+            holder.vDescription.setText(String.format(Locale.getDefault(), "%s - %s", s.getCode(), s.getDescription()));
         } else {
             holder.vDescription.setText(s.getDescription());
         }
@@ -124,6 +105,12 @@ public class SetDetailRecyclerAdapter extends RecyclerView.Adapter<SetDetailRecy
                     break;
             }
         }
+        holder.add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onSurpriseAdded(s);
+            }
+        });
     }
 
     @Override
@@ -138,13 +125,15 @@ public class SetDetailRecyclerAdapter extends RecyclerView.Adapter<SetDetailRecy
         this.items = surprises;
     }
 
-    static class SetDetailViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public void setListener(SetDetailFragment.MyClickListener myClickListener) {
+        this.listener = myClickListener;
+    }
+
+    static class SetDetailViewHolder extends RecyclerView.ViewHolder {
         View vLayout;
         TextView vDescription;
         ImageView vImage;
-        ImageButton btnAddMissing;
-        ImageButton btnAddDouble;
-        MyClickListener listner;
+        Button add;
         ImageView vStar1On;
         ImageView vStar2On;
         ImageView vStar3On;
@@ -152,42 +141,20 @@ public class SetDetailRecyclerAdapter extends RecyclerView.Adapter<SetDetailRecy
         ImageView vStar2Off;
         ImageView vStar3Off;
 
-        SetDetailViewHolder(View v, MyClickListener listener) {
+
+        SetDetailViewHolder(View v) {
             super(v);
 
-            this.listner = listener;
             vLayout = v.findViewById(R.id.layout_item_titlebar);
             vDescription = v.findViewById(R.id.txv_item_desc);
             vImage = v.findViewById(R.id.img_item);
-            btnAddMissing = v.findViewById(R.id.btn_item_add_missing);
-            btnAddDouble = v.findViewById(R.id.btn_item_add_double);
+            add = v.findViewById(R.id.add_btn);
             vStar1On = v.findViewById(R.id.img_item_star_1_on);
             vStar2On = v.findViewById(R.id.img_item_star_2_on);
             vStar3On = v.findViewById(R.id.img_item_star_3_on);
             vStar1Off = v.findViewById(R.id.img_item_star_1_off);
             vStar2Off = v.findViewById(R.id.img_item_star_2_off);
             vStar3Off = v.findViewById(R.id.img_item_star_3_off);
-
-            btnAddDouble.setOnClickListener(this);
-            btnAddMissing.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.btn_item_add_missing:
-                    listner.onAddMissingClick(this.getLayoutPosition());
-                    break;
-                case R.id.btn_item_add_double:
-                    listner.onAddDoubleClick(this.getLayoutPosition());
-                    break;
-            }
-        }
-
-        public interface MyClickListener {
-            void onAddMissingClick(int p);
-
-            void onAddDoubleClick(int p);
         }
     }
 

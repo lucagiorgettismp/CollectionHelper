@@ -131,6 +131,10 @@
     <string name="password_cannot_be_null">Password cannot be null</string>
     <string name="settings_change_country_key" translatable="false">settings_change_country</string>
     <string name="change_country">Change country</string>
-    <string name="settings_logout_key">settings_logout</string>
+    <string name="settings_logout_key" translatable="false">settings_logout</string>
     <string name="logout">Logout</string>
+    <string name="add">Add</string>
+    <string name="add_surprise_dialog_title">Add surprise</string>
+    <string name="add_surprise_dialog_message">Which list do you want to add</string>
+    <string name="double_removed">Double surprise removed</string>
 </resources>

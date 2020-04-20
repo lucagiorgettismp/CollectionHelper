@@ -1,4 +1,4 @@
-package com.lucagiorgetti.surprix.ui.adapters;
+package com.lucagiorgetti.surprix.ui.mainfragments.doublelist;
 
 import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
@@ -26,6 +26,7 @@ import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.model.Colors;
 import com.lucagiorgetti.surprix.model.ExtraLocales;
 import com.lucagiorgetti.surprix.model.Surprise;
+import com.lucagiorgetti.surprix.ui.mainfragments.missinglist.SurpRecylerAdapterListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,10 +38,11 @@ import java.util.Locale;
  * Created by Luca on 28/10/2017.
  */
 
-public class SurpriseRecyclerAdapter extends ListAdapter<Surprise, SurpriseRecyclerAdapter.SurpViewHolder> implements Filterable {
-   private List<Surprise> filterableList;
+public class DoubleRecyclerAdapter extends ListAdapter<Surprise, DoubleRecyclerAdapter.SurpViewHolder> implements Filterable {
+    private DoubleRecyclerAdapterListener listener;
+    private List<Surprise> filterableList;
 
-    public SurpriseRecyclerAdapter() {
+    public DoubleRecyclerAdapter() {
         super(DIFF_CALLBACK);
     }
 
@@ -68,8 +70,8 @@ public class SurpriseRecyclerAdapter extends ListAdapter<Surprise, SurpriseRecyc
     public void onBindViewHolder(@NonNull SurpViewHolder holder, int position) {
 
         Surprise surp = getItem(position);
-        if (surp.isSet_effective_code()){
-            holder.vSetName.setText(surp.getCode() + " - " +surp.getSet_name());
+        if (surp.isSet_effective_code()) {
+            holder.vSetName.setText(surp.getCode() + " - " + surp.getSet_name());
         } else {
             holder.vSetName.setText(surp.getSet_name());
         }
@@ -112,6 +114,12 @@ public class SurpriseRecyclerAdapter extends ListAdapter<Surprise, SurpriseRecyc
         holder.vMissingBottom.setVisibility(View.GONE);
         holder.vBtnOwners.setVisibility(View.GONE);
 
+        holder.delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onSurpriseDelete(position);
+            }
+        });
 
         Integer rarity = surp.getIntRarity();
         holder.vStar1On.setVisibility(View.GONE);
@@ -197,12 +205,17 @@ public class SurpriseRecyclerAdapter extends ListAdapter<Surprise, SurpriseRecyc
         this.filterableList.add(position, surprise);
     }
 
+    public void setListener(DoubleRecyclerAdapterListener listener) {
+        this.listener = listener;
+    }
+
     static class SurpViewHolder extends RecyclerView.ViewHolder {
         TextView vSetName;
         TextView vDescription;
         TextView vYear;
         TextView vProducer;
         TextView vNation;
+        TextView delete;
         ImageView vImage;
         ImageView vStar1On;
         ImageView vStar2On;
@@ -225,6 +238,7 @@ public class SurpriseRecyclerAdapter extends ListAdapter<Surprise, SurpriseRecyc
             vYear = v.findViewById(R.id.txv_surp_elem_year);
             vProducer = v.findViewById(R.id.txv_surp_elem_producer);
             vNation = v.findViewById(R.id.txv_surp_elem_nation);
+            delete = v.findViewById(R.id.delete);
             vImage = v.findViewById(R.id.img_surp_elem);
             vLayout = v.findViewById(R.id.layout_surp_elem_titlebar);
             vStar1On = v.findViewById(R.id.img_surp_elem_star_1_on);

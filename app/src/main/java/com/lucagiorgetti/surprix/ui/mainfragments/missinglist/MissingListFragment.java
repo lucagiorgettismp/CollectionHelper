@@ -40,7 +40,6 @@ import com.lucagiorgetti.surprix.model.MissingDetail;
 import com.lucagiorgetti.surprix.model.MissingSurprise;
 import com.lucagiorgetti.surprix.model.Surprise;
 import com.lucagiorgetti.surprix.model.User;
-import com.lucagiorgetti.surprix.ui.adapters.SurpRecylerAdapterListener;
 import com.lucagiorgetti.surprix.utility.BaseFragment;
 import com.lucagiorgetti.surprix.utility.Common;
 import com.lucagiorgetti.surprix.utility.DatabaseUtils;
@@ -111,6 +110,11 @@ public class MissingListFragment extends BaseFragment {
             public void onDeleteNoteClick(Surprise surp) {
                 deleteNotes(surp);
                 missingListViewModel.loadMissingSurprises();
+            }
+
+            @Override
+            public void onSurpriseDelete(int position) {
+                deleteSurprise(mAdapter, position);
             }
         });
         recyclerView.setAdapter(mAdapter);

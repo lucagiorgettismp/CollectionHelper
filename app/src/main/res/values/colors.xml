@@ -42,6 +42,7 @@
     <color name="navbarItem">@color/colorPrimary</color>
 
     <color name="hintTextColor">@color/grey70</color>
+    <color name="xColor">@color/grey50</color>
 
     <color name="lightYellowNotes">#9AFFD95B</color>
     <color name="colorPrimary">#00838f</color>

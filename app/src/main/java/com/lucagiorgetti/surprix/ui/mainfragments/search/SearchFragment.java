@@ -21,6 +21,8 @@ import com.lucagiorgetti.surprix.utility.BaseFragment;
 import com.lucagiorgetti.surprix.utility.RecyclerItemClickListener;
 import com.lucagiorgetti.surprix.utility.SystemUtils;
 
+import timber.log.Timber;
+
 public class SearchFragment extends BaseFragment {
 
     private SearchMode mode;

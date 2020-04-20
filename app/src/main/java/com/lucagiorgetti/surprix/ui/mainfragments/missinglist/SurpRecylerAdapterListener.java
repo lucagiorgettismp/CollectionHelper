@@ -1,4 +1,4 @@
-package com.lucagiorgetti.surprix.ui.adapters;
+package com.lucagiorgetti.surprix.ui.mainfragments.missinglist;
 
 import com.lucagiorgetti.surprix.model.MissingDetail;
 import com.lucagiorgetti.surprix.model.Surprise;
@@ -8,5 +8,7 @@ public interface SurpRecylerAdapterListener {
 
     void onSaveNotesClick(Surprise surprise, MissingDetail detail);
 
-    void onDeleteNoteClick(Surprise surp);
+    void onDeleteNoteClick(Surprise surprise);
+
+    void onSurpriseDelete(int position);
 }

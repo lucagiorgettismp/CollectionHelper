@@ -29,7 +29,6 @@ import com.lucagiorgetti.surprix.model.ExtraLocales;
 import com.lucagiorgetti.surprix.model.MissingDetail;
 import com.lucagiorgetti.surprix.model.MissingSurprise;
 import com.lucagiorgetti.surprix.model.Surprise;
-import com.lucagiorgetti.surprix.ui.adapters.SurpRecylerAdapterListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -152,6 +151,13 @@ public class MissingRecyclerAdapter extends ListAdapter<MissingSurprise, Missing
             holder.vNotesText.clearFocus();
         });
 
+        holder.delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onSurpriseDelete(position);
+            }
+        });
+
         Integer rarity = surp.getIntRarity();
         holder.vStar1On.setVisibility(View.GONE);
         holder.vStar2On.setVisibility(View.GONE);
@@ -247,6 +253,7 @@ public class MissingRecyclerAdapter extends ListAdapter<MissingSurprise, Missing
         TextView vYear;
         TextView vProducer;
         TextView vNation;
+        TextView delete;
         ImageView vImage;
         ImageView vStar1On;
         ImageView vStar2On;
@@ -281,6 +288,7 @@ public class MissingRecyclerAdapter extends ListAdapter<MissingSurprise, Missing
             vBtnDeleteNotes = v.findViewById(R.id.delete_note_btn);
             vMissingBottom = v.findViewById(R.id.missing_bottom_layout);
             vNotesText = v.findViewById(R.id.note_edit_text);
+            delete = v.findViewById(R.id.delete);
         }
     }
 }

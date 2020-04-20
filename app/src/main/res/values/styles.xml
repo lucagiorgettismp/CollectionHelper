@@ -35,14 +35,6 @@
         <item name="android:progressBarStyle">@style/InvisibleProgress</item>
     </style>
 
-    <style name="ButtonAddMissing" parent="Base.Widget.AppCompat.ImageButton">
-        <item name="backgroundTint">@color/btnAddMissing</item>
-    </style>
-
-    <style name="ButtonAddDouble" parent="Base.Widget.AppCompat.ImageButton">
-        <item name="backgroundTint">@color/btnAddDouble</item>
-    </style>
-
     <style name="ButtonShowMissingOwner" parent="Base.Widget.AppCompat.ImageButton">
         <item name="backgroundTint">@color/btnShowMissingOwner</item>
     </style>
