@@ -226,18 +226,18 @@
             android:visibility="visible"
             android:weightSum="1">
 
-            <RelativeLayout
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:layout_weight="1"
                 android:background="@drawable/round_corner_rectangle">
 
                 <EditText
                     android:id="@+id/note_edit_text"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:ems="10"
+                    android:layout_weight="1"
                     android:gravity="start|top"
                     android:hint="Note"
                     android:imeOptions="actionDone"
@@ -246,14 +246,6 @@
                     android:textColorHint="@color/notesTextColor"
                     android:textColorLink="@color/notesTextColorLink"
                     android:textSize="14sp" />
-            </RelativeLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:gravity="center"
-                android:orientation="vertical">
 
                 <ImageButton
                     android:id="@+id/delete_note_btn"
@@ -268,6 +260,7 @@
                     android:tint="@color/btnIcon"
                     app:srcCompat="@drawable/ic_eraser" />
             </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>
