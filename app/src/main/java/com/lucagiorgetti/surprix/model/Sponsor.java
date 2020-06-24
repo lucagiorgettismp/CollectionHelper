@@ -1,7 +1,5 @@
 package com.lucagiorgetti.surprix.model;
 
-import android.graphics.drawable.Drawable;
-
 /**
  * Created by Utente on 06/03/2018.
  */

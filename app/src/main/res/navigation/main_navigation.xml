@@ -2,16 +2,13 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mobile_navigation"
     app:startDestination="@+id/navigation_missing_list">
 
     <fragment
         android:id="@+id/navigation_missing_list"
         android:name="com.lucagiorgetti.surprix.ui.mainfragments.missinglist.MissingListFragment"
         tools:layout="@layout/fragment_missing_list" >
-        <action
-            android:id="@+id/action_navigation_missing_list_to_navigation_missing_owners"
-            app:destination="@id/navigation_missing_owners" />
+        <action app:destination="@id/navigation_missing_owners" />
     </fragment>
 
     <fragment
@@ -25,14 +22,12 @@
         android:label="@string/title_catalog"
         tools:layout="@layout/fragment_catalog">
         <action
-            android:id="@+id/producerSelectedAction"
             app:destination="@id/navigation_year"
             app:enterAnim="@anim/slide_from_right"
             app:exitAnim="@anim/slide_to_left"
             app:popEnterAnim="@anim/slide_from_left"
             app:popExitAnim="@anim/slide_to_right" />
         <action
-            android:id="@+id/goToSearch"
             app:destination="@id/navigation_search"
             app:enterAnim="@anim/slide_from_right"
             app:exitAnim="@anim/slide_to_left"
@@ -50,7 +45,6 @@
             android:name="producer_name"
             app:argType="string" />
         <action
-            android:id="@+id/yearSelectedAction"
             app:destination="@id/navigation_set_list"
             app:enterAnim="@anim/slide_from_right"
             app:exitAnim="@anim/slide_to_left"
@@ -65,7 +59,6 @@
             android:name="year_id"
             app:argType="string" />
         <action
-            android:id="@+id/setSelectedAction"
             app:destination="@id/navigation_set_detail"
             app:enterAnim="@anim/slide_from_right"
             app:exitAnim="@anim/slide_to_left"
@@ -92,7 +85,6 @@
         android:name="com.lucagiorgetti.surprix.ui.mainfragments.search.SearchFragment"
         tools:layout="@layout/fragment_search">
         <action
-            android:id="@+id/onSearchedItemClick"
             app:destination="@id/navigation_set_detail"
             app:enterAnim="@anim/slide_from_right"
             app:exitAnim="@anim/slide_to_left"
@@ -103,9 +95,7 @@
         android:id="@+id/navigation_missing_owners"
         android:name="com.lucagiorgetti.surprix.ui.mainfragments.missingowners.MissingOwnersFragment"
         tools:layout="@layout/fragment_missing_owners" >
-        <action
-            android:id="@+id/action_navigation_missing_owners_to_navigation_other_for_you"
-            app:destination="@id/navigation_other_for_you" />
+        <action app:destination="@id/navigation_other_for_you" />
         <argument android:name="missingSurpriseId"
             app:argType="string" />
     </fragment>
