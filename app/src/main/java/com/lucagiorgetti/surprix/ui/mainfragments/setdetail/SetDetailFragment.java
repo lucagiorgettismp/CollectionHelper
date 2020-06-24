@@ -76,11 +76,6 @@ public class SetDetailFragment extends BaseFragment {
         return root;
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-    }
-
     public interface MyClickListener {
         void onSurpriseAdded(Surprise s);
     }

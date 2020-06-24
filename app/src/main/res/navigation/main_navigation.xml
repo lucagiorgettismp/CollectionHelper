@@ -8,7 +8,11 @@
     <fragment
         android:id="@+id/navigation_missing_list"
         android:name="com.lucagiorgetti.surprix.ui.mainfragments.missinglist.MissingListFragment"
-        tools:layout="@layout/fragment_missing_list" />
+        tools:layout="@layout/fragment_missing_list" >
+        <action
+            android:id="@+id/action_navigation_missing_list_to_navigation_missing_owners"
+            app:destination="@id/navigation_missing_owners" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_double_list"
@@ -94,5 +98,26 @@
             app:exitAnim="@anim/slide_to_left"
             app:popEnterAnim="@anim/slide_from_left"
             app:popExitAnim="@anim/slide_to_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_missing_owners"
+        android:name="com.lucagiorgetti.surprix.ui.mainfragments.missingowners.MissingOwnersFragment"
+        tools:layout="@layout/fragment_missing_owners" >
+        <action
+            android:id="@+id/action_navigation_missing_owners_to_navigation_other_for_you"
+            app:destination="@id/navigation_other_for_you" />
+        <argument android:name="missingSurpriseId"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_other_for_you"
+        android:name="com.lucagiorgetti.surprix.ui.mainfragments.otherforyou.OtherForYouFragment"
+        tools:layout="@layout/fragment_other_for_you">
+        <argument
+            android:name="ownerUsername"
+            app:argType="string" />
+        <argument
+            android:name="ownerEmail"
+            app:argType="string" />
     </fragment>
 </navigation>

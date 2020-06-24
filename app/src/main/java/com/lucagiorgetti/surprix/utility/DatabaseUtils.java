@@ -106,7 +106,7 @@ public class DatabaseUtils {
         reference.child("surprise_doubles").child(surpId).child(username).setValue(null);
     }
 
-    public static void getDoubleOwners(String surpId, final FirebaseListCallback<User> listen) {
+    public static void getMissingOwners(String surpId, final FirebaseListCallback<User> listen) {
         listen.onStart();
         final ArrayList<User> owners = new ArrayList<>();
         reference.child("surprise_doubles").child(surpId).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -242,6 +242,60 @@ public class DatabaseUtils {
             }
         });
     }
+    public static void getMissingSurprisesByOwner(String ownerUsername, FirebaseListCallback<Surprise> listen) {
+        listen.onStart();
+
+        if (username != null) {
+            final ArrayList<Surprise> surprises = new ArrayList<>();
+
+            reference.child("missings").child(username).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        for (DataSnapshot d : dataSnapshot.getChildren()) {
+                            String key = d.getKey();
+
+                            reference.child("user_doubles").child(ownerUsername).child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    if (dataSnapshot.exists()){
+                                        reference.child("surprises").child(Objects.requireNonNull(key)).orderByChild("description").addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                if (snapshot.exists()) {
+                                                    Surprise s = snapshot.getValue(Surprise.class);
+                                                    surprises.add(s);
+                                                }
+                                                listen.onSuccess(surprises);
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                                listen.onFailure();
+                                            }
+                                        });
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                    listen.onFailure();
+                                }
+                            });
+                        }
+                    } else {
+                        listen.onSuccess(null);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    listen.onFailure();
+                }
+            });
+        }
+    }
+
 
     public static void getMissingsForUsername(final FirebaseListCallback<MissingSurprise> listen) {
         listen.onStart();

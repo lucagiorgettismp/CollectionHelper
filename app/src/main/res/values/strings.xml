@@ -53,7 +53,6 @@
     <string name="surprise_image">surprise image</string>
     <string name="set_image">set image</string>
     <string name="mail_subject" translatable="false">Surprix - %1$s</string>
-    <string name="mail_exchange_body"><![CDATA[Hi,         <div>I\'m %1$s, thanks to Surprix I\'ve seen you have %2$s - %3$s available into your doubles, and I\'m interested in it.</div>         <div>Would you like to make an exchange?</div>]]></string>
     <string name="mailto_surprix" translatable="false">mailto:info.surprix@gmail.com</string>
     <string name="double_owners_dialog_title" translatable="false">%s - %s</string>
     <string name="network_unavailable">Network connection not available. Please retry later</string>
@@ -105,7 +104,6 @@
     <string name="surprises">Surprises</string>
     <string name="sets">Sets</string>
     <string name="search_title">Search</string>
-    <string name="mail_exchange_body_en" translatable="false"><![CDATA[Hi,         <div>I\'m %1$s, thanks to Surprix I\'ve seen you have %2$s - %3$s available into your doubles, and I\'m interested in it.</div>         <div>Would you like to make an exchange?</div>]]></string>
     <string name="email_app_chooser">Select the e-mail app</string>
     <string name="signup_mail_existinig">The e-mail is just present in our database. Maybe you have already signed up?</string>
     <string name="signup_weak_password">The password you entered is too weak.</string>
@@ -137,4 +135,7 @@
     <string name="add_surprise_dialog_title">Add surprise</string>
     <string name="add_surprise_dialog_message">Which list do you want to add</string>
     <string name="double_removed">Double surprise removed</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

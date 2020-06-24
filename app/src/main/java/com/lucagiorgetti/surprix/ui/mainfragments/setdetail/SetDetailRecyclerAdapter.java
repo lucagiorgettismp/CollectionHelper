@@ -105,12 +105,7 @@ public class SetDetailRecyclerAdapter extends RecyclerView.Adapter<SetDetailRecy
                     break;
             }
         }
-        holder.add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onSurpriseAdded(s);
-            }
-        });
+        holder.add.setOnClickListener(v -> listener.onSurpriseAdded(s));
     }
 
     @Override

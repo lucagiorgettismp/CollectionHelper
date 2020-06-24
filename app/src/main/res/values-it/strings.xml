@@ -93,7 +93,6 @@
     <string name="surprises">Sorpresine</string>
     <string name="sets">Serie</string>
     <string name="search_title">Ricerca</string>
-    <string name="mail_exchange_body" translatable="false"><![CDATA[Ciao,         <div>Sono %1$s, tramite Surprix ho visto che tra i doppi hai %2$s - %3$s, a cui sono interessato.</div>         <div>Ti andrebbe di scambiare?</div>]]></string>
     <string name="email_app_chooser">Seleziona l\' app per inviare le email</string>
     <string name="signup_mail_existinig">La mail è già presente nel nostro databese. Sicuro di non esserti già iscritto?</string>
     <string name="signup_weak_password">La password inserito è troppo semplice.</string>

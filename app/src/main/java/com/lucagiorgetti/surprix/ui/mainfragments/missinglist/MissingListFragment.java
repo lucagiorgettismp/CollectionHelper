@@ -1,25 +1,19 @@
 package com.lucagiorgetti.surprix.ui.mainfragments.missinglist;
 
 import android.Manifest;
-import android.app.AlertDialog;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.text.Html;
-import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,11 +29,9 @@ import com.karumi.dexter.listener.single.PermissionListener;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.listenerInterfaces.CallbackInterface;
-import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseListCallback;
 import com.lucagiorgetti.surprix.model.MissingDetail;
 import com.lucagiorgetti.surprix.model.MissingSurprise;
 import com.lucagiorgetti.surprix.model.Surprise;
-import com.lucagiorgetti.surprix.model.User;
 import com.lucagiorgetti.surprix.utility.BaseFragment;
 import com.lucagiorgetti.surprix.utility.Common;
 import com.lucagiorgetti.surprix.utility.DatabaseUtils;
@@ -48,7 +40,6 @@ import com.lucagiorgetti.surprix.utility.PDFUtils;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class MissingListFragment extends BaseFragment {
     private MissingRecyclerAdapter mAdapter;
@@ -97,7 +88,7 @@ public class MissingListFragment extends BaseFragment {
         mAdapter.setListener(new SurpRecylerAdapterListener() {
             @Override
             public void onShowMissingOwnerClick(Surprise surprise) {
-                showMissingOwners(surprise, container);
+                Navigation.findNavController(root).navigate(MissingListFragmentDirections.actionNavigationMissingListToNavigationMissingOwners(surprise.getId()));
             }
 
             @Override
@@ -131,14 +122,14 @@ public class MissingListFragment extends BaseFragment {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if (missingSurprises != null && !missingSurprises.isEmpty()){
+                    if (missingSurprises != null && !missingSurprises.isEmpty()) {
                         fab.show();
                     }
                 }
             }
         });
 
-        missingListViewModel.getMissingSurprises().observe(getActivity(), missingList -> {
+        missingListViewModel.getMissingSurprises().observe(getViewLifecycleOwner(), missingList -> {
             emptyList.setVisibility(missingList == null || missingList.isEmpty() ? View.VISIBLE : View.GONE);
             missingSurprises = missingList;
             mAdapter.submitList(missingList);
@@ -151,7 +142,7 @@ public class MissingListFragment extends BaseFragment {
             }
         });
 
-        missingListViewModel.isLoading().observe(getActivity(), isLoading -> progress.setVisibility(isLoading ? View.VISIBLE : View.GONE));
+        missingListViewModel.isLoading().observe(getViewLifecycleOwner(), isLoading -> progress.setVisibility(isLoading ? View.VISIBLE : View.GONE));
 
         initSwipe(recyclerView);
         setHasOptionsMenu(true);
@@ -240,63 +231,6 @@ public class MissingListFragment extends BaseFragment {
         }
     }
 
-    private void showMissingOwners(final Surprise missing, ViewGroup container) {
-        final DoublesOwnersListAdapter adapter = new DoublesOwnersListAdapter(getContext() );
-        final View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_doubles,  container, false);
-        TextView dialogTitle = view.findViewById(R.id.doubles_dialog_title);
-        final TextView infoTxv = view.findViewById(R.id.doubles_dialog_info);
-        final TextView emptyListTxv = view.findViewById(R.id.doubles_dialog_empty_list);
-        dialogTitle.setText(String.format(SurprixApplication.getInstance().getResources().getString(R.string.double_owners_dialog_title), missing.getCode(), missing.getDescription()));
-        final ListView listView = view.findViewById(R.id.doubles_dialog_list);
-
-        User currentUser = SurprixApplication.getInstance().getCurrentUser();
-        listView.setAdapter(adapter);
-        DatabaseUtils.getDoubleOwners(missing.getId(), new FirebaseListCallback<User>() {
-            @Override
-            public void onSuccess(List<User> users) {
-                if (users == null || users.isEmpty()) {
-                    emptyListTxv.setVisibility(View.VISIBLE);
-                    infoTxv.setVisibility(View.GONE);
-                } else {
-                    final ArrayList<User> owners = new ArrayList<>();
-                    final ArrayList<User> abroad_owners = new ArrayList<>();
-                    for (User u : users) {
-                        if (Objects.equals(u.getCountry(), currentUser.getCountry())) {
-                            owners.add(u);
-                        } else {
-                            abroad_owners.add(u);
-                        }
-                    }
-
-                    owners.addAll(abroad_owners);
-                    adapter.addOwners(owners);
-                    adapter.notifyDataSetChanged();
-                    emptyListTxv.setVisibility(View.GONE);
-                    infoTxv.setVisibility(View.VISIBLE);
-                }
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setView(view);
-                final AlertDialog alert = builder.create();
-                alert.show();
-
-                listView.setOnItemClickListener((parent, v, position, id) -> {
-                    alert.dismiss();
-                    final User owner = adapter.getItem(position);
-                    sendEmailToUser(owner, missing);
-                });
-            }
-
-            @Override
-            public void onStart() {
-            }
-
-            @Override
-            public void onFailure() {
-
-            }
-        });
-    }
-
     private void saveNotes(Surprise surprise, MissingDetail detail) {
         DatabaseUtils.addDetailForMissing(surprise.getId(), detail, new CallbackInterface<Boolean>() {
             @Override
@@ -335,41 +269,5 @@ public class MissingListFragment extends BaseFragment {
 
             }
         });
-    }
-
-
-    private void sendEmailToUser(User owner, Surprise missing) {
-        User currentUser = SurprixApplication.getInstance().getCurrentUser();
-        String to = owner.getEmail().replaceAll(",", "\\.");
-        String subject = SurprixApplication.getInstance().getString(R.string.mail_subject, currentUser.getUsername());
-
-        String html;
-        if (currentUser.getCountry().equals(owner.getCountry())) {
-            html = SurprixApplication.getInstance().getString(R.string.mail_exchange_body, currentUser.getUsername(), missing.getCode(), missing.getDescription());
-        } else {
-            html = SurprixApplication.getInstance().getString(R.string.mail_exchange_body_en, currentUser.getUsername(), missing.getCode(), missing.getDescription());
-        }
-
-        Spanned body;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            body = Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY);
-        } else {
-            body = Html.fromHtml(html);
-        }
-
-        sendMail(to, subject, body);
-    }
-
-    public void sendMail(String recipient, String subject, Spanned html_body) {
-        Intent intent = new Intent(Intent.ACTION_SENDTO);
-        intent.setType("message/rfc822");
-        intent.setData(Uri.parse("mailto:" + recipient));
-        if (subject != null && !subject.isEmpty()) {
-            intent.putExtra(Intent.EXTRA_SUBJECT, subject);
-        }
-        if (html_body != null && html_body.length() > 0) {
-            intent.putExtra(Intent.EXTRA_TEXT, html_body);
-        }
-        startActivity(Intent.createChooser(intent, getString(R.string.email_app_chooser)));
     }
 }
