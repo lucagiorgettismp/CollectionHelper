@@ -26,6 +26,7 @@ import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.model.Colors;
 import com.lucagiorgetti.surprix.model.ExtraLocales;
 import com.lucagiorgetti.surprix.model.Surprise;
+import com.lucagiorgetti.surprix.ui.mainfragments.missinglist.SurpRecylerAdapterListener;
 
 import java.util.ArrayList;
 import java.util.List;

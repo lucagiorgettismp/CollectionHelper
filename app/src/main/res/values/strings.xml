@@ -6,6 +6,8 @@
     <string name="old_password">Old Password</string>
     <string name="new_password">New Password</string>
     <string name="change_password">Change Password</string>
+    <string name="surprise">Surprise</string>
+    <string name="who_have_what_you_miss">Users who have you are looking for:</string>
     <string name="nobody_have_what_you_miss">Unfortunately, nobody have what you are looking for</string>
     <string name="username" translatable="false">Username</string>
     <string name="sign_up">Sign Up</string>
@@ -26,6 +28,7 @@
     <string name="search">Search</string>
     <string name="data_sync_error">Data synchronization error</string>
     <string name="added_to_missings">Added to missing list</string>
+    <string name="added_to_doubles">Added to double list</string>
     <string name="wrong_email_or_password">Wrong e-mail or password</string>
     <string name="mail_successfully_sent">E-mail successfully sent</string>
     <string name="auth_failed">Authentication failed</string>
@@ -45,11 +48,13 @@
     <string name="username_existing">Username already exists</string>
     <string name="list_is_empty">List is empty. You can add items from the catalog!</string>
     <string name="back">Back</string>
+    <string name="add_to_missings">Add to missing list</string>
     <string name="add_to_doubles">Add to double list</string>
     <string name="surprise_image">surprise image</string>
     <string name="set_image">set image</string>
     <string name="mail_subject" translatable="false">Surprix - %1$s</string>
     <string name="mailto_surprix" translatable="false">mailto:info.surprix@gmail.com</string>
+    <string name="double_owners_dialog_title" translatable="false">%s - %s</string>
     <string name="network_unavailable">Network connection not available. Please retry later</string>
     <string name="signup_email_format">Please check the e-mail format</string>
     <string name="privacy_policy">Privacy policy</string>
@@ -132,4 +137,5 @@
     <string name="double_removed">Double surprise removed</string>
 
     <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

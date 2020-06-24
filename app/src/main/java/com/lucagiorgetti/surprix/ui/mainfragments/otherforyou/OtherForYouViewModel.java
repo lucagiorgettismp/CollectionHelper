@@ -5,12 +5,16 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
+import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseListCallback;
 import com.lucagiorgetti.surprix.model.Surprise;
+import com.lucagiorgetti.surprix.model.User;
 import com.lucagiorgetti.surprix.ui.BaseViewModel;
 import com.lucagiorgetti.surprix.utility.DatabaseUtils;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class OtherForYouViewModel extends BaseViewModel {
     private MutableLiveData<List<Surprise>> otherForYou;

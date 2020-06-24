@@ -14,12 +14,14 @@
         android:layout_gravity="center_horizontal|center"
         android:visibility="gone" />
     <LinearLayout
+        android:id="@+id/other_for_you_empty_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:gravity="center">
 
         <TextView
+            android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/nobody_have_what_you_miss" />

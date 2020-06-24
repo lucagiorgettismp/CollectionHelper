@@ -25,6 +25,9 @@
     <color name="cardTextColor">@color/grey20</color>
     <color name="starColor">@color/colorPrimary</color>
 
+    <color name="btnAddDouble">@color/colorSecondary</color>
+    <color name="btnAddMissing">@android:color/holo_green_light</color>
+
     <color name="btnShowMissingOwner">@color/colorPrimary</color>
     <color name="btnEditNotes">@color/colorSecondary</color>
 

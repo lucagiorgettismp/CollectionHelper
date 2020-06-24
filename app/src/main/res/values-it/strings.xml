@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="added_to_doubles">Aggiunto ai doppi</string>
     <string name="added_to_missings">Aggiunto ai mancanti</string>
     <string name="auth_failed">Errore di autenticazione</string>
     <string name="change_password">Cambia password</string>
@@ -23,6 +24,8 @@
     <string name="settings">Impostazioni</string>
     <string name="sign_up">Registrati</string>
     <string name="something_went_wrong">Ci sono stati errori</string>
+    <string name="surprise">Sorpresina</string>
+    <string name="who_have_what_you_miss">Utenti che hanno quello che cerchi:</string>
     <string name="wrong_email_or_password">E-mail o Password errata</string>
     <string name="year">Anno</string>
     <string name="signup_complete_all_fields">Completa tutti i campi prima di procedere alla registrazione</string>
@@ -38,6 +41,7 @@
     <string name="username_existing">Username già esistente</string>
     <string name="list_is_empty">La lista è vuota. Aggiungi elementi tramite il catalogo!</string>
     <string name="back">Indietro</string>
+    <string name="add_to_missings">Aggiungi ai mancanti</string>
     <string name="add_to_doubles">Aggiungi ai doppi</string>
     <string name="surprise_image">immagine sorpresina</string>
     <string name="set_image">immagine serie</string>
