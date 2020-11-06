@@ -26,8 +26,8 @@ import com.lucagiorgetti.surprix.listenerInterfaces.CallbackInterface;
 import com.lucagiorgetti.surprix.listenerInterfaces.CallbackWithExceptionInterface;
 import com.lucagiorgetti.surprix.utility.AuthUtils;
 import com.lucagiorgetti.surprix.utility.BaseFragment;
-import com.lucagiorgetti.surprix.utility.DatabaseUtils;
 import com.lucagiorgetti.surprix.utility.SystemUtils;
+import com.lucagiorgetti.surprix.utility.dao.UserDao;
 import com.mikelau.countrypickerx.CountryPickerDialog;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
@@ -116,7 +116,7 @@ public class SignUpFragment extends BaseFragment {
                     //progress.setVisibility(View.INVISIBLE);
                     Toast.makeText(getContext(), R.string.signup_complete_all_fields, Toast.LENGTH_SHORT).show();
                 } else {
-                    DatabaseUtils.generateUser(email, username, nation, true);
+                    UserDao.generateUser(email, username, nation, true);
                     SystemUtils.firstTimeOpeningApp();
                     SystemUtils.enableFCM();
                     Navigation.findNavController(view).navigate(SignUpFragmentDirections.actionNavigationLoginSignupToMainActivity());
@@ -133,7 +133,7 @@ public class SignUpFragment extends BaseFragment {
                     hideLoading();
                     Toast.makeText(getApplicationContext(), R.string.signup_email_format, Toast.LENGTH_SHORT).show();
                 } else {
-                    DatabaseUtils.checkUsernameDoesntExist(username, new CallbackInterface<Boolean>() {
+                    UserDao.checkUsernameAvailable(username, new CallbackInterface<Boolean>() {
                         @Override
                         public void onStart() {
                             showLoading();
@@ -150,7 +150,7 @@ public class SignUpFragment extends BaseFragment {
 
                                     @Override
                                     public void onSuccess() {
-                                        DatabaseUtils.generateUser(email, username, nation, false);
+                                        UserDao.generateUser(email, username, nation, false);
                                         AuthUtils.signInWithEmailAndPassword(activity, email, password, new CallbackInterface<Boolean>() {
                                             @Override
                                             public void onStart() {

@@ -10,12 +10,12 @@ public class MissingSurprise{
     private Surprise surprise;
     private MissingDetail detail;
 
-    public Surprise getSurprise() {
-        return surprise;
+    public MissingSurprise(Surprise surprise) {
+        this.surprise = surprise;
     }
 
-    public void setSurprise(Surprise surprise) {
-        this.surprise = surprise;
+    public Surprise getSurprise() {
+        return surprise;
     }
 
     public MissingDetail getDetail() {

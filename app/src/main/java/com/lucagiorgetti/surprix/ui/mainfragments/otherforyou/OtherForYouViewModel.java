@@ -5,10 +5,11 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
+import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseListCallback;
 import com.lucagiorgetti.surprix.model.Surprise;
 import com.lucagiorgetti.surprix.ui.BaseViewModel;
-import com.lucagiorgetti.surprix.utility.DatabaseUtils;
+import com.lucagiorgetti.surprix.utility.dao.MissingListDao;
 
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class OtherForYouViewModel extends BaseViewModel {
     }
 
     private void loadOtherForYou(String username) {
-        DatabaseUtils.getMissingSurprisesByOwner(username, new FirebaseListCallback<Surprise>() {
+        new MissingListDao(SurprixApplication.getInstance().getCurrentUser().getUsername()).getMissingOwnerOtherSurprises(username, new FirebaseListCallback<Surprise>() {
             @Override
             public void onSuccess(List<Surprise> surprises) {
                 otherForYou.setValue(surprises);

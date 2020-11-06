@@ -21,7 +21,7 @@ import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.model.Surprise;
 import com.lucagiorgetti.surprix.utility.BaseFragment;
-import com.lucagiorgetti.surprix.utility.DatabaseUtils;
+import com.lucagiorgetti.surprix.utility.dao.DoubleListDao;
 
 public class DoubleListFragment extends BaseFragment {
 
@@ -29,6 +29,7 @@ public class DoubleListFragment extends BaseFragment {
     private SearchView searchView;
     private View root;
     private View emptyList;
+    private DoubleListDao doubleListDao = new DoubleListDao(SurprixApplication.getInstance().getCurrentUser().getUsername());
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -121,7 +122,7 @@ public class DoubleListFragment extends BaseFragment {
         } else {
             mAdapter.notifyItemRemoved(position);
         }
-        DatabaseUtils.removeDouble(surprise.getId());
+        doubleListDao.removeDouble(surprise.getId());
 
         if (mAdapter.getItemCount() > 0) {
             emptyList.setVisibility(View.GONE);
@@ -136,7 +137,7 @@ public class DoubleListFragment extends BaseFragment {
         } else {
             Snackbar.make(getView(), SurprixApplication.getInstance().getString(R.string.double_removed), Snackbar.LENGTH_LONG)
                     .setAction(SurprixApplication.getInstance().getString(R.string.undo), view -> {
-                        DatabaseUtils.addDouble(surprise.getId());
+                        doubleListDao.addDouble(surprise.getId());
                         mAdapter.addFilterableItem(surprise, position);
                         mAdapter.notifyItemInserted(position);
                         if (mAdapter.getItemCount() > 0) {

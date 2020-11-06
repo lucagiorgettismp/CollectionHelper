@@ -8,9 +8,11 @@ import androidx.lifecycle.MutableLiveData;
 import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseListCallback;
 import com.lucagiorgetti.surprix.model.Set;
 import com.lucagiorgetti.surprix.ui.BaseViewModel;
-import com.lucagiorgetti.surprix.utility.DatabaseUtils;
+import com.lucagiorgetti.surprix.utility.dao.YearDao;
 
 import java.util.List;
+
+import timber.log.Timber;
 
 public class SetListViewModel extends BaseViewModel {
 
@@ -31,7 +33,7 @@ public class SetListViewModel extends BaseViewModel {
     }
 
     private void loadSets(String yearId) {
-        DatabaseUtils.getSetsFromYear(yearId, new FirebaseListCallback<Set>() {
+        YearDao.getYearSets(yearId, new FirebaseListCallback<Set>() {
             @Override
             public void onStart() {
                 setLoading(true);
@@ -40,6 +42,9 @@ public class SetListViewModel extends BaseViewModel {
             @Override
             public void onSuccess(List<Set> sets) {
                 allSets.setValue(sets);
+                for (Set set : sets) {
+                    Timber.i(set.getImg_path());
+                }
                 setLoading(false);
             }
 

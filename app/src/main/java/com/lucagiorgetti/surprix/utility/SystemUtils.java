@@ -18,6 +18,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.listenerInterfaces.CallbackInterface;
 import com.lucagiorgetti.surprix.model.User;
+import com.lucagiorgetti.surprix.utility.dao.UserDao;
 
 import timber.log.Timber;
 
@@ -130,12 +131,11 @@ public class SystemUtils {
 
 
     public static void setSessionUser(String email, CallbackInterface<Boolean> listener) {
-        DatabaseUtils.getCurrentUser(new CallbackInterface<User>() {
+        UserDao.getUserByEmail(new CallbackInterface<User>() {
             @Override
             public void onSuccess(User currentUser) {
                 if (currentUser != null) {
                     SurprixApplication.getInstance().setUser(currentUser);
-                    DatabaseUtils.setUsername(currentUser.getUsername());
                     listener.onSuccess(true);
                 }
             }
@@ -161,7 +161,6 @@ public class SystemUtils {
         SystemUtils.removeSessionUser();
         FirebaseAuth.getInstance().signOut();
         LoginManager.getInstance().logOut();
-        DatabaseUtils.setUsername(null);
     }
 
     public static void setPrivacyPolicyAccepted(boolean accepted) {

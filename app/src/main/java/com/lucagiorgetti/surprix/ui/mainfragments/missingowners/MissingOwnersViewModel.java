@@ -9,7 +9,7 @@ import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseListCallback;
 import com.lucagiorgetti.surprix.model.User;
 import com.lucagiorgetti.surprix.ui.BaseViewModel;
-import com.lucagiorgetti.surprix.utility.DatabaseUtils;
+import com.lucagiorgetti.surprix.utility.dao.DoubleListDao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,7 @@ public class MissingOwnersViewModel extends BaseViewModel {
     }
 
     private void loadOwners(String surpriseId) {
-        DatabaseUtils.getMissingOwners(surpriseId, new FirebaseListCallback<User>() {
+        new DoubleListDao(SurprixApplication.getInstance().getCurrentUser().getUsername()).getMissingOwners(surpriseId, new FirebaseListCallback<User>() {
             @Override
             public void onSuccess(List<User> users) {
                 final ArrayList<User> owners = new ArrayList<>();

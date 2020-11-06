@@ -8,7 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseListCallback;
 import com.lucagiorgetti.surprix.model.Surprise;
 import com.lucagiorgetti.surprix.ui.BaseViewModel;
-import com.lucagiorgetti.surprix.utility.DatabaseUtils;
+import com.lucagiorgetti.surprix.utility.dao.SetDao;
 
 import java.util.List;
 
@@ -31,7 +31,7 @@ public class SetDetailViewModel extends BaseViewModel {
     }
 
     private void loadSurprises(String setId) {
-        DatabaseUtils.getSurprisesBySet(setId, new FirebaseListCallback<Surprise>() {
+        SetDao.getSurprisesBySet(setId, new FirebaseListCallback<Surprise>() {
             @Override
             public void onStart() {
                 setLoading(true);

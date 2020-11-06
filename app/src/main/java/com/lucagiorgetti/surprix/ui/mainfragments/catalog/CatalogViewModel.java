@@ -8,7 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseListCallback;
 import com.lucagiorgetti.surprix.model.Producer;
 import com.lucagiorgetti.surprix.ui.BaseViewModel;
-import com.lucagiorgetti.surprix.utility.DatabaseUtils;
+import com.lucagiorgetti.surprix.utility.dao.ProducerDao;
 
 import java.util.List;
 
@@ -31,7 +31,7 @@ public class CatalogViewModel extends BaseViewModel {
     }
 
     private void loadProducers() {
-        DatabaseUtils.getProducers(new FirebaseListCallback<Producer>() {
+        ProducerDao.getProducers(new FirebaseListCallback<Producer>() {
             @Override
             public void onStart() {
                 setLoading(true);

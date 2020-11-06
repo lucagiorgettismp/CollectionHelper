@@ -26,13 +26,14 @@ import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.listenerInterfaces.CallbackInterface;
 import com.lucagiorgetti.surprix.model.User;
 import com.lucagiorgetti.surprix.ui.activities.LoginActivity;
-import com.lucagiorgetti.surprix.utility.DatabaseUtils;
 import com.lucagiorgetti.surprix.utility.SystemUtils;
+import com.lucagiorgetti.surprix.utility.dao.UserDao;
 import com.mikelau.countrypickerx.CountryPickerDialog;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
 
     private Activity activity;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,7 +96,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                     String countryName = country.getCountryName(SurprixApplication.getSurprixContext());
                     countryEdit.setSummary(countryName);
                     countryPicker.dismiss();
-                    DatabaseUtils.updateUser(countryName);
+                    UserDao.updateUser(countryName);
                 }, false, 0);
                 countryPicker.show();
                 return false;
@@ -109,7 +110,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 alertDialog.setTitle(getString(R.string.delete_account));
                 alertDialog.setMessage(getString(R.string.dialod_delete_user_text));
                 alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.dialog_positive),
-                        (dialog, which) -> DatabaseUtils.deleteUser(new CallbackInterface<Boolean>() {
+                        (dialog, which) -> UserDao.deleteUser(new CallbackInterface<Boolean>() {
                             @Override
                             public void onStart() {
 

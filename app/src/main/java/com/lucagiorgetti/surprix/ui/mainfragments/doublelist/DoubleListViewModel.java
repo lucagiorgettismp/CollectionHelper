@@ -5,10 +5,11 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
+import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseListCallback;
 import com.lucagiorgetti.surprix.model.Surprise;
 import com.lucagiorgetti.surprix.ui.BaseViewModel;
-import com.lucagiorgetti.surprix.utility.DatabaseUtils;
+import com.lucagiorgetti.surprix.utility.dao.DoubleListDao;
 
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class DoubleListViewModel extends BaseViewModel {
 
 
     public void loadDoubleSurprises() {
-        DatabaseUtils.getDoublesForUsername(new FirebaseListCallback<Surprise>() {
+        new DoubleListDao(SurprixApplication.getInstance().getCurrentUser().getUsername()).getDoubles(new FirebaseListCallback<Surprise>() {
             @Override
             public void onStart() {
                 setLoading(true);

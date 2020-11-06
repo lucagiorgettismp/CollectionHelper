@@ -19,11 +19,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lucagiorgetti.surprix.R;
+import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.model.Set;
 import com.lucagiorgetti.surprix.utility.BaseFragment;
-import com.lucagiorgetti.surprix.utility.DatabaseUtils;
 import com.lucagiorgetti.surprix.utility.RecyclerItemClickListener;
 import com.lucagiorgetti.surprix.utility.SystemUtils;
+import com.lucagiorgetti.surprix.utility.dao.MissingListDao;
 
 public class SetListFragment extends BaseFragment {
 
@@ -81,17 +82,17 @@ public class SetListFragment extends BaseFragment {
     }
 
     private void onLongSetClicked(String setId, String setName) {
-            final AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
-            alertDialog.setTitle(getString(R.string.dialog_add_set_title));
-            alertDialog.setMessage(getString(R.string.dialog_add_set_text) + " " + setName + "?");
-            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.dialog_positive),
-                    (dialog, which) -> {
-                        DatabaseUtils.addMissingsFromSet(setId);
-                        alertDialog.dismiss();
-                    });
-            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.dialog_negative),
-                    (dialog, which) -> alertDialog.dismiss());
-            alertDialog.show();
+        final AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+        alertDialog.setTitle(getString(R.string.dialog_add_set_title));
+        alertDialog.setMessage(getString(R.string.dialog_add_set_text) + " " + setName + "?");
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.dialog_positive),
+                (dialog, which) -> {
+                    new MissingListDao(SurprixApplication.getInstance().getCurrentUser().getUsername()).addMissingsBySet(setId);
+                    alertDialog.dismiss();
+                });
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.dialog_negative),
+                (dialog, which) -> alertDialog.dismiss());
+        alertDialog.show();
     }
 
     @Override

@@ -34,8 +34,8 @@ import com.lucagiorgetti.surprix.model.MissingSurprise;
 import com.lucagiorgetti.surprix.model.Surprise;
 import com.lucagiorgetti.surprix.utility.BaseFragment;
 import com.lucagiorgetti.surprix.utility.Common;
-import com.lucagiorgetti.surprix.utility.DatabaseUtils;
 import com.lucagiorgetti.surprix.utility.PDFUtils;
+import com.lucagiorgetti.surprix.utility.dao.MissingListDao;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -47,6 +47,7 @@ public class MissingListFragment extends BaseFragment {
     private View root;
     private View emptyList;
     private List<MissingSurprise> missingSurprises = new ArrayList<>();
+    private MissingListDao missingListDao = new MissingListDao(SurprixApplication.getInstance().getCurrentUser().getUsername());
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -197,7 +198,7 @@ public class MissingListFragment extends BaseFragment {
     private void deleteSurprise(MissingRecyclerAdapter mAdapter, int position) {
         MissingSurprise mp = mAdapter.getItemAtPosition(position);
         CharSequence query = searchView.getQuery();
-        DatabaseUtils.removeMissing(mp.getSurprise().getId());
+        missingListDao.removeMissing(mp.getSurprise().getId());
         mAdapter.removeFilterableItem(mp);
         if (query != null && query.length() != 0) {
             mAdapter.getFilter().filter(query);
@@ -217,7 +218,7 @@ public class MissingListFragment extends BaseFragment {
         } else {
             Snackbar.make(getView(), SurprixApplication.getInstance().getString(R.string.missing_removed), Snackbar.LENGTH_LONG)
                     .setAction(SurprixApplication.getInstance().getString(R.string.undo), view -> {
-                        DatabaseUtils.addMissing(mp.getSurprise().getId());
+                        missingListDao.addMissing(mp.getSurprise().getId());
                         mAdapter.addFilterableItem(mp, position);
                         mAdapter.notifyItemInserted(position);
                         if (mAdapter.getItemCount() > 0) {
@@ -232,7 +233,7 @@ public class MissingListFragment extends BaseFragment {
     }
 
     private void saveNotes(Surprise surprise, MissingDetail detail) {
-        DatabaseUtils.addDetailForMissing(surprise.getId(), detail, new CallbackInterface<Boolean>() {
+        missingListDao.addDetailForMissing(surprise.getId(), detail, new CallbackInterface<Boolean>() {
             @Override
             public void onStart() {
 
@@ -253,7 +254,7 @@ public class MissingListFragment extends BaseFragment {
     private void deleteNotes(Surprise surprise) {
         MissingDetail detail = new MissingDetail();
         detail.setNotes("");
-        DatabaseUtils.addDetailForMissing(surprise.getId(), detail, new CallbackInterface<Boolean>() {
+        missingListDao.addDetailForMissing(surprise.getId(), detail, new CallbackInterface<Boolean>() {
             @Override
             public void onStart() {
 

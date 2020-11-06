@@ -9,7 +9,8 @@ import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseListCallback;
 import com.lucagiorgetti.surprix.model.Set;
 import com.lucagiorgetti.surprix.model.Surprise;
 import com.lucagiorgetti.surprix.ui.BaseViewModel;
-import com.lucagiorgetti.surprix.utility.DatabaseUtils;
+import com.lucagiorgetti.surprix.utility.dao.SetDao;
+import com.lucagiorgetti.surprix.utility.dao.SurpriseDao;
 
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class SearchViewModel extends BaseViewModel {
     }
 
     private void loadSets() {
-        DatabaseUtils.getAllSets(new FirebaseListCallback<Set>() {
+        SetDao.getAllSets(new FirebaseListCallback<Set>() {
             @Override
             public void onStart() {
                 setLoading(true);
@@ -63,7 +64,7 @@ public class SearchViewModel extends BaseViewModel {
     }
 
     private void loadSurprises() {
-        DatabaseUtils.getAllSurprises(new FirebaseListCallback<Surprise>() {
+        SurpriseDao.getAllSurprises(new FirebaseListCallback<Surprise>() {
             @Override
             public void onStart() {
                 setLoading(true);

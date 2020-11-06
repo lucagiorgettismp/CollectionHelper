@@ -14,11 +14,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lucagiorgetti.surprix.R;
+import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.model.Year;
 import com.lucagiorgetti.surprix.utility.BaseFragment;
-import com.lucagiorgetti.surprix.utility.DatabaseUtils;
 import com.lucagiorgetti.surprix.utility.RecyclerItemClickListener;
 import com.lucagiorgetti.surprix.utility.SystemUtils;
+import com.lucagiorgetti.surprix.utility.dao.MissingListDao;
 
 public class YearFragment extends BaseFragment {
 
@@ -77,7 +78,7 @@ public class YearFragment extends BaseFragment {
         alertDialog.setMessage(getString(R.string.dialog_add_year_text) + " " + year + "?");
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.dialog_positive),
                 (dialog, which) -> {
-                    DatabaseUtils.addMissingsFromYear(yearId);
+                    new MissingListDao(SurprixApplication.getInstance().getCurrentUser().getUsername()).addMissingsByYear(yearId);
                     alertDialog.dismiss();
                 });
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.dialog_negative),

@@ -17,9 +17,12 @@ import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.model.Surprise;
 import com.lucagiorgetti.surprix.utility.BaseFragment;
-import com.lucagiorgetti.surprix.utility.DatabaseUtils;
+import com.lucagiorgetti.surprix.utility.dao.DoubleListDao;
+import com.lucagiorgetti.surprix.utility.dao.MissingListDao;
 
 public class SetDetailFragment extends BaseFragment {
+    MissingListDao missingListDao = new MissingListDao(SurprixApplication.getInstance().getCurrentUser().getUsername());
+    DoubleListDao doubleListDao = new DoubleListDao(SurprixApplication.getInstance().getCurrentUser().getUsername());
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -41,17 +44,17 @@ public class SetDetailFragment extends BaseFragment {
             alertDialog.setMessage(getString(R.string.add_surprise_dialog_message) + " " + s.getDescription() + "?");
             alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.missings),
                     (dialog, which) -> {
-                        DatabaseUtils.addMissing(s.getId());
+                        missingListDao.addMissing(s.getId());
                         Snackbar.make(getView(), SurprixApplication.getInstance().getString(R.string.added_to_missings) + ": " + s.getDescription(), Snackbar.LENGTH_LONG)
-                                .setAction(SurprixApplication.getInstance().getString(R.string.undo), view -> DatabaseUtils.removeMissing(s.getId())).show();
+                                .setAction(SurprixApplication.getInstance().getString(R.string.undo), view -> missingListDao.removeMissing(s.getId())).show();
                         alertDialog.dismiss();
                     });
             alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.doubles),
                     (dialog, which) -> {
-                        DatabaseUtils.addDouble(s.getId());
+                        doubleListDao.addDouble(s.getId());
                         alertDialog.dismiss();
                         Snackbar.make(getView(), SurprixApplication.getInstance().getString(R.string.add_to_doubles) + ": " + s.getDescription(), Snackbar.LENGTH_LONG)
-                                .setAction(SurprixApplication.getInstance().getString(R.string.undo), view -> DatabaseUtils.removeDouble(s.getId())).show();
+                                .setAction(SurprixApplication.getInstance().getString(R.string.undo), view -> doubleListDao.removeDouble(s.getId())).show();
                     });
             alertDialog.show();
         });

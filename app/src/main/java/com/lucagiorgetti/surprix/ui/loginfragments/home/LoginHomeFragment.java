@@ -25,8 +25,8 @@ import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.listenerInterfaces.CallbackInterface;
 import com.lucagiorgetti.surprix.utility.AuthUtils;
-import com.lucagiorgetti.surprix.utility.DatabaseUtils;
 import com.lucagiorgetti.surprix.utility.SystemUtils;
+import com.lucagiorgetti.surprix.utility.dao.UserDao;
 
 import java.util.Collections;
 
@@ -76,7 +76,7 @@ public class LoginHomeFragment extends Fragment {
                                 @Override
                                 public void onSuccess(String email) {
                                     if (email != null) {
-                                        DatabaseUtils.isAnExistingUser(email, new CallbackInterface<Boolean>() {
+                                        UserDao.userAlreadyRegisteredByEmail(email, new CallbackInterface<Boolean>() {
                                             @Override
                                             public void onStart() {
 
@@ -137,7 +137,7 @@ public class LoginHomeFragment extends Fragment {
                             progressBar.setVisibility(View.INVISIBLE);
                         }
                     });
-                } catch (Exception e){
+                } catch (Exception e) {
                     Timber.e(e);
                 }
             }
