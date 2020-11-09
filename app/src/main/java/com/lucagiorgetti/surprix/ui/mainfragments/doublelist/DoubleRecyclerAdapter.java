@@ -4,10 +4,8 @@ import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -110,15 +108,7 @@ public class DoubleRecyclerAdapter extends ListAdapter<Surprise, DoubleRecyclerA
                     .into(holder.vImage);
         }
 
-        holder.vMissingBottom.setVisibility(View.GONE);
-        holder.vBtnOwners.setVisibility(View.GONE);
-
-        holder.delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onSurpriseDelete(position);
-            }
-        });
+        holder.delete.setOnClickListener(v -> listener.onSurpriseDelete(position));
 
         Integer rarity = surp.getIntRarity();
         holder.vStar1On.setVisibility(View.GONE);
@@ -222,13 +212,8 @@ public class DoubleRecyclerAdapter extends ListAdapter<Surprise, DoubleRecyclerA
         ImageView vStar1Off;
         ImageView vStar2Off;
         ImageView vStar3Off;
-        ImageButton vBtnOwners;
-        ImageButton vBtnAddNotes;
-        View vMissingBottom;
-        EditText vNotesText;
 
         View vLayout;
-
 
         SurpViewHolder(View v) {
             super(v);
@@ -246,10 +231,6 @@ public class DoubleRecyclerAdapter extends ListAdapter<Surprise, DoubleRecyclerA
             vStar1Off = v.findViewById(R.id.img_surp_elem_star_1_off);
             vStar2Off = v.findViewById(R.id.img_surp_elem_star_2_off);
             vStar3Off = v.findViewById(R.id.img_surp_elem_star_3_off);
-            vBtnOwners = v.findViewById(R.id.show_owners_btn);
-            vBtnAddNotes = v.findViewById(R.id.delete_note_btn);
-            vMissingBottom = v.findViewById(R.id.missing_bottom_layout);
-            vNotesText = v.findViewById(R.id.note_edit_text);
         }
     }
 }

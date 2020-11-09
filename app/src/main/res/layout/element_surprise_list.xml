@@ -141,15 +141,14 @@
                         android:gravity="end"
                         android:orientation="horizontal">
 
-                        <ImageButton
-                            android:id="@+id/show_owners_btn"
-                            style="@style/ButtonShowMissingOwner"
-                            android:layout_width="40dp"
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/show_owners_chip"
+                            style="@style/Widget.MaterialComponents.Chip.Action"
+                            android:layout_width="wrap_content"
                             android:layout_height="40dp"
-                            android:scaleType="centerInside"
-                            android:tint="@color/btnIcon"
-                            android:visibility="visible"
-                            app:srcCompat="@drawable/ic_double" />
+                            android:layout_marginStart="8dp"
+                            android:visibility="gone"
+                            android:text="@string/find"/>
                     </LinearLayout>
 
                 </LinearLayout>
@@ -223,44 +222,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:orientation="horizontal"
-            android:visibility="visible"
+            android:visibility="gone"
             android:weightSum="1">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:background="@drawable/round_corner_rectangle">
-
-                <EditText
-                    android:id="@+id/note_edit_text"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:layout_weight="1"
-                    android:gravity="start|top"
-                    android:hint="Note"
-                    android:imeOptions="actionDone"
-                    android:singleLine="true"
-                    android:textColor="@color/textColor"
-                    android:textColorHint="@color/notesTextColor"
-                    android:textColorLink="@color/notesTextColorLink"
-                    android:textSize="14sp" />
-
-                <ImageButton
-                    android:id="@+id/delete_note_btn"
-                    style="@style/ButtonDeleteNote"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:adjustViewBounds="false"
-                    android:cropToPadding="false"
-                    android:filterTouchesWhenObscured="false"
-                    android:fitsSystemWindows="false"
-                    android:scaleType="centerInside"
-                    android:tint="@color/btnIcon"
-                    app:srcCompat="@drawable/ic_eraser" />
-            </LinearLayout>
-
         </LinearLayout>
 
     </LinearLayout>

@@ -28,6 +28,7 @@ import com.itextpdf.text.pdf.draw.LineSeparator;
 import com.lucagiorgetti.surprix.BuildConfig;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
+import com.lucagiorgetti.surprix.model.Missing;
 import com.lucagiorgetti.surprix.model.MissingSurprise;
 
 import java.io.BufferedInputStream;
@@ -64,7 +65,7 @@ public class PDFUtils {
             document.addCreationDate();
             document.addAuthor(SurprixApplication.getInstance().getResources().getString(R.string.app_name));
             document.addCreator(SurprixApplication.getInstance().getResources().getString(R.string.app_name));
-            HashMap<String, List<MissingSurprise>> hashMap = new HashMap<>();
+            HashMap<String, List<Missing>> hashMap = new HashMap<>();
 
             BaseColor colorAccent = new BaseColor(ContextCompat.getColor(SurprixApplication.getSurprixContext(), R.color.colorPrimary));
             float fontSize = 12.0f;
@@ -76,11 +77,11 @@ public class PDFUtils {
             addNewItem(document, title, Element.ALIGN_CENTER, titleFont);
             addLineSeparator(document, colorAccent);
 
-            Collections.sort(missingSurprises, new MissingSurprise.SortByCode());
-            for (MissingSurprise missingSurprise : missingSurprises) {
+            Collections.sort(missingSurprises, MissingSurprise::compareTo);
+            for (MissingSurprise missing : missingSurprises) {
                 Font orderNumberFont = new Font(fontName, fontSize, Font.NORMAL, BaseColor.BLACK);
                 try {
-                    String surpriseString = String.format(Locale.getDefault(), "%s: %s - %s, %s %s, %s", missingSurprise.getSurprise().getCode(), missingSurprise.getSurprise().getDescription(), missingSurprise.getSurprise().getSet_name(), missingSurprise.getSurprise().getSet_producer_name(), missingSurprise.getSurprise().getSet_product_name(), missingSurprise.getSurprise().getSet_year());
+                    String surpriseString = String.format(Locale.getDefault(), "%s: %s - %s, %s %s, %s", missing.getSurprise().getCode(), missing.getSurprise().getDescription(), missing.getSurprise().getSet_name(), missing.getSurprise().getSet_producer_name(), missing.getSurprise().getSet_product_name(), missing.getSurprise().getSet_year());
                     addNewItem(document, surpriseString, Element.ALIGN_LEFT, orderNumberFont);
                 } catch (DocumentException e) {
                     e.printStackTrace();
@@ -135,7 +136,7 @@ public class PDFUtils {
 
             byte[] byteArray = stream.toByteArray();
             Image jpg = Image.getInstance(byteArray);
-            jpg.scaleToFit(500,700);
+            jpg.scaleToFit(500, 700);
             jpg.setAbsolutePosition(60, 90);
             this.image = jpg;
         }

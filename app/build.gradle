@@ -8,7 +8,7 @@ android {
     buildToolsVersion '29.0.3'
     defaultConfig {
         applicationId "com.lucagiorgetti.surprix"
-        minSdkVersion 19
+        minSdkVersion 21
         vectorDrawables.useSupportLibrary = true
         targetSdkVersion 29
         versionCode 21

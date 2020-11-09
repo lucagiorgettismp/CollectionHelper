@@ -15,7 +15,7 @@
         android:layout_height="0dp"
         android:layout_marginBottom="30dp"
         android:layout_weight="0.50"
-        android:tint="@color/logo"
+        app:tint="@color/logo"
         app:srcCompat="@drawable/ic_logo" />
 
     <Button
@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:layout_marginBottom="4dp"
-        android:backgroundTint="@color/loginSignUp"
+        app:backgroundTint="@color/loginSignUp"
         android:text="@string/sign_up"
         android:textColor="@color/loginSignUpText"/>
 
@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:layout_marginBottom="4dp"
-        android:backgroundTint="@color/loginSignIn"
+        app:backgroundTint="@color/loginSignIn"
         android:text="@string/login"
         android:textColor="@android:color/background_light"/>
 
@@ -48,7 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:layout_marginBottom="4dp"
-        android:backgroundTint="@color/loginFacebook"
+        app:backgroundTint="@color/loginFacebook"
         android:text="@string/login_with_facebook"
         android:paddingStart="20dp"
         android:paddingEnd="20dp"

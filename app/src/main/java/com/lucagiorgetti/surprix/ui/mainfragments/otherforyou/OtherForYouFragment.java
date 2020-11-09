@@ -12,7 +12,6 @@ import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,11 +22,12 @@ import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.model.Surprise;
 import com.lucagiorgetti.surprix.model.User;
 import com.lucagiorgetti.surprix.ui.mainfragments.doublelist.DoubleRecyclerAdapter;
+import com.lucagiorgetti.surprix.utility.BaseFragment;
 
 import java.util.List;
 import java.util.Locale;
 
-public class OtherForYouFragment extends Fragment {
+public class OtherForYouFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -61,6 +61,7 @@ public class OtherForYouFragment extends Fragment {
 
         mViewModel.isLoading().observe(getViewLifecycleOwner(), isLoading -> progress.setVisibility(isLoading ? View.VISIBLE : View.GONE));
 
+        setTitle("Altri pezzi per te");
         return root;
     }
 

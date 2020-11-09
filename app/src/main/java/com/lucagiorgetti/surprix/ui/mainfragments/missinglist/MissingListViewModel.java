@@ -53,12 +53,9 @@ public class MissingListViewModel extends BaseViewModel {
         });
     }
 
-    public void addMissing(MissingSurprise mp, int position) {
+    public void addMissing(MissingSurprise missingSurprise, int position) {
         List<MissingSurprise> list = allMissingSurprises.getValue();
-        list.add(mp);
+        list.add(missingSurprise);
         allMissingSurprises.setValue(list);
-    }
-
-    public void reloadMissingSurprises(CallbackInterface<Boolean> booleanFirebaseCallback) {
     }
 }

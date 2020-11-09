@@ -1,37 +1,33 @@
 package com.lucagiorgetti.surprix.model;
 
-import java.util.Comparator;
+public class MissingSurprise implements Comparable<MissingSurprise> {
+    Surprise surprise;
+    //String notes = "";
 
-/**
- * Created by Utente on 17/04/2017.
- */
-
-public class MissingSurprise{
-    private Surprise surprise;
-    private MissingDetail detail;
+    public MissingSurprise(Surprise surprise, String notes) {
+        this.surprise = surprise;
+        //this.notes = notes;
+    }
 
     public MissingSurprise(Surprise surprise) {
         this.surprise = surprise;
     }
 
+    /*
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+     */
     public Surprise getSurprise() {
         return surprise;
     }
 
-    public MissingDetail getDetail() {
-        return detail;
-    }
-
-    public void setDetail(MissingDetail detail) {
-        this.detail = detail;
-    }
-
-    public static class SortByCode implements Comparator<MissingSurprise> {
-        @Override
-        public int compare(MissingSurprise o1, MissingSurprise o2) {
-            return o1.getSurprise().getCode().compareTo(o2.getSurprise().getCode());
-        }
+    @Override
+    public int compareTo(MissingSurprise missingSurprise) {
+        return surprise.compareTo(missingSurprise.surprise);
     }
 }
-
-

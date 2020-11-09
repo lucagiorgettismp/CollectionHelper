@@ -130,6 +130,11 @@
     <string name="add_surprise_dialog_title">Add surprise</string>
     <string name="add_surprise_dialog_message">Which list do you want to add</string>
     <string name="double_removed">Double surprise removed</string>
+    <string name="notes">Notes</string>
+    <string name="find">Find</string>
+    <string name="add_note">Add note</string>
+    <string name="add_note_btn">Save</string>
+    <string name="edit_note_title">Edit note</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

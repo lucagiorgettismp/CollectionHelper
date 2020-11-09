@@ -1,6 +1,7 @@
 package com.lucagiorgetti.surprix.ui.mainfragments.missinglist;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -8,6 +9,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 
@@ -29,7 +33,6 @@ import com.karumi.dexter.listener.single.PermissionListener;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.listenerInterfaces.CallbackInterface;
-import com.lucagiorgetti.surprix.model.MissingDetail;
 import com.lucagiorgetti.surprix.model.MissingSurprise;
 import com.lucagiorgetti.surprix.model.Surprise;
 import com.lucagiorgetti.surprix.utility.BaseFragment;
@@ -47,11 +50,15 @@ public class MissingListFragment extends BaseFragment {
     private View root;
     private View emptyList;
     private List<MissingSurprise> missingSurprises = new ArrayList<>();
-    private MissingListDao missingListDao = new MissingListDao(SurprixApplication.getInstance().getCurrentUser().getUsername());
+    private MissingListDao missingListDao;
+    private MissingListViewModel missingListViewModel;
+    private AlertDialog editNoteDialog;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        MissingListViewModel missingListViewModel = new ViewModelProvider(this).get(MissingListViewModel.class);
+        missingListDao = new MissingListDao(SurprixApplication.getInstance().getCurrentUser().getUsername());
+
+        missingListViewModel = new ViewModelProvider(this).get(MissingListViewModel.class);
         if (root == null) {
             root = inflater.inflate(R.layout.fragment_missing_list, container, false);
         }
@@ -93,22 +100,41 @@ public class MissingListFragment extends BaseFragment {
             }
 
             @Override
-            public void onSaveNotesClick(Surprise surprise, MissingDetail detail) {
-                saveNotes(surprise, detail);
-                missingListViewModel.loadMissingSurprises();
-            }
-
-            @Override
-            public void onDeleteNoteClick(Surprise surp) {
-                deleteNotes(surp);
-                missingListViewModel.loadMissingSurprises();
-            }
-
-            @Override
             public void onSurpriseDelete(int position) {
                 deleteSurprise(mAdapter, position);
             }
+
+            @Override
+            public void onEditNoteClicked(MissingSurprise missingSurprise) {
+
+                final View view = getLayoutInflater().inflate(R.layout.dialog_edit_note, null);
+
+                /*
+                final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setView(view);
+                builder.setTitle(R.string.edit_note_title);
+
+                final EditText noteText = view.findViewById(R.id.note_text);
+                noteText.setText(missingSurprise.getNotes());
+
+                Button saveNote = view.findViewById(R.id.save_note_btn);
+                ImageButton deleteNote = view.findViewById(R.id.delete_note_btn);
+
+                editNoteDialog = builder.create();
+                editNoteDialog.show();
+
+                saveNote.setOnClickListener(v -> {
+                    missingSurprise.setNotes(noteText.getText().toString());
+                    saveNotes(missingSurprise);
+                });
+
+                deleteNote.setOnClickListener(v -> {
+                    deleteNotes(missingSurprise);
+                });
+                 */
+            }
         });
+
         recyclerView.setAdapter(mAdapter);
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -196,10 +222,10 @@ public class MissingListFragment extends BaseFragment {
     }
 
     private void deleteSurprise(MissingRecyclerAdapter mAdapter, int position) {
-        MissingSurprise mp = mAdapter.getItemAtPosition(position);
+        MissingSurprise missingSurprise = mAdapter.getItemAtPosition(position);
         CharSequence query = searchView.getQuery();
-        missingListDao.removeMissing(mp.getSurprise().getId());
-        mAdapter.removeFilterableItem(mp);
+        missingListDao.removeMissing(missingSurprise.getSurprise().getId());
+        mAdapter.removeFilterableItem(missingSurprise);
         if (query != null && query.length() != 0) {
             mAdapter.getFilter().filter(query);
         } else {
@@ -218,8 +244,8 @@ public class MissingListFragment extends BaseFragment {
         } else {
             Snackbar.make(getView(), SurprixApplication.getInstance().getString(R.string.missing_removed), Snackbar.LENGTH_LONG)
                     .setAction(SurprixApplication.getInstance().getString(R.string.undo), view -> {
-                        missingListDao.addMissing(mp.getSurprise().getId());
-                        mAdapter.addFilterableItem(mp, position);
+                        missingListDao.addMissing(missingSurprise.getSurprise().getId());
+                        mAdapter.addFilterableItem(missingSurprise, position);
                         mAdapter.notifyItemInserted(position);
                         if (mAdapter.getItemCount() > 0) {
                             emptyList.setVisibility(View.GONE);
@@ -232,8 +258,9 @@ public class MissingListFragment extends BaseFragment {
         }
     }
 
-    private void saveNotes(Surprise surprise, MissingDetail detail) {
-        missingListDao.addDetailForMissing(surprise.getId(), detail, new CallbackInterface<Boolean>() {
+    /*
+    private void saveNotes(MissingSurprise missingSurprise) {
+        missingListDao.setNote(missingSurprise.getSurprise().getId(), missingSurprise.getNotes(), new CallbackInterface<Boolean>() {
             @Override
             public void onStart() {
 
@@ -241,6 +268,8 @@ public class MissingListFragment extends BaseFragment {
 
             @Override
             public void onSuccess(Boolean item) {
+                editNoteDialog.dismiss();
+                missingListViewModel.loadMissingSurprises();
                 Snackbar.make(getView(), SurprixApplication.getInstance().getString(R.string.note_saved), Snackbar.LENGTH_SHORT).show();
             }
 
@@ -251,10 +280,8 @@ public class MissingListFragment extends BaseFragment {
         });
     }
 
-    private void deleteNotes(Surprise surprise) {
-        MissingDetail detail = new MissingDetail();
-        detail.setNotes("");
-        missingListDao.addDetailForMissing(surprise.getId(), detail, new CallbackInterface<Boolean>() {
+    private void deleteNotes(MissingSurprise missingSurprise) {
+        missingListDao.setNote(missingSurprise.getSurprise().getId(), "", new CallbackInterface<Boolean>() {
             @Override
             public void onStart() {
 
@@ -262,6 +289,8 @@ public class MissingListFragment extends BaseFragment {
 
             @Override
             public void onSuccess(Boolean item) {
+                editNoteDialog.dismiss();
+                missingListViewModel.loadMissingSurprises();
                 Snackbar.make(getView(), SurprixApplication.getInstance().getString(R.string.note_removed), Snackbar.LENGTH_SHORT).show();
             }
 
@@ -271,4 +300,5 @@ public class MissingListFragment extends BaseFragment {
             }
         });
     }
+     */
 }

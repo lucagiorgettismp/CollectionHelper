@@ -35,7 +35,8 @@
             android:layout_margin="16dp"
             android:clickable="true"
             android:focusable="true"
-            android:tint="@color/colorWhite"
+            app:backgroundTint="@color/colorSecondary"
+            app:tint="@color/colorWhite"
             app:srcCompat="@drawable/ic_search" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

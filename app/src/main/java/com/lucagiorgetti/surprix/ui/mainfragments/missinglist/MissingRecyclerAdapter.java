@@ -4,11 +4,8 @@ import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,13 +17,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.chip.Chip;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.model.Colors;
 import com.lucagiorgetti.surprix.model.ExtraLocales;
-import com.lucagiorgetti.surprix.model.MissingDetail;
 import com.lucagiorgetti.surprix.model.MissingSurprise;
 import com.lucagiorgetti.surprix.model.Surprise;
 
@@ -51,24 +48,14 @@ public class MissingRecyclerAdapter extends ListAdapter<MissingSurprise, Missing
     private static final DiffUtil.ItemCallback<MissingSurprise> DIFF_CALLBACK = new DiffUtil.ItemCallback<MissingSurprise>() {
         @Override
         public boolean areItemsTheSame(@NonNull MissingSurprise oldItem, @NonNull MissingSurprise newItem) {
-            MissingDetail oldDetail = oldItem.getDetail();
-            MissingDetail newDetail = newItem.getDetail();
-            if (oldDetail != null && newDetail != null) {
-                return oldItem.getSurprise().getId().equals(newItem.getSurprise().getId()) && oldItem.getDetail().getNotes().equals(newItem.getDetail().getNotes());
-            } else {
-                return oldItem.getSurprise().getId().equals(newItem.getSurprise().getId());
-            }
+            //return oldItem.getSurprise().getId().equals(newItem.getSurprise().getId()) && oldItem.getNotes().equals(newItem.getNotes());
+            return oldItem.getSurprise().getId().equals(newItem.getSurprise().getId());
         }
 
         @Override
         public boolean areContentsTheSame(@NonNull MissingSurprise oldItem, @NonNull MissingSurprise newItem) {
-            MissingDetail oldDetail = oldItem.getDetail();
-            MissingDetail newDetail = newItem.getDetail();
-            if (oldDetail != null && newDetail != null) {
-                return oldItem.getSurprise().getId().equals(newItem.getSurprise().getId()) && oldItem.getDetail().getNotes().equals(newItem.getDetail().getNotes());
-            } else {
-                return oldItem.getSurprise().getId().equals(newItem.getSurprise().getId());
-            }
+            //return oldItem.getSurprise().getId().equals(newItem.getSurprise().getId()) && oldItem.getNotes().equals(newItem.getNotes());
+            return oldItem.getSurprise().getId().equals(newItem.getSurprise().getId());
         }
     };
 
@@ -82,8 +69,8 @@ public class MissingRecyclerAdapter extends ListAdapter<MissingSurprise, Missing
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull SurpViewHolder holder, int position) {
-        Surprise surp = getItem(position).getSurprise();
-        MissingDetail detail = getItem(position).getDetail();
+        MissingSurprise ms = getItem(position);
+        Surprise surp = ms.getSurprise();
         holder.vSetName.setText(surp.getSet_name());
 
         if (surp.isSet_effective_code()) {
@@ -95,22 +82,6 @@ public class MissingRecyclerAdapter extends ListAdapter<MissingSurprise, Missing
         holder.vYear.setText(String.valueOf(surp.getSet_year()));
         String productName = surp.getSet_product_name();
         holder.vProducer.setText(surp.getSet_producer_name() + " " + productName);
-        if (detail != null) {
-            holder.vNotesText.setText(detail.getNotes());
-        } else {
-            holder.vNotesText.setText(null);
-        }
-        holder.vNotesText.setOnEditorActionListener((textView, i, keyEvent) -> {
-            if (i == EditorInfo.IME_ACTION_DONE) {
-                MissingDetail md = new MissingDetail();
-                md.setNotes(textView.getText().toString());
-
-                listener.onSaveNotesClick(surp, md);
-                holder.vNotesText.clearFocus();
-            }
-            return false;
-        });
-
 
         String nation;
         if (ExtraLocales.isExtraLocale(surp.getSet_nation())) {
@@ -142,21 +113,10 @@ public class MissingRecyclerAdapter extends ListAdapter<MissingSurprise, Missing
                     .into(holder.vImage);
         }
 
+        holder.vBtnOwners.setVisibility(View.VISIBLE);
         holder.vBtnOwners.setOnClickListener(view -> listener.onShowMissingOwnerClick(surp));
 
-
-        holder.vBtnDeleteNotes.setOnClickListener(view -> {
-            holder.vNotesText.setText(null);
-            listener.onDeleteNoteClick(surp);
-            holder.vNotesText.clearFocus();
-        });
-
-        holder.delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onSurpriseDelete(position);
-            }
-        });
+        holder.delete.setOnClickListener(v -> listener.onSurpriseDelete(position));
 
         Integer rarity = surp.getIntRarity();
         holder.vStar1On.setVisibility(View.GONE);
@@ -209,12 +169,12 @@ public class MissingRecyclerAdapter extends ListAdapter<MissingSurprise, Missing
             } else {
                 String pattern = charSequence.toString().toLowerCase().trim();
 
-                for (MissingSurprise mp : filterableList) {
-                    Surprise surprise = mp.getSurprise();
+                for (MissingSurprise missingSurprise : filterableList) {
+                    Surprise surprise = missingSurprise.getSurprise();
                     if (surprise.getCode().toLowerCase().contains(pattern)
                             || surprise.getDescription().toLowerCase().contains(pattern)
                             || surprise.getSet_name().toLowerCase().contains(pattern)) {
-                        filteredList.add(mp);
+                        filteredList.add(missingSurprise);
                     }
                 }
             }
@@ -261,13 +221,8 @@ public class MissingRecyclerAdapter extends ListAdapter<MissingSurprise, Missing
         ImageView vStar1Off;
         ImageView vStar2Off;
         ImageView vStar3Off;
-        ImageButton vBtnOwners;
-        ImageButton vBtnDeleteNotes;
-        View vMissingBottom;
-        EditText vNotesText;
-
+        Chip vBtnOwners;
         View vLayout;
-
 
         SurpViewHolder(View v) {
             super(v);
@@ -284,10 +239,7 @@ public class MissingRecyclerAdapter extends ListAdapter<MissingSurprise, Missing
             vStar1Off = v.findViewById(R.id.img_surp_elem_star_1_off);
             vStar2Off = v.findViewById(R.id.img_surp_elem_star_2_off);
             vStar3Off = v.findViewById(R.id.img_surp_elem_star_3_off);
-            vBtnOwners = v.findViewById(R.id.show_owners_btn);
-            vBtnDeleteNotes = v.findViewById(R.id.delete_note_btn);
-            vMissingBottom = v.findViewById(R.id.missing_bottom_layout);
-            vNotesText = v.findViewById(R.id.note_edit_text);
+            vBtnOwners = v.findViewById(R.id.show_owners_chip);
             delete = v.findViewById(R.id.delete);
         }
     }
