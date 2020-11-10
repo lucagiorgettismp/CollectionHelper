@@ -130,8 +130,8 @@ public class SystemUtils {
     }
 
 
-    public static void setSessionUser(String email, CallbackInterface<Boolean> listener) {
-        UserDao.getUserByEmail(new CallbackInterface<User>() {
+    public static void setSessionUser(String uid, CallbackInterface<Boolean> listener) {
+        UserDao.getRegisteredUser(uid, new CallbackInterface<User>() {
             @Override
             public void onSuccess(User currentUser) {
                 if (currentUser != null) {
@@ -149,7 +149,7 @@ public class SystemUtils {
             public void onFailure() {
                 listener.onFailure();
             }
-        }, email);
+        });
     }
 
     private static void removeSessionUser() {

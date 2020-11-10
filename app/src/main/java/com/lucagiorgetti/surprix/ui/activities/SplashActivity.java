@@ -21,7 +21,7 @@ public class SplashActivity extends AppCompatActivity {
         fireAuthStateListener = firebaseAuth -> {
             FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
             if (firebaseUser != null){
-                SystemUtils.setSessionUser(firebaseUser.getEmail(), new CallbackInterface<Boolean>() {
+                SystemUtils.setSessionUser(firebaseUser.getUid(), new CallbackInterface<Boolean>() {
                     @Override
                     public void onStart() {
 

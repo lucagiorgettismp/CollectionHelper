@@ -21,9 +21,11 @@ import com.facebook.FacebookException;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.google.firebase.auth.FirebaseUser;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.listenerInterfaces.CallbackInterface;
+import com.lucagiorgetti.surprix.model.User;
 import com.lucagiorgetti.surprix.utility.AuthUtils;
 import com.lucagiorgetti.surprix.utility.SystemUtils;
 import com.lucagiorgetti.surprix.utility.dao.UserDao;
@@ -67,25 +69,25 @@ public class LoginHomeFragment extends Fragment {
                         @Override
                         public void onSuccess(LoginResult loginResult) {
                             Timber.d("facebook:onSuccess: %s", loginResult);
-                            AuthUtils.signInWithFacebookToken(activity, loginResult.getAccessToken(), new CallbackInterface<String>() {
+                            AuthUtils.signInWithFacebookToken(activity, loginResult.getAccessToken(), new CallbackInterface<FirebaseUser>() {
                                 @Override
                                 public void onStart() {
 
                                 }
 
                                 @Override
-                                public void onSuccess(String email) {
-                                    if (email != null) {
-                                        UserDao.userAlreadyRegisteredByEmail(email, new CallbackInterface<Boolean>() {
+                                public void onSuccess(FirebaseUser currentUser) {
+                                    if (currentUser != null) {
+                                        UserDao.getRegisteredUser(currentUser.getUid(), new CallbackInterface<User>() {
                                             @Override
                                             public void onStart() {
 
                                             }
 
                                             @Override
-                                            public void onSuccess(Boolean result) {
-                                                if (result) {
-                                                    SystemUtils.setSessionUser(email, new CallbackInterface<Boolean>() {
+                                            public void onSuccess(User user) {
+                                                if (user != null) {
+                                                    SystemUtils.setSessionUser(currentUser.getUid(), new CallbackInterface<Boolean>() {
                                                         @Override
                                                         public void onSuccess(Boolean b) {
                                                             SystemUtils.enableFCM();
@@ -104,17 +106,17 @@ public class LoginHomeFragment extends Fragment {
                                                             progressBar.setVisibility(View.INVISIBLE);
                                                         }
                                                     });
-                                                } else {
-                                                    progressBar.setVisibility(View.INVISIBLE);
-                                                    Navigation.findNavController(view).navigate(LoginHomeFragmentDirections.actionNavigationLoginHomeToNavigationLoginPrivacy(email, true));
                                                 }
                                             }
 
                                             @Override
                                             public void onFailure() {
-                                                progressBar.setVisibility(View.INVISIBLE);
+
                                             }
                                         });
+                                    } else {
+                                        progressBar.setVisibility(View.INVISIBLE);
+                                        Navigation.findNavController(view).navigate(LoginHomeFragmentDirections.actionNavigationLoginHomeToNavigationLoginPrivacy(currentUser.getEmail(), true));
                                     }
                                 }
 

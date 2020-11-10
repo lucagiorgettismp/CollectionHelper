@@ -116,7 +116,8 @@ public class SignUpFragment extends BaseFragment {
                     //progress.setVisibility(View.INVISIBLE);
                     Toast.makeText(getContext(), R.string.signup_complete_all_fields, Toast.LENGTH_SHORT).show();
                 } else {
-                    UserDao.generateUser(email, username, nation, true);
+                    UserDao.newCreateUser(email, username, nation, true);
+                    UserDao.addUid(FirebaseAuth.getInstance().getCurrentUser().getUid(), username, fromFacebook);
                     SystemUtils.firstTimeOpeningApp();
                     SystemUtils.enableFCM();
                     Navigation.findNavController(view).navigate(SignUpFragmentDirections.actionNavigationLoginSignupToMainActivity());
@@ -150,7 +151,7 @@ public class SignUpFragment extends BaseFragment {
 
                                     @Override
                                     public void onSuccess() {
-                                        UserDao.generateUser(email, username, nation, false);
+                                        UserDao.newCreateUser(email, username, nation, false);
                                         AuthUtils.signInWithEmailAndPassword(activity, email, password, new CallbackInterface<Boolean>() {
                                             @Override
                                             public void onStart() {
@@ -159,6 +160,7 @@ public class SignUpFragment extends BaseFragment {
 
                                             @Override
                                             public void onSuccess(Boolean item) {
+                                                UserDao.addUid(FirebaseAuth.getInstance().getCurrentUser().getUid(), username, fromFacebook);
                                                 hideLoading();
                                                 SystemUtils.firstTimeOpeningApp();
                                                 Navigation.findNavController(view).navigate(SignUpFragmentDirections.actionNavigationLoginSignupToMainActivity());
