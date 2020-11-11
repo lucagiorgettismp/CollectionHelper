@@ -1,11 +1,9 @@
 package com.lucagiorgetti.surprix.utility.dao;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -14,6 +12,7 @@ import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.listenerInterfaces.CallbackInterface;
 import com.lucagiorgetti.surprix.model.Uid;
 import com.lucagiorgetti.surprix.model.User;
+import com.lucagiorgetti.surprix.utility.LoginFlowHelper;
 
 import java.util.Objects;
 
@@ -84,7 +83,7 @@ public class UserDao {
         listener.onFailure();
     }
 
-    public static void getRegisteredUser(String uid, CallbackInterface<User> completionListener) {
+    public static void getUserByUid(String uid, CallbackInterface<User> completionListener) {
         uids.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -120,13 +119,14 @@ public class UserDao {
         // TODO: to be implemented
     }
 
-    public static void newCreateUser(String email, String username, String nation, boolean fromFacebook) {
+    public static void newCreateUser(String email, String username, String nation, LoginFlowHelper.AuthMode authMode) {
         String emailCod = email.replaceAll("\\.", ",");
+        boolean fromFacebook = !authMode.equals(LoginFlowHelper.AuthMode.EMAIL_PASSWORD);
         User user = new User(emailCod, username, nation, fromFacebook); //ObjectClass for Users
         users.child(username).setValue(user);
     }
 
-    public static void addUid(String uid, String username, boolean fromFacebook) {
-        uids.child(uid).setValue(new Uid(uid, username, fromFacebook));
+    public static void addUid(String uid, String username, LoginFlowHelper.AuthMode authMode) {
+        uids.child(uid).setValue(new Uid(uid, username, authMode));
     }
 }

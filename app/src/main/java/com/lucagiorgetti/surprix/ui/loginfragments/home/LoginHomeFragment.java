@@ -1,6 +1,5 @@
 package com.lucagiorgetti.surprix.ui.loginfragments.home;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,48 +11,36 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
 import com.facebook.appevents.AppEventsLogger;
-import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
-import com.google.firebase.auth.FirebaseUser;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
-import com.lucagiorgetti.surprix.listenerInterfaces.CallbackInterface;
-import com.lucagiorgetti.surprix.model.User;
-import com.lucagiorgetti.surprix.utility.AuthUtils;
+import com.lucagiorgetti.surprix.listenerInterfaces.CallbackWithExceptionInterface;
+import com.lucagiorgetti.surprix.utility.BaseFragment;
+import com.lucagiorgetti.surprix.utility.LoginFlowHelper;
 import com.lucagiorgetti.surprix.utility.SystemUtils;
-import com.lucagiorgetti.surprix.utility.dao.UserDao;
 
-import java.util.Collections;
+public class LoginHomeFragment extends BaseFragment {
 
-import timber.log.Timber;
-
-public class LoginHomeFragment extends Fragment {
-    private ProgressBar progressBar;
     private CallbackManager callbackManager;
-    private Activity activity;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         AppEventsLogger.activateApp(SurprixApplication.getInstance());
-        activity = getActivity();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.login_home_fragment, container, false);
         callbackManager = CallbackManager.Factory.create();
 
-        progressBar = root.findViewById(R.id.login_loading);
+        View root = inflater.inflate(R.layout.login_home_fragment, container, false);
+
+        ProgressBar progressBar = root.findViewById(R.id.login_loading);
+        setProgressBar(progressBar);
 
         Button facebookCustomLogin = root.findViewById(R.id.btn_start_facebook);
 
@@ -62,94 +49,33 @@ public class LoginHomeFragment extends Fragment {
 
         facebookCustomLogin.setOnClickListener(view -> {
             if (SystemUtils.checkNetworkAvailability()) {
-                progressBar.setVisibility(View.VISIBLE);
-                LoginManager.getInstance().logInWithReadPermissions(this, Collections.singletonList("email"));
-                try {
-                    LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-                        @Override
-                        public void onSuccess(LoginResult loginResult) {
-                            Timber.d("facebook:onSuccess: %s", loginResult);
-                            AuthUtils.signInWithFacebookToken(activity, loginResult.getAccessToken(), new CallbackInterface<FirebaseUser>() {
-                                @Override
-                                public void onStart() {
+                LoginFlowHelper.loginWithFacebook(getActivity(), callbackManager, new CallbackWithExceptionInterface() {
+                    @Override
+                    public void onStart() {
+                        showLoading();
+                    }
 
-                                }
+                    @Override
+                    public void onSuccess() {
+                        hideLoading();
+                    }
 
-                                @Override
-                                public void onSuccess(FirebaseUser currentUser) {
-                                    if (currentUser != null) {
-                                        UserDao.getRegisteredUser(currentUser.getUid(), new CallbackInterface<User>() {
-                                            @Override
-                                            public void onStart() {
-
-                                            }
-
-                                            @Override
-                                            public void onSuccess(User user) {
-                                                if (user != null) {
-                                                    SystemUtils.setSessionUser(currentUser.getUid(), new CallbackInterface<Boolean>() {
-                                                        @Override
-                                                        public void onSuccess(Boolean b) {
-                                                            SystemUtils.enableFCM();
-                                                            progressBar.setVisibility(View.INVISIBLE);
-                                                            Navigation.findNavController(view).navigate(LoginHomeFragmentDirections.actionNavigationLoginHomeToMainActivity());
-                                                            activity.finish();
-                                                        }
-
-                                                        @Override
-                                                        public void onStart() {
-
-                                                        }
-
-                                                        @Override
-                                                        public void onFailure() {
-                                                            progressBar.setVisibility(View.INVISIBLE);
-                                                        }
-                                                    });
-                                                }
-                                            }
-
-                                            @Override
-                                            public void onFailure() {
-
-                                            }
-                                        });
-                                    } else {
-                                        progressBar.setVisibility(View.INVISIBLE);
-                                        Navigation.findNavController(view).navigate(LoginHomeFragmentDirections.actionNavigationLoginHomeToNavigationLoginPrivacy(currentUser.getEmail(), true));
-                                    }
-                                }
-
-                                @Override
-                                public void onFailure() {
-                                    Toast.makeText(getContext(), R.string.auth_failed, Toast.LENGTH_SHORT).show();
-                                }
-                            });
+                    @Override
+                    public void onFailure(Exception e) {
+                        hideLoading();
+                        if (e instanceof LoginFlowHelper.UserNeedToCompleteSignUpException) {
+                            hideLoading();
+                            Navigation.findNavController(view).navigate(LoginHomeFragmentDirections.actionNavigationLoginHomeToNavigationLoginPrivacy(((LoginFlowHelper.UserNeedToCompleteSignUpException) e).getCurrentUser().getEmail(), true));
+                        } else {
+                            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
-
-                        @Override
-                        public void onCancel() {
-                            Toast.makeText(getContext(), "Facebook login cancelled", Toast.LENGTH_SHORT).show();
-                            progressBar.setVisibility(View.INVISIBLE);
-                        }
-
-                        @Override
-                        public void onError(FacebookException error) {
-                            Toast.makeText(getContext(), "Facebook login error", Toast.LENGTH_SHORT).show();
-                            progressBar.setVisibility(View.INVISIBLE);
-                        }
-                    });
-                } catch (Exception e) {
-                    Timber.e(e);
-                }
+                    }
+                });
             }
         });
 
         login.setOnClickListener(v -> Navigation.findNavController(v).navigate(LoginHomeFragmentDirections.actionNavigationLoginHomeToNavigationLoginSignin()));
-
-
         registerBtn.setOnClickListener(v -> Navigation.findNavController(v).navigate(LoginHomeFragmentDirections.actionNavigationLoginHomeToNavigationLoginPrivacy(null, false)));
-
         return root;
     }
 

@@ -148,7 +148,7 @@ public class SignUpFragment extends BaseFragment {
                                     public void onStart() {
 
                                     }
-
+S
                                     @Override
                                     public void onSuccess() {
                                         UserDao.newCreateUser(email, username, nation, false);
