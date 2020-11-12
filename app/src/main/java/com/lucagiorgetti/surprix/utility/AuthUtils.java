@@ -37,28 +37,12 @@ public class AuthUtils {
                 });
     }
 
-    public static void signInWithEmailAndPassword(Activity activity, String email, String pwd, CallbackInterface<Boolean> listener) {
+    public static void signInWithEmailAndPassword(Activity activity, String email, String pwd, CallbackInterface<FirebaseUser> listener) {
         fireAuth.signInWithEmailAndPassword(email, pwd).addOnCompleteListener(activity, task -> {
             if (!task.isSuccessful()) {
                 listener.onFailure();
             } else {
-                SystemUtils.setSessionUser(FirebaseAuth.getInstance().getUid(), new CallbackInterface<Boolean>() {
-                    @Override
-                    public void onSuccess(Boolean success) {
-                        listener.onSuccess(true);
-                    }
-
-                    @Override
-                    public void onStart() {
-
-                    }
-
-                    @Override
-                    public void onFailure() {
-                        listener.onSuccess(false);
-                    }
-                });
-
+                listener.onSuccess(FirebaseAuth.getInstance().getCurrentUser());
             }
         });
     }

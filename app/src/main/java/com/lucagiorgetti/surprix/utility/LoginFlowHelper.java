@@ -1,6 +1,7 @@
 package com.lucagiorgetti.surprix.utility;
 
 import android.app.Activity;
+import android.util.Patterns;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -8,6 +9,9 @@ import com.facebook.FacebookException;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
@@ -37,32 +41,60 @@ public class LoginFlowHelper {
         }
     }
 
-    public static Exception UserNeedToCompleteSignUpException = new Exception();
+    // SUP
+    public static void signUp(String email, String password, String username, String country, Activity activity, AuthMode authMode, CallbackWithExceptionInterface flowListener) {
+        flowListener.onStart();
 
+        if (email.isEmpty() || username.isEmpty() || country.isEmpty()) {
+            flowListener.onFailure(new Exception(SurprixApplication.getSurprixContext().getString(R.string.signup_complete_all_fields)));
+        }
 
-    private void signUp() {
+        if (authMode == AuthMode.EMAIL_PASSWORD) {
+            if (password.isEmpty() || password.length() < 6) {
+                flowListener.onFailure(new Exception(SurprixApplication.getSurprixContext().getString(R.string.signup_password_lenght)));
+                return;
+            }
 
-    }
+            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                flowListener.onFailure(new Exception(SurprixApplication.getSurprixContext().getString(R.string.signup_email_format)));
+                return;
+            }
+        }
 
-    private void createUser(String uid, String username, String email, String country, AuthMode authMode) {
-        UserDao.addUid(uid, username, authMode);
-        UserDao.newCreateUser(email, username, country, authMode);
+        UserDao.getUserByUsername(username, new CallbackInterface<User>() {
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onSuccess(User userAlreadyPresent) {
+                if (userAlreadyPresent != null) {
+                    flowListener.onFailure(new Exception(SurprixApplication.getSurprixContext().getString(R.string.username_existing)));
+                } else {
+                    createUserAndSignIn(email, password, username, country, authMode, activity, flowListener);
+                }
+            }
+
+            @Override
+            public void onFailure() {
+                flowListener.onFailure(new Exception(SurprixApplication.getSurprixContext().getString(R.string.data_sync_error)));
+            }
+        });
     }
 
     // SIGNIN
     public static void signInWithEmailPassword(String email, String pwd, Activity activity, CallbackWithExceptionInterface flowListener) {
         if (!email.equals("") && !pwd.equals("")) {
-            AuthUtils.signInWithEmailAndPassword(activity, email, pwd, new CallbackInterface<Boolean>() {
+            AuthUtils.signInWithEmailAndPassword(activity, email, pwd, new CallbackInterface<FirebaseUser>() {
                 @Override
                 public void onStart() {
                     flowListener.onStart();
                 }
 
                 @Override
-                public void onSuccess(Boolean success) {
-                    if (success) {
-                        signInSucceeded(FirebaseAuth.getInstance().getCurrentUser(), flowListener);
-                    }
+                public void onSuccess(FirebaseUser currentUser) {
+                    signInSucceeded(currentUser, flowListener);
                 }
 
                 @Override
@@ -147,5 +179,68 @@ public class LoginFlowHelper {
     private static void signInSucceeded(FirebaseUser currentUser, CallbackWithExceptionInterface listener) {
         String uid = currentUser.getUid();
         SystemUtils.setSessionUser(uid, listener);
+        SystemUtils.enableFCM();
+    }
+
+    // CREASIG
+    private static void createUserAndSignIn(String email, String password, String username, String country, AuthMode authMode, Activity activity, CallbackWithExceptionInterface flowListener) {
+        switch (authMode) {
+            case FACEBOOK:
+                String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                completeUserCreation(uid, username, email, country, authMode, flowListener);
+                break;
+            case EMAIL_PASSWORD:
+                AuthUtils.createUserWithEmailAndPassword(activity, email, password, new CallbackWithExceptionInterface() {
+                    @Override
+                    public void onStart() {
+
+                    }
+
+                    @Override
+                    public void onSuccess() {
+                        AuthUtils.signInWithEmailAndPassword(activity, email, password, new CallbackInterface<FirebaseUser>() {
+                            @Override
+                            public void onStart() {
+
+                            }
+
+                            @Override
+                            public void onSuccess(FirebaseUser currentUser) {
+                                completeUserCreation(currentUser.getUid(), username, email, country, authMode, flowListener);
+                            }
+
+                            @Override
+                            public void onFailure() {
+                                flowListener.onFailure(new Exception(SurprixApplication.getSurprixContext().getString(R.string.signup_default_error)));
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onFailure(Exception exception) {
+                        String message;
+                        if (exception instanceof FirebaseAuthWeakPasswordException) {
+                            message = SurprixApplication.getSurprixContext().getString(R.string.signup_weak_password);
+                        } else if (exception instanceof FirebaseAuthInvalidCredentialsException) {
+                            message = SurprixApplication.getSurprixContext().getString(R.string.signup_email_format);
+                        } else if (exception instanceof FirebaseAuthUserCollisionException) {
+                            message = SurprixApplication.getSurprixContext().getString(R.string.signup_mail_existinig);
+                        } else {
+                            message = SurprixApplication.getSurprixContext().getString(R.string.signup_default_error);
+                        }
+                        flowListener.onFailure(new Exception(message));
+                    }
+                });
+                break;
+        }
+    }
+
+    private static void completeUserCreation(String uid, String username, String email, String country, AuthMode authMode, CallbackWithExceptionInterface flowListener) {
+        UserDao.addUid(uid, username, authMode);
+        UserDao.newCreateUser(email, username, country, authMode);
+
+        SystemUtils.firstTimeOpeningApp();
+        SystemUtils.enableFCM();
+        flowListener.onSuccess();
     }
 }

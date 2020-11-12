@@ -21,11 +21,15 @@ public class UserDao {
     static DatabaseReference users = reference.child("users");
     static DatabaseReference uids = reference.child("uids");
 
-    public static void getUserByUsername(final CallbackInterface<User> listen, String userId) {
-        users.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+    public static void getUserByUsername(String username, CallbackInterface<User> listen) {
+        users.child(username).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                listen.onSuccess(snapshot.getValue(User.class));
+                if (snapshot.exists()){
+                    listen.onSuccess(snapshot.getValue(User.class));
+                } else {
+                    listen.onSuccess(null);
+                }
             }
 
             @Override
@@ -89,7 +93,7 @@ public class UserDao {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     Uid uidVal = dataSnapshot.getValue(Uid.class);
-                    getUserByUsername(new CallbackInterface<User>() {
+                    getUserByUsername(uidVal.getUsername(), new CallbackInterface<User>() {
                         @Override
                         public void onStart() {
 
@@ -104,7 +108,7 @@ public class UserDao {
                         public void onFailure() {
                             completionListener.onSuccess(null);
                         }
-                    }, uidVal.getUsername());
+                    });
 
                 } else {
                     completionListener.onSuccess(null);
