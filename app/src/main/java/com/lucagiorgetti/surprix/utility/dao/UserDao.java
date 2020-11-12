@@ -25,7 +25,7 @@ public class UserDao {
         users.child(username).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()){
+                if (snapshot.exists()) {
                     listen.onSuccess(snapshot.getValue(User.class));
                 } else {
                     listen.onSuccess(null);
@@ -125,8 +125,7 @@ public class UserDao {
 
     public static void newCreateUser(String email, String username, String nation, LoginFlowHelper.AuthMode authMode) {
         String emailCod = email.replaceAll("\\.", ",");
-        boolean fromFacebook = !authMode.equals(LoginFlowHelper.AuthMode.EMAIL_PASSWORD);
-        User user = new User(emailCod, username, nation, fromFacebook); //ObjectClass for Users
+        User user = new User(emailCod, username, nation); //ObjectClass for Users
         users.child(username).setValue(user);
     }
 
