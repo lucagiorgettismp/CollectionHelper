@@ -1,7 +1,6 @@
 package com.lucagiorgetti.surprix.ui.mainfragments.missinglist;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -9,9 +8,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 
@@ -32,7 +28,6 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
-import com.lucagiorgetti.surprix.listenerInterfaces.CallbackInterface;
 import com.lucagiorgetti.surprix.model.MissingSurprise;
 import com.lucagiorgetti.surprix.model.Surprise;
 import com.lucagiorgetti.surprix.utility.BaseFragment;
@@ -52,7 +47,6 @@ public class MissingListFragment extends BaseFragment {
     private List<MissingSurprise> missingSurprises = new ArrayList<>();
     private MissingListDao missingListDao;
     private MissingListViewModel missingListViewModel;
-    private AlertDialog editNoteDialog;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {

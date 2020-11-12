@@ -35,9 +35,9 @@ public class LoginHomeFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        callbackManager = CallbackManager.Factory.create();
-
         View root = inflater.inflate(R.layout.login_home_fragment, container, false);
+
+        callbackManager = CallbackManager.Factory.create();
 
         ProgressBar progressBar = root.findViewById(R.id.login_loading);
         setProgressBar(progressBar);
@@ -49,7 +49,7 @@ public class LoginHomeFragment extends BaseFragment {
 
         facebookCustomLogin.setOnClickListener(view -> {
             if (SystemUtils.checkNetworkAvailability()) {
-                LoginFlowHelper.loginWithFacebook(getActivity(), callbackManager, new CallbackWithExceptionInterface() {
+                LoginFlowHelper.loginWithFacebook(getActivity(), this, callbackManager, new CallbackWithExceptionInterface() {
                     @Override
                     public void onStart() {
                         showLoading();

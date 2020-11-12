@@ -3,6 +3,8 @@ package com.lucagiorgetti.surprix.utility;
 import android.app.Activity;
 import android.util.Patterns;
 
+import androidx.fragment.app.Fragment;
+
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -109,9 +111,9 @@ public class LoginFlowHelper {
     }
 
     // LOGFACE
-    public static void loginWithFacebook(Activity activity, CallbackManager callbackManager, CallbackWithExceptionInterface flowListener) {
+    public static void loginWithFacebook(Activity activity, Fragment fragment, CallbackManager callbackManager, CallbackWithExceptionInterface flowListener) {
 
-        LoginManager.getInstance().logInWithReadPermissions(activity, Collections.singletonList("email"));
+        LoginManager.getInstance().logInWithReadPermissions(fragment, Collections.singletonList("email"));
         try {
             flowListener.onStart();
             LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
@@ -241,6 +243,6 @@ public class LoginFlowHelper {
 
         SystemUtils.firstTimeOpeningApp();
         SystemUtils.enableFCM();
-        flowListener.onSuccess();
+        SystemUtils.setSessionUser(uid, flowListener);
     }
 }
