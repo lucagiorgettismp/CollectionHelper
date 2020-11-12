@@ -15,25 +15,25 @@ import androidx.preference.PreferenceManager;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.listenerInterfaces.CallbackInterface;
+import com.lucagiorgetti.surprix.listenerInterfaces.CallbackWithExceptionInterface;
 import com.lucagiorgetti.surprix.model.User;
 import com.lucagiorgetti.surprix.utility.dao.UserDao;
 
 import timber.log.Timber;
 
 /**
- * Utility which contain all the implementations of methods which needs a connection with Firebase Database.
+ * Utility which contains all the implementations of methods which needs a connection with Firebase Database.
  * <p>
  * Created by Luca on 13/11/2017.
  */
-
 public class SystemUtils {
     private static final String FIRST_TIME_YEAR_HELP_SHOW = "showYearHelp";
     private static final String FIRST_TIME_SET_HELP_SHOW = "showSetHelp";
     private static final String PRIVACY_POLICY_ACCEPTED = "privacyPolicyAccepted";
     private static final String THEME_DARK_SELECTED = "darkThemeSelected";
-    private static final String TAG = "SystemUtility";
 
     public static boolean checkNetworkAvailability() {
         boolean available = false;
@@ -130,13 +130,15 @@ public class SystemUtils {
     }
 
 
-    public static void setSessionUser(String email, CallbackInterface<Boolean> listener) {
-        UserDao.getUserByEmail(new CallbackInterface<User>() {
+    public static void setSessionUser(String uid, CallbackWithExceptionInterface listener) {
+        UserDao.getUserByUid(uid, new CallbackInterface<User>() {
             @Override
             public void onSuccess(User currentUser) {
                 if (currentUser != null) {
                     SurprixApplication.getInstance().setUser(currentUser);
-                    listener.onSuccess(true);
+                    listener.onSuccess();
+                } else {
+                    listener.onFailure(new Exception(SurprixApplication.getSurprixContext().getString(R.string.something_went_wrong)));
                 }
             }
 
@@ -147,9 +149,9 @@ public class SystemUtils {
 
             @Override
             public void onFailure() {
-                listener.onFailure();
+                listener.onFailure(new Exception(SurprixApplication.getSurprixContext().getString(R.string.something_went_wrong)));
             }
-        }, email);
+        });
     }
 
     private static void removeSessionUser() {

@@ -17,8 +17,10 @@ import androidx.navigation.Navigation;
 
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.listenerInterfaces.CallbackInterface;
+import com.lucagiorgetti.surprix.listenerInterfaces.CallbackWithExceptionInterface;
 import com.lucagiorgetti.surprix.utility.AuthUtils;
 import com.lucagiorgetti.surprix.utility.BaseFragment;
+import com.lucagiorgetti.surprix.utility.LoginFlowHelper;
 import com.lucagiorgetti.surprix.utility.SystemUtils;
 
 import timber.log.Timber;
@@ -96,7 +98,6 @@ public class SignInFragment extends BaseFragment {
         });
     }
 
-
     private class LoginOnClick implements View.OnClickListener {
         @Override
         public void onClick(View view) {
@@ -106,37 +107,29 @@ public class SignInFragment extends BaseFragment {
             }
 
             String email = inEmail.getText().toString().trim();
-            Timber.w("Input email : %s", email);
+            Timber.d("Input email : %s", email);
             String pwd = inPassword.getText().toString().trim();
-            Timber.w("Input pwd : %s", pwd);
+            Timber.d("Input pwd : %s", pwd);
 
-            if (!email.equals("") && !pwd.equals("")) {
-                AuthUtils.signInWithEmailAndPassword(getActivity(), email, pwd, new CallbackInterface<Boolean>() {
-                    @Override
-                    public void onStart() {
-                        showLoading();
-                    }
+            LoginFlowHelper.signInWithEmailPassword(email, pwd, getActivity(), new CallbackWithExceptionInterface() {
+                @Override
+                public void onStart() {
+                    showLoading();
+                }
 
-                    @Override
-                    public void onSuccess(Boolean success) {
-                        if (success) {
-                            hideLoading();
-                            Navigation.findNavController(view).navigate(SignInFragmentDirections.actionNavigationLoginSigninToMainActivity());
-                            activity.finish();
-                        }
-                    }
+                @Override
+                public void onSuccess() {
+                    hideLoading();
+                    Navigation.findNavController(view).navigate(SignInFragmentDirections.actionNavigationLoginSigninToMainActivity());
+                    activity.finish();
+                }
 
-                    @Override
-                    public void onFailure() {
-                        hideLoading();
-                        Toast.makeText(getContext(), R.string.wrong_email_or_password,
-                                Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-            } else {
-                Toast.makeText(getContext(), R.string.wrong_email_or_password, Toast.LENGTH_SHORT).show();
-            }
+                @Override
+                public void onFailure(Exception e) {
+                    hideLoading();
+                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 }

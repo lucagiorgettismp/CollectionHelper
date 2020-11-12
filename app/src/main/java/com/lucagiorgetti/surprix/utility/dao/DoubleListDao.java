@@ -45,7 +45,7 @@ public class DoubleListDao {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot d : dataSnapshot.getChildren()) {
-                        UserDao.getUserById(new CallbackInterface<User>() {
+                        UserDao.getUserByUsername(d.getKey(), new CallbackInterface<User>() {
                             @Override
                             public void onStart() {
 
@@ -61,7 +61,7 @@ public class DoubleListDao {
                             public void onFailure() {
 
                             }
-                        }, d.getKey());
+                        });
                     }
                 } else {
                     listen.onSuccess(null);

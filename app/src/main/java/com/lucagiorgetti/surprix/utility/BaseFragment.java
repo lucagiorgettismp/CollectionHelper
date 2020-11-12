@@ -13,7 +13,7 @@ public class BaseFragment extends Fragment {
     private ProgressBar progressBar;
 
     protected void setTitle(String title){
-        Objects.requireNonNull(((MainActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setTitle(title);
+        Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar()).setTitle(title);
     }
 
     protected void setProgressBar(ProgressBar progressBar) {

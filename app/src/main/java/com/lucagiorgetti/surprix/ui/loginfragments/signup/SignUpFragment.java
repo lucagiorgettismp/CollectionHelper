@@ -2,7 +2,6 @@ package com.lucagiorgetti.surprix.ui.loginfragments.signup;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,17 +16,12 @@ import androidx.navigation.Navigation;
 
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseAuthUserCollisionException;
-import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
-import com.lucagiorgetti.surprix.listenerInterfaces.CallbackInterface;
 import com.lucagiorgetti.surprix.listenerInterfaces.CallbackWithExceptionInterface;
-import com.lucagiorgetti.surprix.utility.AuthUtils;
 import com.lucagiorgetti.surprix.utility.BaseFragment;
+import com.lucagiorgetti.surprix.utility.LoginFlowHelper;
 import com.lucagiorgetti.surprix.utility.SystemUtils;
-import com.lucagiorgetti.surprix.utility.dao.UserDao;
 import com.mikelau.countrypickerx.CountryPickerDialog;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
@@ -111,98 +105,26 @@ public class SignUpFragment extends BaseFragment {
                 return;
             }
 
-            if (fromFacebook) {
-                if (email.isEmpty() || username.isEmpty() || nation.isEmpty()) {
-                    //progress.setVisibility(View.INVISIBLE);
-                    Toast.makeText(getContext(), R.string.signup_complete_all_fields, Toast.LENGTH_SHORT).show();
-                } else {
-                    UserDao.generateUser(email, username, nation, true);
-                    SystemUtils.firstTimeOpeningApp();
-                    SystemUtils.enableFCM();
+            LoginFlowHelper.AuthMode authMode = fromFacebook ? LoginFlowHelper.AuthMode.FACEBOOK : LoginFlowHelper.AuthMode.EMAIL_PASSWORD;
+            LoginFlowHelper.signUp(email, password, username, nation, getActivity(), authMode, new CallbackWithExceptionInterface() {
+                @Override
+                public void onStart() {
+                    showLoading();
+                }
+
+                @Override
+                public void onSuccess() {
+                    hideLoading();
                     Navigation.findNavController(view).navigate(SignUpFragmentDirections.actionNavigationLoginSignupToMainActivity());
                     activity.finish();
                 }
-            } else {
-                if (email.isEmpty() || password.isEmpty() || username.isEmpty() || nation.isEmpty()) {
+
+                @Override
+                public void onFailure(Exception e) {
                     hideLoading();
-                    Toast.makeText(getApplicationContext(), R.string.signup_complete_all_fields, Toast.LENGTH_SHORT).show();
-                } else if (password.length() < 6) {
-                    hideLoading();
-                    Toast.makeText(getApplicationContext(), R.string.signup_password_lenght, Toast.LENGTH_SHORT).show();
-                } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                    hideLoading();
-                    Toast.makeText(getApplicationContext(), R.string.signup_email_format, Toast.LENGTH_SHORT).show();
-                } else {
-                    UserDao.checkUsernameAvailable(username, new CallbackInterface<Boolean>() {
-                        @Override
-                        public void onStart() {
-                            showLoading();
-                        }
-
-                        @Override
-                        public void onSuccess(Boolean result) {
-                            if (result) {
-                                AuthUtils.createUserWithEmailAndPassword(getActivity(), email, password, new CallbackWithExceptionInterface() {
-                                    @Override
-                                    public void onStart() {
-
-                                    }
-
-                                    @Override
-                                    public void onSuccess() {
-                                        UserDao.generateUser(email, username, nation, false);
-                                        AuthUtils.signInWithEmailAndPassword(activity, email, password, new CallbackInterface<Boolean>() {
-                                            @Override
-                                            public void onStart() {
-
-                                            }
-
-                                            @Override
-                                            public void onSuccess(Boolean item) {
-                                                hideLoading();
-                                                SystemUtils.firstTimeOpeningApp();
-                                                Navigation.findNavController(view).navigate(SignUpFragmentDirections.actionNavigationLoginSignupToMainActivity());
-                                                activity.finish();
-                                            }
-
-                                            @Override
-                                            public void onFailure() {
-                                                hideLoading();
-                                            }
-                                        });
-                                    }
-
-                                    @Override
-                                    public void onFailure(Exception exception) {
-                                        hideLoading();
-                                        String message;
-                                        if (exception instanceof FirebaseAuthWeakPasswordException) {
-                                            message = getString(R.string.signup_weak_password);
-                                        } else if (exception instanceof FirebaseAuthInvalidCredentialsException) {
-                                            message = getString(R.string.signup_email_format);
-                                        } else if (exception instanceof FirebaseAuthUserCollisionException) {
-                                            message = getString(R.string.signup_mail_existinig);
-                                        } else {
-                                            message = getString(R.string.signup_default_error);
-                                        }
-                                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
-                                    }
-                                });
-
-                            } else {
-                                hideLoading();
-                                Toast.makeText(getApplicationContext(), R.string.username_existing, Toast.LENGTH_SHORT).show();
-                            }
-                        }
-
-                        @Override
-                        public void onFailure() {
-                            hideLoading();
-                            Toast.makeText(getApplicationContext(), R.string.data_sync_error, Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
-            }
+            });
         }
     }
 }
