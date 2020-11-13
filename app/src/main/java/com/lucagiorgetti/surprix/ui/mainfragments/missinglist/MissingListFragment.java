@@ -1,6 +1,5 @@
 package com.lucagiorgetti.surprix.ui.mainfragments.missinglist;
 
-import android.Manifest;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,24 +17,14 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-import com.karumi.dexter.Dexter;
-import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.PermissionDeniedResponse;
-import com.karumi.dexter.listener.PermissionGrantedResponse;
-import com.karumi.dexter.listener.PermissionRequest;
-import com.karumi.dexter.listener.single.PermissionListener;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.model.MissingSurprise;
 import com.lucagiorgetti.surprix.model.Surprise;
 import com.lucagiorgetti.surprix.utility.BaseFragment;
-import com.lucagiorgetti.surprix.utility.Common;
-import com.lucagiorgetti.surprix.utility.PDFUtils;
 import com.lucagiorgetti.surprix.utility.dao.MissingListDao;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,7 +52,9 @@ public class MissingListFragment extends BaseFragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
+        /*
         FloatingActionButton fab = root.findViewById(R.id.missing_fab);
+
         fab.setOnClickListener(view -> Dexter.withActivity(getActivity()).withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE).withListener(new PermissionListener() {
             @Override
             public void onPermissionGranted(PermissionGrantedResponse response) {
@@ -84,7 +75,7 @@ public class MissingListFragment extends BaseFragment {
 
             }
         }).check());
-
+        */
         mAdapter = new MissingRecyclerAdapter();
 
         mAdapter.setListener(new SurpRecylerAdapterListener() {
@@ -101,6 +92,7 @@ public class MissingListFragment extends BaseFragment {
 
         recyclerView.setAdapter(mAdapter);
 
+        /*
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
@@ -119,7 +111,7 @@ public class MissingListFragment extends BaseFragment {
                 }
             }
         });
-
+*/
         missingListViewModel.getMissingSurprises().observe(getViewLifecycleOwner(), missingList -> {
             emptyList.setVisibility(missingList == null || missingList.isEmpty() ? View.VISIBLE : View.GONE);
             missingSurprises = missingList;
@@ -129,7 +121,7 @@ public class MissingListFragment extends BaseFragment {
                 setTitle(getString(R.string.missings) + " (" + mAdapter.getItemCount() + ")");
             } else {
                 setTitle(getString(R.string.missings));
-                fab.setVisibility(View.GONE);
+                //fab.setVisibility(View.GONE);
             }
         });
 

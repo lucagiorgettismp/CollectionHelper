@@ -46,14 +46,12 @@ public class PDFUtils {
     public static void createMissingListPdfFile(FragmentActivity activity, List<MissingSurprise> missingSurprises, String path) throws IOException {
         try {
             Document document = new Document();
-            File newFile = new File(path);
-            if (newFile.exists()) {
-                newFile.delete();
-            }
+            //File newFile = File.createTempFile("prova.pdf", null, SurprixApplication.getSurprixContext().getCacheDir());
 
-            newFile.createNewFile();
+            File cacheFile = new File(SurprixApplication.getSurprixContext().getCacheDir(), "doc/prova.pdf");
+            cacheFile.createNewFile();
 
-            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(newFile));
+            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(cacheFile));
 
             MyEvent myEvent = new MyEvent("logo_shape.jpg");
 
@@ -89,7 +87,7 @@ public class PDFUtils {
             }
             document.close();
 
-            Uri uri = FileProvider.getUriForFile(activity, BuildConfig.APPLICATION_ID + ".provider", newFile);
+            Uri uri = FileProvider.getUriForFile(activity, BuildConfig.APPLICATION_ID + ".provider", cacheFile);
             String mime = SurprixApplication.getInstance().getContentResolver().getType(uri);
 
             // Open file with user selected app
