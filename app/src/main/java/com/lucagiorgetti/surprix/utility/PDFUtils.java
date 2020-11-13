@@ -67,7 +67,7 @@ public class PDFUtils {
             document.addCreator(SurprixApplication.getInstance().getResources().getString(R.string.app_name));
             HashMap<String, List<Missing>> hashMap = new HashMap<>();
 
-            BaseColor colorAccent = new BaseColor(ContextCompat.getColor(SurprixApplication.getSurprixContext(), R.color.colorPrimary));
+            BaseColor colorAccent = new BaseColor(ContextCompat.getColor(SurprixApplication.getSurprixContext(), R.color.surprixBlue));
             float fontSize = 12.0f;
 
             BaseFont fontName = BaseFont.createFont();

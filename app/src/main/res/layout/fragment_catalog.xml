@@ -35,8 +35,8 @@
             android:layout_margin="16dp"
             android:clickable="true"
             android:focusable="true"
-            app:backgroundTint="@color/colorSecondary"
-            android:tint="@color/btnIcon"
+            app:backgroundTint="@color/fabBackColor"
+            app:tint="@color/fabIconColor"
             app:srcCompat="@drawable/ic_search" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

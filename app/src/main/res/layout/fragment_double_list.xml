@@ -37,7 +37,7 @@
             android:layout_height="50dp"
             android:cropToPadding="false"
             android:scaleType="fitCenter"
-            android:tint="@color/empty_list_icon"
+            app:tint="@color/empty_list_icon"
             app:srcCompat="@drawable/ic_catalog" />
 
         <TextView

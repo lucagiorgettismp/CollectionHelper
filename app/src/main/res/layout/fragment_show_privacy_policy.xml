@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/background"
+    android:background="@color/surprixBackground"
     tools:context=".ui.settingsfragments.ShowPrivacyPolicyFragment">
 
     <LinearLayout
@@ -14,7 +14,7 @@
         android:layout_margin="10dp"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:background="@color/colorWhite"
+        android:background="@color/white"
         android:padding="10dp"
         android:orientation="vertical">
 

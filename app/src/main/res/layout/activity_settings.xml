@@ -10,7 +10,7 @@
         android:id="@+id/appBarLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay"
+        android:theme="@style/Theme.Surprix.AppBarOverlay"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/actionBarSize"
             android:background="@color/toolbarColor"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            app:popupTheme="@style/Theme.Surprix.PopupOverlay" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

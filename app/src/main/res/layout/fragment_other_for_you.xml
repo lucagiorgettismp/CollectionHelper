@@ -38,8 +38,8 @@
         android:layout_margin="16dp"
         android:clickable="true"
         android:focusable="true"
-        android:tint="@color/btnIcon"
+        app:backgroundTint="@color/fabBackColor"
+        app:tint="@color/fabIconColor"
         android:tintMode="src_in"
-        app:backgroundTint="@color/colorSecondary"
         app:srcCompat="@drawable/ic_mail" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

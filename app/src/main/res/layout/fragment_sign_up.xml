@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_marginBottom="20dp"
-        android:tint="@color/logo"
+        app:tint="@color/logo"
         app:srcCompat="@drawable/ic_logo" />
 
     <LinearLayout
@@ -22,7 +22,7 @@
         android:layout_marginEnd="20dp"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:background="@color/colorWhite"
+        android:background="@color/white"
         android:padding="20dp"
         android:orientation="vertical">
 

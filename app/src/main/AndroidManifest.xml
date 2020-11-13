@@ -17,18 +17,18 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/Theme.Surprix">
         <activity
             android:name=".ui.activities.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/Theme.Surprix.NoActionBar" />
         <activity
             android:name=".ui.activities.MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/Theme.Surprix.NoActionBar" />
         <activity
             android:name=".ui.activities.SplashActivity"
-            android:theme="@style/AppTheme.SplashScreenTheme">
+            android:theme="@style/Theme.Surprix.SplashScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
@@ -61,7 +61,7 @@
         </activity>
         <activity
             android:name=".ui.activities.LoginActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/Theme.Surprix.NoActionBar" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -84,7 +84,7 @@
             android:resource="@drawable/ic_logo" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
-            android:resource="@color/colorPrimary" />
+            android:resource="@color/surprixBlue" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="SurprixDefault" />

@@ -23,7 +23,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="25"
-            app:cardBackgroundColor="@color/colorWhite"
+            app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="10dp"
             app:cardElevation="0dp">
 
@@ -92,7 +92,7 @@
                             android:layout_width="22dp"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="4dp"
-                            android:tint="@color/surpriseActionAccent"
+                            app:tint="@color/surpriseActionAccent"
                             android:visibility="gone"
                             app:srcCompat="@drawable/ic_star_full" />
 
@@ -101,7 +101,7 @@
                             android:layout_width="22dp"
                             android:layout_height="match_parent"
                             android:layout_marginEnd="4dp"
-                            android:tint="@color/surpriseActionAccent"
+                            app:tint="@color/surpriseActionAccent"
                             app:srcCompat="@drawable/ic_star_empty" />
 
                         <ImageView
@@ -109,7 +109,7 @@
                             android:layout_width="22dp"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="4dp"
-                            android:tint="@color/surpriseActionAccent"
+                            app:tint="@color/surpriseActionAccent"
                             android:visibility="gone"
                             app:srcCompat="@drawable/ic_star_full" />
 
@@ -118,7 +118,7 @@
                             android:layout_width="22dp"
                             android:layout_height="match_parent"
                             android:layout_marginEnd="4dp"
-                            android:tint="@color/surpriseActionAccent"
+                            app:tint="@color/surpriseActionAccent"
                             app:srcCompat="@drawable/ic_star_empty" />
 
                         <ImageView
@@ -126,7 +126,7 @@
                             android:layout_width="22dp"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="4dp"
-                            android:tint="@color/surpriseActionAccent"
+                            app:tint="@color/surpriseActionAccent"
                             android:visibility="gone"
                             app:srcCompat="@drawable/ic_star_full" />
 
@@ -135,7 +135,7 @@
                             android:layout_width="22dp"
                             android:layout_height="match_parent"
                             android:layout_marginEnd="4dp"
-                            android:tint="@color/surpriseActionAccent"
+                            app:tint="@color/surpriseActionAccent"
                             app:srcCompat="@drawable/ic_star_empty" />
 
                     </LinearLayout>
@@ -151,10 +151,8 @@
                         android:id="@+id/add_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:drawableStart="@drawable/ic_add"
-                        android:backgroundTint="@color/colorSecondary"
-                        android:textColor="@color/btnImportantText"
-                        android:drawableTint="@color/btnImportantText"
+                        android:backgroundTint="@color/cardButtonColor"
+                        android:textColor="@color/cardButtonText"
                         android:text="@string/add"/>
                 </LinearLayout>
             </LinearLayout>

@@ -37,7 +37,7 @@
             android:layout_height="50dp"
             android:cropToPadding="false"
             android:scaleType="fitCenter"
-            android:tint="@color/cardview_dark_background"
+            app:tint="@color/cardview_dark_background"
             app:srcCompat="@drawable/ic_catalog" />
 
         <TextView
@@ -55,8 +55,8 @@
         android:layout_gravity="bottom|left"
         android:layout_margin="8dp"
         android:clickable="true"
-        android:tint="@color/btnIcon"
-        app:backgroundTint="@color/colorSecondary"
+        app:backgroundTint="@color/fabBackColor"
+        app:tint="@color/fabIconColor"
         app:fabSize="mini"
         app:maxImageSize="24dp"
         app:srcCompat="@drawable/ic_export" />
