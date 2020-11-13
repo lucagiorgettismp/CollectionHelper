@@ -29,6 +29,7 @@
         android:id="@+id/other_for_you_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/other_for_you_fab_mail"
         android:layout_width="wrap_content"
@@ -37,6 +38,8 @@
         android:layout_margin="16dp"
         android:clickable="true"
         android:focusable="true"
-        android:tint="@color/colorWhite"
+        android:tint="@color/btnIcon"
+        android:tintMode="src_in"
+        app:backgroundTint="@color/colorSecondary"
         app:srcCompat="@drawable/ic_mail" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

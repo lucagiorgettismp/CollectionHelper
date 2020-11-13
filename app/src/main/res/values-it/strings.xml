@@ -108,11 +108,10 @@
     <string name="select_your_country">Seleziona la tua nazione</string>
     <string name="logout">Esci</string>
     <string name="add">Aggiungi</string>
-    <string name="add_surprise_dialog_title" translatable="false">Aggiungi sorpresina</string>
+    <string name="add_surprise_dialog_title">Aggiungi sorpresina</string>
     <string name="add_surprise_dialog_message">A quale lista vuoi aggiungere</string>
     <string name="double_removed">Rimossa sorpresina doppia</string>
     <string name="find">Trova</string>
-    <string name="notes">Note</string>
-    <string name="add_note">Aggiungi nota</string>
-    <string name="add_note_btn">Salva</string>
+    <string name="find_surprise">Trova il pezzo</string>
+    <string name="other_for_you_title">Altri pezzi da %s</string>
 </resources>

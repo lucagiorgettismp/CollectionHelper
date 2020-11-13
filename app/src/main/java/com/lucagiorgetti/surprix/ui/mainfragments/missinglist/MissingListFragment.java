@@ -97,36 +97,6 @@ public class MissingListFragment extends BaseFragment {
             public void onSurpriseDelete(int position) {
                 deleteSurprise(mAdapter, position);
             }
-
-            @Override
-            public void onEditNoteClicked(MissingSurprise missingSurprise) {
-
-                final View view = getLayoutInflater().inflate(R.layout.dialog_edit_note, null);
-
-                /*
-                final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setView(view);
-                builder.setTitle(R.string.edit_note_title);
-
-                final EditText noteText = view.findViewById(R.id.note_text);
-                noteText.setText(missingSurprise.getNotes());
-
-                Button saveNote = view.findViewById(R.id.save_note_btn);
-                ImageButton deleteNote = view.findViewById(R.id.delete_note_btn);
-
-                editNoteDialog = builder.create();
-                editNoteDialog.show();
-
-                saveNote.setOnClickListener(v -> {
-                    missingSurprise.setNotes(noteText.getText().toString());
-                    saveNotes(missingSurprise);
-                });
-
-                deleteNote.setOnClickListener(v -> {
-                    deleteNotes(missingSurprise);
-                });
-                 */
-            }
         });
 
         recyclerView.setAdapter(mAdapter);

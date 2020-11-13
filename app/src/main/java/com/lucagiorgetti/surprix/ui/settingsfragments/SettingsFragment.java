@@ -44,7 +44,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        setPreferencesFromResource(R.xml.root_preferences, rootKey);
+        setPreferencesFromResource(R.xml.surprix_preferences, rootKey);
 
         Preference privacyPolicy = findPreference(getResources().getString(R.string.settings_privacy_key));
         Preference contactUs = findPreference(getResources().getString(R.string.settings_contact_us_key));

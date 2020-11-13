@@ -18,7 +18,7 @@ public class ShowPrivacyPolicyFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.show_privacy_policy_fragment, container, false);
+        View root = inflater.inflate(R.layout.fragment_show_privacy_policy, container, false);
 
         TextView policyText = root.findViewById(R.id.policy_text);
         policyText.setMovementMethod(new ScrollingMovementMethod());

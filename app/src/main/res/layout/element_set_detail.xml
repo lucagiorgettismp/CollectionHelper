@@ -92,7 +92,7 @@
                             android:layout_width="22dp"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="4dp"
-                            android:tint="@color/starColor"
+                            android:tint="@color/surpriseActionAccent"
                             android:visibility="gone"
                             app:srcCompat="@drawable/ic_star_full" />
 
@@ -101,7 +101,7 @@
                             android:layout_width="22dp"
                             android:layout_height="match_parent"
                             android:layout_marginEnd="4dp"
-                            android:tint="@color/starColor"
+                            android:tint="@color/surpriseActionAccent"
                             app:srcCompat="@drawable/ic_star_empty" />
 
                         <ImageView
@@ -109,7 +109,7 @@
                             android:layout_width="22dp"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="4dp"
-                            android:tint="@color/starColor"
+                            android:tint="@color/surpriseActionAccent"
                             android:visibility="gone"
                             app:srcCompat="@drawable/ic_star_full" />
 
@@ -118,7 +118,7 @@
                             android:layout_width="22dp"
                             android:layout_height="match_parent"
                             android:layout_marginEnd="4dp"
-                            android:tint="@color/starColor"
+                            android:tint="@color/surpriseActionAccent"
                             app:srcCompat="@drawable/ic_star_empty" />
 
                         <ImageView
@@ -126,7 +126,7 @@
                             android:layout_width="22dp"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="4dp"
-                            android:tint="@color/starColor"
+                            android:tint="@color/surpriseActionAccent"
                             android:visibility="gone"
                             app:srcCompat="@drawable/ic_star_full" />
 
@@ -135,7 +135,7 @@
                             android:layout_width="22dp"
                             android:layout_height="match_parent"
                             android:layout_marginEnd="4dp"
-                            android:tint="@color/starColor"
+                            android:tint="@color/surpriseActionAccent"
                             app:srcCompat="@drawable/ic_star_empty" />
 
                     </LinearLayout>

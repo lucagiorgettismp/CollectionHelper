@@ -48,7 +48,7 @@ public class MissingOwnersFragment extends BaseFragment {
 
         mViewModel.isLoading().observe(getViewLifecycleOwner(), isLoading -> progress.setVisibility(isLoading ? View.VISIBLE : View.GONE));
 
-        setTitle("Trova il pezzo");
+        setTitle(getString(R.string.find_surprise));
         return root;
     }
 

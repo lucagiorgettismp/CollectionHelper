@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="colorPrimary">#00838f</color>
+    <color name="colorPrimaryLight">#4fb3be</color>
+    <color name="colorPrimaryDark">#005661</color>
+    <color name="colorPrimaryDark_copy">#005661</color>
+
+    <color name="card_icon">@color/colorPrimaryDark</color>
+    <color name="pop_menu_text_color">@color/grey20</color>
+    <color name="pop_menu_back_color">@color/colorWhite</color>
+
     <color name="loginBackground">@color/colorPrimary</color>
     <color name="loginSignUp">@color/colorWhite</color>
     <color name="loginSignUpText">@color/colorPrimaryDark</color>
@@ -21,31 +30,25 @@
     <color name="cardTitle">@color/colorPrimary</color>
     <color name="cardDivider">@color/colorPrimary</color>
     <color name="textColor">@color/grey20</color>
-    <color name="dialogTextColor">@color/grey20</color>
     <color name="cardTextColor">@color/grey20</color>
-    <color name="starColor">@color/colorPrimary</color>
-
-    <color name="btnShowMissingOwner">@color/colorPrimary</color>
-    <color name="btnEditNotes">@color/colorSecondary</color>
+    <color name="surpriseActionAccent">@color/colorPrimary</color>
+    <color name="surpriseActionText">@color/colorWhite</color>
 
     <color name="background">@color/colorPrimaryLight</color>
     <color name="surprisePlaceHolder">@color/colorPrimary</color>
 
-    <color name="notesTextColorLink">@color/colorSecondary</color>
-    <color name="notesTextColor">@color/grey20</color>
-    <color name="notesBackground">@color/lightYellowNotes</color>
-
     <color name="navbarItemSelected">@color/colorSecondary</color>
     <color name="navbarItem">@color/colorPrimary</color>
+    <color name="navbarItemSelectedText">@color/colorWhite</color>
 
-    <color name="hintTextColor">@color/grey70</color>
+    <color name="dialogTextColor">@color/grey20</color>
+    <color name="hintTextColor">@color/grey20</color>
+
     <color name="xColor">@color/grey50</color>
 
-    <color name="lightYellowNotes">#9AFFD95B</color>
-    <color name="colorPrimary">#00838f</color>
-    <color name="colorPrimaryLight">#4fb3be</color>
-    <color name="colorPrimaryDark">#005661</color>
-    <color name="colorPrimaryDark_copy">#005661</color>
+    <color name="empty_list_icon">@color/colorPrimaryDark</color>
+    <color name="dialogButtonsColor">@color/colorPrimary</color>
+
     <color name="colorSecondary">#ffa726</color>
     <color name="facebookColor">#002f6c</color>
     <color name="colorWhite">#FFFFFF</color>

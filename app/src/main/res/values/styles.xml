@@ -8,6 +8,8 @@
         <item name="colorAccent">@color/colorSecondary</item>
         <item name="editTextColor">@color/textColor</item>
         <item name="android:colorBackground">@color/background</item>
+        <item name="android:navigationBarColor">@color/colorPrimary</item>
+        <item name="android:statusBarColor">@color/colorPrimary</item>
     </style>
 
     <style name="AppTheme.NoActionBar" parent="AppTheme">
@@ -15,8 +17,13 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.DayNight.ActionBar">
+        <item name="android:textColorPrimary">@color/colorWhite</item>
+    </style>
+    <style name="AppTheme.PopupOverlay" parent="@android:style/Widget.PopupMenu">
+        <item name="android:textColor">@color/pop_menu_text_color</item>
+        <item name="android:backgroundTint">@color/pop_menu_back_color</item>
+    </style>
 
     <style name="FullyTranslucent" parent="Translucent.Base">
         <item name="windowActionBar">false</item>
@@ -33,22 +40,14 @@
         <item name="android:progressBarStyle">@style/InvisibleProgress</item>
     </style>
 
-    <style name="ButtonShowMissingOwner" parent="Base.Widget.AppCompat.ImageButton">
-        <item name="backgroundTint">@color/btnShowMissingOwner</item>
-    </style>
-
-    <style name="ButtonDeleteNote" parent="Base.Widget.AppCompat.ImageButton">
-        <item name="backgroundTint">@color/btnEditNotes</item>
-    </style>
-
-    <style name="AppTheme.SplashScreenTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+    <style name="AppTheme.SplashScreenTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:windowTranslucentStatus">true</item>
     <item name="android:windowBackground">@drawable/splash_screen</item>
     <!-- Optional, on Android 5+ you can modify the colorPrimaryDark color to match the windowBackground color for further branding-->
     <!-- <item name="colorPrimaryDark">@android:color/white</item> -->
     </style>
     
-    <style name="UserFormEditText" parent="Widget.AppCompat.EditText">
+    <style name="UserFormEditText">
         <item name="android:drawableTint">@color/signUpIcon</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -68,7 +67,7 @@
         <item name="android:textColorHint">@color/hintTextColor</item>
     </style>
     
-    <style name="RoundedButton" parent="@style/Widget.AppCompat.Button.Borderless">
+    <style name="RoundedButton">
         <item name="android:background">@drawable/rec_gradient</item>
         <item name="android:elevation">0dp</item>
         <item name="android:textSize">16sp</item>
@@ -76,4 +75,17 @@
         <item name="paddingStart">20dp</item>
         <item name="paddingEnd">20dp</item>
     </style>
+
+
+
+    <style name="MaterialAlertDialog.App.Title.Text" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="android:textColor">@color/RedSet</item>
+    </style>
+
+    <style name="ThemeOverlay.App.Button" parent="">
+        <item name="colorPrimary">@color/colorWhite</item>
+    </style>
+
+
+
 </resources>

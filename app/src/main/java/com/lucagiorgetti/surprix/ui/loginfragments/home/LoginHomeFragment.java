@@ -35,7 +35,7 @@ public class LoginHomeFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.login_home_fragment, container, false);
+        View root = inflater.inflate(R.layout.fragment_login_home, container, false);
 
         callbackManager = CallbackManager.Factory.create();
 

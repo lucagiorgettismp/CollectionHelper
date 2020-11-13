@@ -41,7 +41,7 @@ public class SignInFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.sign_in_fragment, container, false);
+        View root = inflater.inflate(R.layout.fragment_sign_in, container, false);
 
         inEmail = root.findViewById(R.id.sign_in_email);
         inPassword = root.findViewById(R.id.sign_in_password);

@@ -61,7 +61,7 @@ public class OtherForYouFragment extends BaseFragment {
 
         mViewModel.isLoading().observe(getViewLifecycleOwner(), isLoading -> progress.setVisibility(isLoading ? View.VISIBLE : View.GONE));
 
-        setTitle("Altri pezzi per te");
+        setTitle(String.format(Locale.getDefault(), getString(R.string.other_for_you_title), ownerUsername));
         return root;
     }
 
