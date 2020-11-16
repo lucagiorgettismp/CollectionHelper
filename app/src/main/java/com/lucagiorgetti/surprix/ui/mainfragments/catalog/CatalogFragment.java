@@ -41,10 +41,6 @@ public class CatalogFragment extends Fragment {
                     public void onItemClick(View view, int position) {
                         Producer producer = mAdapter.getItemAtPosition(position);
                         String prodName = producer.getName();
-                        if (producer.getProduct() != null) {
-                            prodName = prodName + " " + producer.getProduct();
-                        }
-
                         CatalogFragmentDirections.ProducerSelectedAction action = CatalogFragmentDirections.producerSelectedAction(producer.getId(), prodName);
                         Navigation.findNavController(view).navigate(action);
                     }

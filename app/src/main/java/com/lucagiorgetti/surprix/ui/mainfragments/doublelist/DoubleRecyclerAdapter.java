@@ -73,10 +73,8 @@ public class DoubleRecyclerAdapter extends ListAdapter<Surprise, DoubleRecyclerA
             holder.vSetName.setText(surp.getSet_name());
         }
         holder.vDescription.setText(surp.getDescription());
-        holder.vYear.setText(String.valueOf(surp.getSet_year()));
-        String productName = surp.getSet_product_name();
-        productName = (productName != null && !productName.equals("")) ? productName : "";
-        holder.vProducer.setText(surp.getSet_producer_name() + " " + productName);
+        holder.vYear.setText(surp.getSet_year_name());
+        holder.vProducer.setText(surp.getSet_producer_name());
 
         String nation;
         if (ExtraLocales.isExtraLocale(surp.getSet_nation())) {

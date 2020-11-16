@@ -1,7 +1,9 @@
 package com.lucagiorgetti.surprix.utility.dao;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -17,7 +19,7 @@ import java.util.ArrayList;
 public class YearDao {
     private static DatabaseReference years = SurprixApplication.getInstance().getDatabaseReference().child("years");
 
-    public void getYearById(String yearId, CallbackInterface<Year> listen) {
+    public static void getYearById(String yearId, CallbackInterface<Year> listen) {
         years.child(yearId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

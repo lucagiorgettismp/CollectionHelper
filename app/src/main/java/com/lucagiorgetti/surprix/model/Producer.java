@@ -9,11 +9,13 @@ public class Producer {
     private String name = null;
     private String product = null;
     private String color = null;
+    private String brand_id = null;
     private int order = 0;
 
     public Producer(String name, String product, int order, String color) {
-        this.id = name + "_" + product;
-        this.name = name;
+        this.id = product != null ? name + "_" + product : name;
+        this.name = product != null ? name + " " + product : name;
+        this.brand_id = name;
         this.product = product;
         this.order = order;
         this.color = color;
@@ -22,6 +24,7 @@ public class Producer {
     public Producer(String name, int order, String color) {
         this.id = name;
         this.name = name;
+        this.brand_id = name;
         this.color = color;
         this.order = order;
     }
@@ -32,10 +35,6 @@ public class Producer {
 
     public String getName() {
         return name;
-    }
-
-    public String getProduct() {
-        return product;
     }
 
     public String getId() {
@@ -52,5 +51,9 @@ public class Producer {
 
     public void setOrder(int order) {
         this.order = order;
+    }
+
+    public String getBrandId() {
+        return brand_id;
     }
 }

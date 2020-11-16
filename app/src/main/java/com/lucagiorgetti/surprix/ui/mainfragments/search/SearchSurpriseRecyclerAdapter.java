@@ -72,8 +72,8 @@ public class SearchSurpriseRecyclerAdapter extends ListAdapter<Surprise, SearchS
             holder.vDescription.setText(surp.getDescription());
 
         }
-        holder.vYear.setText(String.valueOf(surp.getSet_year()));
-        holder.vProducer.setText(surp.getSet_producer_name() + " " + surp.getSet_product_name());
+        holder.vYear.setText(surp.getSet_year_name());
+        holder.vProducer.setText(surp.getSet_producer_name());
         holder.vSetName.setText(surp.getSet_name());
 
         String nation;

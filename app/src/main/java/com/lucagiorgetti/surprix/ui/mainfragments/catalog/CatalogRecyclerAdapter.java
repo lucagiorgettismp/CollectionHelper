@@ -33,12 +33,7 @@ public class CatalogRecyclerAdapter extends RecyclerView.Adapter<CatalogRecycler
     public void onBindViewHolder(@NonNull SetViewHolder holder, int position) {
         Producer producer = producers.get(position);
         holder.vName.setText(producer.getName());
-        String product = producer.getProduct();
-        if (product != null && !product.equals("")){
-            holder.vProduct.setText(producer.getProduct());
-        } else {
-            holder.vProduct.setVisibility(View.GONE);
-        }
+        holder.vProduct.setVisibility(View.GONE);
     }
 
     @Override

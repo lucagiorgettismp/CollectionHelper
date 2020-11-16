@@ -76,7 +76,7 @@ public class SearchSetRecyclerAdapter extends ListAdapter<Set, SearchSetRecycler
         }
         holder.vNation.setText(nation);
         holder.vProducer.setText(set.getProducer_name());
-        holder.vYear.setText(String.valueOf(set.getYear()));
+        holder.vYear.setText(set.getYear_desc());
         holder.vLayout.setBackgroundColor(ContextCompat.getColor(ctx, Colors.getHexColor(set.getProducer_color())));
 
         String path = set.getImg_path();

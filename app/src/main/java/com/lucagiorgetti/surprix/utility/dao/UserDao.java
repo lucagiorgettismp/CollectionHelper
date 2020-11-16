@@ -44,24 +44,6 @@ public class UserDao {
         users.child(username).child("country").setValue(nation);
     }
 
-    public static void checkUsernameAvailable(String username, final CallbackInterface<Boolean> listener) {
-        users.child(username).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    listener.onSuccess(false);
-                } else {
-                    listener.onSuccess(true);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                listener.onFailure();
-            }
-        });
-    }
-
     public static void deleteUser(final CallbackInterface<Boolean> listener) {
         listener.onStart();
 

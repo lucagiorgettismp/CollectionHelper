@@ -1,7 +1,9 @@
 package com.lucagiorgetti.surprix.utility.dao;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -78,6 +80,24 @@ public class ProducerDao {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 listen.onFailure();
+            }
+        });
+    }
+
+    public static void getProducerById(String producerId, CallbackInterface<Producer> listen){
+        producers.child(producerId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    Producer producer = snapshot.getValue(Producer.class);
+                    listen.onSuccess(producer);
+                }
+                listen.onFailure();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
     }

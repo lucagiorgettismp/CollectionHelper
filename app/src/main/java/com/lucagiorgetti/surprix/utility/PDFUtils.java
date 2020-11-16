@@ -79,7 +79,7 @@ public class PDFUtils {
             for (MissingSurprise missing : missingSurprises) {
                 Font orderNumberFont = new Font(fontName, fontSize, Font.NORMAL, BaseColor.BLACK);
                 try {
-                    String surpriseString = String.format(Locale.getDefault(), "%s: %s - %s, %s %s, %s", missing.getSurprise().getCode(), missing.getSurprise().getDescription(), missing.getSurprise().getSet_name(), missing.getSurprise().getSet_producer_name(), missing.getSurprise().getSet_product_name(), missing.getSurprise().getSet_year());
+                    String surpriseString = String.format(Locale.getDefault(), "%s: %s - %s, %s, %s", missing.getSurprise().getCode(), missing.getSurprise().getDescription(), missing.getSurprise().getSet_name(), missing.getSurprise().getSet_producer_name(), missing.getSurprise().getSet_year_name());
                     addNewItem(document, surpriseString, Element.ALIGN_LEFT, orderNumberFont);
                 } catch (DocumentException e) {
                     e.printStackTrace();
