@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottom_sheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#fff"
+    android:orientation="vertical"
+    android:padding="8dp"
+    app:behavior_hideable="true"
+    app:behavior_peekHeight="85dp"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="end"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/filter_reset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:text="Reset"
+            android:textColor="@color/white"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Categoria"/>
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/filter_category_cg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </com.google.android.material.chip.ChipGroup>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Produttore"/>
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/filter_producer_cg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </com.google.android.material.chip.ChipGroup>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Anno"/>
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/filter_year_cg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </com.google.android.material.chip.ChipGroup>
+
+</LinearLayout>

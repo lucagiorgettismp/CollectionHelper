@@ -22,10 +22,14 @@ import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.model.MissingSurprise;
 import com.lucagiorgetti.surprix.model.Surprise;
+import com.lucagiorgetti.surprix.ui.mainfragments.missinglist.filter.FilterBottomSheetDialogFragment;
+import com.lucagiorgetti.surprix.ui.mainfragments.missinglist.filter.FilterBottomSheetListener;
+import com.lucagiorgetti.surprix.ui.mainfragments.missinglist.filter.FilterPresenter;
+import com.lucagiorgetti.surprix.ui.mainfragments.missinglist.filter.FilterSelection;
 import com.lucagiorgetti.surprix.utility.BaseFragment;
 import com.lucagiorgetti.surprix.utility.dao.MissingListDao;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class MissingListFragment extends BaseFragment {
@@ -33,9 +37,9 @@ public class MissingListFragment extends BaseFragment {
     private SearchView searchView;
     private View root;
     private View emptyList;
-    private List<MissingSurprise> missingSurprises = new ArrayList<>();
     private MissingListDao missingListDao;
     private MissingListViewModel missingListViewModel;
+    private FilterPresenter filterPresenter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -52,30 +56,6 @@ public class MissingListFragment extends BaseFragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        /*
-        FloatingActionButton fab = root.findViewById(R.id.missing_fab);
-
-        fab.setOnClickListener(view -> Dexter.withActivity(getActivity()).withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE).withListener(new PermissionListener() {
-            @Override
-            public void onPermissionGranted(PermissionGrantedResponse response) {
-                try {
-                    PDFUtils.createMissingListPdfFile(getActivity(), missingSurprises, Common.getAppPath(SurprixApplication.getSurprixContext()) + getResources().getString(R.string.pdf_file_name) + ".pdf");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onPermissionDenied(PermissionDeniedResponse response) {
-
-            }
-
-            @Override
-            public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
-
-            }
-        }).check());
-        */
         mAdapter = new MissingRecyclerAdapter();
 
         mAdapter.setListener(new SurpRecylerAdapterListener() {
@@ -92,33 +72,15 @@ public class MissingListFragment extends BaseFragment {
 
         recyclerView.setAdapter(mAdapter);
 
-        /*
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                if (dy != 0) {
-                    fab.hide();
-                }
-                super.onScrolled(recyclerView, dx, dy);
-            }
-
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if (missingSurprises != null && !missingSurprises.isEmpty()) {
-                        fab.show();
-                    }
-                }
-            }
-        });
-*/
         missingListViewModel.getMissingSurprises().observe(getViewLifecycleOwner(), missingList -> {
             emptyList.setVisibility(missingList == null || missingList.isEmpty() ? View.VISIBLE : View.GONE);
-            missingSurprises = missingList;
             mAdapter.submitList(missingList);
             mAdapter.setFilterableList(missingList);
             if (mAdapter.getItemCount() > 0) {
                 setTitle(getString(R.string.missings) + " (" + mAdapter.getItemCount() + ")");
+                if (missingList != null) {
+                    filterPresenter = buildFilterPresenter(missingList);
+                }
             } else {
                 setTitle(getString(R.string.missings));
                 //fab.setVisibility(View.GONE);
@@ -159,7 +121,56 @@ public class MissingListFragment extends BaseFragment {
             }
             return false;
         });
+
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_filter) {
+            openBottomSheet();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void openBottomSheet() {
+        FilterBottomSheetDialogFragment bottomSheetDialogFragment = new FilterBottomSheetDialogFragment(filterPresenter, new FilterBottomSheetListener() {
+            @Override
+            public void onFilterChanged(FilterSelection selection) {
+                mAdapter.setFilter(selection);
+            }
+
+            @Override
+            public void onFilterCleared() {
+                mAdapter.removeFilter();
+            }
+        });
+
+        bottomSheetDialogFragment.show(getActivity().getSupportFragmentManager(), "missing_bottom_sheet");
+    }
+
+    private FilterPresenter buildFilterPresenter(List<MissingSurprise> missingSurprises) {
+        HashMap<String, String> categories = new HashMap<>();
+        HashMap<String, String> producers = new HashMap<>();
+        HashMap<String, String> years = new HashMap<>();
+
+        for (MissingSurprise ms : missingSurprises) {
+            Surprise surprise = ms.getSurprise();
+
+            if (!categories.containsKey(surprise.getSet_category())) {
+                categories.put(surprise.getSet_category(), surprise.getSet_category());
+            }
+
+            if (!producers.containsKey(surprise.getSet_producer_name())) {
+                producers.put(surprise.getSet_producer_name(), surprise.getSet_producer_name());
+            }
+
+            if (!years.containsKey(surprise.getSet_year_name())) {
+                years.put(surprise.getSet_year_name(), surprise.getSet_year_name());
+            }
+        }
+
+        return new FilterPresenter(categories, producers, years);
     }
 
     private void initSwipe(RecyclerView recyclerView) {
@@ -213,48 +224,4 @@ public class MissingListFragment extends BaseFragment {
                     }).show();
         }
     }
-
-    /*
-    private void saveNotes(MissingSurprise missingSurprise) {
-        missingListDao.setNote(missingSurprise.getSurprise().getId(), missingSurprise.getNotes(), new CallbackInterface<Boolean>() {
-            @Override
-            public void onStart() {
-
-            }
-
-            @Override
-            public void onSuccess(Boolean item) {
-                editNoteDialog.dismiss();
-                missingListViewModel.loadMissingSurprises();
-                Snackbar.make(getView(), SurprixApplication.getInstance().getString(R.string.note_saved), Snackbar.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onFailure() {
-
-            }
-        });
-    }
-
-    private void deleteNotes(MissingSurprise missingSurprise) {
-        missingListDao.setNote(missingSurprise.getSurprise().getId(), "", new CallbackInterface<Boolean>() {
-            @Override
-            public void onStart() {
-
-            }
-
-            @Override
-            public void onSuccess(Boolean item) {
-                editNoteDialog.dismiss();
-                missingListViewModel.loadMissingSurprises();
-                Snackbar.make(getView(), SurprixApplication.getInstance().getString(R.string.note_removed), Snackbar.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onFailure() {
-
-            }
-        });
-    }
-     */
 }

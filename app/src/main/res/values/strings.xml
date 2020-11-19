@@ -133,6 +133,9 @@
     <string name="find">Find</string>
     <string name="find_surprise">Find surprise</string>
     <string name="other_for_you_title">Other surprises from %s</string>
+    <string name="filter">Filter</string>
+    <string name="compo">Composable</string>
+    <string name="handpainted">Handpainted</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

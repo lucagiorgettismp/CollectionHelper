@@ -3,16 +3,9 @@
     xmlns:myapp="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_search"
-        android:orderInCategory="1"
-        myapp:showAsAction="always"
-        myapp:actionViewClass="android.widget.SearchView"
-        android:title="@string/search" />
-
-    <item
         android:id="@+id/action_filter"
         android:icon="@drawable/ic_filter"
         android:orderInCategory="1"
-        myapp:showAsAction="ifRoom"
+        myapp:showAsAction="always"
         android:title="@string/filter" />
 </menu>

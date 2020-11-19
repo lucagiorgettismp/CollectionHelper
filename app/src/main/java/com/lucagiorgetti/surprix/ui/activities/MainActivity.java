@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
             SystemUtils.openNewActivity(SettingsActivity.class, null);
         }
 
-        return true;
+        return false;
     }
 
     @Override

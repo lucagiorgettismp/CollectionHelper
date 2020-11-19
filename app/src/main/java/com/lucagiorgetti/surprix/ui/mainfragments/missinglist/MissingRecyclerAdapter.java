@@ -24,8 +24,10 @@ import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.model.Colors;
 import com.lucagiorgetti.surprix.model.ExtraLocales;
+import com.lucagiorgetti.surprix.model.Missing;
 import com.lucagiorgetti.surprix.model.MissingSurprise;
 import com.lucagiorgetti.surprix.model.Surprise;
+import com.lucagiorgetti.surprix.ui.mainfragments.missinglist.filter.FilterSelection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +42,8 @@ import java.util.Locale;
 public class MissingRecyclerAdapter extends ListAdapter<MissingSurprise, MissingRecyclerAdapter.SurpViewHolder> implements Filterable {
     private SurpRecylerAdapterListener listener;
     private List<MissingSurprise> filterableList;
+    List<MissingSurprise> textFilteredValues = new ArrayList<>();
+    private FilterSelection selectionFilter;
 
     MissingRecyclerAdapter() {
         super(DIFF_CALLBACK);
@@ -48,13 +52,11 @@ public class MissingRecyclerAdapter extends ListAdapter<MissingSurprise, Missing
     private static final DiffUtil.ItemCallback<MissingSurprise> DIFF_CALLBACK = new DiffUtil.ItemCallback<MissingSurprise>() {
         @Override
         public boolean areItemsTheSame(@NonNull MissingSurprise oldItem, @NonNull MissingSurprise newItem) {
-            //return oldItem.getSurprise().getId().equals(newItem.getSurprise().getId()) && oldItem.getNotes().equals(newItem.getNotes());
             return oldItem.getSurprise().getId().equals(newItem.getSurprise().getId());
         }
 
         @Override
         public boolean areContentsTheSame(@NonNull MissingSurprise oldItem, @NonNull MissingSurprise newItem) {
-            //return oldItem.getSurprise().getId().equals(newItem.getSurprise().getId()) && oldItem.getNotes().equals(newItem.getNotes());
             return oldItem.getSurprise().getId().equals(newItem.getSurprise().getId());
         }
     };
@@ -161,37 +163,37 @@ public class MissingRecyclerAdapter extends ListAdapter<MissingSurprise, Missing
     private Filter filter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence charSequence) {
-            List<MissingSurprise> filteredList = new ArrayList<>();
-
+            List<MissingSurprise> pippo = new ArrayList<>();
             if (charSequence == null || charSequence.length() == 0) {
-                filteredList.addAll(filterableList);
+                pippo.addAll(filterableList);
             } else {
                 String pattern = charSequence.toString().toLowerCase().trim();
-
                 for (MissingSurprise missingSurprise : filterableList) {
                     Surprise surprise = missingSurprise.getSurprise();
                     if (surprise.getCode().toLowerCase().contains(pattern)
-                            || surprise.getDescription().toLowerCase().contains(pattern)
-                            || surprise.getSet_name().toLowerCase().contains(pattern)) {
-                        filteredList.add(missingSurprise);
+                            || surprise.getDescription().toLowerCase().contains(pattern)){
+                            //|| surprise.getSet_name().toLowerCase().contains(pattern)) {
+                        pippo.add(missingSurprise);
                     }
                 }
             }
 
             FilterResults results = new FilterResults();
-            results.values = filteredList;
+            results.values = applyFilter(pippo);
 
             return results;
         }
 
         @Override
         protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-            submitList((List<MissingSurprise>) filterResults.values);
+            textFilteredValues = (List<MissingSurprise>) filterResults.values;
+            submitList(textFilteredValues);
         }
     };
 
     void setFilterableList(List<MissingSurprise> missingList) {
         this.filterableList = missingList;
+        this.textFilteredValues = missingList;
     }
 
     void removeFilterableItem(MissingSurprise surprise) {
@@ -204,6 +206,34 @@ public class MissingRecyclerAdapter extends ListAdapter<MissingSurprise, Missing
 
     void setListener(SurpRecylerAdapterListener listener) {
         this.listener = listener;
+    }
+
+    public void setFilter(FilterSelection selection) {
+        this.selectionFilter = selection;
+        submitList(applyFilter(textFilteredValues));
+    }
+
+    private List<MissingSurprise> applyFilter(List<MissingSurprise> values) {
+        if (selectionFilter == null){
+            return values;
+        } else {
+            List<MissingSurprise> returnList = new ArrayList<>();
+            for (MissingSurprise missingSurprise : values) {
+                Surprise s = missingSurprise.getSurprise();
+
+                if (selectionFilter.getCategories().contains(s.getSet_category())
+                        && selectionFilter.getYears().contains(s.getSet_year_name())
+                        && selectionFilter.getProducers().contains(s.getSet_producer_name())) {
+                    returnList.add(missingSurprise);
+                }
+            }
+            return returnList;
+        }
+    }
+
+    public void removeFilter() {
+        this.selectionFilter = null;
+        submitList(textFilteredValues);
     }
 
     static class SurpViewHolder extends RecyclerView.ViewHolder {

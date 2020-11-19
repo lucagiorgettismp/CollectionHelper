@@ -114,4 +114,7 @@
     <string name="find">Trova</string>
     <string name="find_surprise">Trova il pezzo</string>
     <string name="other_for_you_title">Altri pezzi da %s</string>
+    <string name="filter">Filtra</string>
+    <string name="compo">Componibile</string>
+    <string name="handpainted">Dipinto</string>
 </resources>
