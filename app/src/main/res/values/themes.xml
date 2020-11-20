@@ -81,4 +81,5 @@
         <item name="paddingStart">20dp</item>
         <item name="paddingEnd">20dp</item>
     </style>
+
 </resources>
