@@ -21,6 +21,8 @@ import com.lucagiorgetti.surprix.utility.BaseFragment;
 import com.lucagiorgetti.surprix.utility.RecyclerItemClickListener;
 import com.lucagiorgetti.surprix.utility.SystemUtils;
 
+import timber.log.Timber;
+
 public class SearchFragment extends BaseFragment {
 
     private SearchMode mode;
@@ -72,11 +74,21 @@ public class SearchFragment extends BaseFragment {
 
 
         searchViewModel.getSurprises().observe(getViewLifecycleOwner(), surprises -> {
+            for (Surprise s : surprises){
+                if (!s.getImg_path().startsWith("gs")){
+                    Timber.d("Path: " + s.getImg_path());
+                }
+            }
             searchSurpriseRecyclerAdapter.submitList(surprises);
             searchSurpriseRecyclerAdapter.setFilterableList(surprises);
         });
 
         searchViewModel.getSets().observe(getViewLifecycleOwner(), sets -> {
+            for (Set s : sets){
+                if (!s.getImg_path().startsWith("gs")){
+                    Timber.d("Path: " + s.getImg_path());
+                }
+            }
             searchSetRecyclerAdapter.submitList(sets);
             searchSetRecyclerAdapter.setFilterableList(sets);
         });

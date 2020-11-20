@@ -15,19 +15,15 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.chip.Chip;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.model.Colors;
 import com.lucagiorgetti.surprix.model.ExtraLocales;
-import com.lucagiorgetti.surprix.model.Missing;
-import com.lucagiorgetti.surprix.model.MissingSurprise;
 import com.lucagiorgetti.surprix.model.Surprise;
-import com.lucagiorgetti.surprix.ui.mainfragments.missinglist.filter.FilterSelection;
+import com.lucagiorgetti.surprix.ui.mainfragments.filter.FilterSelection;
+import com.lucagiorgetti.surprix.ui.mainfragments.filter.FilterType;
+import com.lucagiorgetti.surprix.utility.SystemUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,25 +35,25 @@ import java.util.Locale;
  * Created by Luca on 28/10/2017.
  */
 
-public class MissingRecyclerAdapter extends ListAdapter<MissingSurprise, MissingRecyclerAdapter.SurpViewHolder> implements Filterable {
+public class MissingRecyclerAdapter extends ListAdapter<Surprise, MissingRecyclerAdapter.SurpViewHolder> implements Filterable {
     private SurpRecylerAdapterListener listener;
-    private List<MissingSurprise> filterableList;
-    List<MissingSurprise> textFilteredValues = new ArrayList<>();
+    private List<Surprise> filterableList;
+    List<Surprise> searchViewFilteredValues = new ArrayList<>();
     private FilterSelection selectionFilter;
 
     MissingRecyclerAdapter() {
         super(DIFF_CALLBACK);
     }
 
-    private static final DiffUtil.ItemCallback<MissingSurprise> DIFF_CALLBACK = new DiffUtil.ItemCallback<MissingSurprise>() {
+    private static final DiffUtil.ItemCallback<Surprise> DIFF_CALLBACK = new DiffUtil.ItemCallback<Surprise>() {
         @Override
-        public boolean areItemsTheSame(@NonNull MissingSurprise oldItem, @NonNull MissingSurprise newItem) {
-            return oldItem.getSurprise().getId().equals(newItem.getSurprise().getId());
+        public boolean areItemsTheSame(@NonNull Surprise oldItem, @NonNull Surprise newItem) {
+            return oldItem.getId().equals(newItem.getId());
         }
 
         @Override
-        public boolean areContentsTheSame(@NonNull MissingSurprise oldItem, @NonNull MissingSurprise newItem) {
-            return oldItem.getSurprise().getId().equals(newItem.getSurprise().getId());
+        public boolean areContentsTheSame(@NonNull Surprise oldItem, @NonNull Surprise newItem) {
+            return oldItem.getId().equals(newItem.getId());
         }
     };
 
@@ -71,8 +67,7 @@ public class MissingRecyclerAdapter extends ListAdapter<MissingSurprise, Missing
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull SurpViewHolder holder, int position) {
-        MissingSurprise ms = getItem(position);
-        Surprise surp = ms.getSurprise();
+        Surprise surp = getItem(position);
         holder.vSetName.setText(surp.getSet_name());
 
         if (surp.isSet_effective_code()) {
@@ -97,22 +92,8 @@ public class MissingRecyclerAdapter extends ListAdapter<MissingSurprise, Missing
         holder.vLayout.setBackgroundColor(ContextCompat.getColor(SurprixApplication.getSurprixContext(), Colors.getHexColor(surp.getSet_producer_color())));
 
         String path = surp.getImg_path();
-        if (path.startsWith("gs")) {
-            FirebaseStorage storage = SurprixApplication.getInstance().getFirebaseStorage();
-            StorageReference gsReference = storage.getReferenceFromUrl(path);
-            Glide.with(SurprixApplication.getSurprixContext()).
-                    load(gsReference).
-                    apply(new RequestOptions()
-                            .placeholder(R.drawable.ic_logo_shape_primary))
-                    .into(holder.vImage);
 
-        } else {
-            Glide.with(SurprixApplication.getSurprixContext()).
-                    load(path).
-                    apply(new RequestOptions()
-                            .placeholder(R.drawable.ic_logo_shape_primary))
-                    .into(holder.vImage);
-        }
+        SystemUtils.loadImage(path, holder.vImage, R.drawable.ic_logo_shape_primary);
 
         holder.vBtnOwners.setVisibility(View.VISIBLE);
         holder.vBtnOwners.setOnClickListener(view -> listener.onShowMissingOwnerClick(surp));
@@ -151,7 +132,7 @@ public class MissingRecyclerAdapter extends ListAdapter<MissingSurprise, Missing
         }
     }
 
-    public MissingSurprise getItemAtPosition(int position) {
+    public Surprise getItemAtPosition(int position) {
         return getItem(position);
     }
 
@@ -160,47 +141,45 @@ public class MissingRecyclerAdapter extends ListAdapter<MissingSurprise, Missing
         return filter;
     }
 
-    private Filter filter = new Filter() {
+    private final Filter filter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence charSequence) {
-            List<MissingSurprise> pippo = new ArrayList<>();
+            List<Surprise> filteredValues = new ArrayList<>();
             if (charSequence == null || charSequence.length() == 0) {
-                pippo.addAll(filterableList);
+                filteredValues.addAll(filterableList);
             } else {
                 String pattern = charSequence.toString().toLowerCase().trim();
-                for (MissingSurprise missingSurprise : filterableList) {
-                    Surprise surprise = missingSurprise.getSurprise();
+                for (Surprise surprise : filterableList) {
                     if (surprise.getCode().toLowerCase().contains(pattern)
-                            || surprise.getDescription().toLowerCase().contains(pattern)){
-                            //|| surprise.getSet_name().toLowerCase().contains(pattern)) {
-                        pippo.add(missingSurprise);
+                            || surprise.getDescription().toLowerCase().contains(pattern)) {
+                        filteredValues.add(surprise);
                     }
                 }
             }
 
             FilterResults results = new FilterResults();
-            results.values = applyFilter(pippo);
+            results.values = applyFilter(filteredValues);
 
             return results;
         }
 
         @Override
         protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-            textFilteredValues = (List<MissingSurprise>) filterResults.values;
-            submitList(textFilteredValues);
+            searchViewFilteredValues = (List<Surprise>) filterResults.values;
+            submitList(searchViewFilteredValues);
         }
     };
 
-    void setFilterableList(List<MissingSurprise> missingList) {
+    void setFilterableList(List<Surprise> missingList) {
         this.filterableList = missingList;
-        this.textFilteredValues = missingList;
+        this.searchViewFilteredValues = missingList;
     }
 
-    void removeFilterableItem(MissingSurprise surprise) {
+    void removeFilterableItem(Surprise surprise) {
         this.filterableList.remove(surprise);
     }
 
-    void addFilterableItem(MissingSurprise surprise, int position) {
+    void addFilterableItem(Surprise surprise, int position) {
         this.filterableList.add(position, surprise);
     }
 
@@ -210,21 +189,19 @@ public class MissingRecyclerAdapter extends ListAdapter<MissingSurprise, Missing
 
     public void setFilter(FilterSelection selection) {
         this.selectionFilter = selection;
-        submitList(applyFilter(textFilteredValues));
+        submitList(applyFilter(searchViewFilteredValues));
     }
 
-    private List<MissingSurprise> applyFilter(List<MissingSurprise> values) {
-        if (selectionFilter == null){
+    private List<Surprise> applyFilter(List<Surprise> values) {
+        if (selectionFilter == null) {
             return values;
         } else {
-            List<MissingSurprise> returnList = new ArrayList<>();
-            for (MissingSurprise missingSurprise : values) {
-                Surprise s = missingSurprise.getSurprise();
-
-                if (selectionFilter.getCategories().contains(s.getSet_category())
-                        && selectionFilter.getYears().contains(s.getSet_year_name())
-                        && selectionFilter.getProducers().contains(s.getSet_producer_name())) {
-                    returnList.add(missingSurprise);
+            List<Surprise> returnList = new ArrayList<>();
+            for (Surprise surprise : values) {
+                if (selectionFilter.getSelections(FilterType.CATEGORY).contains(surprise.getSet_category())
+                        && selectionFilter.getSelections(FilterType.YEAR).contains(String.valueOf(surprise.getSet_year_year()))
+                        && selectionFilter.getSelections(FilterType.PRODUCER).contains(surprise.getSet_producer_name())) {
+                    returnList.add(surprise);
                 }
             }
             return returnList;
@@ -233,7 +210,7 @@ public class MissingRecyclerAdapter extends ListAdapter<MissingSurprise, Missing
 
     public void removeFilter() {
         this.selectionFilter = null;
-        submitList(textFilteredValues);
+        submitList(searchViewFilteredValues);
     }
 
     static class SurpViewHolder extends RecyclerView.ViewHolder {

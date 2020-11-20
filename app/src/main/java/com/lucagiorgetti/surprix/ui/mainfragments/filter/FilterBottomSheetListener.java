@@ -1,4 +1,4 @@
-package com.lucagiorgetti.surprix.ui.mainfragments.missinglist.filter;
+package com.lucagiorgetti.surprix.ui.mainfragments.filter;
 
 public interface FilterBottomSheetListener {
     void onFilterChanged(FilterSelection selection);

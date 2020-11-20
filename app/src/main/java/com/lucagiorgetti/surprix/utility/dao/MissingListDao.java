@@ -40,7 +40,7 @@ public class MissingListDao {
         missingRef.child(surpId).setValue(null);
     }
 
-    public void getMissingList(FirebaseListCallback<MissingSurprise> listen) {
+    public void getMissingList(FirebaseListCallback<Surprise> listen) {
         missingRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

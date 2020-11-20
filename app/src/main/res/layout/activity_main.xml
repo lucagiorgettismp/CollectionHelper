@@ -18,6 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/actionBarSize"
             android:background="@color/toolbarColor"
+            android:theme="@style/Theme.Surprix.OverlayToolbar"
             app:popupTheme="@style/Theme.Surprix.PopupOverlay" />
 
     </com.google.android.material.appbar.AppBarLayout>

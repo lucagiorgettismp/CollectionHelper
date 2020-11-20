@@ -29,7 +29,7 @@ import com.lucagiorgetti.surprix.BuildConfig;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.model.Missing;
-import com.lucagiorgetti.surprix.model.MissingSurprise;
+import com.lucagiorgetti.surprix.model.Surprise;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
@@ -43,7 +43,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class PDFUtils {
-    public static void createMissingListPdfFile(FragmentActivity activity, List<MissingSurprise> missingSurprises, String path) throws IOException {
+    public static void createMissingListPdfFile(FragmentActivity activity, List<Surprise> missingSurprises, String path) throws IOException {
         try {
             Document document = new Document();
             //File newFile = File.createTempFile("prova.pdf", null, SurprixApplication.getSurprixContext().getCacheDir());
@@ -75,11 +75,11 @@ public class PDFUtils {
             addNewItem(document, title, Element.ALIGN_CENTER, titleFont);
             addLineSeparator(document, colorAccent);
 
-            Collections.sort(missingSurprises, MissingSurprise::compareTo);
-            for (MissingSurprise missing : missingSurprises) {
+            Collections.sort(missingSurprises, Surprise::compareTo);
+            for (Surprise missing : missingSurprises) {
                 Font orderNumberFont = new Font(fontName, fontSize, Font.NORMAL, BaseColor.BLACK);
                 try {
-                    String surpriseString = String.format(Locale.getDefault(), "%s: %s - %s, %s, %s", missing.getSurprise().getCode(), missing.getSurprise().getDescription(), missing.getSurprise().getSet_name(), missing.getSurprise().getSet_producer_name(), missing.getSurprise().getSet_year_name());
+                    String surpriseString = String.format(Locale.getDefault(), "%s: %s - %s, %s, %s", missing.getCode(), missing.getDescription(), missing.getSet_name(), missing.getSet_producer_name(), missing.getSet_year_name());
                     addNewItem(document, surpriseString, Element.ALIGN_LEFT, orderNumberFont);
                 } catch (DocumentException e) {
                     e.printStackTrace();

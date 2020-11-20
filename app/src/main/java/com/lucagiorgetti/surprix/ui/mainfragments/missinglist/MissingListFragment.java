@@ -20,16 +20,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.snackbar.Snackbar;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
-import com.lucagiorgetti.surprix.model.MissingSurprise;
 import com.lucagiorgetti.surprix.model.Surprise;
-import com.lucagiorgetti.surprix.ui.mainfragments.missinglist.filter.FilterBottomSheetDialogFragment;
-import com.lucagiorgetti.surprix.ui.mainfragments.missinglist.filter.FilterBottomSheetListener;
-import com.lucagiorgetti.surprix.ui.mainfragments.missinglist.filter.FilterPresenter;
-import com.lucagiorgetti.surprix.ui.mainfragments.missinglist.filter.FilterSelection;
+import com.lucagiorgetti.surprix.ui.mainfragments.filter.FilterBottomSheetDialogFragment;
+import com.lucagiorgetti.surprix.ui.mainfragments.filter.FilterBottomSheetListener;
+import com.lucagiorgetti.surprix.ui.mainfragments.filter.FilterPresenter;
+import com.lucagiorgetti.surprix.ui.mainfragments.filter.FilterSelection;
 import com.lucagiorgetti.surprix.utility.BaseFragment;
 import com.lucagiorgetti.surprix.utility.dao.MissingListDao;
 
-import java.util.HashMap;
 import java.util.List;
 
 public class MissingListFragment extends BaseFragment {
@@ -149,28 +147,10 @@ public class MissingListFragment extends BaseFragment {
         bottomSheetDialogFragment.show(getActivity().getSupportFragmentManager(), "missing_bottom_sheet");
     }
 
-    private FilterPresenter buildFilterPresenter(List<MissingSurprise> missingSurprises) {
-        HashMap<String, String> categories = new HashMap<>();
-        HashMap<String, String> producers = new HashMap<>();
-        HashMap<String, String> years = new HashMap<>();
+    private FilterPresenter buildFilterPresenter(List<Surprise> missingSurprises) {
 
-        for (MissingSurprise ms : missingSurprises) {
-            Surprise surprise = ms.getSurprise();
 
-            if (!categories.containsKey(surprise.getSet_category())) {
-                categories.put(surprise.getSet_category(), surprise.getSet_category());
-            }
-
-            if (!producers.containsKey(surprise.getSet_producer_name())) {
-                producers.put(surprise.getSet_producer_name(), surprise.getSet_producer_name());
-            }
-
-            if (!years.containsKey(surprise.getSet_year_name())) {
-                years.put(surprise.getSet_year_name(), surprise.getSet_year_name());
-            }
-        }
-
-        return new FilterPresenter(categories, producers, years);
+        return new FilterPresenter(missingSurprises);
     }
 
     private void initSwipe(RecyclerView recyclerView) {
@@ -189,10 +169,10 @@ public class MissingListFragment extends BaseFragment {
     }
 
     private void deleteSurprise(MissingRecyclerAdapter mAdapter, int position) {
-        MissingSurprise missingSurprise = mAdapter.getItemAtPosition(position);
+        Surprise surprise = mAdapter.getItemAtPosition(position);
         CharSequence query = searchView.getQuery();
-        missingListDao.removeMissing(missingSurprise.getSurprise().getId());
-        mAdapter.removeFilterableItem(missingSurprise);
+        missingListDao.removeMissing(surprise.getId());
+        mAdapter.removeFilterableItem(surprise);
         if (query != null && query.length() != 0) {
             mAdapter.getFilter().filter(query);
         } else {
@@ -211,8 +191,8 @@ public class MissingListFragment extends BaseFragment {
         } else {
             Snackbar.make(getView(), SurprixApplication.getInstance().getString(R.string.missing_removed), Snackbar.LENGTH_LONG)
                     .setAction(SurprixApplication.getInstance().getString(R.string.undo), view -> {
-                        missingListDao.addMissing(missingSurprise.getSurprise().getId());
-                        mAdapter.addFilterableItem(missingSurprise, position);
+                        missingListDao.addMissing(surprise.getId());
+                        mAdapter.addFilterableItem(surprise, position);
                         mAdapter.notifyItemInserted(position);
                         if (mAdapter.getItemCount() > 0) {
                             emptyList.setVisibility(View.GONE);

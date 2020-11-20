@@ -24,6 +24,7 @@ import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.model.Colors;
 import com.lucagiorgetti.surprix.model.ExtraLocales;
 import com.lucagiorgetti.surprix.model.Set;
+import com.lucagiorgetti.surprix.utility.SystemUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,22 +79,7 @@ public class SetRecyclerAdapter extends ListAdapter<Set, SetRecyclerAdapter.SetV
         holder.vLayout.setBackgroundColor(ContextCompat.getColor(ctx, Colors.getHexColor(set.getProducer_color())));
 
         String path = set.getImg_path();
-        if (path.startsWith("gs")) {
-            FirebaseStorage storage = SurprixApplication.getInstance().getFirebaseStorage();
-            StorageReference gsReference = storage.getReferenceFromUrl(path);
-            Glide.with(ctx).
-                    load(gsReference).
-                    apply(new RequestOptions()
-                            .placeholder(R.drawable.ic_bpz_placeholder))
-                    .into(holder.vImage);
-
-        } else {
-            Glide.with(ctx).
-                    load(path).
-                    apply(new RequestOptions()
-                            .placeholder(R.drawable.ic_bpz_placeholder))
-                    .into(holder.vImage);
-        }
+        SystemUtils.loadImage(path, holder.vImage, R.drawable.ic_bpz_placeholder);
     }
 
     public Set getItemAtPosition(int position) {

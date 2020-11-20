@@ -31,6 +31,12 @@
         <item name="android:backgroundTint">@color/pop_menu_back_color</item>
     </style>
 
+    <style name="Theme.Surprix.OverlayToolbar" parent="ThemeOverlay.MaterialComponents.Toolbar.Primary">
+        <item name="android:editTextColor">@color/white</item>
+        <item name="android:textColorHint">@color/white</item>
+        <item name="colorControlNormal">@color/white</item>
+    </style>
+
     <style name="Theme.Surprix.SplashScreenTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowBackground">@drawable/splash_screen</item>

@@ -24,6 +24,7 @@ import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.model.Colors;
 import com.lucagiorgetti.surprix.model.ExtraLocales;
 import com.lucagiorgetti.surprix.model.Surprise;
+import com.lucagiorgetti.surprix.utility.SystemUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,22 +90,7 @@ public class DoubleRecyclerAdapter extends ListAdapter<Surprise, DoubleRecyclerA
         holder.vLayout.setBackgroundColor(ContextCompat.getColor(SurprixApplication.getSurprixContext(), Colors.getHexColor(surp.getSet_producer_color())));
 
         String path = surp.getImg_path();
-        if (path.startsWith("gs")) {
-            FirebaseStorage storage = SurprixApplication.getInstance().getFirebaseStorage();
-            StorageReference gsReference = storage.getReferenceFromUrl(path);
-            Glide.with(SurprixApplication.getSurprixContext()).
-                    load(gsReference).
-                    apply(new RequestOptions()
-                            .placeholder(R.drawable.ic_logo_shape_primary))
-                    .into(holder.vImage);
-
-        } else {
-            Glide.with(SurprixApplication.getSurprixContext()).
-                    load(path).
-                    apply(new RequestOptions()
-                            .placeholder(R.drawable.ic_logo_shape_primary))
-                    .into(holder.vImage);
-        }
+        SystemUtils.loadImage(path, holder.vImage, R.drawable.ic_logo_shape_primary);
 
         holder.delete.setOnClickListener(v -> listener.onSurpriseDelete(position));
 

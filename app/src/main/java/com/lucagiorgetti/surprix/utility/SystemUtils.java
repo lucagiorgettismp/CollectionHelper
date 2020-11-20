@@ -9,12 +9,19 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
+import android.widget.SearchView;
 
 import androidx.preference.PreferenceManager;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageException;
+import com.google.firebase.storage.StorageReference;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.listenerInterfaces.CallbackInterface;
@@ -169,5 +176,31 @@ public class SystemUtils {
         SharedPreferences.Editor edit = PreferenceManager.getDefaultSharedPreferences(SurprixApplication.getSurprixContext()).edit();
         edit.putBoolean(PRIVACY_POLICY_ACCEPTED, accepted);
         edit.apply();
+    }
+
+    public static void loadImage(String path, ImageView vImage, int placeHolder) {
+        if (path.startsWith("gs")) {
+            FirebaseStorage storage = SurprixApplication.getInstance().getFirebaseStorage();
+            StorageReference gsReference = storage.getReferenceFromUrl(path);
+
+            Glide.with(SurprixApplication.getSurprixContext()).
+                    load(gsReference).
+                    apply(new RequestOptions()
+                            .placeholder(placeHolder))
+                    .into(vImage);
+        } else {
+            Glide.with(SurprixApplication.getSurprixContext()).
+                    load(path).
+                    apply(new RequestOptions()
+                            .placeholder(placeHolder))
+                    .into(vImage);
+        }
+    }
+
+    public static void setSearchViewStyle(SearchView searchView) {
+        androidx.appcompat.widget.SearchView.SearchAutoComplete searchAutoComplete =
+                searchView.findViewById(R.id.search_src_text);
+        searchAutoComplete.setHintTextColor(SurprixApplication.getSurprixContext().getResources().getColor(R.color.white));
+        searchAutoComplete.setTextColor(SurprixApplication.getSurprixContext().getResources().getColor(R.color.white));
     }
 }

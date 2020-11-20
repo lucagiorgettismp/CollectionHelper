@@ -1,4 +1,4 @@
-package com.lucagiorgetti.surprix.ui.mainfragments.missinglist.filter;
+package com.lucagiorgetti.surprix.ui.mainfragments.filter;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -13,7 +13,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.lucagiorgetti.surprix.R;
-import com.lucagiorgetti.surprix.model.Categories;
 
 import java.util.Map;
 
@@ -47,48 +46,33 @@ public class FilterBottomSheetDialogFragment extends BottomSheetDialogFragment {
         yearsChipsGroup = view.findViewById(R.id.filter_year_cg);
 
         FilterSelection filterSelection = new FilterSelection();
-        for (Map.Entry<String, String> pair : filterPresenter.getYears().entrySet()) {
-            FilterChip chip = new FilterChip(getContext(), pair.getKey());
-            filterSelection.addYear(pair.getKey());
-            chip.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                if (isChecked) {
-                    filterSelection.addYear(pair.getValue());
-                } else {
-                    filterSelection.removeYear(pair.getValue());
-                }
-                listener.onFilterChanged(filterSelection);
-            });
-            yearsChipsGroup.addView(chip);
-        }
 
-        for (Map.Entry<String, String> pair : filterPresenter.getProducers().entrySet()) {
-            FilterChip chip = new FilterChip(getContext(), pair.getKey());
-            filterSelection.addProducer(pair.getKey());
-            chip.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                if (isChecked) {
-                    filterSelection.addProducer(pair.getValue());
-                } else {
-                    filterSelection.removeProducer(pair.getValue());
-                }
-                listener.onFilterChanged(filterSelection);
-            });
-            producersChipsGroup.addView(chip);
-        }
+        for (FilterType type : FilterType.values()) {
+            for (Map.Entry<String, String> pair : filterPresenter.getByType(type).entrySet()) {
+                FilterChip chip = new FilterChip(getContext(), pair.getKey());
+                filterSelection.addSelection(type, pair.getKey());
+                chip.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                    if (isChecked) {
+                        filterSelection.addSelection(type, pair.getValue());
+                    } else {
+                        filterSelection.removeSelection(type, pair.getValue());
+                    }
+                    listener.onFilterChanged(filterSelection);
+                });
 
-        for (Map.Entry<String, String> pair : filterPresenter.getCategories().entrySet()) {
-            FilterChip chip = new FilterChip(getContext(), Categories.getDescriptionByString(pair.getKey()));
-            filterSelection.addCategory(pair.getKey());
-            chip.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                if (isChecked) {
-                    filterSelection.addCategory(pair.getValue());
-                } else {
-                    filterSelection.removeCategory(pair.getValue());
+                switch (type) {
+                    case CATEGORY:
+                        categoriesChipsGroup.addView(chip);
+                        break;
+                    case PRODUCER:
+                        producersChipsGroup.addView(chip);
+                        break;
+                    case YEAR:
+                        yearsChipsGroup.addView(chip);
+                        break;
                 }
-                listener.onFilterChanged(filterSelection);
-            });
-            categoriesChipsGroup.addView(chip);
+            }
         }
-
         return view;
     }
 }
