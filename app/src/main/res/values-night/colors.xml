@@ -8,7 +8,6 @@
 
     <color name="logo">@color/white</color>
 
-    <color name="signUpIcon">@color/grey30</color>
     <color name="settingsBackground">@color/grey10</color>
 
     <color name="titleColor">@color/white</color>
@@ -31,7 +30,6 @@
     <color name="surpriseActionText">@color/surprixBlueVariant</color>
 
     <color name="dialogTextColor">@color/grey80</color>
-    <color name="hintTextColor">@color/grey80</color>
 
     <color name="surprisePlaceHolder">@color/surprixBlue</color>
 

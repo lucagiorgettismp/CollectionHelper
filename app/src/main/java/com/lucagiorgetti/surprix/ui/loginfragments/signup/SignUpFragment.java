@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.navigation.Navigation;
 
 import com.facebook.login.LoginManager;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
@@ -27,7 +28,7 @@ import com.mikelau.countrypickerx.CountryPickerDialog;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class SignUpFragment extends BaseFragment {
-    private EditText edtEmail;
+    private TextInputEditText edtEmail;
     private EditText edtPassword;
     private EditText edtUsername;
     private EditText edtNation;

@@ -18,40 +18,29 @@
         app:tint="@color/logo"
         app:srcCompat="@drawable/ic_logo" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_sign_up"
-        style="@style/RoundedButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp"
         app:backgroundTint="@color/loginSignUp"
         android:text="@string/sign_up"
         android:textColor="@color/loginSignUpText"/>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_sign_in"
-        style="@style/RoundedButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp"
         app:backgroundTint="@color/loginSignIn"
         android:text="@string/login"
         android:textColor="@android:color/background_light"/>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_start_facebook"
         android:drawableStart="@drawable/com_facebook_button_icon"
-        style="@style/RoundedButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp"
         app:backgroundTint="@color/loginFacebook"
         android:text="@string/login_with_facebook"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
         android:textColor="@android:color/background_light"/>
 
     <ProgressBar

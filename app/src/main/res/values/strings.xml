@@ -102,9 +102,6 @@
     <string name="signup_weak_password">The password you entered is too weak.</string>
     <string name="signup_default_error">Something went wrong.. please try again!</string>
     <string name="username_delete_success">Username successfully deleted</string>
-    <string name="your_email">Your e-mail</string>
-    <string name="choose_your_username">Choose your username</string>
-    <string name="select_your_country">Select your country</string>
     <string name="cannot_send_recovery_email">Cannot send the password recovery e-mail</string>
     <string name="settings_night_mode_key" translatable="false">night_mode</string>
     <string name="settings_privacy_key" translatable="false">privacy_policy</string>

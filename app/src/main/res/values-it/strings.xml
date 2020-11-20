@@ -92,8 +92,6 @@
     <string name="signup_weak_password">La password inserito è troppo semplice.</string>
     <string name="signup_default_error" translatable="false">Qualcosa è andato storto.. riprova!</string>
     <string name="username_delete_success">Username eliminato con successo</string>
-    <string name="your_email">La tua e-mail</string>
-    <string name="choose_your_username">Scegli il tuo username</string>
     <string name="settings_contact_us_title">Contattaci</string>
     <string name="settings_category_theme">Tema</string>
     <string name="settings_night_mode_title">Modalità notte</string>
@@ -102,7 +100,6 @@
     <string name="settings_delete_user_summary">Questa operazione cancella l\'utente dal nostro database</string>
     <string name="settings_contact_us_summary">Conttaci per suggerirci milgiorie o chiederci di inserire una serie in particolare. Invia una e-mail anche se vuoi collaborare alla crescita di Surprix</string>
     <string name="cannot_send_recovery_email">Impossibile inviare la e-mail per il recupero della password</string>
-    <string name="select_your_country">Seleziona la tua nazione</string>
     <string name="logout">Esci</string>
     <string name="add">Aggiungi</string>
     <string name="add_surprise_dialog_title">Aggiungi sorpresina</string>
