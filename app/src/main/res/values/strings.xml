@@ -92,10 +92,8 @@
     <string name="title_catalog">Catalog</string>
 
     <string name="title_activity_main" translatable="false">MainActivity</string>
-    <string name="note_saved">Note saved</string>
     <string name="missing_removed">Missing surprise removed</string>
     <string name="undo">Undo</string>
-    <string name="note_removed">Note removed</string>
     <string name="surprises">Surprises</string>
     <string name="sets">Sets</string>
     <string name="search_title">Search</string>
@@ -104,7 +102,6 @@
     <string name="signup_weak_password">The password you entered is too weak.</string>
     <string name="signup_default_error">Something went wrong.. please try again!</string>
     <string name="username_delete_success">Username successfully deleted</string>
-    <string name="pdf_file_name">SurprixMissingList</string>
     <string name="your_email">Your e-mail</string>
     <string name="choose_your_username">Choose your username</string>
     <string name="select_your_country">Select your country</string>

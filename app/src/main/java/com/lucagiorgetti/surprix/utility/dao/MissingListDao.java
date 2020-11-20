@@ -10,7 +10,6 @@ import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.listenerInterfaces.CallbackInterface;
 import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseListCallback;
 import com.lucagiorgetti.surprix.model.Missing;
-import com.lucagiorgetti.surprix.model.MissingSurprise;
 import com.lucagiorgetti.surprix.model.Surprise;
 
 import java.util.ArrayList;
@@ -45,7 +44,7 @@ public class MissingListDao {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    List<MissingSurprise> surprises = new ArrayList<>();
+                    List<Surprise> surprises = new ArrayList<>();
                     for (DataSnapshot d : dataSnapshot.getChildren()) {
                         String surpriseId = d.getKey() != null ? d.getKey() : "";
 
@@ -57,8 +56,7 @@ public class MissingListDao {
 
                             @Override
                             public void onSuccess(Surprise surprise) {
-                                MissingSurprise ms = new MissingSurprise(surprise);
-                                surprises.add(ms);
+                                surprises.add(surprise);
                                 listen.onSuccess(surprises);
                             }
 
