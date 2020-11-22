@@ -113,7 +113,7 @@ public class SetListFragment extends BaseFragment {
             }
         });
 
-        searchView.setQueryHint("Search");
+        searchView.setQueryHint(SurprixApplication.getInstance().getString(R.string.search));
         super.onCreateOptionsMenu(menu, inflater);
     }
 

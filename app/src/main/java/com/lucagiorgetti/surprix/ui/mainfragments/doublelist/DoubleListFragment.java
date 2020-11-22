@@ -20,6 +20,10 @@ import com.google.android.material.snackbar.Snackbar;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.model.Surprise;
+import com.lucagiorgetti.surprix.ui.mainfragments.filter.FilterBottomSheetDialogFragment;
+import com.lucagiorgetti.surprix.ui.mainfragments.filter.FilterBottomSheetListener;
+import com.lucagiorgetti.surprix.ui.mainfragments.filter.FilterPresenter;
+import com.lucagiorgetti.surprix.ui.mainfragments.filter.FilterSelection;
 import com.lucagiorgetti.surprix.utility.BaseFragment;
 import com.lucagiorgetti.surprix.utility.dao.DoubleListDao;
 
@@ -29,10 +33,13 @@ public class DoubleListFragment extends BaseFragment {
     private SearchView searchView;
     private View root;
     private View emptyList;
-    private DoubleListDao doubleListDao = new DoubleListDao(SurprixApplication.getInstance().getCurrentUser().getUsername());
+    private DoubleListDao doubleListDao;
+    private FilterPresenter filterPresenter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        doubleListDao = new DoubleListDao(SurprixApplication.getInstance().getCurrentUser().getUsername());
+
         DoubleListViewModel doubleListViewModel = new ViewModelProvider(this).get(DoubleListViewModel.class);
         if (root == null) {
             root = inflater.inflate(R.layout.fragment_double_list, container, false);
@@ -54,6 +61,9 @@ public class DoubleListFragment extends BaseFragment {
             mAdapter.setFilterableList(doubleList);
             if (mAdapter.getItemCount() > 0) {
                 setTitle(getString(R.string.doubles) + " (" + mAdapter.getItemCount() + ")");
+                if (doubleList != null) {
+                    filterPresenter = new FilterPresenter(doubleList);
+                }
             } else {
                 setTitle(getString(R.string.doubles));
             }
@@ -94,6 +104,36 @@ public class DoubleListFragment extends BaseFragment {
         });
         searchView.setQueryHint("Search");
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_filter) {
+            openBottomSheet();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void openBottomSheet() {
+        if (filterPresenter != null){
+            FilterSelection filterSelection = mAdapter.getFilterSelection();
+            FilterBottomSheetDialogFragment bottomSheetDialogFragment = new FilterBottomSheetDialogFragment(filterPresenter, filterSelection);
+            bottomSheetDialogFragment.setListener(new FilterBottomSheetListener() {
+                @Override
+                public void onFilterChanged(FilterSelection selection) {
+                    mAdapter.setFilterSelection(selection);
+                }
+
+                @Override
+                public void onFilterCleared() {
+                    mAdapter.removeFilter();
+                    bottomSheetDialogFragment.dismissAllowingStateLoss();
+                }
+            });
+            bottomSheetDialogFragment.show(getActivity().getSupportFragmentManager(), "double_bottom_sheet");
+        } else {
+            Snackbar.make(getView(), SurprixApplication.getInstance().getString(R.string.cannot_oper_filters), Snackbar.LENGTH_SHORT).show();
+        }
     }
 
     private void initSwipe(RecyclerView recyclerView) {

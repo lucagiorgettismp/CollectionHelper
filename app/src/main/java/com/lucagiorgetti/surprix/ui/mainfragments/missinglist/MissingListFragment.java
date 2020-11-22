@@ -28,8 +28,6 @@ import com.lucagiorgetti.surprix.ui.mainfragments.filter.FilterSelection;
 import com.lucagiorgetti.surprix.utility.BaseFragment;
 import com.lucagiorgetti.surprix.utility.dao.MissingListDao;
 
-import java.util.List;
-
 public class MissingListFragment extends BaseFragment {
     private MissingRecyclerAdapter mAdapter;
     private SearchView searchView;
@@ -77,7 +75,7 @@ public class MissingListFragment extends BaseFragment {
             if (mAdapter.getItemCount() > 0) {
                 setTitle(getString(R.string.missings) + " (" + mAdapter.getItemCount() + ")");
                 if (missingList != null) {
-                    filterPresenter = buildFilterPresenter(missingList);
+                    filterPresenter = new FilterPresenter(missingList);
                 }
             } else {
                 setTitle(getString(R.string.missings));
@@ -86,7 +84,6 @@ public class MissingListFragment extends BaseFragment {
         });
 
         missingListViewModel.isLoading().observe(getViewLifecycleOwner(), isLoading -> progress.setVisibility(isLoading ? View.VISIBLE : View.GONE));
-
         initSwipe(recyclerView);
         setHasOptionsMenu(true);
         setTitle(getString(R.string.missings));
@@ -132,25 +129,25 @@ public class MissingListFragment extends BaseFragment {
     }
 
     private void openBottomSheet() {
-        FilterBottomSheetDialogFragment bottomSheetDialogFragment = new FilterBottomSheetDialogFragment(filterPresenter, new FilterBottomSheetListener() {
-            @Override
-            public void onFilterChanged(FilterSelection selection) {
-                mAdapter.setFilter(selection);
-            }
+        if (filterPresenter != null){
+            FilterSelection filterSelection = mAdapter.getFilterSelection();
+            FilterBottomSheetDialogFragment bottomSheetDialogFragment = new FilterBottomSheetDialogFragment(filterPresenter, filterSelection);
+            bottomSheetDialogFragment.setListener(new FilterBottomSheetListener() {
+                @Override
+                public void onFilterChanged(FilterSelection selection) {
+                    mAdapter.setFilterSelection(selection);
+                }
 
-            @Override
-            public void onFilterCleared() {
-                mAdapter.removeFilter();
-            }
-        });
-
-        bottomSheetDialogFragment.show(getActivity().getSupportFragmentManager(), "missing_bottom_sheet");
-    }
-
-    private FilterPresenter buildFilterPresenter(List<Surprise> missingSurprises) {
-
-
-        return new FilterPresenter(missingSurprises);
+                @Override
+                public void onFilterCleared() {
+                    mAdapter.removeFilter();
+                    bottomSheetDialogFragment.dismissAllowingStateLoss();
+                }
+            });
+            bottomSheetDialogFragment.show(getActivity().getSupportFragmentManager(), "double_bottom_sheet");
+        } else {
+            Snackbar.make(getView(), SurprixApplication.getInstance().getString(R.string.cannot_oper_filters), Snackbar.LENGTH_SHORT).show();
+        }
     }
 
     private void initSwipe(RecyclerView recyclerView) {

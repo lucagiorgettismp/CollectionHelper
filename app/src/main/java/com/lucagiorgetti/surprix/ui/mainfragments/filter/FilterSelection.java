@@ -26,4 +26,8 @@ public class FilterSelection {
     public List<String> getSelections(FilterType type) {
         return selection.get(type);
     }
+
+    public boolean isSelected(FilterType type, String value){
+        return selection.get(type).contains(value);
+    }
 }

@@ -111,4 +111,5 @@
     <string name="filter">Filtra</string>
     <string name="compo">Componibile</string>
     <string name="handpainted">Dipinto</string>
+    <string name="cannot_oper_filters">Non sono presenti elementi da filtrare</string>
 </resources>

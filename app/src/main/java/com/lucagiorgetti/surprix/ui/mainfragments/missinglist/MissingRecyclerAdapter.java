@@ -39,7 +39,7 @@ public class MissingRecyclerAdapter extends ListAdapter<Surprise, MissingRecycle
     private SurpRecylerAdapterListener listener;
     private List<Surprise> filterableList;
     List<Surprise> searchViewFilteredValues = new ArrayList<>();
-    private FilterSelection selectionFilter;
+    private FilterSelection filterSelection = null;
 
     MissingRecyclerAdapter() {
         super(DIFF_CALLBACK);
@@ -187,20 +187,20 @@ public class MissingRecyclerAdapter extends ListAdapter<Surprise, MissingRecycle
         this.listener = listener;
     }
 
-    public void setFilter(FilterSelection selection) {
-        this.selectionFilter = selection;
+    public void setFilterSelection(FilterSelection selection) {
+        this.filterSelection = selection;
         submitList(applyFilter(searchViewFilteredValues));
     }
 
     private List<Surprise> applyFilter(List<Surprise> values) {
-        if (selectionFilter == null) {
+        if (filterSelection == null) {
             return values;
         } else {
             List<Surprise> returnList = new ArrayList<>();
             for (Surprise surprise : values) {
-                if (selectionFilter.getSelections(FilterType.CATEGORY).contains(surprise.getSet_category())
-                        && selectionFilter.getSelections(FilterType.YEAR).contains(String.valueOf(surprise.getSet_year_year()))
-                        && selectionFilter.getSelections(FilterType.PRODUCER).contains(surprise.getSet_producer_name())) {
+                if (filterSelection.getSelections(FilterType.CATEGORY).contains(surprise.getSet_category())
+                        && filterSelection.getSelections(FilterType.YEAR).contains(String.valueOf(surprise.getSet_year_year()))
+                        && filterSelection.getSelections(FilterType.PRODUCER).contains(surprise.getSet_producer_name())) {
                     returnList.add(surprise);
                 }
             }
@@ -209,8 +209,12 @@ public class MissingRecyclerAdapter extends ListAdapter<Surprise, MissingRecycle
     }
 
     public void removeFilter() {
-        this.selectionFilter = null;
+        this.filterSelection = null;
         submitList(searchViewFilteredValues);
+    }
+
+    public FilterSelection getFilterSelection() {
+        return this.filterSelection;
     }
 
     static class SurpViewHolder extends RecyclerView.ViewHolder {

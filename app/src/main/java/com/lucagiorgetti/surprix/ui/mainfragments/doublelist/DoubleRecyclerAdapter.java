@@ -15,15 +15,13 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.model.Colors;
 import com.lucagiorgetti.surprix.model.ExtraLocales;
 import com.lucagiorgetti.surprix.model.Surprise;
+import com.lucagiorgetti.surprix.ui.mainfragments.filter.FilterSelection;
+import com.lucagiorgetti.surprix.ui.mainfragments.filter.FilterType;
 import com.lucagiorgetti.surprix.utility.SystemUtils;
 
 import java.util.ArrayList;
@@ -39,6 +37,8 @@ import java.util.Locale;
 public class DoubleRecyclerAdapter extends ListAdapter<Surprise, DoubleRecyclerAdapter.SurpViewHolder> implements Filterable {
     private DoubleRecyclerAdapterListener listener;
     private List<Surprise> filterableList;
+    List<Surprise> searchViewFilteredValues = new ArrayList<>();
+    private FilterSelection filterSelection = null;
 
     public DoubleRecyclerAdapter() {
         super(DIFF_CALLBACK);
@@ -73,7 +73,13 @@ public class DoubleRecyclerAdapter extends ListAdapter<Surprise, DoubleRecyclerA
         } else {
             holder.vSetName.setText(surp.getSet_name());
         }
-        holder.vDescription.setText(surp.getDescription());
+
+        if (surp.isSet_effective_code()) {
+            holder.vDescription.setText(surp.getCode() + " - " + surp.getDescription());
+        } else {
+            holder.vDescription.setText(surp.getDescription());
+        }
+
         holder.vYear.setText(surp.getSet_year_name());
         holder.vProducer.setText(surp.getSet_producer_name());
 
@@ -135,39 +141,40 @@ public class DoubleRecyclerAdapter extends ListAdapter<Surprise, DoubleRecyclerA
         return filter;
     }
 
-    private Filter filter = new Filter() {
+    private final Filter filter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence charSequence) {
-            List<Surprise> filteredList = new ArrayList<>();
+            List<Surprise> filteredValues = new ArrayList<>();
 
             if (charSequence == null || charSequence.length() == 0) {
-                filteredList.addAll(filterableList);
+                filteredValues.addAll(filterableList);
             } else {
                 String pattern = charSequence.toString().toLowerCase().trim();
 
                 for (Surprise surprise : filterableList) {
                     if (surprise.getCode().toLowerCase().contains(pattern)
-                            || surprise.getDescription().toLowerCase().contains(pattern)
-                            || surprise.getSet_name().toLowerCase().contains(pattern)) {
-                        filteredList.add(surprise);
+                            || surprise.getDescription().toLowerCase().contains(pattern)) {
+                        filteredValues.add(surprise);
                     }
                 }
             }
 
             FilterResults results = new FilterResults();
-            results.values = filteredList;
+            results.values = applyFilter(filteredValues);
 
             return results;
         }
 
         @Override
         protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-            submitList((List<Surprise>) filterResults.values);
+            searchViewFilteredValues = (List<Surprise>) filterResults.values;
+            submitList(searchViewFilteredValues);
         }
     };
 
     public void setFilterableList(List<Surprise> missingList) {
         this.filterableList = missingList;
+        this.searchViewFilteredValues = missingList;
     }
 
     public void removeFilterableItem(Surprise surprise) {
@@ -180,6 +187,36 @@ public class DoubleRecyclerAdapter extends ListAdapter<Surprise, DoubleRecyclerA
 
     public void setListener(DoubleRecyclerAdapterListener listener) {
         this.listener = listener;
+    }
+
+    public void setFilterSelection(FilterSelection selection) {
+        this.filterSelection = selection;
+        submitList(applyFilter(searchViewFilteredValues));
+    }
+
+    private List<Surprise> applyFilter(List<Surprise> values) {
+        if (filterSelection == null) {
+            return values;
+        } else {
+            List<Surprise> returnList = new ArrayList<>();
+            for (Surprise surprise : values) {
+                if (filterSelection.getSelections(FilterType.CATEGORY).contains(surprise.getSet_category())
+                        && filterSelection.getSelections(FilterType.YEAR).contains(String.valueOf(surprise.getSet_year_year()))
+                        && filterSelection.getSelections(FilterType.PRODUCER).contains(surprise.getSet_producer_name())) {
+                    returnList.add(surprise);
+                }
+            }
+            return returnList;
+        }
+    }
+
+    public void removeFilter() {
+        this.filterSelection = null;
+        submitList(searchViewFilteredValues);
+    }
+
+    public FilterSelection getFilterSelection() {
+        return this.filterSelection;
     }
 
     static class SurpViewHolder extends RecyclerView.ViewHolder {

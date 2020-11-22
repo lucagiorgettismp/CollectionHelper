@@ -130,6 +130,7 @@
     <string name="filter">Filter</string>
     <string name="compo">Composable</string>
     <string name="handpainted">Handpainted</string>
+    <string name="cannot_oper_filters">No elements to be filtered</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

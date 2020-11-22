@@ -1,5 +1,6 @@
 package com.lucagiorgetti.surprix.ui.mainfragments.filter;
 
+import com.lucagiorgetti.surprix.model.Categories;
 import com.lucagiorgetti.surprix.model.Surprise;
 
 import java.util.HashMap;
@@ -15,7 +16,7 @@ public class FilterPresenter {
 
         for (Surprise surprise : surprises) {
             if (!categories.containsKey(surprise.getSet_category())) {
-                categories.put(surprise.getSet_category(), surprise.getSet_category());
+                categories.put(Categories.getDescriptionByString(surprise.getSet_category()), surprise.getSet_category());
             }
 
             if (!producers.containsKey(surprise.getSet_producer_name())) {
