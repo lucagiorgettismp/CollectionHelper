@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.chip.Chip;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.lucagiorgetti.surprix.R;
@@ -91,7 +92,8 @@ public class SetDetailRecyclerAdapter extends RecyclerView.Adapter<SetDetailRecy
                     break;
             }
         }
-        holder.add.setOnClickListener(v -> listener.onSurpriseAdded(s));
+        holder.vAddMissing.setOnClickListener(v -> listener.onSurpriseAddedToMissings(s));
+        holder.vAddDouble.setOnClickListener(v -> listener.onSurpriseAddedToDoubles(s));
     }
 
     @Override
@@ -114,7 +116,8 @@ public class SetDetailRecyclerAdapter extends RecyclerView.Adapter<SetDetailRecy
         View vLayout;
         TextView vDescription;
         ImageView vImage;
-        Button add;
+        Chip vAddMissing;
+        Chip vAddDouble;
         ImageView vStar1On;
         ImageView vStar2On;
         ImageView vStar3On;
@@ -129,7 +132,8 @@ public class SetDetailRecyclerAdapter extends RecyclerView.Adapter<SetDetailRecy
             vLayout = v.findViewById(R.id.layout_item_titlebar);
             vDescription = v.findViewById(R.id.txv_item_desc);
             vImage = v.findViewById(R.id.img_item);
-            add = v.findViewById(R.id.add_btn);
+            vAddMissing = v.findViewById(R.id.add_missing_btn);
+            vAddDouble = v.findViewById(R.id.add_double_btn);
             vStar1On = v.findViewById(R.id.img_item_star_1_on);
             vStar2On = v.findViewById(R.id.img_item_star_2_on);
             vStar3On = v.findViewById(R.id.img_item_star_3_on);

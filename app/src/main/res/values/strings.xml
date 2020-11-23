@@ -45,7 +45,7 @@
     <string name="username_existing">Username already exists</string>
     <string name="list_is_empty">List is empty. You can add items from the catalog!</string>
     <string name="back">Back</string>
-    <string name="add_to_doubles">Add to double list</string>
+    <string name="add_to_doubles">Double list</string>
     <string name="surprise_image">surprise image</string>
     <string name="set_image">set image</string>
     <string name="mail_subject" translatable="false">Surprix - %1$s</string>
@@ -131,6 +131,8 @@
     <string name="compo">Composable</string>
     <string name="handpainted">Handpainted</string>
     <string name="cannot_oper_filters">No elements to be filtered</string>
+    <string name="add_to_missings">Missing list</string>
+    <string name="add_surprise">Add surprise:</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

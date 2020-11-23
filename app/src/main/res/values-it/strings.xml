@@ -38,7 +38,7 @@
     <string name="username_existing">Username già esistente</string>
     <string name="list_is_empty">La lista è vuota. Aggiungi elementi tramite il catalogo!</string>
     <string name="back">Indietro</string>
-    <string name="add_to_doubles">Aggiungi ai doppi</string>
+    <string name="add_to_doubles">Doppi</string>
     <string name="surprise_image">immagine sorpresina</string>
     <string name="set_image">immagine serie</string>
     <string name="network_unavailable">Connessione internet assente. Riprova più tardi</string>
@@ -112,4 +112,6 @@
     <string name="compo">Componibile</string>
     <string name="handpainted">Dipinto</string>
     <string name="cannot_oper_filters">Non sono presenti elementi da filtrare</string>
+    <string name="add_to_missings">Mancanti</string>
+    <string name="add_surprise">Aggiungi sorpresina:</string>
 </resources>

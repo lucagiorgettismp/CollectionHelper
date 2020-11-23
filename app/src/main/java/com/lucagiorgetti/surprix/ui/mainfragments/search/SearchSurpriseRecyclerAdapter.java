@@ -67,6 +67,8 @@ public class SearchSurpriseRecyclerAdapter extends ListAdapter<Surprise, SearchS
     public void onBindViewHolder(@NonNull SurpViewHolder holder, int position) {
         Surprise surp = getItem(position);
 
+        holder.vDelete.setVisibility(View.GONE);
+
         if (surp.isSet_effective_code()) {
             holder.vDescription.setText(surp.getCode() + " - " + surp.getDescription());
         } else {
@@ -181,6 +183,7 @@ public class SearchSurpriseRecyclerAdapter extends ListAdapter<Surprise, SearchS
         ImageView vStar1Off;
         ImageView vStar2Off;
         ImageView vStar3Off;
+        TextView vDelete;
 
         View vLayout;
 
@@ -199,6 +202,8 @@ public class SearchSurpriseRecyclerAdapter extends ListAdapter<Surprise, SearchS
             vStar1Off = v.findViewById(R.id.img_surp_elem_star_1_off);
             vStar2Off = v.findViewById(R.id.img_surp_elem_star_2_off);
             vStar3Off = v.findViewById(R.id.img_surp_elem_star_3_off);
+
+            vDelete = v.findViewById(R.id.delete);
         }
     }
 }

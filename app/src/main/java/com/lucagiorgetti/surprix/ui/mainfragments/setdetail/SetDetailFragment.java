@@ -38,25 +38,21 @@ public class SetDetailFragment extends BaseFragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         mAdapter = new SetDetailRecyclerAdapter();
-        mAdapter.setListener(s -> {
-            final AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
-            alertDialog.setTitle(getString(R.string.add_surprise_dialog_title));
-            alertDialog.setMessage(getString(R.string.add_surprise_dialog_message) + " " + s.getDescription() + "?");
-            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.missings),
-                    (dialog, which) -> {
-                        missingListDao.addMissing(s.getId());
-                        Snackbar.make(getView(), SurprixApplication.getInstance().getString(R.string.added_to_missings) + ": " + s.getDescription(), Snackbar.LENGTH_LONG)
-                                .setAction(SurprixApplication.getInstance().getString(R.string.undo), view -> missingListDao.removeMissing(s.getId())).show();
-                        alertDialog.dismiss();
-                    });
-            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.doubles),
-                    (dialog, which) -> {
-                        doubleListDao.addDouble(s.getId());
-                        alertDialog.dismiss();
-                        Snackbar.make(getView(), SurprixApplication.getInstance().getString(R.string.add_to_doubles) + ": " + s.getDescription(), Snackbar.LENGTH_LONG)
-                                .setAction(SurprixApplication.getInstance().getString(R.string.undo), view -> doubleListDao.removeDouble(s.getId())).show();
-                    });
-            alertDialog.show();
+
+        mAdapter.setListener(new MyClickListener() {
+            @Override
+            public void onSurpriseAddedToDoubles(Surprise s) {
+                doubleListDao.addDouble(s.getId());
+                Snackbar.make(getView(), SurprixApplication.getInstance().getString(R.string.add_to_doubles) + ": " + s.getDescription(), Snackbar.LENGTH_LONG)
+                        .setAction(SurprixApplication.getInstance().getString(R.string.undo), view -> doubleListDao.removeDouble(s.getId())).show();
+            }
+
+            @Override
+            public void onSurpriseAddedToMissings(Surprise s) {
+                missingListDao.addMissing(s.getId());
+                Snackbar.make(getView(), SurprixApplication.getInstance().getString(R.string.added_to_missings) + ": " + s.getDescription(), Snackbar.LENGTH_LONG)
+                        .setAction(SurprixApplication.getInstance().getString(R.string.undo), view -> missingListDao.removeMissing(s.getId())).show();
+            }
         });
 
         recyclerView.setAdapter(mAdapter);
@@ -79,6 +75,8 @@ public class SetDetailFragment extends BaseFragment {
     }
 
     public interface MyClickListener {
-        void onSurpriseAdded(Surprise s);
+        void onSurpriseAddedToDoubles(Surprise s);
+
+        void onSurpriseAddedToMissings(Surprise s);
     }
 }
