@@ -9,4 +9,10 @@
         myapp:actionViewClass="android.widget.SearchView"
         android:title="@string/search" />
 
+    <item
+        android:id="@+id/action_filter"
+        android:icon="@drawable/ic_filter"
+        android:orderInCategory="1"
+        myapp:showAsAction="ifRoom"
+        android:title="@string/filter" />
 </menu>
