@@ -21,7 +21,7 @@ import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.model.Colors;
 import com.lucagiorgetti.surprix.model.ExtraLocales;
 import com.lucagiorgetti.surprix.model.Surprise;
-import com.lucagiorgetti.surprix.ui.mainfragments.filter.FilterSelection;
+import com.lucagiorgetti.surprix.ui.mainfragments.filter.ChipFilters;
 import com.lucagiorgetti.surprix.ui.mainfragments.filter.FilterType;
 import com.lucagiorgetti.surprix.utility.SystemUtils;
 
@@ -39,7 +39,7 @@ public class MissingRecyclerAdapter extends ListAdapter<Surprise, MissingRecycle
     private SurpRecylerAdapterListener listener;
     private List<Surprise> filterableList;
     List<Surprise> searchViewFilteredValues = new ArrayList<>();
-    private FilterSelection filterSelection = null;
+    private ChipFilters chipFilters = null;
 
     MissingRecyclerAdapter() {
         super(DIFF_CALLBACK);
@@ -187,20 +187,20 @@ public class MissingRecyclerAdapter extends ListAdapter<Surprise, MissingRecycle
         this.listener = listener;
     }
 
-    public void setFilterSelection(FilterSelection selection) {
-        this.filterSelection = selection;
+    public void setChipFilters(ChipFilters selection) {
+        this.chipFilters = selection;
         submitList(applyFilter(searchViewFilteredValues));
     }
 
     private List<Surprise> applyFilter(List<Surprise> values) {
-        if (filterSelection == null) {
+        if (chipFilters == null) {
             return values;
         } else {
             List<Surprise> returnList = new ArrayList<>();
             for (Surprise surprise : values) {
-                if (filterSelection.getSelections(FilterType.CATEGORY).contains(surprise.getSet_category())
-                        && filterSelection.getSelections(FilterType.YEAR).contains(String.valueOf(surprise.getSet_year_year()))
-                        && filterSelection.getSelections(FilterType.PRODUCER).contains(surprise.getSet_producer_name())) {
+                if (chipFilters.getFiltersByType(FilterType.CATEGORY).get(surprise.getSet_category()).isSelected()
+                        && chipFilters.getFiltersByType(FilterType.YEAR).get(String.valueOf(surprise.getSet_year_year())).isSelected()
+                        && chipFilters.getFiltersByType(FilterType.PRODUCER).get(surprise.getSet_producer_name()).isSelected()) {
                     returnList.add(surprise);
                 }
             }
@@ -208,16 +208,7 @@ public class MissingRecyclerAdapter extends ListAdapter<Surprise, MissingRecycle
         }
     }
 
-    public void removeFilter() {
-        this.filterSelection = null;
-        submitList(searchViewFilteredValues);
-    }
-
-    public FilterSelection getFilterSelection() {
-        return this.filterSelection;
-    }
-
-    static class SurpViewHolder extends RecyclerView.ViewHolder {
+    class SurpViewHolder extends RecyclerView.ViewHolder {
         TextView vSetName;
         TextView vDescription;
         TextView vYear;
