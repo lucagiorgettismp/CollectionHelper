@@ -2,6 +2,7 @@ package com.lucagiorgetti.surprix.ui.mainfragments.filter;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,17 +15,13 @@ import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.lucagiorgetti.surprix.R;
 
-import java.util.Map;
-
 public class FilterBottomSheetDialogFragment extends BottomSheetDialogFragment {
-    private final FilterSelection startingFilterSelection;
+    private final ChipFilters chipFilters;
 
-    private final FilterPresenter filterPresenter;
     private FilterBottomSheetListener listener;
 
-    public FilterBottomSheetDialogFragment(FilterPresenter filterPresenter, FilterSelection filterSelection) {
-        this.filterPresenter = filterPresenter;
-        this.startingFilterSelection = filterSelection;
+    public FilterBottomSheetDialogFragment(ChipFilters chipFilters) {
+        this.chipFilters = chipFilters;
     }
 
     public void setListener(FilterBottomSheetListener listener) {
@@ -47,19 +44,12 @@ public class FilterBottomSheetDialogFragment extends BottomSheetDialogFragment {
         ChipGroup producersChipsGroup = view.findViewById(R.id.filter_producer_cg);
         ChipGroup yearsChipsGroup = view.findViewById(R.id.filter_year_cg);
 
-        FilterSelection filterSelection = new FilterSelection();
-
         for (FilterType type : FilterType.values()) {
-            for (Map.Entry<String, String> pair : filterPresenter.getByType(type).entrySet()) {
-                FilterChip chip = new FilterChip(getContext(), pair.getKey(), startingFilterSelection == null || startingFilterSelection.isSelected(type, pair.getValue()));
-                filterSelection.addSelection(type, pair.getKey());
+            for (ChipFilter asd : chipFilters.getFiltersByType(type).values()) {
+                BottomSheetChip chip = new BottomSheetChip(getContext(), asd);
                 chip.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                    if (isChecked) {
-                        filterSelection.addSelection(type, pair.getValue());
-                    } else {
-                        filterSelection.removeSelection(type, pair.getValue());
-                    }
-                    listener.onFilterChanged(filterSelection);
+                    chipFilters.setFilterSelection(type, asd.getValue(), isChecked);
+                    listener.onFilterChanged(chipFilters);
                 });
 
                 switch (type) {
@@ -79,14 +69,22 @@ public class FilterBottomSheetDialogFragment extends BottomSheetDialogFragment {
     }
 }
 
-class FilterChip extends Chip {
-    public FilterChip(Context context, String name, boolean checked) {
+class BottomSheetChip extends Chip {
+    public BottomSheetChip(Context context, ChipFilter chipFilter) {
         super(context);
-        this.setText(name);
+        this.setText(chipFilter.getName());
         this.setCloseIconVisible(true);
         this.setCheckedIconVisible(true);
         this.setCloseIconVisible(false);
         this.setCheckable(true);
-        this.setChecked(checked);
+        this.setChecked(chipFilter.isSelected());
+    }
+
+    public BottomSheetChip(Context context) {
+        super(context);
+    }
+
+    public BottomSheetChip(Context context, AttributeSet attrs) {
+        super(context, attrs);
     }
 }

@@ -21,10 +21,9 @@ import com.google.android.material.snackbar.Snackbar;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.model.Surprise;
+import com.lucagiorgetti.surprix.ui.mainfragments.filter.ChipFilters;
 import com.lucagiorgetti.surprix.ui.mainfragments.filter.FilterBottomSheetDialogFragment;
 import com.lucagiorgetti.surprix.ui.mainfragments.filter.FilterBottomSheetListener;
-import com.lucagiorgetti.surprix.ui.mainfragments.filter.FilterPresenter;
-import com.lucagiorgetti.surprix.ui.mainfragments.filter.FilterSelection;
 import com.lucagiorgetti.surprix.utility.BaseFragment;
 import com.lucagiorgetti.surprix.utility.dao.MissingListDao;
 
@@ -35,7 +34,7 @@ public class MissingListFragment extends BaseFragment {
     private View emptyList;
     private MissingListDao missingListDao;
     private MissingListViewModel missingListViewModel;
-    private FilterPresenter filterPresenter;
+    private ChipFilters chipFilters;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -75,7 +74,7 @@ public class MissingListFragment extends BaseFragment {
             if (mAdapter.getItemCount() > 0) {
                 setTitle(getString(R.string.missings) + " (" + mAdapter.getItemCount() + ")");
                 if (missingList != null) {
-                    filterPresenter = new FilterPresenter(missingList);
+                    chipFilters = new ChipFilters(missingList);
                 }
             } else {
                 setTitle(getString(R.string.missings));
@@ -129,18 +128,18 @@ public class MissingListFragment extends BaseFragment {
     }
 
     private void openBottomSheet() {
-        if (filterPresenter != null){
-            FilterSelection filterSelection = mAdapter.getFilterSelection();
-            FilterBottomSheetDialogFragment bottomSheetDialogFragment = new FilterBottomSheetDialogFragment(filterPresenter, filterSelection);
+        if (chipFilters != null) {
+            FilterBottomSheetDialogFragment bottomSheetDialogFragment = new FilterBottomSheetDialogFragment(this.chipFilters);
             bottomSheetDialogFragment.setListener(new FilterBottomSheetListener() {
                 @Override
-                public void onFilterChanged(FilterSelection selection) {
-                    mAdapter.setFilterSelection(selection);
+                public void onFilterChanged(ChipFilters selection) {
+                    mAdapter.setChipFilters(selection);
                 }
 
                 @Override
                 public void onFilterCleared() {
-                    mAdapter.removeFilter();
+                    chipFilters.clearSelection();
+                    mAdapter.setChipFilters(chipFilters);
                     bottomSheetDialogFragment.dismissAllowingStateLoss();
                 }
             });
