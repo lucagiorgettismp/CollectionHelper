@@ -58,7 +58,7 @@ public class LoginHomeFragment extends BaseFragment {
                     @Override
                     public void onSuccess() {
                         hideLoading();
-                        Navigation.findNavController(view).navigate(LoginHomeFragmentDirections.actionNavigationLoginHomeToMainActivity());
+                        getActivity().finish();
                     }
 
                     @Override
