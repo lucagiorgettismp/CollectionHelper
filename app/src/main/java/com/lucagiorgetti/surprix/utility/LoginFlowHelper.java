@@ -110,6 +110,25 @@ public class LoginFlowHelper {
         }
     }
 
+    public static void loginWithGoogle(Activity activity, String idToken, CallbackWithExceptionInterface flowListener) {
+        AuthUtils.signInWithGoogleToken(activity, idToken, new CallbackInterface<FirebaseUser>() {
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onSuccess(FirebaseUser currentUser) {
+                afterProvidersSignIn(currentUser, flowListener);
+            }
+
+            @Override
+            public void onFailure() {
+                flowListener.onFailure(new Exception(SurprixApplication.getSurprixContext().getString(R.string.auth_failed)));
+            }
+        });
+    }
+
     // LOGFACE
     public static void loginWithFacebook(Activity activity, Fragment fragment, CallbackManager callbackManager, CallbackWithExceptionInterface flowListener) {
 
@@ -129,30 +148,7 @@ public class LoginFlowHelper {
 
                         @Override
                         public void onSuccess(FirebaseUser currentUser) {
-                            if (currentUser != null) {
-                                UserDao.getUserByUid(currentUser.getUid(), new CallbackInterface<User>() {
-                                    @Override
-                                    public void onStart() {
-
-                                    }
-
-                                    @Override
-                                    public void onSuccess(User user) {
-                                        if (user != null) {
-                                            signInSucceeded(currentUser, flowListener);
-                                        } else {
-                                            flowListener.onFailure(new UserNeedToCompleteSignUpException(currentUser));
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onFailure() {
-                                        // TODO: impossibile cercare utente
-                                    }
-                                });
-                            } else {
-                                // TODO: male perchè facebook scazza
-                            }
+                            afterProvidersSignIn(currentUser, flowListener);
                         }
 
                         @Override
@@ -174,6 +170,33 @@ public class LoginFlowHelper {
             });
         } catch (Exception e) {
             Timber.e(e);
+        }
+    }
+
+    private static void afterProvidersSignIn(FirebaseUser currentUser, CallbackWithExceptionInterface flowListener) {
+        if (currentUser != null) {
+            UserDao.getUserByUid(currentUser.getUid(), new CallbackInterface<User>() {
+                @Override
+                public void onStart() {
+
+                }
+
+                @Override
+                public void onSuccess(User user) {
+                    if (user != null) {
+                        signInSucceeded(currentUser, flowListener);
+                    } else {
+                        flowListener.onFailure(new UserNeedToCompleteSignUpException(currentUser));
+                    }
+                }
+
+                @Override
+                public void onFailure() {
+                    // TODO: impossibile cercare utente
+                }
+            });
+        } else {
+            flowListener.onFailure(new UserNeedToCompleteSignUpException(currentUser));
         }
     }
 

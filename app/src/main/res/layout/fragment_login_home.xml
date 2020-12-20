@@ -36,11 +36,20 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_start_facebook"
-        android:drawableStart="@drawable/com_facebook_button_icon"
+        app:icon="@drawable/com_facebook_button_icon"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:backgroundTint="@color/loginFacebook"
         android:text="@string/login_with_facebook"
+        android:textColor="@android:color/background_light"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_google_login"
+        app:icon="@drawable/com_facebook_button_icon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:backgroundTint="@color/surprixOrange"
+        android:text="Login with Google"
         android:textColor="@android:color/background_light"/>
 
     <ProgressBar
