@@ -36,7 +36,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_start_facebook"
-        app:icon="@drawable/com_facebook_button_icon"
+        app:icon="@drawable/ic_facebook"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:backgroundTint="@color/loginFacebook"
@@ -45,7 +45,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_google_login"
-        app:icon="@drawable/com_facebook_button_icon"
+        app:icon="@drawable/ic_google"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:backgroundTint="@color/surprixOrange"
