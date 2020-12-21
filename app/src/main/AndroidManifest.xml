@@ -61,7 +61,7 @@
         </activity>
         <activity
             android:name=".ui.activities.LoginActivity"
-            android:theme="@style/Theme.Surprix.NoActionBar" />
+            android:theme="@style/Theme.Surprix.LoginHome" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

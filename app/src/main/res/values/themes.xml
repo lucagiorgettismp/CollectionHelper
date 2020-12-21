@@ -20,6 +20,10 @@
         <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.App.SmallComponent</item>
     </style>
 
+    <style name="Theme.Surprix.LoginHome" parent="Theme.Surprix.NoActionBar">
+        <item name="android:windowAnimationStyle">@null</item>
+    </style>
+
     <style name="Theme.Surprix.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
