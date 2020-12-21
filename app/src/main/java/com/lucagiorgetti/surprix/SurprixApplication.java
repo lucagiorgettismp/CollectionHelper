@@ -61,11 +61,11 @@ public class SurprixApplication extends Application {
     synchronized public DatabaseReference getDatabaseReference() {
         if (firebaseDatabase == null) {
             firebaseDatabase = FirebaseDatabase.getInstance();
-            firebaseDatabase.setPersistenceEnabled(true);
+            //firebaseDatabase.setPersistenceEnabled(true);
         }
         if (databaseReference == null) {
             databaseReference = firebaseDatabase.getReference();
-            databaseReference.keepSynced(true);
+            //databaseReference.keepSynced(true);
         }
 
         return databaseReference;
