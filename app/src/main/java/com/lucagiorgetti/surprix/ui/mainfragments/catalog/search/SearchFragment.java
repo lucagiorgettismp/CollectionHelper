@@ -1,4 +1,4 @@
-package com.lucagiorgetti.surprix.ui.mainfragments.search;
+package com.lucagiorgetti.surprix.ui.mainfragments.catalog.search;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.model.Set;
 import com.lucagiorgetti.surprix.model.Surprise;
+import com.lucagiorgetti.surprix.ui.mainfragments.catalog.CatalogNavigationMode;
 import com.lucagiorgetti.surprix.utility.BaseFragment;
 import com.lucagiorgetti.surprix.utility.RecyclerItemClickListener;
 import com.lucagiorgetti.surprix.utility.SystemUtils;
@@ -128,7 +129,7 @@ public class SearchFragment extends BaseFragment {
                                 break;
                         }
                         searchView.setQuery("", false);
-                        SearchFragmentDirections.OnSearchedItemClick action = SearchFragmentDirections.onSearchedItemClick(setId, setName);
+                        SearchFragmentDirections.OnSearchedItemClick action = SearchFragmentDirections.onSearchedItemClick(setId, setName, CatalogNavigationMode.CATALOG);
                         Navigation.findNavController(view).navigate(action);
                         SystemUtils.closeKeyboard(getActivity());
                     }

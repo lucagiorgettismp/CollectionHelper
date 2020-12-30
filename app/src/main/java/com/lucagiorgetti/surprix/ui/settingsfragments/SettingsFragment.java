@@ -51,19 +51,10 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         Preference deleteAccount = findPreference(getResources().getString(R.string.settings_delete_user_key));
         Preference changePassword = findPreference(getResources().getString(R.string.settings_change_password_key));
         Preference countryEdit = findPreference(getResources().getString(R.string.settings_change_country_key));
-        Preference logout = findPreference(getResources().getString(R.string.settings_logout_key));
         SwitchPreferenceCompat nightMode = findPreference(getResources().getString(R.string.settings_night_mode_key));
 
         Intent intent = new Intent(Intent.ACTION_SENDTO);
         intent.setData(Uri.parse(getResources().getString(R.string.mailto_surprix)));
-
-        if (logout != null) {
-            logout.setOnPreferenceClickListener(p -> {
-                SystemUtils.logout();
-                SystemUtils.openNewActivityWithFinishing(activity, LoginActivity.class);
-                return true;
-            });
-        }
 
         if (contactUs != null) {
             contactUs.setIntent(intent);

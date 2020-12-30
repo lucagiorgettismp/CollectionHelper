@@ -1,4 +1,4 @@
-package com.lucagiorgetti.surprix.ui.mainfragments.setlist;
+package com.lucagiorgetti.surprix.ui.mainfragments.catalog.sets;
 
 import android.view.LayoutInflater;
 import android.view.View;

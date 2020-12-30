@@ -1,4 +1,4 @@
-package com.lucagiorgetti.surprix.ui.mainfragments.search;
+package com.lucagiorgetti.surprix.ui.mainfragments.catalog.search;
 
 import android.app.Application;
 

@@ -1,4 +1,4 @@
-package com.lucagiorgetti.surprix.ui.mainfragments.year;
+package com.lucagiorgetti.surprix.ui.mainfragments.catalog.years;
 
 import android.view.LayoutInflater;
 import android.view.View;

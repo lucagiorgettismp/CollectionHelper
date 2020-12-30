@@ -82,6 +82,9 @@
     <string name="title_double_list">Doppi</string>
     <string name="title_catalog">Catalogo</string>
     <string name="title_activity_settings">Impostazioni</string>
+    <string name="title_about_me">Utente</string>
+    <string name="title_my_collection">La mia collezione</string>
+
     <string name="missing_removed">Rimossa sorpresina mancante</string>
     <string name="undo">Annulla</string>
     <string name="surprises">Sorpresine</string>

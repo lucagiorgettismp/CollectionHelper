@@ -19,8 +19,8 @@
         tools:layout="@layout/fragment_double_list" />
 
     <fragment
-        android:id="@+id/navigation_catalog"
-        android:name="com.lucagiorgetti.surprix.ui.mainfragments.catalog.CatalogFragment"
+        android:id="@+id/navigation_catalog_producer"
+        android:name="com.lucagiorgetti.surprix.ui.mainfragments.catalog.producers.CatalogProducerFragment"
         android:label="@string/title_catalog"
         tools:layout="@layout/fragment_catalog">
         <action
@@ -37,10 +37,13 @@
             app:exitAnim="@anim/slide_to_left"
             app:popEnterAnim="@anim/slide_from_left"
             app:popExitAnim="@anim/slide_to_right" />
+        <argument
+            android:name="navigation_mode"
+            app:argType="com.lucagiorgetti.surprix.ui.mainfragments.catalog.CatalogNavigationMode" />
     </fragment>
     <fragment
         android:id="@+id/navigation_year"
-        android:name="com.lucagiorgetti.surprix.ui.mainfragments.year.YearFragment"
+        android:name="com.lucagiorgetti.surprix.ui.mainfragments.catalog.years.YearFragment"
         tools:layout="@layout/fragment_years">
         <argument
             android:name="producer_id"
@@ -55,10 +58,13 @@
             app:exitAnim="@anim/slide_to_left"
             app:popEnterAnim="@anim/slide_from_left"
             app:popExitAnim="@anim/slide_to_right" />
+        <argument
+            android:name="navigation_mode"
+            app:argType="com.lucagiorgetti.surprix.ui.mainfragments.catalog.CatalogNavigationMode" />
     </fragment>
     <fragment
         android:id="@+id/navigation_set_list"
-        android:name="com.lucagiorgetti.surprix.ui.mainfragments.setlist.SetListFragment"
+        android:name="com.lucagiorgetti.surprix.ui.mainfragments.catalog.sets.SetListFragment"
         tools:layout="@layout/fragment_set_list">
         <argument
             android:name="year_id"
@@ -74,10 +80,13 @@
         <argument
             android:name="year_name"
             app:argType="string" />
+        <argument
+            android:name="navigation_mode"
+            app:argType="com.lucagiorgetti.surprix.ui.mainfragments.catalog.CatalogNavigationMode" />
     </fragment>
     <fragment
         android:id="@+id/navigation_set_detail"
-        android:name="com.lucagiorgetti.surprix.ui.mainfragments.setdetail.SetDetailFragment"
+        android:name="com.lucagiorgetti.surprix.ui.mainfragments.catalog.setdetail.SetDetailFragment"
         tools:layout="@layout/fragment_set_detail">
         <argument
             android:name="set_id"
@@ -85,10 +94,13 @@
         <argument
             android:name="set_name"
             app:argType="string" />
+        <argument
+            android:name="navigation_mode"
+            app:argType="com.lucagiorgetti.surprix.ui.mainfragments.catalog.CatalogNavigationMode" />
     </fragment>
     <fragment
         android:id="@+id/navigation_search"
-        android:name="com.lucagiorgetti.surprix.ui.mainfragments.search.SearchFragment"
+        android:name="com.lucagiorgetti.surprix.ui.mainfragments.catalog.search.SearchFragment"
         tools:layout="@layout/fragment_search">
         <action
             android:id="@+id/onSearchedItemClick"
@@ -118,5 +130,22 @@
         <argument
             android:name="ownerEmail"
             app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_about_me"
+        android:name="com.lucagiorgetti.surprix.ui.mainfragments.aboutme.AboutMeFragment"
+        android:label="@string/title_about_me"
+        tools:layout="@layout/fragment_about_me">
+        <action
+            android:id="@+id/action_navigation_about_me_to_navigation_my_collection"
+            app:destination="@id/navigation_my_collection" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_my_collection"
+        android:name="com.lucagiorgetti.surprix.ui.mainfragments.catalog.producers.CollectionProducerFragment"
+        android:label="@string/title_my_collection">
+        <action
+            android:id="@+id/action_collectionProducerFragment_to_navigation_year"
+            app:destination="@id/navigation_year" />
     </fragment>
 </navigation>

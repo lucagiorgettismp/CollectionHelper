@@ -1,43 +1,24 @@
-package com.lucagiorgetti.surprix.ui.mainfragments.setdetail;
+package com.lucagiorgetti.surprix.ui.mainfragments.catalog.setdetail;
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.model.Surprise;
-import com.lucagiorgetti.surprix.utility.BaseFragment;
+import com.lucagiorgetti.surprix.ui.mainfragments.catalog.CatalogNavigationMode;
 import com.lucagiorgetti.surprix.utility.dao.DoubleListDao;
 import com.lucagiorgetti.surprix.utility.dao.MissingListDao;
 
-public class SetDetailFragment extends BaseFragment {
+public class SetDetailFragment extends BaseSetDetailFragment {
     MissingListDao missingListDao = new MissingListDao(SurprixApplication.getInstance().getCurrentUser().getUsername());
     DoubleListDao doubleListDao = new DoubleListDao(SurprixApplication.getInstance().getCurrentUser().getUsername());
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
+    @Override
+    public void setupView() {
         SetDetailViewModel setDetailViewModel = new ViewModelProvider(this).get(SetDetailViewModel.class);
-
-        View root = inflater.inflate(R.layout.fragment_set_detail, container, false);
-
-        SetDetailRecyclerAdapter mAdapter;
-
-        ProgressBar progress = root.findViewById(R.id.set_detail_loading);
-        RecyclerView recyclerView = root.findViewById(R.id.set_detail_recycler);
-        recyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new SetDetailRecyclerAdapter();
 
         mAdapter.setListener(new MyClickListener() {
             @Override
@@ -64,14 +45,13 @@ public class SetDetailFragment extends BaseFragment {
             setTitle(setName);
         }
 
-        setDetailViewModel.getSurprises(setId).observe(getViewLifecycleOwner(), surprises -> {
+        setDetailViewModel.getSurprises(setId, CatalogNavigationMode.CATALOG).observe(getViewLifecycleOwner(), surprises -> {
             mAdapter.setSurprises(surprises);
             mAdapter.notifyDataSetChanged();
         });
 
         setDetailViewModel.isLoading().observe(getViewLifecycleOwner(), isLoading -> progress.setVisibility(isLoading ? View.VISIBLE : View.GONE));
 
-        return root;
     }
 
     public interface MyClickListener {

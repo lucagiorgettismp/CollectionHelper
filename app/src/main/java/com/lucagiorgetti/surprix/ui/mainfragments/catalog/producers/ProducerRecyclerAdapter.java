@@ -1,4 +1,4 @@
-package com.lucagiorgetti.surprix.ui.mainfragments.catalog;
+package com.lucagiorgetti.surprix.ui.mainfragments.catalog.producers;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +19,7 @@ import java.util.List;
  * Created by Luca on 24/10/2017.
  */
 
-public class CatalogRecyclerAdapter extends RecyclerView.Adapter<CatalogRecyclerAdapter.SetViewHolder> {
+public class ProducerRecyclerAdapter extends RecyclerView.Adapter<ProducerRecyclerAdapter.SetViewHolder> {
     private List<Producer> producers;
 
     @NonNull

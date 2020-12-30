@@ -1,4 +1,4 @@
-package com.lucagiorgetti.surprix.ui.mainfragments.search;
+package com.lucagiorgetti.surprix.ui.mainfragments.catalog.search;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -15,10 +15,6 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.model.Colors;

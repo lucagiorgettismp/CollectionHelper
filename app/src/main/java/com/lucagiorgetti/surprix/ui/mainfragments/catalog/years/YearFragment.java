@@ -1,47 +1,30 @@
-package com.lucagiorgetti.surprix.ui.mainfragments.year;
+package com.lucagiorgetti.surprix.ui.mainfragments.catalog.years;
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.model.Year;
-import com.lucagiorgetti.surprix.utility.BaseFragment;
+import com.lucagiorgetti.surprix.ui.mainfragments.catalog.CatalogNavigationMode;
 import com.lucagiorgetti.surprix.utility.RecyclerItemClickListener;
 import com.lucagiorgetti.surprix.utility.SystemUtils;
 import com.lucagiorgetti.surprix.utility.dao.MissingListDao;
 
-public class YearFragment extends BaseFragment {
+public class YearFragment extends BaseYearFragment {
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
+    @Override
+    public void setupView() {
         YearViewModel yearViewModel = new ViewModelProvider(this).get(YearViewModel.class);
-
-        View root = inflater.inflate(R.layout.fragment_years, container, false);
-        YearRecyclerAdapter mAdapter;
-        ProgressBar progress = root.findViewById(R.id.year_loading);
-        RecyclerView recyclerView = root.findViewById(R.id.year_recycler);
-        recyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new YearRecyclerAdapter();
-        recyclerView.setAdapter(mAdapter);
 
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
                         Year year = mAdapter.getItemAtPosition(position);
-                        YearFragmentDirections.YearSelectedAction action = YearFragmentDirections.yearSelectedAction(year.getId(), year.getDescr());
+                        YearFragmentDirections.YearSelectedAction action = YearFragmentDirections.yearSelectedAction(year.getId(), year.getDescr(), CatalogNavigationMode.CATALOG);
                         Navigation.findNavController(view).navigate(action);
                         SystemUtils.closeKeyboard(getActivity());
                     }
@@ -62,14 +45,12 @@ public class YearFragment extends BaseFragment {
             setTitle(producerName);
         }
 
-        yearViewModel.getYears(producerId).observe(getViewLifecycleOwner(), years -> {
+        yearViewModel.getYears(producerId, CatalogNavigationMode.CATALOG).observe(getViewLifecycleOwner(), years -> {
             mAdapter.setYears(years);
             mAdapter.notifyDataSetChanged();
         });
 
         yearViewModel.isLoading().observe(getViewLifecycleOwner(), isLoading -> progress.setVisibility(isLoading ? View.VISIBLE : View.GONE));
-
-        return root;
     }
 
     private void onLongYearClicked(final String yearId, int year) {
