@@ -98,8 +98,9 @@
         android:layout_marginStart="24dp"
         android:layout_marginBottom="24dp"
         android:drawableLeft="@drawable/ic_exit_to_app"
-        android:drawableTint="@color/white"
+        android:drawableTint="@color/fabIconColor"
         android:text="@string/logout"
+        app:backgroundTint="@color/fabBackColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

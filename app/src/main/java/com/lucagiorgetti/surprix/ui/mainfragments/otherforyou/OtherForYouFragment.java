@@ -67,7 +67,7 @@ public class OtherForYouFragment extends BaseFragment {
 
     private void sendEmailToUser(String ownerEmail, List<Surprise> surprises) {
         User currentUser = SurprixApplication.getInstance().getCurrentUser();
-        String to = ownerEmail.replaceAll(",", "\\.");
+        String to = ownerEmail;
         String subject = SurprixApplication.getInstance().getString(R.string.mail_subject, currentUser.getUsername());
 
         StringBuilder sb = new StringBuilder();

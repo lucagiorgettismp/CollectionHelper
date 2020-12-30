@@ -2,17 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/navigation_missing_list"
-        android:icon="@drawable/ic_missing"
+        android:icon="@drawable/ic_missing_new"
         android:title="@string/title_missing_list" />
 
     <item
         android:id="@+id/navigation_double_list"
-        android:icon="@drawable/ic_exchange"
+        android:icon="@drawable/ic_double_new"
         android:title="@string/title_double_list" />
 
     <item
         android:id="@+id/navigation_catalog_producer"
-        android:icon="@drawable/ic_catalog"
+        android:icon="@drawable/ic_catalog_new"
         android:title="@string/title_catalog" />
 
     <item
