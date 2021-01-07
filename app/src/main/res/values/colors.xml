@@ -55,6 +55,9 @@
 
     <color name="empty_list_icon">@color/surprixBlueVariant</color>
 
+    <color name="miss_icon_tint">#f73b3b</color>
+    <color name="check_icon_tint">#09c306</color>
+
     <color name="facebookColor">#002f6c</color>
     <color name="GreySet">#bdbdbd</color>
     <color name="DarkGreySet">#a4a4a4</color>

@@ -15,16 +15,25 @@ import com.lucagiorgetti.surprix.utility.SystemUtils;
 import com.lucagiorgetti.surprix.utility.dao.MissingListDao;
 
 public class YearFragment extends BaseYearFragment {
+    CatalogNavigationMode navigationMode;
 
     @Override
     public void setupView() {
         YearViewModel yearViewModel = new ViewModelProvider(this).get(YearViewModel.class);
 
+        String producerId = null;
+        if (getArguments() != null) {
+            producerId = YearFragmentArgs.fromBundle(getArguments()).getProducerId();
+            String producerName = YearFragmentArgs.fromBundle(getArguments()).getProducerName();
+            navigationMode = YearFragmentArgs.fromBundle(getArguments()).getNavigationMode();
+            setTitle(producerName);
+        }
+
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
                         Year year = mAdapter.getItemAtPosition(position);
-                        YearFragmentDirections.YearSelectedAction action = YearFragmentDirections.yearSelectedAction(year.getId(), year.getDescr(), CatalogNavigationMode.CATALOG);
+                        YearFragmentDirections.YearSelectedAction action = YearFragmentDirections.yearSelectedAction(year.getId(), year.getDescr(), navigationMode);
                         Navigation.findNavController(view).navigate(action);
                         SystemUtils.closeKeyboard(getActivity());
                     }
@@ -38,14 +47,7 @@ public class YearFragment extends BaseYearFragment {
                 })
         );
 
-        String producerId = null;
-        if (getArguments() != null) {
-            producerId = getArguments().getString("producer_id");
-            String producerName = getArguments().getString("producer_name");
-            setTitle(producerName);
-        }
-
-        yearViewModel.getYears(producerId, CatalogNavigationMode.CATALOG).observe(getViewLifecycleOwner(), years -> {
+        yearViewModel.getYears(producerId, navigationMode).observe(getViewLifecycleOwner(), years -> {
             mAdapter.setYears(years);
             mAdapter.notifyDataSetChanged();
         });

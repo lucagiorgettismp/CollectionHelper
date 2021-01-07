@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseListCallback;
 import com.lucagiorgetti.surprix.model.Set;
+import com.lucagiorgetti.surprix.model.Surprise;
 import com.lucagiorgetti.surprix.ui.BaseViewModel;
 import com.lucagiorgetti.surprix.ui.mainfragments.catalog.CatalogNavigationMode;
 import com.lucagiorgetti.surprix.utility.dao.YearDao;
@@ -34,7 +35,7 @@ public class SetListViewModel extends BaseViewModel {
     }
 
     private void loadSets(String yearId, CatalogNavigationMode mode) {
-        if (mode.equals(CatalogNavigationMode.CATALOG)) {
+        //if (mode.equals(CatalogNavigationMode.CATALOG)) {
             YearDao.getYearSets(yearId, new FirebaseListCallback<Set>() {
                 @Override
                 public void onStart() {
@@ -55,6 +56,6 @@ public class SetListViewModel extends BaseViewModel {
                     setLoading(false);
                 }
             });
-        }
+        //}
     }
 }

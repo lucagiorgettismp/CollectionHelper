@@ -33,7 +33,7 @@ public class YearViewModel extends BaseViewModel {
     }
 
     private void loadYears(String producerId, CatalogNavigationMode mode) {
-        if (mode.equals(CatalogNavigationMode.CATALOG)) {
+        //if (mode.equals(CatalogNavigationMode.CATALOG)) {
             ProducerDao.getProducerYears(producerId, new FirebaseListCallback<Year>() {
                 @Override
                 public void onStart() {
@@ -51,10 +51,10 @@ public class YearViewModel extends BaseViewModel {
                     setLoading(false);
                 }
             });
-        } else {
+        /*} else {
             allYears.setValue(new ArrayList<>());
             setLoading(false);
-        }
+        }*/
 
     }
 }

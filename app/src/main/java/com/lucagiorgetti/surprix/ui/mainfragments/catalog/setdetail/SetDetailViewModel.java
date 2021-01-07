@@ -11,11 +11,9 @@ import com.lucagiorgetti.surprix.ui.BaseViewModel;
 import com.lucagiorgetti.surprix.ui.mainfragments.catalog.CatalogNavigationMode;
 import com.lucagiorgetti.surprix.utility.dao.SetDao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SetDetailViewModel extends BaseViewModel {
-
     private MutableLiveData<List<Surprise>> allSurprises;
 
     public SetDetailViewModel(@NonNull Application application) {
@@ -33,7 +31,7 @@ public class SetDetailViewModel extends BaseViewModel {
     }
 
     private void loadSurprises(String setId, CatalogNavigationMode mode) {
-        if (mode.equals(CatalogNavigationMode.CATALOG)) {
+        //if (mode.equals(CatalogNavigationMode.CATALOG)) {
             SetDao.getSurprisesBySet(setId, new FirebaseListCallback<Surprise>() {
                 @Override
                 public void onStart() {
@@ -51,9 +49,9 @@ public class SetDetailViewModel extends BaseViewModel {
                     setLoading(false);
                 }
             });
-        } else {
+        /*} else {
             allSurprises.setValue(new ArrayList<>());
             setLoading(false);
-        }
+        }*/
     }
 }

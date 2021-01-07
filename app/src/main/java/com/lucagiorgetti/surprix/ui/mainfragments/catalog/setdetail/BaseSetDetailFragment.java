@@ -14,7 +14,7 @@ import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.utility.BaseFragment;
 
 public abstract class BaseSetDetailFragment extends BaseFragment {
-    SetDetailRecyclerAdapter mAdapter;
+    BaseSetDetailAdapter mAdapter;
     RecyclerView recyclerView;
     ProgressBar progress;
 
@@ -27,13 +27,13 @@ public abstract class BaseSetDetailFragment extends BaseFragment {
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new SetDetailRecyclerAdapter();
 
         setupView();
 
+        recyclerView.setAdapter(mAdapter);
+
         return root;
     }
-
 
     public abstract void setupView();
 }

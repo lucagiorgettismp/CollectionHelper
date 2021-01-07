@@ -1,6 +1,7 @@
 package com.lucagiorgetti.surprix.ui.mainfragments.catalog.sets;
 
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
@@ -13,9 +14,11 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.model.ExtraLocales;
 import com.lucagiorgetti.surprix.model.Set;
+import com.lucagiorgetti.surprix.ui.mainfragments.catalog.CatalogNavigationMode;
 import com.lucagiorgetti.surprix.utility.SystemUtils;
 
 import java.util.ArrayList;
@@ -29,10 +32,14 @@ import java.util.Locale;
  */
 
 public class SetRecyclerAdapter extends ListAdapter<Set, SetRecyclerAdapter.SetViewHolder> implements Filterable {
+    private final SetListFragment.MyClickListener listener;
     private List<Set> filterableList;
+    private CatalogNavigationMode navigationMode;
 
-    SetRecyclerAdapter() {
+    public SetRecyclerAdapter(CatalogNavigationMode navigationMode, SetListFragment.MyClickListener myClickListener) {
         super(DIFF_CALLBACK);
+        this.navigationMode = navigationMode;
+        this.listener = myClickListener;
     }
 
     private static final DiffUtil.ItemCallback<Set> DIFF_CALLBACK = new DiffUtil.ItemCallback<Set>() {
@@ -69,8 +76,21 @@ public class SetRecyclerAdapter extends ListAdapter<Set, SetRecyclerAdapter.SetV
         }
         holder.vNation.setText(nation);
 
+        if (navigationMode.equals(CatalogNavigationMode.COLLECTION)) {
+            holder.myCollectionActions.setVisibility(View.GONE);
+        } else {
+            holder.myCollectionActions.setVisibility(View.VISIBLE);
+        }
+
+        holder.myCollectionSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            listener.onSetInCollectionChanged(set, isChecked);
+        });
+
         String path = set.getImg_path();
         SystemUtils.loadImage(path, holder.vImage, R.drawable.ic_bpz_placeholder);
+
+        holder.vImage.setOnClickListener(v -> { listener.onSetClicked(set);});
+        holder.clickableZone.setOnClickListener(v -> { listener.onSetClicked(set);});
     }
 
     public Set getItemAtPosition(int position) {
@@ -85,7 +105,6 @@ public class SetRecyclerAdapter extends ListAdapter<Set, SetRecyclerAdapter.SetV
         @Override
         protected FilterResults performFiltering(CharSequence charSequence) {
             List<Set> filteredList = new ArrayList<>();
-
             if (charSequence == null || charSequence.length() == 0) {
                 filteredList.addAll(filterableList);
             } else {
@@ -120,12 +139,18 @@ public class SetRecyclerAdapter extends ListAdapter<Set, SetRecyclerAdapter.SetV
         TextView vName;
         TextView vNation;
         ImageView vImage;
+        View myCollectionActions;
+        View clickableZone;
+        SwitchMaterial myCollectionSwitch;
 
         SetViewHolder(View v) {
             super(v);
             vName = v.findViewById(R.id.txv_set_elem_name);
             vImage = v.findViewById(R.id.imgSet);
             vNation = v.findViewById(R.id.txv_set_elem_nation);
+            myCollectionActions = v.findViewById(R.id.my_collection_action);
+            clickableZone = v.findViewById(R.id.clickable_zone);
+            myCollectionSwitch = v.findViewById(R.id.my_collection_switch);
         }
     }
 }

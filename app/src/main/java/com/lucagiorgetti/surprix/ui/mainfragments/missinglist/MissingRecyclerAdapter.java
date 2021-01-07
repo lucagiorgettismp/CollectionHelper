@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
@@ -222,7 +223,7 @@ public class MissingRecyclerAdapter extends ListAdapter<Surprise, MissingRecycle
         ImageView vStar1Off;
         ImageView vStar2Off;
         ImageView vStar3Off;
-        Chip vBtnOwners;
+        Button vBtnOwners;
         View vLayout;
 
         SurpViewHolder(View v) {
@@ -240,7 +241,7 @@ public class MissingRecyclerAdapter extends ListAdapter<Surprise, MissingRecycle
             vStar1Off = v.findViewById(R.id.img_surp_elem_star_1_off);
             vStar2Off = v.findViewById(R.id.img_surp_elem_star_2_off);
             vStar3Off = v.findViewById(R.id.img_surp_elem_star_3_off);
-            vBtnOwners = v.findViewById(R.id.show_owners_chip);
+            vBtnOwners = v.findViewById(R.id.show_owners);
             delete = v.findViewById(R.id.delete);
         }
     }

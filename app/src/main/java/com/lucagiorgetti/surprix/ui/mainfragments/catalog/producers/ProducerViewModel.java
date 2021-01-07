@@ -33,7 +33,7 @@ public class ProducerViewModel extends BaseViewModel {
     }
 
     private void loadProducers(CatalogNavigationMode mode) {
-        if (mode.equals(CatalogNavigationMode.CATALOG)) {
+        //if (mode.equals(CatalogNavigationMode.CATALOG)) {
             ProducerDao.getProducers(new FirebaseListCallback<Producer>() {
                 @Override
                 public void onStart() {
@@ -51,24 +51,9 @@ public class ProducerViewModel extends BaseViewModel {
                     setLoading(false);
                 }
             });
-        } else {
-            ProducerDao.getProducers(new FirebaseListCallback<Producer>() {
-                @Override
-                public void onStart() {
-                    setLoading(true);
-                }
-
-                @Override
-                public void onSuccess(List<Producer> producers) {
-                    allProducers.setValue(producers);
-                    setLoading(false);
-                }
-
-                @Override
-                public void onFailure() {
-                    setLoading(false);
-                }
-            });
-        }
+        /*} else {
+            allProducers.setValue(producers);
+            setLoading(false);
+        }*/
     }
 }

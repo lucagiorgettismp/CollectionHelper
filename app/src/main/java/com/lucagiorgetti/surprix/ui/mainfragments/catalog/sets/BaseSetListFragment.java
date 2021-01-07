@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
+import com.lucagiorgetti.surprix.ui.mainfragments.catalog.CatalogNavigationMode;
 import com.lucagiorgetti.surprix.utility.BaseFragment;
 
 public abstract class BaseSetListFragment extends BaseFragment {
@@ -27,12 +28,12 @@ public abstract class BaseSetListFragment extends BaseFragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_set_list, container, false);
 
+        mAdapter = setAdapter();
         progress = root.findViewById(R.id.set_loading);
         recyclerView = root.findViewById(R.id.set_recycler);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new SetRecyclerAdapter();
         recyclerView.setAdapter(mAdapter);
 
         setHasOptionsMenu(true);
@@ -65,4 +66,6 @@ public abstract class BaseSetListFragment extends BaseFragment {
     }
 
     public abstract void setupView();
+
+    public abstract SetRecyclerAdapter setAdapter();
 }

@@ -20,14 +20,14 @@
 
         <ImageView
             android:id="@+id/imgSet"
-            android:layout_width="match_parent"
+            android:layout_width="377dp"
             android:layout_height="120dp"
             android:adjustViewBounds="true"
             android:contentDescription="@string/set_image"
             android:paddingTop="4dp"
             android:paddingBottom="4dp"
             android:scaleType="fitCenter"
-            tools:srcCompat="@drawable/ic_bpz_placeholder"/>
+            tools:srcCompat="@drawable/ic_bpz_placeholder" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -40,6 +40,7 @@
             android:weightSum="100">
 
             <LinearLayout
+                android:id="@+id/clickable_zone"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="65"
@@ -65,17 +66,19 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/my_collection_action"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="35"
-                android:gravity="center_vertical|center"
+                android:gravity="center_vertical|end"
                 android:orientation="vertical">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAlignment="center"
-                    android:text="In my collection"/>
-                <androidx.appcompat.widget.SwitchCompat
+                    android:textAlignment="textEnd"
+                    android:text="My collection"/>
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/my_collection_switch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="true"/>

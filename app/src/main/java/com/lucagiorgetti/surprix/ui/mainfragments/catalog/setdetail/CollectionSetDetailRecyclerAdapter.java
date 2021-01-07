@@ -11,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.chip.Chip;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.model.Colors;
@@ -27,10 +26,9 @@ import java.util.Locale;
  * Created by Luca on 28/10/2017.
  */
 
-public class SetDetailRecyclerAdapter extends RecyclerView.Adapter<SetDetailRecyclerAdapter.SetDetailViewHolder> {
+public class CollectionSetDetailRecyclerAdapter extends BaseSetDetailAdapter<CollectionSetDetailRecyclerAdapter.SetDetailViewHolder> {
 
     private List<Surprise> items;
-    private SetDetailFragment.MyClickListener listener;
 
     public Surprise getItemAtPosition(int position) {
         return this.items.get(position);
@@ -39,7 +37,7 @@ public class SetDetailRecyclerAdapter extends RecyclerView.Adapter<SetDetailRecy
     @NonNull
     @Override
     public SetDetailViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int position) {
-        final View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.element_set_detail, parent, false);
+        final View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.element_collection_set_detail, parent, false);
 
         return new SetDetailViewHolder(v);
     }
@@ -87,8 +85,14 @@ public class SetDetailRecyclerAdapter extends RecyclerView.Adapter<SetDetailRecy
                     break;
             }
         }
-        holder.vAddMissing.setOnClickListener(v -> listener.onSurpriseAddedToMissings(s));
-        holder.vAddDouble.setOnClickListener(v -> listener.onSurpriseAddedToDoubles(s));
+
+        if (position % 2 == 0){
+            holder.miss.setVisibility(View.VISIBLE);
+            holder.check.setVisibility(View.GONE);
+        } else {
+            holder.miss.setVisibility(View.GONE);
+            holder.check.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -103,22 +107,18 @@ public class SetDetailRecyclerAdapter extends RecyclerView.Adapter<SetDetailRecy
         this.items = surprises;
     }
 
-    public void setListener(SetDetailFragment.MyClickListener myClickListener) {
-        this.listener = myClickListener;
-    }
-
     static class SetDetailViewHolder extends RecyclerView.ViewHolder {
         View vLayout;
         TextView vDescription;
         ImageView vImage;
-        Chip vAddMissing;
-        Chip vAddDouble;
         ImageView vStar1On;
         ImageView vStar2On;
         ImageView vStar3On;
         ImageView vStar1Off;
         ImageView vStar2Off;
         ImageView vStar3Off;
+        ImageView miss;
+        ImageView check;
 
 
         SetDetailViewHolder(View v) {
@@ -127,14 +127,14 @@ public class SetDetailRecyclerAdapter extends RecyclerView.Adapter<SetDetailRecy
             vLayout = v.findViewById(R.id.layout_item_titlebar);
             vDescription = v.findViewById(R.id.txv_item_desc);
             vImage = v.findViewById(R.id.img_item);
-            vAddMissing = v.findViewById(R.id.add_missing_btn);
-            vAddDouble = v.findViewById(R.id.add_double_btn);
             vStar1On = v.findViewById(R.id.img_item_star_1_on);
             vStar2On = v.findViewById(R.id.img_item_star_2_on);
             vStar3On = v.findViewById(R.id.img_item_star_3_on);
             vStar1Off = v.findViewById(R.id.img_item_star_1_off);
             vStar2Off = v.findViewById(R.id.img_item_star_2_off);
             vStar3Off = v.findViewById(R.id.img_item_star_3_off);
+            miss = v.findViewById(R.id.set_detail_miss);
+            check = v.findViewById(R.id.set_detail_check);
         }
     }
 
