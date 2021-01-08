@@ -3,7 +3,6 @@ package com.lucagiorgetti.surprix.ui.mainfragments.catalog.sets;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
@@ -13,18 +12,27 @@ import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.model.Set;
 import com.lucagiorgetti.surprix.ui.mainfragments.catalog.CatalogNavigationMode;
-import com.lucagiorgetti.surprix.utility.RecyclerItemClickListener;
 import com.lucagiorgetti.surprix.utility.SystemUtils;
+import com.lucagiorgetti.surprix.utility.dao.CollectionDao;
 import com.lucagiorgetti.surprix.utility.dao.MissingListDao;
 
 public class SetListFragment extends BaseSetListFragment {
     CatalogNavigationMode navigationMode;
     String yearId;
+    String producerId;
+    CollectionDao collectionDao;
+    MissingListDao missingListDao;
+    SetListViewModel setListViewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        String username = SurprixApplication.getInstance().getCurrentUser().getUsername();
+        collectionDao = new CollectionDao(username);
+        missingListDao = new MissingListDao(username);
+
         if (getArguments() != null) {
             yearId = SetListFragmentArgs.fromBundle(getArguments()).getYearId();
+            producerId = SetListFragmentArgs.fromBundle(getArguments()).getProducerId();
             String yearName = SetListFragmentArgs.fromBundle(getArguments()).getYearName();
             navigationMode = SetListFragmentArgs.fromBundle(getArguments()).getNavigationMode();
             setTitle(yearName);
@@ -34,7 +42,7 @@ public class SetListFragment extends BaseSetListFragment {
 
     @Override
     public void setupView() {
-        SetListViewModel setListViewModel = new ViewModelProvider(this).get(SetListViewModel.class);
+        setListViewModel = new ViewModelProvider(this).get(SetListViewModel.class);
 
         /*
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
@@ -56,7 +64,7 @@ public class SetListFragment extends BaseSetListFragment {
         );
         */
 
-        setListViewModel.getSets(yearId, navigationMode).observe(getViewLifecycleOwner(), sets -> {
+        setListViewModel.getSets(yearId, producerId, navigationMode).observe(getViewLifecycleOwner(), sets -> {
             mAdapter.submitList(sets);
             mAdapter.setFilterableList(sets);
         });
@@ -69,7 +77,11 @@ public class SetListFragment extends BaseSetListFragment {
         return new SetRecyclerAdapter(navigationMode, new MyClickListener() {
             @Override
             public void onSetInCollectionChanged(Set set, boolean isChecked) {
-                Toast.makeText(getContext(), "Switch per set: " + set.getId() + " mode: " + isChecked, Toast.LENGTH_SHORT).show();
+                if (isChecked) {
+                    collectionDao.addSetInCollection(set);
+                } else {
+                    alertRemoveCollection(set);
+                }
             }
 
             @Override
@@ -79,6 +91,25 @@ public class SetListFragment extends BaseSetListFragment {
                 SystemUtils.closeKeyboard(getActivity());
             }
         });
+    }
+
+    private void alertRemoveCollection(Set set) {
+        final androidx.appcompat.app.AlertDialog alertDialog = new androidx.appcompat.app.AlertDialog.Builder(getActivity()).create();
+        alertDialog.setTitle("Rimuovi dalla collazione");
+        alertDialog.setMessage("Rimuovendo una serie dalla collezione, cancellerai anche i relativi mancanti.");
+        alertDialog.setButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE, "Procedi",
+                (dialog, which) -> {
+                    missingListDao.removeItemsFromSet(set);
+                    collectionDao.removeSetInCollection(set);
+                    alertDialog.dismiss();
+                });
+        alertDialog.setButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE, "Annulla",
+                (dialog, which) -> {
+                    alertDialog.dismiss();
+                    setListViewModel.getSets(yearId, producerId, navigationMode);
+                    mAdapter.notifyDataSetChanged();
+                });
+        alertDialog.show();
     }
 
     private void onLongSetClicked(String setId, String setName) {

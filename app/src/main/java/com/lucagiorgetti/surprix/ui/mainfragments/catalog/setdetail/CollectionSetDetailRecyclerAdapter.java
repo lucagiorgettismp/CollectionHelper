@@ -28,9 +28,9 @@ import java.util.Locale;
 
 public class CollectionSetDetailRecyclerAdapter extends BaseSetDetailAdapter<CollectionSetDetailRecyclerAdapter.SetDetailViewHolder> {
 
-    private List<Surprise> items;
+    private List<CollectionSurprise> items;
 
-    public Surprise getItemAtPosition(int position) {
+    public CollectionSurprise getItemAtPosition(int position) {
         return this.items.get(position);
     }
 
@@ -44,7 +44,7 @@ public class CollectionSetDetailRecyclerAdapter extends BaseSetDetailAdapter<Col
 
     @Override
     public void onBindViewHolder(@NonNull SetDetailViewHolder holder, int position) {
-        Surprise s = items.get(position);
+        Surprise s = items.get(position).getSurprise();
         Context ctx = SurprixApplication.getSurprixContext();
         if (s.isSet_effective_code()) {
             holder.vDescription.setText(String.format(Locale.getDefault(), "%s - %s", s.getCode(), s.getDescription()));
@@ -86,7 +86,7 @@ public class CollectionSetDetailRecyclerAdapter extends BaseSetDetailAdapter<Col
             }
         }
 
-        if (position % 2 == 0){
+        if (items.get(position).isMissing()) {
             holder.miss.setVisibility(View.VISIBLE);
             holder.check.setVisibility(View.GONE);
         } else {
@@ -103,7 +103,7 @@ public class CollectionSetDetailRecyclerAdapter extends BaseSetDetailAdapter<Col
         return items.size();
     }
 
-    public void setSurprises(List<Surprise> surprises) {
+    public void setSurprises(List<CollectionSurprise> surprises) {
         this.items = surprises;
     }
 

@@ -29,14 +29,14 @@ import java.util.Locale;
 
 public class CatalogSetDetailRecyclerAdapter extends BaseSetDetailAdapter<CatalogSetDetailRecyclerAdapter.SetDetailViewHolder> {
 
-    private List<Surprise> items;
+    private List<CollectionSurprise> items;
     private final SetDetailFragment.MyClickListener listener;
 
     public CatalogSetDetailRecyclerAdapter(SetDetailFragment.MyClickListener myClickListener) {
         listener = myClickListener;
     }
 
-    public Surprise getItemAtPosition(int position) {
+    public CollectionSurprise getItemAtPosition(int position) {
         return this.items.get(position);
     }
 
@@ -44,13 +44,12 @@ public class CatalogSetDetailRecyclerAdapter extends BaseSetDetailAdapter<Catalo
     @Override
     public SetDetailViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int position) {
         final View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.element_set_detail, parent, false);
-
         return new SetDetailViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull SetDetailViewHolder holder, int position) {
-        Surprise s = items.get(position);
+        Surprise s = items.get(position).getSurprise();
         Context ctx = SurprixApplication.getSurprixContext();
         if (s.isSet_effective_code()) {
             holder.vDescription.setText(String.format(Locale.getDefault(), "%s - %s", s.getCode(), s.getDescription()));
@@ -103,7 +102,7 @@ public class CatalogSetDetailRecyclerAdapter extends BaseSetDetailAdapter<Catalo
         return items.size();
     }
 
-    public void setSurprises(List<Surprise> surprises) {
+    public void setSurprises(List<CollectionSurprise> surprises) {
         this.items = surprises;
     }
 

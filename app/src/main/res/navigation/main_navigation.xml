@@ -83,6 +83,9 @@
         <argument
             android:name="navigation_mode"
             app:argType="com.lucagiorgetti.surprix.ui.mainfragments.catalog.CatalogNavigationMode" />
+        <argument
+            android:name="producer_id"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/navigation_set_detail"

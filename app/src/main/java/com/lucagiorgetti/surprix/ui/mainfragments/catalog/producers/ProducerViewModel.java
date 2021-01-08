@@ -5,10 +5,12 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
+import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseListCallback;
 import com.lucagiorgetti.surprix.model.Producer;
 import com.lucagiorgetti.surprix.ui.BaseViewModel;
 import com.lucagiorgetti.surprix.ui.mainfragments.catalog.CatalogNavigationMode;
+import com.lucagiorgetti.surprix.utility.dao.CollectionDao;
 import com.lucagiorgetti.surprix.utility.dao.ProducerDao;
 
 import java.util.ArrayList;
@@ -33,7 +35,7 @@ public class ProducerViewModel extends BaseViewModel {
     }
 
     private void loadProducers(CatalogNavigationMode mode) {
-        //if (mode.equals(CatalogNavigationMode.CATALOG)) {
+        if (mode.equals(CatalogNavigationMode.CATALOG)) {
             ProducerDao.getProducers(new FirebaseListCallback<Producer>() {
                 @Override
                 public void onStart() {
@@ -51,9 +53,24 @@ public class ProducerViewModel extends BaseViewModel {
                     setLoading(false);
                 }
             });
-        /*} else {
-            allProducers.setValue(producers);
-            setLoading(false);
-        }*/
+        } else {
+            new CollectionDao(SurprixApplication.getInstance().getCurrentUser().getUsername()).getCollectionProducers(new FirebaseListCallback<Producer>() {
+                @Override
+                public void onStart() {
+                    setLoading(true);
+                }
+
+                @Override
+                public void onSuccess(List<Producer> items) {
+                    allProducers.setValue(items);
+                    setLoading(false);
+                }
+
+                @Override
+                public void onFailure() {
+                    setLoading(false);
+                }
+            });
+        }
     }
 }

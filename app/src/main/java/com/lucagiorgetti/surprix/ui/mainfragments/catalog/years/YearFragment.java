@@ -29,11 +29,12 @@ public class YearFragment extends BaseYearFragment {
             setTitle(producerName);
         }
 
+        String finalProducerId = producerId;
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
                         Year year = mAdapter.getItemAtPosition(position);
-                        YearFragmentDirections.YearSelectedAction action = YearFragmentDirections.yearSelectedAction(year.getId(), year.getDescr(), navigationMode);
+                        YearFragmentDirections.YearSelectedAction action = YearFragmentDirections.yearSelectedAction(year.getId(), year.getDescr(), navigationMode, finalProducerId);
                         Navigation.findNavController(view).navigate(action);
                         SystemUtils.closeKeyboard(getActivity());
                     }

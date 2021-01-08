@@ -5,10 +5,12 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
+import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseListCallback;
 import com.lucagiorgetti.surprix.model.Year;
 import com.lucagiorgetti.surprix.ui.BaseViewModel;
 import com.lucagiorgetti.surprix.ui.mainfragments.catalog.CatalogNavigationMode;
+import com.lucagiorgetti.surprix.utility.dao.CollectionDao;
 import com.lucagiorgetti.surprix.utility.dao.ProducerDao;
 
 import java.util.ArrayList;
@@ -33,7 +35,7 @@ public class YearViewModel extends BaseViewModel {
     }
 
     private void loadYears(String producerId, CatalogNavigationMode mode) {
-        //if (mode.equals(CatalogNavigationMode.CATALOG)) {
+        if (mode.equals(CatalogNavigationMode.CATALOG)) {
             ProducerDao.getProducerYears(producerId, new FirebaseListCallback<Year>() {
                 @Override
                 public void onStart() {
@@ -51,10 +53,24 @@ public class YearViewModel extends BaseViewModel {
                     setLoading(false);
                 }
             });
-        /*} else {
-            allYears.setValue(new ArrayList<>());
-            setLoading(false);
-        }*/
+        } else {
+            new CollectionDao(SurprixApplication.getInstance().getCurrentUser().getUsername()).getCollectionYears(producerId, new FirebaseListCallback<Year>() {
+                @Override
+                public void onStart() {
+                    setLoading(true);
+                }
 
+                @Override
+                public void onSuccess(List<Year> years) {
+                    allYears.setValue(years);
+                    setLoading(false);
+                }
+
+                @Override
+                public void onFailure() {
+                    setLoading(false);
+                }
+            });
+        }
     }
 }

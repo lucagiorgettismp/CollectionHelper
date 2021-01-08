@@ -1,7 +1,6 @@
 package com.lucagiorgetti.surprix.ui.mainfragments.catalog.sets;
 
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
@@ -31,9 +30,9 @@ import java.util.Locale;
  * Created by Luca on 24/10/2017.
  */
 
-public class SetRecyclerAdapter extends ListAdapter<Set, SetRecyclerAdapter.SetViewHolder> implements Filterable {
+public class SetRecyclerAdapter extends ListAdapter<CatalogSet, SetRecyclerAdapter.SetViewHolder> implements Filterable {
     private final SetListFragment.MyClickListener listener;
-    private List<Set> filterableList;
+    private List<CatalogSet> filterableList;
     private CatalogNavigationMode navigationMode;
 
     public SetRecyclerAdapter(CatalogNavigationMode navigationMode, SetListFragment.MyClickListener myClickListener) {
@@ -42,15 +41,15 @@ public class SetRecyclerAdapter extends ListAdapter<Set, SetRecyclerAdapter.SetV
         this.listener = myClickListener;
     }
 
-    private static final DiffUtil.ItemCallback<Set> DIFF_CALLBACK = new DiffUtil.ItemCallback<Set>() {
+    private static final DiffUtil.ItemCallback<CatalogSet> DIFF_CALLBACK = new DiffUtil.ItemCallback<CatalogSet>() {
         @Override
-        public boolean areItemsTheSame(@NonNull Set oldItem, @NonNull Set newItem) {
-            return oldItem.getId().equals(newItem.getId());
+        public boolean areItemsTheSame(@NonNull CatalogSet oldItem, @NonNull CatalogSet newItem) {
+            return oldItem.getSet().getId().equals(newItem.getSet().getId()) && newItem.isInCollection() == oldItem.isInCollection();
         }
 
         @Override
-        public boolean areContentsTheSame(@NonNull Set oldItem, @NonNull Set newItem) {
-            return oldItem.getId().equals(newItem.getId());
+        public boolean areContentsTheSame(@NonNull CatalogSet oldItem, @NonNull CatalogSet newItem) {
+            return oldItem.getSet().getId().equals(newItem.getSet().getId()) && newItem.isInCollection() == oldItem.isInCollection();
         }
     };
 
@@ -63,7 +62,8 @@ public class SetRecyclerAdapter extends ListAdapter<Set, SetRecyclerAdapter.SetV
 
     @Override
     public void onBindViewHolder(@NonNull SetViewHolder holder, int position) {
-        Set set = getItem(position);
+        Set set = getItem(position).getSet();
+        boolean init = true;
 
         holder.vName.setText(set.getName());
 
@@ -80,39 +80,48 @@ public class SetRecyclerAdapter extends ListAdapter<Set, SetRecyclerAdapter.SetV
             holder.myCollectionActions.setVisibility(View.GONE);
         } else {
             holder.myCollectionActions.setVisibility(View.VISIBLE);
+
+            holder.myCollectionSwitch.setOnClickListener(v -> {
+                boolean isChecked =  holder.myCollectionSwitch.isChecked();
+                listener.onSetInCollectionChanged(set, isChecked);
+            });
+
+            boolean inCollection = getItem(position).isInCollection();
+            holder.myCollectionSwitch.setChecked(inCollection);
         }
 
-        holder.myCollectionSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            listener.onSetInCollectionChanged(set, isChecked);
-        });
 
         String path = set.getImg_path();
         SystemUtils.loadImage(path, holder.vImage, R.drawable.ic_bpz_placeholder);
 
-        holder.vImage.setOnClickListener(v -> { listener.onSetClicked(set);});
-        holder.clickableZone.setOnClickListener(v -> { listener.onSetClicked(set);});
+        holder.vImage.setOnClickListener(v -> {
+            listener.onSetClicked(set);
+        });
+        holder.clickableZone.setOnClickListener(v -> {
+            listener.onSetClicked(set);
+        });
     }
 
-    public Set getItemAtPosition(int position) {
+    public CatalogSet getItemAtPosition(int position) {
         return getItem(position);
     }
 
-    void setFilterableList(List<Set> sets) {
+    void setFilterableList(List<CatalogSet> sets) {
         this.filterableList = sets;
     }
 
     private Filter filter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence charSequence) {
-            List<Set> filteredList = new ArrayList<>();
+            List<CatalogSet> filteredList = new ArrayList<>();
             if (charSequence == null || charSequence.length() == 0) {
                 filteredList.addAll(filterableList);
             } else {
                 String pattern = charSequence.toString().toLowerCase().trim();
 
-                for (Set set : filterableList) {
-                    if (set.getCode().toLowerCase().contains(pattern)
-                            || set.getName().toLowerCase().contains(pattern)) {
+                for (CatalogSet set : filterableList) {
+                    if (set.getSet().getCode().toLowerCase().contains(pattern)
+                            || set.getSet().getName().toLowerCase().contains(pattern)) {
                         filteredList.add(set);
                     }
                 }
@@ -126,7 +135,7 @@ public class SetRecyclerAdapter extends ListAdapter<Set, SetRecyclerAdapter.SetV
 
         @Override
         protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-            submitList((List<Set>) filterResults.values);
+            submitList((List<CatalogSet>) filterResults.values);
         }
     };
 

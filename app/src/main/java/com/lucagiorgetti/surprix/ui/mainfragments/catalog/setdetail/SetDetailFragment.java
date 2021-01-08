@@ -7,22 +7,25 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.snackbar.Snackbar;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
+import com.lucagiorgetti.surprix.listenerInterfaces.CallbackInterface;
 import com.lucagiorgetti.surprix.model.Surprise;
 import com.lucagiorgetti.surprix.ui.mainfragments.catalog.CatalogNavigationMode;
+import com.lucagiorgetti.surprix.utility.dao.CollectionDao;
 import com.lucagiorgetti.surprix.utility.dao.DoubleListDao;
 import com.lucagiorgetti.surprix.utility.dao.MissingListDao;
 
 public class SetDetailFragment extends BaseSetDetailFragment {
     MissingListDao missingListDao = new MissingListDao(SurprixApplication.getInstance().getCurrentUser().getUsername());
     DoubleListDao doubleListDao = new DoubleListDao(SurprixApplication.getInstance().getCurrentUser().getUsername());
+    CollectionDao collectionDao = new CollectionDao(SurprixApplication.getInstance().getCurrentUser().getUsername());
 
     CatalogNavigationMode navigationMode;
+    String setId = null;
 
     @Override
     public void setupView() {
         SetDetailViewModel setDetailViewModel = new ViewModelProvider(this).get(SetDetailViewModel.class);
 
-        String setId = null;
         if (getArguments() != null) {
             setId = SetDetailFragmentArgs.fromBundle(getArguments()).getSetId();
             String setName = SetDetailFragmentArgs.fromBundle(getArguments()).getSetName();
@@ -31,6 +34,7 @@ public class SetDetailFragment extends BaseSetDetailFragment {
 
             switch (navigationMode) {
                 case CATALOG:
+                    String finalSetId = setId;
                     mAdapter = new CatalogSetDetailRecyclerAdapter(new MyClickListener() {
                         @Override
                         public void onSurpriseAddedToDoubles(Surprise s) {
@@ -41,14 +45,30 @@ public class SetDetailFragment extends BaseSetDetailFragment {
 
                         @Override
                         public void onSurpriseAddedToMissings(Surprise s) {
-                            missingListDao.addMissing(s.getId());
-                            Snackbar.make(getView(), SurprixApplication.getInstance().getString(R.string.added_to_missings) + ": " + s.getDescription(), Snackbar.LENGTH_LONG)
-                                    .setAction(SurprixApplication.getInstance().getString(R.string.undo), view -> missingListDao.removeMissing(s.getId())).show();
+                            collectionDao.isSetInCollection(finalSetId, new CallbackInterface<Boolean>() {
+                                @Override
+                                public void onStart() {
+                                }
+
+                                @Override
+                                public void onSuccess(Boolean inCollection) {
+                                    if (inCollection) {
+                                        addSurpriseToMissingList(s);
+                                    } else {
+                                        showAlertAddSetInCollection(setName, s);
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure() {
+
+                                }
+                            });
                         }
                     });
                     break;
                 case COLLECTION:
-                    mAdapter =  new CollectionSetDetailRecyclerAdapter();
+                    mAdapter = new CollectionSetDetailRecyclerAdapter();
                     break;
             }
         }
@@ -59,7 +79,29 @@ public class SetDetailFragment extends BaseSetDetailFragment {
         });
 
         setDetailViewModel.isLoading().observe(getViewLifecycleOwner(), isLoading -> progress.setVisibility(isLoading ? View.VISIBLE : View.GONE));
+    }
 
+    private void showAlertAddSetInCollection(String setName, Surprise surprise) {
+        final androidx.appcompat.app.AlertDialog alertDialog = new androidx.appcompat.app.AlertDialog.Builder(getActivity()).create();
+        alertDialog.setTitle("Aggiungi in collezione");
+        alertDialog.setMessage(String.format("Per aggiungere %s ai mancanti, devi aggiungere la serie %s alla tua collezione", surprise.getDescription(), setName));
+        alertDialog.setButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE, "Aggiungi",
+                (dialog, which) -> {
+                    alertDialog.dismiss();
+                    collectionDao.addSetInCollection(setId);
+                    addSurpriseToMissingList(surprise);
+                });
+        alertDialog.setButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE, "Annulla",
+                (dialog, which) -> {
+                    alertDialog.dismiss();
+                });
+        alertDialog.show();
+    }
+
+    private void addSurpriseToMissingList(Surprise surprise) {
+        missingListDao.addMissing(surprise.getId());
+        Snackbar.make(getView(), SurprixApplication.getInstance().getString(R.string.added_to_missings) + ": " + surprise.getDescription(), Snackbar.LENGTH_LONG)
+                .setAction(SurprixApplication.getInstance().getString(R.string.undo), view -> missingListDao.removeMissing(surprise.getId())).show();
     }
 
     public interface MyClickListener {
