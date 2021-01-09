@@ -158,7 +158,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="5"
                         android:text="@string/add_to_doubles"
-                        app:icon="@drawable/ic_double_new"
+                        app:icon="@drawable/ic_doubles"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -169,7 +169,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="5"
                         android:text="@string/add_to_missings"
-                        app:icon="@drawable/ic_missing_new"
+                        app:icon="@drawable/ic_missings"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
                 </LinearLayout>

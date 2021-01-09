@@ -36,11 +36,7 @@
     <color name="textColor">@color/grey20</color>
     <color name="cardTextColor">@color/grey20</color>
 
-    <color name="cardButtonColor">@color/surprixOrange</color>
-    <color name="cardButtonText">@color/white</color>
-
     <color name="surpriseActionAccent">@color/surprixBlue</color>
-    <color name="surpriseActionText">@color/white</color>
 
     <color name="surprisePlaceHolder">@color/surprixBlue</color>
 

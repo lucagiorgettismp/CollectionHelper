@@ -27,7 +27,7 @@
             android:layout_height="50dp"
             android:cropToPadding="false"
             android:scaleType="fitCenter"
-            app:tint="@color/cardview_dark_background"
+            app:tint="@color/empty_list_icon"
             app:srcCompat="@drawable/ic_sad" />
 
         <TextView
