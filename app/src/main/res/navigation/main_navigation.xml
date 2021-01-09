@@ -141,7 +141,11 @@
         tools:layout="@layout/fragment_about_me">
         <action
             android:id="@+id/action_navigation_about_me_to_navigation_my_collection"
-            app:destination="@id/navigation_my_collection" />
+            app:destination="@id/navigation_my_collection"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
     </fragment>
     <fragment
         android:id="@+id/navigation_my_collection"
@@ -149,6 +153,10 @@
         android:label="@string/title_my_collection">
         <action
             android:id="@+id/action_collectionProducerFragment_to_navigation_year"
-            app:destination="@id/navigation_year" />
+            app:destination="@id/navigation_year"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
     </fragment>
 </navigation>

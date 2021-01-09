@@ -16,6 +16,8 @@ import com.lucagiorgetti.surprix.utility.SystemUtils;
 import com.lucagiorgetti.surprix.utility.dao.CollectionDao;
 import com.lucagiorgetti.surprix.utility.dao.MissingListDao;
 
+import java.util.ArrayList;
+
 public class SetListFragment extends BaseSetListFragment {
     CatalogNavigationMode navigationMode;
     String yearId;
@@ -43,27 +45,6 @@ public class SetListFragment extends BaseSetListFragment {
     @Override
     public void setupView() {
         setListViewModel = new ViewModelProvider(this).get(SetListViewModel.class);
-
-        /*
-        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position) {
-                        Set set = mAdapter.getItemAtPosition(position);
-                        SetListFragmentDirections.SetSelectedAction action = SetListFragmentDirections.setSelectedAction(set.getId(), set.getName(), navigationMode);
-                        Navigation.findNavController(view).navigate(action);
-                        SystemUtils.closeKeyboard(getActivity());
-                    }
-
-                    @Override
-                    public void onLongItemClick(View view, int position) {
-                        Set set = mAdapter.getItemAtPosition(position);
-                        onLongSetClicked(set.getId(), set.getName());
-                        SystemUtils.closeKeyboard(getActivity());
-                    }
-                })
-        );
-        */
-
         setListViewModel.getSets(yearId, producerId, navigationMode).observe(getViewLifecycleOwner(), sets -> {
             mAdapter.submitList(sets);
             mAdapter.setFilterableList(sets);
@@ -90,6 +71,12 @@ public class SetListFragment extends BaseSetListFragment {
                 Navigation.findNavController(getView()).navigate(action);
                 SystemUtils.closeKeyboard(getActivity());
             }
+
+            @Override
+            public boolean onSetLongClicked(Set set) {
+                onLongSetClicked(set);
+                return true;
+            }
         });
     }
 
@@ -112,13 +99,13 @@ public class SetListFragment extends BaseSetListFragment {
         alertDialog.show();
     }
 
-    private void onLongSetClicked(String setId, String setName) {
+    private void onLongSetClicked(Set set) {
         final AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
         alertDialog.setTitle(getString(R.string.dialog_add_set_title));
-        alertDialog.setMessage(getString(R.string.dialog_add_set_text) + " " + setName + "?");
+        alertDialog.setMessage(getString(R.string.dialog_add_set_text) + " " + set.getName() + "?");
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.dialog_positive),
                 (dialog, which) -> {
-                    new MissingListDao(SurprixApplication.getInstance().getCurrentUser().getUsername()).addMissingsBySet(setId);
+                    new MissingListDao(SurprixApplication.getInstance().getCurrentUser().getUsername()).addMissingsBySet(set.getId());
                     alertDialog.dismiss();
                 });
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.dialog_negative),
@@ -130,6 +117,8 @@ public class SetListFragment extends BaseSetListFragment {
         void onSetInCollectionChanged(Set set, boolean isChecked);
 
         void onSetClicked(Set set);
+
+        boolean onSetLongClicked(Set set);
     }
 
 }

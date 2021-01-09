@@ -102,7 +102,7 @@ public class YearDao {
 
                                     @Override
                                     public void onSuccess(Boolean inCollection) {
-                                        sets.add(new CatalogSet(inCollection, item));
+                                        sets.add(new CatalogSet(item, inCollection, false));
                                         listen.onSuccess(sets);
                                     }
 

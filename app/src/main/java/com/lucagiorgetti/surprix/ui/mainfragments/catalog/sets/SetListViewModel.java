@@ -1,25 +1,18 @@
 package com.lucagiorgetti.surprix.ui.mainfragments.catalog.sets;
 
 import android.app.Application;
-import android.os.Build;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.lifecycle.MutableLiveData;
 
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseListCallback;
-import com.lucagiorgetti.surprix.model.Set;
-import com.lucagiorgetti.surprix.model.Surprise;
 import com.lucagiorgetti.surprix.ui.BaseViewModel;
 import com.lucagiorgetti.surprix.ui.mainfragments.catalog.CatalogNavigationMode;
 import com.lucagiorgetti.surprix.utility.dao.CollectionDao;
 import com.lucagiorgetti.surprix.utility.dao.YearDao;
 
 import java.util.List;
-import java.util.stream.Collectors;
-
-import timber.log.Timber;
 
 public class SetListViewModel extends BaseViewModel {
 
@@ -30,7 +23,7 @@ public class SetListViewModel extends BaseViewModel {
         this.setLoading(false);
     }
 
-    MutableLiveData<List<CatalogSet>> getSets(String yearId,  String producerId, CatalogNavigationMode mode) {
+    MutableLiveData<List<CatalogSet>> getSets(String yearId, String producerId, CatalogNavigationMode mode) {
         if (allSets == null) {
             allSets = new MutableLiveData<>();
             loadSets(yearId, producerId, mode);
@@ -39,7 +32,7 @@ public class SetListViewModel extends BaseViewModel {
         return allSets;
     }
 
-    private void loadSets(String yearId,  String producerId, CatalogNavigationMode mode) {
+    private void loadSets(String yearId, String producerId, CatalogNavigationMode mode) {
         if (mode.equals(CatalogNavigationMode.CATALOG)) {
             YearDao.getYearCatalogSets(yearId, new FirebaseListCallback<CatalogSet>() {
                 @Override
@@ -59,15 +52,15 @@ public class SetListViewModel extends BaseViewModel {
                 }
             });
         } else {
-            new CollectionDao(SurprixApplication.getInstance().getCurrentUser().getUsername()).getCollectionSets(producerId, yearId, new FirebaseListCallback<Set>() {
+            new CollectionDao(SurprixApplication.getInstance().getCurrentUser().getUsername()).getCollectionSets(producerId, yearId, new FirebaseListCallback<CatalogSet>() {
                 @Override
                 public void onStart() {
 
                 }
 
                 @Override
-                public void onSuccess(List<Set> items) {
-                    allSets.setValue(items.stream().map(CatalogSet::new).collect(Collectors.toList()));
+                public void onSuccess(List<CatalogSet> items) {
+                    allSets.setValue(items);
                     setLoading(false);
                 }
 

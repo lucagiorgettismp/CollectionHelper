@@ -3,17 +3,26 @@ package com.lucagiorgetti.surprix.ui.mainfragments.catalog.sets;
 import com.lucagiorgetti.surprix.model.Set;
 
 public class CatalogSet {
-    private final boolean inCollection;
     private final Set set;
+    private final boolean inCollection;
+    private final boolean hasMissing;
 
-    public CatalogSet(boolean inCollection, Set set) {
+    public CatalogSet(Set set, boolean inCollection, boolean hasMissing) {
         this.inCollection = inCollection;
         this.set = set;
+        this.hasMissing = hasMissing;
     }
 
     public CatalogSet(Set set) {
-        this.inCollection = true;
         this.set = set;
+        this.inCollection = true;
+        this.hasMissing = false;
+    }
+
+    public CatalogSet(Set set, Boolean hasMissing) {
+        this.set = set;
+        this.inCollection = true;
+        this.hasMissing = hasMissing;
     }
 
     public Set getSet() {
@@ -22,5 +31,9 @@ public class CatalogSet {
 
     public boolean isInCollection() {
         return inCollection;
+    }
+
+    public boolean hasMissing() {
+        return hasMissing;
     }
 }

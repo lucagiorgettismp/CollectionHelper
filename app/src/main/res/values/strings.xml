@@ -35,8 +35,8 @@
     <string name="signup_complete_all_fields">Complete all fields before submit registration</string>
     <string name="signup_password_lenght">Password must be a minimum of 6 characters</string>
     <string name="delete_account">Delete account</string>
-    <string name="dialog_add_set_title">Add set</string>
-    <string name="dialog_add_set_text">Do you want to add to the missing list the complete set</string>
+    <string name="dialog_add_set_title">Add set surprises</string>
+    <string name="dialog_add_set_text">Do you want to add to the missing list all surprises from the set</string>
     <string name="dialog_positive">OK</string>
     <string name="dialog_negative">Discard</string>
     <string name="dialog_add_year_title">Add year</string>

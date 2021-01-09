@@ -56,15 +56,18 @@ public class SetRecyclerAdapter extends ListAdapter<CatalogSet, SetRecyclerAdapt
     @NonNull
     @Override
     public SetViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.element_set, parent, false);
-        return new SetViewHolder(v);
+        View v;
+        if (navigationMode.equals(CatalogNavigationMode.COLLECTION)) {
+            v = LayoutInflater.from(parent.getContext()).inflate(R.layout.element_collection_set, parent, false);
+        } else {
+            v = LayoutInflater.from(parent.getContext()).inflate(R.layout.element_set, parent, false);
+        }
+        return new SetViewHolder(v, navigationMode);
     }
 
     @Override
     public void onBindViewHolder(@NonNull SetViewHolder holder, int position) {
         Set set = getItem(position).getSet();
-        boolean init = true;
-
         holder.vName.setText(set.getName());
 
         String nation;
@@ -77,29 +80,36 @@ public class SetRecyclerAdapter extends ListAdapter<CatalogSet, SetRecyclerAdapt
         holder.vNation.setText(nation);
 
         if (navigationMode.equals(CatalogNavigationMode.COLLECTION)) {
-            holder.myCollectionActions.setVisibility(View.GONE);
+            CatalogSet cs = getItem(position);
+            if (cs.hasMissing()) {
+                holder.setHasMissing.setVisibility(View.VISIBLE);
+                holder.setComplete.setVisibility(View.GONE);
+            } else {
+                holder.setHasMissing.setVisibility(View.GONE);
+                holder.setComplete.setVisibility(View.VISIBLE);
+            }
         } else {
-            holder.myCollectionActions.setVisibility(View.VISIBLE);
-
             holder.myCollectionSwitch.setOnClickListener(v -> {
-                boolean isChecked =  holder.myCollectionSwitch.isChecked();
+                boolean isChecked = holder.myCollectionSwitch.isChecked();
                 listener.onSetInCollectionChanged(set, isChecked);
             });
 
             boolean inCollection = getItem(position).isInCollection();
             holder.myCollectionSwitch.setChecked(inCollection);
+
+            View.OnLongClickListener onLongClick = v -> listener.onSetLongClicked(set);
+
+            holder.vImage.setOnLongClickListener(onLongClick);
+            holder.clickableZone.setOnLongClickListener(onLongClick);
         }
 
+        View.OnClickListener onClick = v -> listener.onSetClicked(set);
+
+        holder.vImage.setOnClickListener(onClick);
+        holder.clickableZone.setOnClickListener(onClick);
 
         String path = set.getImg_path();
         SystemUtils.loadImage(path, holder.vImage, R.drawable.ic_bpz_placeholder);
-
-        holder.vImage.setOnClickListener(v -> {
-            listener.onSetClicked(set);
-        });
-        holder.clickableZone.setOnClickListener(v -> {
-            listener.onSetClicked(set);
-        });
     }
 
     public CatalogSet getItemAtPosition(int position) {
@@ -148,18 +158,26 @@ public class SetRecyclerAdapter extends ListAdapter<CatalogSet, SetRecyclerAdapt
         TextView vName;
         TextView vNation;
         ImageView vImage;
-        View myCollectionActions;
         View clickableZone;
         SwitchMaterial myCollectionSwitch;
+        ImageView setHasMissing;
+        ImageView setComplete;
 
-        SetViewHolder(View v) {
+        SetViewHolder(View v, CatalogNavigationMode navigationMode) {
             super(v);
             vName = v.findViewById(R.id.txv_set_elem_name);
             vImage = v.findViewById(R.id.imgSet);
             vNation = v.findViewById(R.id.txv_set_elem_nation);
-            myCollectionActions = v.findViewById(R.id.my_collection_action);
             clickableZone = v.findViewById(R.id.clickable_zone);
-            myCollectionSwitch = v.findViewById(R.id.my_collection_switch);
+            switch (navigationMode) {
+                case CATALOG:
+                    myCollectionSwitch = v.findViewById(R.id.my_collection_switch);
+                    break;
+                case COLLECTION:
+                    setHasMissing = v.findViewById(R.id.set_miss);
+                    setComplete = v.findViewById(R.id.set_check);
+                    break;
+            }
         }
     }
 }

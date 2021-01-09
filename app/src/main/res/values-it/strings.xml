@@ -28,7 +28,7 @@
     <string name="signup_complete_all_fields">Completa tutti i campi prima di procedere alla registrazione</string>
     <string name="delete_account">Elimina account</string>
     <string name="dialod_delete_user_text">Vuoi eliminare il tuo account definitivamente?</string>
-    <string name="dialog_add_set_text">"Vuoi aggiungere ai mancanti la serie "</string>
+    <string name="dialog_add_set_text">"Vuoi aggiungere ai mancanti tutte le sorpresine della serie"</string>
     <string name="dialog_add_set_title">Aggiungi serie</string>
     <string name="dialog_add_year_text">Vuoi aggiugere ai mancanti l\'anno</string>
     <string name="dialog_add_year_title">Aggiungi anno</string>

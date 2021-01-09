@@ -14,7 +14,6 @@ import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseListCallback;
 import com.lucagiorgetti.surprix.model.Missing;
 import com.lucagiorgetti.surprix.model.Set;
 import com.lucagiorgetti.surprix.model.Surprise;
-import com.lucagiorgetti.surprix.ui.mainfragments.catalog.setdetail.CollectionSurprise;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,12 +27,14 @@ public class MissingListDao {
     private DatabaseReference userDoubles;
     private DatabaseReference years;
     private DatabaseReference sets;
+    private CollectionDao collectionDao;
 
     public MissingListDao(String username) {
         missingRef = SurprixApplication.getInstance().getDatabaseReference().child("missings").child(username);
         userDoubles = SurprixApplication.getInstance().getDatabaseReference().child("user_doubles");
         years = SurprixApplication.getInstance().getDatabaseReference().child("years");
         sets = SurprixApplication.getInstance().getDatabaseReference().child("sets");
+        collectionDao = new CollectionDao(username);
     }
 
     public static void fixDb() {
@@ -87,13 +88,65 @@ public class MissingListDao {
         });
     }
 
+    public static void fixDb2() {
+        SurprixApplication.getInstance().getDatabaseReference().child("missings").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                String userId = snapshot.getKey();
+                CollectionDao collectionDao = new CollectionDao(userId);
+                for (DataSnapshot d : snapshot.getChildren()) {
+                    String surpriseId = d.getKey() != null ? d.getKey() : "";
+
+                    SurpriseDao.getSurpriseById(new CallbackInterface<Surprise>() {
+                        @Override
+                        public void onStart() {
+
+                        }
+
+                        @Override
+                        public void onSuccess(Surprise surprise) {
+                            collectionDao.addMissingInCollectionSet(surprise);
+                        }
+
+                        @Override
+                        public void onFailure() {
+
+                        }
+                    }, surpriseId);
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
     public void addMissing(String surpId) {
         Missing missing = new Missing(surpId);
         missingRef.child(surpId).setValue(missing);
+        collectionDao.addMissingInCollectionSet(surpId);
     }
 
     public void removeMissing(String surpId) {
         missingRef.child(surpId).setValue(null);
+        collectionDao.removeMissingFromCollection(surpId);
     }
 
     public void getMissingList(FirebaseListCallback<Surprise> listen) {
@@ -274,60 +327,4 @@ public class MissingListDao {
         });
     }
 
-
-    public void getSetItemsWithMissing(String setId, FirebaseListCallback<CollectionSurprise> listen) {
-        final ArrayList<CollectionSurprise> surprises = new ArrayList<>();
-
-        sets.child(setId).child("surprises").addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                String surpriseId = snapshot.getKey();
-
-                SurpriseDao.getSurpriseById(new CallbackInterface<Surprise>() {
-                    @Override
-                    public void onStart() {
-
-                    }
-
-                    @Override
-                    public void onSuccess(Surprise surprise) {
-                        missingRef.child(surprise.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                surprises.add(new CollectionSurprise(snapshot.exists(), surprise));
-                                listen.onSuccess(surprises);
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-                                listen.onFailure();
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onFailure() {
-
-                    }
-                }, surpriseId);
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                listen.onFailure();
-            }
-        });
-    }
 }

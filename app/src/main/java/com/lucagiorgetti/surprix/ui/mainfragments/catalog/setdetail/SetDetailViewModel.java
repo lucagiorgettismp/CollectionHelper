@@ -55,7 +55,7 @@ public class SetDetailViewModel extends BaseViewModel {
                 }
             });
         } else {
-            new MissingListDao(SurprixApplication.getInstance().getCurrentUser().getUsername()).getSetItemsWithMissing(setId, new FirebaseListCallback<CollectionSurprise>(){
+            new CollectionDao(SurprixApplication.getInstance().getCurrentUser().getUsername()).getSetItemsWithMissing(setId, new FirebaseListCallback<CollectionSurprise>(){
                 @Override
                 public void onStart() {
                     setLoading(true);
