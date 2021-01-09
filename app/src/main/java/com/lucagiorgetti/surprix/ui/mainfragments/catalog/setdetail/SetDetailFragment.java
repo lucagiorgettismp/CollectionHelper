@@ -40,7 +40,7 @@ public class SetDetailFragment extends BaseSetDetailFragment {
                         public void onSurpriseAddedToDoubles(Surprise s) {
                             doubleListDao.addDouble(s.getId());
                             Snackbar.make(getView(), SurprixApplication.getInstance().getString(R.string.add_to_doubles) + ": " + s.getDescription(), Snackbar.LENGTH_LONG)
-                                    .setAction(SurprixApplication.getInstance().getString(R.string.undo), view -> doubleListDao.removeDouble(s.getId())).show();
+                                    .setAction(SurprixApplication.getInstance().getString(R.string.discard_btn), view -> doubleListDao.removeDouble(s.getId())).show();
                         }
 
                         @Override
@@ -83,15 +83,15 @@ public class SetDetailFragment extends BaseSetDetailFragment {
 
     private void showAlertAddSetInCollection(String setName, Surprise surprise) {
         final androidx.appcompat.app.AlertDialog alertDialog = new androidx.appcompat.app.AlertDialog.Builder(getActivity()).create();
-        alertDialog.setTitle("Aggiungi in collezione");
-        alertDialog.setMessage(String.format("Per aggiungere %s ai mancanti, devi aggiungere la serie %s alla tua collezione", surprise.getDescription(), setName));
-        alertDialog.setButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE, "Aggiungi",
+        alertDialog.setTitle(getString(R.string.add_in_collection_title));
+        alertDialog.setMessage(String.format(getString(R.string.add_in_collection_message), surprise.getDescription(), setName));
+        alertDialog.setButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE, getString(R.string.add_btn),
                 (dialog, which) -> {
                     alertDialog.dismiss();
                     collectionDao.addSetInCollection(setId);
                     addSurpriseToMissingList(surprise);
                 });
-        alertDialog.setButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE, "Annulla",
+        alertDialog.setButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE, getString(R.string.discard_btn),
                 (dialog, which) -> {
                     alertDialog.dismiss();
                 });
@@ -101,7 +101,7 @@ public class SetDetailFragment extends BaseSetDetailFragment {
     private void addSurpriseToMissingList(Surprise surprise) {
         missingListDao.addMissing(surprise.getId());
         Snackbar.make(getView(), SurprixApplication.getInstance().getString(R.string.added_to_missings) + ": " + surprise.getDescription(), Snackbar.LENGTH_LONG)
-                .setAction(SurprixApplication.getInstance().getString(R.string.undo), view -> missingListDao.removeMissing(surprise.getId())).show();
+                .setAction(SurprixApplication.getInstance().getString(R.string.discard_btn), view -> missingListDao.removeMissing(surprise.getId())).show();
     }
 
     public interface MyClickListener {

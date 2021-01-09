@@ -1,5 +1,8 @@
 package com.lucagiorgetti.surprix.model;
 
+import com.lucagiorgetti.surprix.R;
+import com.lucagiorgetti.surprix.SurprixApplication;
+
 /**
  * Created by Luca on 06/11/2017.
  */
@@ -25,25 +28,25 @@ public final class ExtraLocales {
         String name = null;
         switch (set_nation) {
             case NORTH_AMERICA:
-                name = "America Nord";
+                name = SurprixApplication.getInstance().getString(R.string.north_america);
                 break;
             case SOUTH_AMERICA:
-                name = "America Sud";
+                name = SurprixApplication.getInstance().getString(R.string.south_america);
                 break;
             case EUROPE:
-                name = "Europa";
+                name = SurprixApplication.getInstance().getString(R.string.europe);
                 break;
             case ASIA:
-                name = "Asia";
+                name = SurprixApplication.getInstance().getString(R.string.asia);
                 break;
             case AFRICA:
-                name = "Africa";
+                name = SurprixApplication.getInstance().getString(R.string.africa);
                 break;
             case OCEANIA:
-                name = "Oceania";
+                name = SurprixApplication.getInstance().getString(R.string.australia);
                 break;
             case WORLD_WIDE:
-                name = "Ovunque";
+                name = SurprixApplication.getInstance().getString(R.string.everywhere);
                 break;
         }
         return name;

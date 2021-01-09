@@ -82,15 +82,15 @@ public class SetListFragment extends BaseSetListFragment {
 
     private void alertRemoveCollection(Set set) {
         final androidx.appcompat.app.AlertDialog alertDialog = new androidx.appcompat.app.AlertDialog.Builder(getActivity()).create();
-        alertDialog.setTitle("Rimuovi dalla collazione");
-        alertDialog.setMessage("Rimuovendo una serie dalla collezione, cancellerai anche i relativi mancanti.");
-        alertDialog.setButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE, "Procedi",
+        alertDialog.setTitle(getString(R.string.remove_from_collection_title));
+        alertDialog.setMessage(getString(R.string.remove_from_collection_message));
+        alertDialog.setButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE, getString(R.string.proceed_btn),
                 (dialog, which) -> {
                     missingListDao.removeItemsFromSet(set);
                     collectionDao.removeSetInCollection(set);
                     alertDialog.dismiss();
                 });
-        alertDialog.setButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE, "Annulla",
+        alertDialog.setButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE, getString(R.string.discard_btn),
                 (dialog, which) -> {
                     alertDialog.dismiss();
                     setListViewModel.getSets(yearId, producerId, navigationMode);
@@ -108,7 +108,7 @@ public class SetListFragment extends BaseSetListFragment {
                     new MissingListDao(SurprixApplication.getInstance().getCurrentUser().getUsername()).addMissingsBySet(set.getId());
                     alertDialog.dismiss();
                 });
-        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.dialog_negative),
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.discard_btn),
                 (dialog, which) -> alertDialog.dismiss());
         alertDialog.show();
     }

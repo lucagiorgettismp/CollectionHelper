@@ -65,7 +65,7 @@ public class YearFragment extends BaseYearFragment {
                     new MissingListDao(SurprixApplication.getInstance().getCurrentUser().getUsername()).addMissingsByYear(yearId);
                     alertDialog.dismiss();
                 });
-        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.dialog_negative),
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.discard_btn),
                 (dialog, which) -> alertDialog.dismiss());
         alertDialog.show();
     }

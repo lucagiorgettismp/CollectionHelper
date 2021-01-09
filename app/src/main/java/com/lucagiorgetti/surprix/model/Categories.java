@@ -22,6 +22,6 @@ public final class Categories {
                 return SurprixApplication.getInstance().getString(R.string.handpainted);
         }
 
-        return "Other";
+        return SurprixApplication.getInstance().getString(R.string.other);
     }
 }

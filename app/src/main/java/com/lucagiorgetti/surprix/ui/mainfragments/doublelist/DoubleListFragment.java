@@ -101,7 +101,7 @@ public class DoubleListFragment extends BaseFragment {
             }
             return false;
         });
-        searchView.setQueryHint("Search");
+        searchView.setQueryHint(getString(R.string.search));
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -175,7 +175,7 @@ public class DoubleListFragment extends BaseFragment {
             Snackbar.make(getView(), SurprixApplication.getInstance().getString(R.string.double_removed), Snackbar.LENGTH_LONG).show();
         } else {
             Snackbar.make(getView(), SurprixApplication.getInstance().getString(R.string.double_removed), Snackbar.LENGTH_LONG)
-                    .setAction(SurprixApplication.getInstance().getString(R.string.undo), view -> {
+                    .setAction(SurprixApplication.getInstance().getString(R.string.discard_btn), view -> {
                         doubleListDao.addDouble(surprise.getId());
                         mAdapter.addFilterableItem(surprise, position);
                         mAdapter.notifyItemInserted(position);

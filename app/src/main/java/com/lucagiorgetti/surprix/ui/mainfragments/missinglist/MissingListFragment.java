@@ -186,7 +186,7 @@ public class MissingListFragment extends BaseFragment {
             Snackbar.make(getView(), SurprixApplication.getInstance().getString(R.string.missing_removed), Snackbar.LENGTH_LONG).show();
         } else {
             Snackbar.make(getView(), SurprixApplication.getInstance().getString(R.string.missing_removed), Snackbar.LENGTH_LONG)
-                    .setAction(SurprixApplication.getInstance().getString(R.string.undo), view -> {
+                    .setAction(SurprixApplication.getInstance().getString(R.string.discard_btn), view -> {
                         missingListDao.addMissing(surprise.getId());
                         mAdapter.addFilterableItem(surprise, position);
                         mAdapter.notifyItemInserted(position);

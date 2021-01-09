@@ -119,7 +119,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
                             }
                         }));
-                alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.dialog_negative),
+                alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.discard_btn),
                         (dialog, which) -> alertDialog.dismiss());
                 alertDialog.show();
 

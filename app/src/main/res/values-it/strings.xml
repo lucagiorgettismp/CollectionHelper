@@ -32,13 +32,11 @@
     <string name="dialog_add_set_title">Aggiungi serie</string>
     <string name="dialog_add_year_text">Vuoi aggiugere ai mancanti l\'anno</string>
     <string name="dialog_add_year_title">Aggiungi anno</string>
-    <string name="dialog_negative">Annulla</string>
     <string name="dialog_positive">Ok</string>
     <string name="signup_password_lenght">La password deve essere lunga almeno 6 caratteri</string>
     <string name="username_existing">Username già esistente</string>
     <string name="list_is_empty">La lista è vuota. Aggiungi elementi tramite il catalogo!</string>
     <string name="back">Indietro</string>
-    <string name="add_to_doubles">Doppi</string>
     <string name="surprise_image">immagine sorpresina</string>
     <string name="set_image">immagine serie</string>
     <string name="network_unavailable">Connessione internet assente. Riprova più tardi</string>
@@ -86,7 +84,6 @@
     <string name="title_my_collection">La mia collezione</string>
 
     <string name="missing_removed">Rimossa sorpresina mancante</string>
-    <string name="undo">Annulla</string>
     <string name="surprises">Sorpresine</string>
     <string name="sets">Serie</string>
     <string name="search_title">Ricerca</string>
@@ -97,14 +94,13 @@
     <string name="username_delete_success">Username eliminato con successo</string>
     <string name="settings_contact_us_title">Contattaci</string>
     <string name="settings_category_theme">Tema</string>
-    <string name="settings_night_mode_title">Modalità notte</string>
+    <string name="settings_night_mode_title">Modalità scura</string>
     <string name="change_country">Cambia nazione</string>
     <string name="password_cannot_be_null">La password non può essere vuota</string>
     <string name="settings_delete_user_summary">Questa operazione cancella l\'utente dal nostro database</string>
     <string name="settings_contact_us_summary">Conttaci per suggerirci milgiorie o chiederci di inserire una serie in particolare. Invia una e-mail anche se vuoi collaborare alla crescita di Surprix</string>
     <string name="cannot_send_recovery_email">Impossibile inviare la e-mail per il recupero della password</string>
     <string name="logout">Esci</string>
-    <string name="add">Aggiungi</string>
     <string name="add_surprise_dialog_title">Aggiungi sorpresina</string>
     <string name="add_surprise_dialog_message">A quale lista vuoi aggiungere</string>
     <string name="double_removed">Rimossa sorpresina doppia</string>
@@ -115,6 +111,22 @@
     <string name="compo">Componibile</string>
     <string name="handpainted">Dipinto</string>
     <string name="cannot_oper_filters">Non sono presenti elementi da filtrare</string>
-    <string name="add_to_missings">Mancanti</string>
     <string name="add_surprise">Aggiungi sorpresina:</string>
+    <string name="other">Altro</string>
+    <string name="north_america">America Nord</string>
+    <string name="south_america">America Sud</string>
+    <string name="europe">Europa</string>
+    <string name="asia">Asia</string>
+    <string name="africa">Africa</string>
+    <string name="australia">Australia</string>
+    <string name="everywhere">World wide</string>
+    <string name="add_in_collection_title">Aggiungi in collezione</string>
+    <string name="add_in_collection_message">Per aggiungere %s ai mancanti, devi aggiungere la serie %s alla tua collezione</string>
+    <string name="add_btn">Aggiungi</string>
+    <string name="discard_btn">Annulla</string>
+    <string name="remove_from_collection_title">Rimuovi dalla collezione</string>
+    <string name="remove_from_collection_message">Rimuovendo una serie dalla collezione, cancellerai anche i relativi mancanti.</string>
+    <string name="proceed_btn">Procedi</string>
+    <string name="add_to_doubles">Doppi</string>
+    <string name="add_to_missings">Mancanti</string>
 </resources>
