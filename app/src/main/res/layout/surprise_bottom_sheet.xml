@@ -21,7 +21,7 @@
             style="?attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Reset"
+            android:text="@string/reset_btn"
             app:icon="@drawable/ic_delete"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -30,7 +30,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Categoria"/>
+        android:text="@string/category"/>
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/filter_category_cg"
         android:layout_width="match_parent"
@@ -40,7 +40,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Produttore"/>
+        android:text="@string/producer"/>
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/filter_producer_cg"
         android:layout_width="match_parent"
@@ -50,7 +50,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Anno"/>
+        android:text="@string/year"/>
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/filter_year_cg"
         android:layout_width="match_parent"

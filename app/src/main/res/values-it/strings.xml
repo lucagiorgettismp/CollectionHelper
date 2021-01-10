@@ -126,4 +126,10 @@
     <string name="proceed_btn">Procedi</string>
     <string name="add_to_doubles">Doppi</string>
     <string name="add_to_missings">Mancanti</string>
+    <string name="complete">Complete</string>
+    <string name="incomplete">Incomplete</string>
+    <string name="category">Categoria</string>
+    <string name="producer">Produttore</string>
+    <string name="reset_btn">Reset</string>
+    <string name="set_completion">Completamento</string>
 </resources>

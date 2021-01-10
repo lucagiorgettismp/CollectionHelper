@@ -21,7 +21,7 @@ import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.model.Surprise;
 import com.lucagiorgetti.surprix.ui.mainfragments.filter.ChipFilters;
-import com.lucagiorgetti.surprix.ui.mainfragments.filter.FilterBottomSheetDialogFragment;
+import com.lucagiorgetti.surprix.ui.mainfragments.filter.SurpriseFilterBSDFragment;
 import com.lucagiorgetti.surprix.ui.mainfragments.filter.FilterBottomSheetListener;
 import com.lucagiorgetti.surprix.utility.BaseFragment;
 import com.lucagiorgetti.surprix.utility.dao.DoubleListDao;
@@ -61,7 +61,8 @@ public class DoubleListFragment extends BaseFragment {
             if (mAdapter.getItemCount() > 0) {
                 setTitle(getString(R.string.doubles) + " (" + mAdapter.getItemCount() + ")");
                 if (doubleList != null) {
-                    chipFilters = new ChipFilters(doubleList);
+                    chipFilters = new ChipFilters();
+                    chipFilters.initBySurprises(doubleList);
                 }
             } else {
                 setTitle(getString(R.string.doubles));
@@ -115,7 +116,7 @@ public class DoubleListFragment extends BaseFragment {
 
     private void openBottomSheet() {
         if (chipFilters != null) {
-            FilterBottomSheetDialogFragment bottomSheetDialogFragment = new FilterBottomSheetDialogFragment(this.chipFilters);
+            SurpriseFilterBSDFragment bottomSheetDialogFragment = new SurpriseFilterBSDFragment(this.chipFilters);
             bottomSheetDialogFragment.setListener(new FilterBottomSheetListener() {
                 @Override
                 public void onFilterChanged(ChipFilters selection) {

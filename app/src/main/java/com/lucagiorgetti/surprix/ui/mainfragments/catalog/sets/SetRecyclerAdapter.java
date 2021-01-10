@@ -17,7 +17,10 @@ import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.model.ExtraLocales;
 import com.lucagiorgetti.surprix.model.Set;
+import com.lucagiorgetti.surprix.model.Surprise;
 import com.lucagiorgetti.surprix.ui.mainfragments.catalog.CatalogNavigationMode;
+import com.lucagiorgetti.surprix.ui.mainfragments.filter.ChipFilters;
+import com.lucagiorgetti.surprix.ui.mainfragments.filter.FilterType;
 import com.lucagiorgetti.surprix.utility.SystemUtils;
 
 import java.util.ArrayList;
@@ -33,7 +36,9 @@ import java.util.Locale;
 public class SetRecyclerAdapter extends ListAdapter<CatalogSet, SetRecyclerAdapter.SetViewHolder> implements Filterable {
     private final SetListFragment.MyClickListener listener;
     private List<CatalogSet> filterableList;
-    private CatalogNavigationMode navigationMode;
+    private final CatalogNavigationMode navigationMode;
+    List<CatalogSet> searchViewFilteredValues = new ArrayList<>();
+    private ChipFilters chipFilters = null;
 
     public SetRecyclerAdapter(CatalogNavigationMode navigationMode, SetListFragment.MyClickListener myClickListener) {
         super(DIFF_CALLBACK);
@@ -118,40 +123,61 @@ public class SetRecyclerAdapter extends ListAdapter<CatalogSet, SetRecyclerAdapt
 
     void setFilterableList(List<CatalogSet> sets) {
         this.filterableList = sets;
+        this.searchViewFilteredValues = sets;
     }
 
-    private Filter filter = new Filter() {
+    private final Filter filter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence charSequence) {
-            List<CatalogSet> filteredList = new ArrayList<>();
+            List<CatalogSet> filteredValues = new ArrayList<>();
             if (charSequence == null || charSequence.length() == 0) {
-                filteredList.addAll(filterableList);
+                filteredValues.addAll(filterableList);
             } else {
                 String pattern = charSequence.toString().toLowerCase().trim();
 
                 for (CatalogSet set : filterableList) {
                     if (set.getSet().getCode().toLowerCase().contains(pattern)
                             || set.getSet().getName().toLowerCase().contains(pattern)) {
-                        filteredList.add(set);
+                        filteredValues.add(set);
                     }
                 }
             }
 
             FilterResults results = new FilterResults();
-            results.values = filteredList;
+            results.values = applyFilter(filteredValues);
 
             return results;
         }
 
         @Override
         protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-            submitList((List<CatalogSet>) filterResults.values);
+            searchViewFilteredValues = (List<CatalogSet>) filterResults.values;
+            submitList(searchViewFilteredValues);
         }
     };
 
     @Override
     public Filter getFilter() {
         return filter;
+    }
+
+    public void setChipFilters(ChipFilters selection) {
+        this.chipFilters = selection;
+        submitList(applyFilter(searchViewFilteredValues));
+    }
+
+    private List<CatalogSet> applyFilter(List<CatalogSet> values) {
+        if (chipFilters == null) {
+            return values;
+        } else {
+            List<CatalogSet> returnList = new ArrayList<>();
+            for (CatalogSet surprise : values) {
+                if (chipFilters.getFiltersByType(FilterType.COMPLETION).get(surprise.hasMissing() ? ChipFilters.COMPLETION_NON_COMPLETED : ChipFilters.COMPLETION_COMPLETED).isSelected()) {
+                    returnList.add(surprise);
+                }
+            }
+            return returnList;
+        }
     }
 
     static class SetViewHolder extends RecyclerView.ViewHolder {

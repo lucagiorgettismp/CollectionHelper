@@ -2,21 +2,28 @@ package com.lucagiorgetti.surprix.ui.mainfragments.catalog.sets;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.SearchView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.model.Set;
 import com.lucagiorgetti.surprix.ui.mainfragments.catalog.CatalogNavigationMode;
+import com.lucagiorgetti.surprix.ui.mainfragments.filter.ChipFilters;
+import com.lucagiorgetti.surprix.ui.mainfragments.filter.CollectionSetFilterBSDFragment;
+import com.lucagiorgetti.surprix.ui.mainfragments.filter.FilterBottomSheetListener;
 import com.lucagiorgetti.surprix.utility.SystemUtils;
 import com.lucagiorgetti.surprix.utility.dao.CollectionDao;
 import com.lucagiorgetti.surprix.utility.dao.MissingListDao;
-
-import java.util.ArrayList;
 
 public class SetListFragment extends BaseSetListFragment {
     CatalogNavigationMode navigationMode;
@@ -25,6 +32,7 @@ public class SetListFragment extends BaseSetListFragment {
     CollectionDao collectionDao;
     MissingListDao missingListDao;
     SetListViewModel setListViewModel;
+    private ChipFilters chipFilters;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,9 +56,82 @@ public class SetListFragment extends BaseSetListFragment {
         setListViewModel.getSets(yearId, producerId, navigationMode).observe(getViewLifecycleOwner(), sets -> {
             mAdapter.submitList(sets);
             mAdapter.setFilterableList(sets);
+
+            if (navigationMode == CatalogNavigationMode.COLLECTION) {
+                chipFilters = new ChipFilters();
+                chipFilters.initByCatalogSets(sets);
+            }
         });
 
         setListViewModel.isLoading().observe(getViewLifecycleOwner(), isLoading -> progress.setVisibility(isLoading ? View.VISIBLE : View.GONE));
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        switch (navigationMode) {
+            case CATALOG:
+                inflater.inflate(R.menu.search_menu, menu);
+                break;
+            case COLLECTION:
+                inflater.inflate(R.menu.filter_search_menu, menu);
+                break;
+        }
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                mAdapter.getFilter().filter(s);
+                return false;
+            }
+        });
+        searchView.setQueryHint(getString(R.string.search));
+        searchView.setOnCloseListener(() -> {
+            if (mAdapter.getItemCount() > 0) {
+                setTitle(getString(R.string.missings) + " (" + mAdapter.getItemCount() + ")");
+            } else {
+                setTitle(getString(R.string.missings));
+            }
+            return false;
+        });
+
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_filter) {
+            openBottomSheet();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void openBottomSheet() {
+        if (chipFilters != null) {
+            CollectionSetFilterBSDFragment bottomSheetDialogFragment = new CollectionSetFilterBSDFragment(this.chipFilters);
+            bottomSheetDialogFragment.setListener(new FilterBottomSheetListener() {
+                @Override
+                public void onFilterChanged(ChipFilters selection) {
+                    mAdapter.setChipFilters(selection);
+                }
+
+                @Override
+                public void onFilterCleared() {
+                    chipFilters.clearSelection();
+                    mAdapter.setChipFilters(chipFilters);
+                    bottomSheetDialogFragment.dismissAllowingStateLoss();
+                }
+            });
+            bottomSheetDialogFragment.show(getActivity().getSupportFragmentManager(), "double_bottom_sheet");
+        } else {
+            Snackbar.make(getView(), SurprixApplication.getInstance().getString(R.string.cannot_oper_filters), Snackbar.LENGTH_SHORT).show();
+        }
     }
 
     @Override

@@ -1,16 +1,21 @@
 package com.lucagiorgetti.surprix.ui.mainfragments.filter;
 
+import com.lucagiorgetti.surprix.R;
+import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.model.Categories;
 import com.lucagiorgetti.surprix.model.Surprise;
+import com.lucagiorgetti.surprix.ui.mainfragments.catalog.sets.CatalogSet;
 
 import java.util.HashMap;
 import java.util.List;
 
 public class ChipFilters {
 
-    private final HashMap<FilterType, HashMap<String, ChipFilter>> filters;
+    private HashMap<FilterType, HashMap<String, ChipFilter>> filters;
+    public static final String COMPLETION_COMPLETED = "complete";
+    public static final String COMPLETION_NON_COMPLETED = "non_complete";
 
-    public ChipFilters(List<Surprise> surprises) {
+    public void initBySurprises(List<Surprise> surprises) {
         HashMap<String, ChipFilter> categories = new HashMap<>();
         HashMap<String, ChipFilter> producers = new HashMap<>();
         HashMap<String, ChipFilter> years = new HashMap<>();
@@ -35,6 +40,23 @@ public class ChipFilters {
         filters.put(FilterType.PRODUCER, producers);
         filters.put(FilterType.YEAR, years);
     }
+
+    public void initByCatalogSets(List<CatalogSet> sets) {
+        HashMap<String, ChipFilter> completionValues = new HashMap<>();
+
+        for (CatalogSet set : sets) {
+            String completionString = set.hasMissing() ? COMPLETION_NON_COMPLETED : COMPLETION_COMPLETED;
+            String label = set.hasMissing() ? SurprixApplication.getInstance().getString(R.string.incomplete) : SurprixApplication.getInstance().getString(R.string.complete);
+
+            if (!completionValues.containsKey(completionString)) {
+                completionValues.put(completionString, new ChipFilter(label, completionString));
+            }
+        }
+
+        filters = new HashMap<>();
+        filters.put(FilterType.COMPLETION, completionValues);
+    }
+
 
     public HashMap<String, ChipFilter> getFiltersByType(FilterType type) {
         return filters.get(type);

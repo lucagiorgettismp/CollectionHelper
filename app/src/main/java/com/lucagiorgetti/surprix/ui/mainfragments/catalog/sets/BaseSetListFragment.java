@@ -42,29 +42,6 @@ public abstract class BaseSetListFragment extends BaseFragment {
         return root;
     }
 
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.search_menu, menu);
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) searchItem.getActionView();
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String s) {
-                mAdapter.getFilter().filter(s);
-                return false;
-            }
-        });
-
-        searchView.setQueryHint(SurprixApplication.getInstance().getString(R.string.search));
-
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
     public abstract void setupView();
 
     public abstract SetRecyclerAdapter setAdapter();
