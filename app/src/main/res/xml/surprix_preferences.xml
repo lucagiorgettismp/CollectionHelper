@@ -16,13 +16,9 @@
             app:title="@string/change_password"
             app:iconSpaceReserved="false"/>
         <Preference
+            app:iconSpaceReserved="false"
             app:key="@string/settings_change_country_key"
-            app:title="@string/change_country"
-            app:iconSpaceReserved="false"/>
-        <Preference
-            app:key="@string/settings_logout_key"
-            app:title="@string/logout"
-            app:iconSpaceReserved="false"/>
+            app:title="@string/change_country" />
     </PreferenceCategory>
 
     <PreferenceCategory

@@ -28,7 +28,6 @@ import com.itextpdf.text.pdf.draw.LineSeparator;
 import com.lucagiorgetti.surprix.BuildConfig;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
-import com.lucagiorgetti.surprix.model.Missing;
 import com.lucagiorgetti.surprix.model.Surprise;
 
 import java.io.BufferedInputStream;
@@ -63,7 +62,7 @@ public class PDFUtils {
             document.addCreationDate();
             document.addAuthor(SurprixApplication.getInstance().getResources().getString(R.string.app_name));
             document.addCreator(SurprixApplication.getInstance().getResources().getString(R.string.app_name));
-            HashMap<String, List<Missing>> hashMap = new HashMap<>();
+            HashMap<String, List<Surprise>> hashMap = new HashMap<>();
 
             BaseColor colorAccent = new BaseColor(ContextCompat.getColor(SurprixApplication.getSurprixContext(), R.color.surprixBlue));
             float fontSize = 12.0f;

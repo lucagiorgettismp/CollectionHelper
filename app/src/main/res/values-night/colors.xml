@@ -24,10 +24,7 @@
     <color name="cardDivider">@color/white</color>
     <color name="cardTextColor">@color/grey80</color>
 
-    <color name="cardButtonText">@color/grey20</color>
-
     <color name="surpriseActionAccent">@color/surprixOrange</color>
-    <color name="surpriseActionText">@color/surprixBlueVariant</color>
 
     <color name="dialogTextColor">@color/grey80</color>
 

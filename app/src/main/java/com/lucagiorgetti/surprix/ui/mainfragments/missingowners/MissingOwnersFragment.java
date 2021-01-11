@@ -8,7 +8,6 @@ import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -37,12 +36,10 @@ public class MissingOwnersFragment extends BaseFragment {
         MissingOwnersViewModel mViewModel = new ViewModelProvider(this).get(MissingOwnersViewModel.class);
         String surpriseId = MissingOwnersFragmentArgs.fromBundle(requireArguments()).getMissingSurpriseId();
         mViewModel.getMissingOwners(surpriseId).observe(getViewLifecycleOwner(), owners -> {
+            emptyList.setVisibility(owners == null || owners.isEmpty() ? View.VISIBLE : View.GONE);
             if (!owners.isEmpty()) {
-                emptyList.setVisibility(View.GONE);
                 adapter.setOwners(owners);
                 adapter.notifyDataSetChanged();
-            } else {
-                emptyList.setVisibility(View.VISIBLE);
             }
         });
 
@@ -60,7 +57,7 @@ public class MissingOwnersFragment extends BaseFragment {
         }
 
         void onOwnerClicked(User user) {
-            Navigation.findNavController(root).navigate(MissingOwnersFragmentDirections.actionNavigationMissingOwnersToNavigationOtherForYou(user.getUsername(), user.getEmail()));
+            Navigation.findNavController(root).navigate(MissingOwnersFragmentDirections.actionNavigationMissingOwnersToNavigationOtherForYou(user.getUsername(), user.getCleanedEmail()));
         }
     }
 }

@@ -28,8 +28,23 @@ public class DoubleListDao {
     }
 
     public void addDouble(String surpId) {
-        userDoubles.child(surpId).setValue(true);
-        surpriseDoubleOwners.child(surpId).child(username).setValue(true);
+        SurpriseDao.getSurpriseById(new CallbackInterface<Surprise>() {
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onSuccess(Surprise surprise) {
+                userDoubles.child(surpId).setValue(surprise.isSet_effective_code() ? surprise.getCode() : "ZZZ_" + surpId);
+                surpriseDoubleOwners.child(surpId).child(username).setValue(true);
+            }
+
+            @Override
+            public void onFailure() {
+
+            }
+        }, surpId);
     }
 
     public void removeDouble(String surpId) {
@@ -80,7 +95,7 @@ public class DoubleListDao {
         final ArrayList<Surprise> doubles = new ArrayList<>();
 
         if (username != null) {
-            userDoubles.addListenerForSingleValueEvent(new ValueEventListener() {
+            userDoubles.orderByValue().addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {

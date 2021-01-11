@@ -1,50 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="120dp"
+    android:layout_height="130dp"
     android:layout_marginStart="8dp"
     android:layout_marginTop="8dp"
     android:layout_marginEnd="8dp"
     app:cardBackgroundColor="@color/cardBackground"
-    app:cardCornerRadius="5dp">
-
-
+    app:cardCornerRadius="10dp">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="8dp"
-        android:orientation="horizontal"
-        android:weightSum="100">
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="25"
-            app:cardBackgroundColor="@color/white"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="0dp">
-
-            <ImageView
-                android:id="@+id/img_item"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:srcCompat="@drawable/ic_logo_shape_primary" />
-        </androidx.cardview.widget.CardView>
-
+        android:orientation="vertical">
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="8dp"
-            android:layout_weight="75"
-            android:orientation="vertical">
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:orientation="horizontal"
+            android:weightSum="100">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+            <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="25"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="10dp"
+                android:layout_marginBottom="8dp"
+                app:cardElevation="0dp">
+
+                <ImageView
+                    android:id="@+id/img_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/ic_logo_shape_primary" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                android:layout_weight="75">
+
 
                 <TextView
                     android:id="@+id/txv_item_desc"
@@ -53,33 +52,36 @@
                     android:text="@string/description"
                     android:textColor="@color/cardTextColor"
                     android:textSize="16sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <View
-                android:id="@+id/layout_item_titlebar"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/divider_height"
-                android:background="@color/cardDivider" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center|center_horizontal"
-                android:orientation="horizontal"
-                android:weightSum="1"
-                android:layout_marginTop="4dp">
+                <View
+                    android:id="@+id/layout_item_titlebar"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/divider_height"
+                    android:background="@color/cardDivider"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/txv_item_desc" />
 
                 <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
                     android:layout_weight="1"
-                    android:gravity="top|center_horizontal"
-                    android:orientation="vertical">
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.6"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/layout_item_titlebar">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
                         android:text="@string/difficulty"
                         android:textColor="@color/cardTextColor" />
 
@@ -93,90 +95,88 @@
                             android:layout_width="22dp"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="4dp"
-                            app:tint="@color/surpriseActionAccent"
                             android:visibility="gone"
-                            app:srcCompat="@drawable/ic_star_full" />
+                            app:srcCompat="@drawable/ic_star_full"
+                            app:tint="@color/surpriseActionAccent" />
 
                         <ImageView
                             android:id="@+id/img_item_star_1_off"
                             android:layout_width="22dp"
                             android:layout_height="match_parent"
                             android:layout_marginEnd="4dp"
-                            app:tint="@color/surpriseActionAccent"
-                            app:srcCompat="@drawable/ic_star_empty" />
+                            app:srcCompat="@drawable/ic_star_empty"
+                            app:tint="@color/surpriseActionAccent" />
 
                         <ImageView
                             android:id="@+id/img_item_star_2_on"
                             android:layout_width="22dp"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="4dp"
-                            app:tint="@color/surpriseActionAccent"
                             android:visibility="gone"
-                            app:srcCompat="@drawable/ic_star_full" />
+                            app:srcCompat="@drawable/ic_star_full"
+                            app:tint="@color/surpriseActionAccent" />
 
                         <ImageView
                             android:id="@+id/img_item_star_2_off"
                             android:layout_width="22dp"
                             android:layout_height="match_parent"
                             android:layout_marginEnd="4dp"
-                            app:tint="@color/surpriseActionAccent"
-                            app:srcCompat="@drawable/ic_star_empty" />
+                            app:srcCompat="@drawable/ic_star_empty"
+                            app:tint="@color/surpriseActionAccent" />
 
                         <ImageView
                             android:id="@+id/img_item_star_3_on"
                             android:layout_width="22dp"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="4dp"
-                            app:tint="@color/surpriseActionAccent"
                             android:visibility="gone"
-                            app:srcCompat="@drawable/ic_star_full" />
+                            app:srcCompat="@drawable/ic_star_full"
+                            app:tint="@color/surpriseActionAccent" />
 
                         <ImageView
                             android:id="@+id/img_item_star_3_off"
                             android:layout_width="22dp"
                             android:layout_height="match_parent"
                             android:layout_marginEnd="4dp"
-                            app:tint="@color/surpriseActionAccent"
-                            app:srcCompat="@drawable/ic_star_empty" />
-
+                            app:srcCompat="@drawable/ic_star_empty"
+                            app:tint="@color/surpriseActionAccent" />
                     </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="top"
-                    android:orientation="vertical"
-                    >
-                    <TextView
+                    android:id="@+id/linearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/add_double_btn"
+                        style="?attr/borderlessButtonStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/add_surprise"
-                        android:textColor="@color/cardTextColor" />
+                        android:layout_weight="5"
+                        android:text="@string/add_to_doubles"
+                        app:icon="@drawable/ic_doubles"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
 
-                    <LinearLayout
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/add_missing_btn"
+                        style="?attr/borderlessButtonStyle"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/add_missing_btn"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:backgroundTint="@color/cardButtonColor"
-                            android:textColor="@color/cardButtonText"
-                            android:text="@string/add_to_missings"/>
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/add_double_btn"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="4dp"
-                            android:backgroundTint="@color/cardButtonColor"
-                            android:textColor="@color/cardButtonText"
-                            android:text="@string/add_to_doubles"/>
-                    </LinearLayout>
+                        android:layout_height="wrap_content"
+                        android:layout_weight="5"
+                        android:text="@string/add_to_missings"
+                        app:icon="@drawable/ic_missings"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
                 </LinearLayout>
-            </LinearLayout>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
     </LinearLayout>
-
 </androidx.cardview.widget.CardView>
 

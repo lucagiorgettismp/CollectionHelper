@@ -22,6 +22,10 @@ public class User {
         return email;
     }
 
+    public String getCleanedEmail() {
+        return email.replaceAll(",", "\\.");
+    }
+
     public String getUsername() {
         return username;
     }

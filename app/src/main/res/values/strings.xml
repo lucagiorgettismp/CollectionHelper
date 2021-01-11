@@ -5,7 +5,7 @@
 
     <string name="old_password">Old Password</string>
     <string name="new_password">New Password</string>
-    <string name="change_password">Change Password</string>
+    <string name="change_password">Change password</string>
     <string name="nobody_have_what_you_miss">Unfortunately, nobody have what you are looking for</string>
     <string name="username" translatable="false">Username</string>
     <string name="sign_up">Sign Up</string>
@@ -35,17 +35,15 @@
     <string name="signup_complete_all_fields">Complete all fields before submit registration</string>
     <string name="signup_password_lenght">Password must be a minimum of 6 characters</string>
     <string name="delete_account">Delete account</string>
-    <string name="dialog_add_set_title">Add set</string>
-    <string name="dialog_add_set_text">Do you want to add to the missing list the complete set</string>
+    <string name="dialog_add_set_title">Add set surprises</string>
+    <string name="dialog_add_set_text">Do you want to add to the missing list all surprises from the set</string>
     <string name="dialog_positive">OK</string>
-    <string name="dialog_negative">Discard</string>
     <string name="dialog_add_year_title">Add year</string>
     <string name="dialog_add_year_text">Do you want to add to the missing list the complete year</string>
     <string name="dialod_delete_user_text">Do you want to delete you user account finally?</string>
     <string name="username_existing">Username already exists</string>
     <string name="list_is_empty">List is empty. You can add items from the catalog!</string>
     <string name="back">Back</string>
-    <string name="add_to_doubles">Double list</string>
     <string name="surprise_image">surprise image</string>
     <string name="set_image">set image</string>
     <string name="mail_subject" translatable="false">Surprix - %1$s</string>
@@ -90,10 +88,11 @@
     <string name="title_missing_list">Missing list</string>
     <string name="title_double_list">Double list</string>
     <string name="title_catalog">Catalog</string>
+    <string name="title_about_me">About me</string>
+    <string name="title_my_collection">My Collection</string>
 
     <string name="title_activity_main" translatable="false">MainActivity</string>
     <string name="missing_removed">Missing surprise removed</string>
-    <string name="undo">Undo</string>
     <string name="surprises">Surprises</string>
     <string name="sets">Sets</string>
     <string name="search_title">Search</string>
@@ -118,11 +117,7 @@
     <string name="password_cannot_be_null">Password cannot be null</string>
     <string name="settings_change_country_key" translatable="false">settings_change_country</string>
     <string name="change_country">Change country</string>
-    <string name="settings_logout_key" translatable="false">settings_logout</string>
     <string name="logout">Logout</string>
-    <string name="add">Add</string>
-    <string name="add_surprise_dialog_title">Add surprise</string>
-    <string name="add_surprise_dialog_message">Which list do you want to add</string>
     <string name="double_removed">Double surprise removed</string>
     <string name="find">Find</string>
     <string name="find_surprise">Find surprise</string>
@@ -131,8 +126,30 @@
     <string name="compo">Composable</string>
     <string name="handpainted">Handpainted</string>
     <string name="cannot_oper_filters">No elements to be filtered</string>
-    <string name="add_to_missings">Missing list</string>
-    <string name="add_surprise">Add surprise:</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="other">Other</string>
+    <string name="north_america">North America</string>
+    <string name="south_america">South America</string>
+    <string name="europe">Europe</string>
+    <string name="asia">Asia</string>
+    <string name="africa">Africa</string>
+    <string name="australia">Australia</string>
+    <string name="everywhere">Ovunque</string>
+    <string name="add_in_collection_title">Add in collection</string>
+    <string name="add_in_collection_message">If you want to add %s to your missing list, you must add the set %s in your collection</string>
+    <string name="add_btn">Add</string>
+    <string name="discard_btn">Discard</string>
+    <string name="remove_from_collection_title">Remove from collection</string>
+    <string name="remove_from_collection_message">By removing a set from your collection, you will remove its items from your missing list.</string>
+    <string name="proceed_btn">Proceed</string>
+    <string name="add_to_doubles">Doubles</string>
+    <string name="add_to_missings">Missings</string>
+    <string name="complete">Complete</string>
+    <string name="incomplete">Incomplete</string>
+    <string name="category">Category</string>
+    <string name="producer">Producer</string>
+    <string name="reset_btn">Reset</string>
+    <string name="set_completion">Set completion</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

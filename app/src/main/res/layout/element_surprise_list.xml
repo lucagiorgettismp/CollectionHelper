@@ -9,17 +9,19 @@
     android:layout_marginTop="8dp"
     android:layout_marginEnd="8dp"
     app:cardBackgroundColor="@color/cardBackground"
-    app:cardCornerRadius="5dp">
+    app:cardCornerRadius="10dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="horizontal"
             android:weightSum="100">
 
@@ -28,6 +30,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="25"
                 app:cardBackgroundColor="@color/white"
+                android:layout_marginBottom="8dp"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="0dp">
 
@@ -54,8 +57,9 @@
                     <TextView
                         android:id="@+id/txv_surp_elem_desc"
                         android:layout_width="0dp"
-                        android:layout_weight="1"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Description"
                         android:textColor="@color/cardTextColor"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -64,9 +68,9 @@
                         android:id="@+id/delete"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="X"
                         android:paddingStart="4dp"
                         android:paddingEnd="4dp"
+                        android:text="X"
                         android:textColor="@color/xColor"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -80,85 +84,8 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="35dp"
-                    android:layout_marginTop="4dp"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:id="@+id/img_surp_elem_star_1_on"
-                        android:layout_width="22dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="4dp"
-                        app:tint="@color/surpriseActionAccent"
-                        android:visibility="gone"
-                        app:srcCompat="@drawable/ic_star_full" />
-
-                    <ImageView
-                        android:id="@+id/img_surp_elem_star_1_off"
-                        android:layout_width="22dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginEnd="4dp"
-                        app:tint="@color/surpriseActionAccent"
-                        app:srcCompat="@drawable/ic_star_empty" />
-
-                    <ImageView
-                        android:id="@+id/img_surp_elem_star_2_on"
-                        android:layout_width="22dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="4dp"
-                        app:tint="@color/surpriseActionAccent"
-                        android:visibility="gone"
-                        app:srcCompat="@drawable/ic_star_full" />
-
-                    <ImageView
-                        android:id="@+id/img_surp_elem_star_2_off"
-                        android:layout_width="22dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginEnd="4dp"
-                        app:tint="@color/surpriseActionAccent"
-                        app:srcCompat="@drawable/ic_star_empty" />
-
-                    <ImageView
-                        android:id="@+id/img_surp_elem_star_3_on"
-                        android:layout_width="22dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="4dp"
-                        app:tint="@color/surpriseActionAccent"
-                        android:visibility="gone"
-                        app:srcCompat="@drawable/ic_star_full" />
-
-                    <ImageView
-                        android:id="@+id/img_surp_elem_star_3_off"
-                        android:layout_width="22dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginEnd="4dp"
-                        app:tint="@color/surpriseActionAccent"
-                        app:srcCompat="@drawable/ic_star_empty" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="end"
-                        android:orientation="horizontal">
-
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/show_owners_chip"
-                            style="@style/Widget.MaterialComponents.Chip.Action"
-                            android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:layout_marginStart="8dp"
-                            android:visibility="gone"
-                            android:backgroundTint="@color/surpriseActionAccent"
-                            android:textColor="@color/surpriseActionText"
-                            android:text="@string/find"/>
-                    </LinearLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginEnd="4dp"
+                    android:layout_marginTop="4dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:weightSum="100">
@@ -207,6 +134,82 @@
                         android:textAlignment="textEnd"
                         android:textColor="@color/cardTextColor" />
                 </LinearLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <ImageView
+                            android:id="@+id/img_surp_elem_star_1_on"
+                            android:layout_width="22dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="4dp"
+                            android:visibility="gone"
+                            app:srcCompat="@drawable/ic_star_full"
+                            app:tint="@color/surpriseActionAccent" />
+
+                        <ImageView
+                            android:id="@+id/img_surp_elem_star_1_off"
+                            android:layout_width="22dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="4dp"
+                            app:srcCompat="@drawable/ic_star_empty"
+                            app:tint="@color/surpriseActionAccent" />
+
+                        <ImageView
+                            android:id="@+id/img_surp_elem_star_2_on"
+                            android:layout_width="22dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="4dp"
+                            android:visibility="gone"
+                            app:srcCompat="@drawable/ic_star_full"
+                            app:tint="@color/surpriseActionAccent" />
+
+                        <ImageView
+                            android:id="@+id/img_surp_elem_star_2_off"
+                            android:layout_width="22dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="4dp"
+                            app:srcCompat="@drawable/ic_star_empty"
+                            app:tint="@color/surpriseActionAccent" />
+
+                        <ImageView
+                            android:id="@+id/img_surp_elem_star_3_on"
+                            android:layout_width="22dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="4dp"
+                            android:visibility="gone"
+                            app:srcCompat="@drawable/ic_star_full"
+                            app:tint="@color/surpriseActionAccent" />
+
+                        <ImageView
+                            android:id="@+id/img_surp_elem_star_3_off"
+                            android:layout_width="22dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="4dp"
+                            app:srcCompat="@drawable/ic_star_empty"
+                            app:tint="@color/surpriseActionAccent" />
+                    </LinearLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/show_owners"
+                        style="?attr/borderlessButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="5"
+                        android:text="@string/find"
+                        app:icon="@drawable/ic_search"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
         </LinearLayout>
 
@@ -215,7 +218,6 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:weightSum="100">
-
         </LinearLayout>
 
         <LinearLayout

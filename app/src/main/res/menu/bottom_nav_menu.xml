@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
     <item
         android:id="@+id/navigation_missing_list"
-        android:icon="@drawable/ic_missing"
+        android:icon="@drawable/ic_missings"
         android:title="@string/title_missing_list" />
 
     <item
         android:id="@+id/navigation_double_list"
-        android:icon="@drawable/ic_exchange"
+        android:icon="@drawable/ic_doubles"
         android:title="@string/title_double_list" />
 
     <item
-        android:id="@+id/navigation_catalog"
+        android:id="@+id/navigation_catalog_producer"
         android:icon="@drawable/ic_catalog"
         android:title="@string/title_catalog" />
+
+    <item
+        android:id="@+id/navigation_about_me"
+        android:icon="@drawable/ic_user"
+        android:title="@string/title_about_me"/>
 
 </menu>
