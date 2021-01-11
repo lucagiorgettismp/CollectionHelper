@@ -1,5 +1,5 @@
 package com.lucagiorgetti.surprix.ui.mainfragments.surpriseList;
 
 public enum SurpriseListType {
-    MISSINGS, DOUBLES
+    MISSINGS, DOUBLES, SEARCH
 }

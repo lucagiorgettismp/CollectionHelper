@@ -21,6 +21,7 @@ import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.model.Surprise;
 import com.lucagiorgetti.surprix.model.User;
+import com.lucagiorgetti.surprix.ui.mainfragments.surpriseList.SurpriseListType;
 import com.lucagiorgetti.surprix.ui.mainfragments.surpriseList.SurpriseRecyclerAdapter;
 import com.lucagiorgetti.surprix.utility.BaseFragment;
 
@@ -37,7 +38,7 @@ public class OtherForYouFragment extends BaseFragment {
         ProgressBar progress = root.findViewById(R.id.other_for_you_loading);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        SurpriseRecyclerAdapter adapter = new SurpriseRecyclerAdapter();
+        SurpriseRecyclerAdapter adapter = new SurpriseRecyclerAdapter(SurpriseListType.SEARCH);
         recyclerView.setAdapter(adapter);
 
         OtherForYouViewModel mViewModel = new ViewModelProvider(this).get(OtherForYouViewModel.class);
@@ -73,7 +74,7 @@ public class OtherForYouFragment extends BaseFragment {
         StringBuilder sb = new StringBuilder();
         sb.append("<ul>");
         for (Surprise surprise : surprises) {
-            sb.append(String.format(Locale.getDefault(), "<li>%s - %s<li>", surprise.getCode(), surprise.getDescription()));
+            sb.append(String.format(Locale.getDefault(), "<li>%s - %s</li>", surprise.getCode(), surprise.getDescription()));
         }
         sb.append("</ul>");
 

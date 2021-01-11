@@ -18,17 +18,17 @@ import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.model.Set;
 import com.lucagiorgetti.surprix.model.Surprise;
 import com.lucagiorgetti.surprix.ui.mainfragments.catalog.CatalogNavigationMode;
+import com.lucagiorgetti.surprix.ui.mainfragments.surpriseList.SurpriseListType;
+import com.lucagiorgetti.surprix.ui.mainfragments.surpriseList.SurpriseRecyclerAdapter;
 import com.lucagiorgetti.surprix.utility.BaseFragment;
 import com.lucagiorgetti.surprix.utility.RecyclerItemClickListener;
 import com.lucagiorgetti.surprix.utility.SystemUtils;
-
-import timber.log.Timber;
 
 public class SearchFragment extends BaseFragment {
 
     private SearchMode mode;
     private RecyclerView recyclerView;
-    private SearchSurpriseRecyclerAdapter searchSurpriseRecyclerAdapter;
+    private SurpriseRecyclerAdapter searchSurpriseRecyclerAdapter;
     private SearchSetRecyclerAdapter searchSetRecyclerAdapter;
     private SearchView searchView;
     private View root;
@@ -48,7 +48,7 @@ public class SearchFragment extends BaseFragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        searchSurpriseRecyclerAdapter = new SearchSurpriseRecyclerAdapter();
+        searchSurpriseRecyclerAdapter = new SurpriseRecyclerAdapter(SurpriseListType.SEARCH);
         searchSetRecyclerAdapter = new SearchSetRecyclerAdapter();
 
         switch (radioGroup.getCheckedRadioButtonId()) {
@@ -75,21 +75,11 @@ public class SearchFragment extends BaseFragment {
 
 
         searchViewModel.getSurprises().observe(getViewLifecycleOwner(), surprises -> {
-            for (Surprise s : surprises){
-                if (!s.getImg_path().startsWith("gs")){
-                    Timber.d("Path: " + s.getImg_path());
-                }
-            }
             searchSurpriseRecyclerAdapter.submitList(surprises);
             searchSurpriseRecyclerAdapter.setFilterableList(surprises);
         });
 
         searchViewModel.getSets().observe(getViewLifecycleOwner(), sets -> {
-            for (Set s : sets){
-                if (!s.getImg_path().startsWith("gs")){
-                    Timber.d("Path: " + s.getImg_path());
-                }
-            }
             searchSetRecyclerAdapter.submitList(sets);
             searchSetRecyclerAdapter.setFilterableList(sets);
         });

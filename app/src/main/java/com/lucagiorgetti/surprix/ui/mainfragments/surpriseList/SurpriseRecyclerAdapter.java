@@ -36,7 +36,7 @@ public class SurpriseRecyclerAdapter extends ListAdapter<Surprise, SurpriseRecyc
     private ChipFilters chipFilters = null;
     private SurpriseListType type = null;
 
-    public SurpriseRecyclerAdapter() {
+    private SurpriseRecyclerAdapter() {
         super(DIFF_CALLBACK);
     }
 
@@ -98,13 +98,19 @@ public class SurpriseRecyclerAdapter extends ListAdapter<Surprise, SurpriseRecyc
             case MISSINGS:
                 holder.vBtnOwners.setVisibility(View.VISIBLE);
                 holder.vBtnOwners.setOnClickListener(view -> ((MissingRecyclerAdapterListener) listener).onShowMissingOwnerClick(surp));
+                holder.delete.setVisibility(View.VISIBLE);
+                holder.delete.setOnClickListener(v -> listener.onSurpriseDelete(position));
                 break;
             case DOUBLES:
                 holder.vBtnOwners.setVisibility(View.GONE);
+                holder.delete.setVisibility(View.VISIBLE);
+                holder.delete.setOnClickListener(v -> listener.onSurpriseDelete(position));
+                break;
+            case SEARCH:
+                holder.delete.setVisibility(View.GONE);
+                holder.vBtnOwners.setVisibility(View.GONE);
                 break;
         }
-
-        holder.delete.setOnClickListener(v -> listener.onSurpriseDelete(position));
 
         Integer rarity = surp.getIntRarity();
         holder.vStar1On.setVisibility(View.GONE);

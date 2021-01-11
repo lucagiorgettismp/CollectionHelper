@@ -11,7 +11,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.listenerInterfaces.CallbackInterface;
 import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseListCallback;
-import com.lucagiorgetti.surprix.model.Missing;
 import com.lucagiorgetti.surprix.model.Set;
 import com.lucagiorgetti.surprix.model.Surprise;
 
@@ -22,11 +21,11 @@ import timber.log.Timber;
 
 public class MissingListDao {
 
-    private DatabaseReference missingRef;
-    private DatabaseReference userDoubles;
-    private DatabaseReference years;
-    private DatabaseReference sets;
-    private CollectionDao collectionDao;
+    private final DatabaseReference missingRef;
+    private final DatabaseReference userDoubles;
+    private final DatabaseReference years;
+    private final DatabaseReference sets;
+    private final CollectionDao collectionDao;
 
     public MissingListDao(String username) {
         missingRef = SurprixApplication.getInstance().getDatabaseReference().child("missings").child(username);
@@ -186,6 +185,7 @@ public class MissingListDao {
             }
         });
     }
+
     public void addMissing(String surpId) {
         SurpriseDao.getSurpriseById(new CallbackInterface<Surprise>() {
             @Override
@@ -349,13 +349,6 @@ public class MissingListDao {
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
-    }
-
-    public void setNote(String surpId, String notes, CallbackInterface<Boolean> listen) {
-        listen.onStart();
-        Missing missing = new Missing(surpId, notes);
-        missingRef.child(surpId).setValue(missing);
-        listen.onSuccess(true);
     }
 
     public void clearMissings() {
