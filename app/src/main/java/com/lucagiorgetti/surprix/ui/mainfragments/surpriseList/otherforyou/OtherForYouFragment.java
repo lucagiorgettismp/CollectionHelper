@@ -21,7 +21,7 @@ import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.model.Surprise;
 import com.lucagiorgetti.surprix.model.User;
-import com.lucagiorgetti.surprix.ui.mainfragments.doublelist.DoubleRecyclerAdapter;
+import com.lucagiorgetti.surprix.ui.mainfragments.surpriseList.doublelist.DoubleRecyclerAdapter;
 import com.lucagiorgetti.surprix.utility.BaseFragment;
 
 import java.util.List;

@@ -16,7 +16,6 @@ import com.lucagiorgetti.surprix.model.Set;
 import com.lucagiorgetti.surprix.model.Surprise;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import timber.log.Timber;
@@ -138,10 +137,73 @@ public class MissingListDao {
         });
     }
 
+    public static void fixDb3() {
+        SurprixApplication.getInstance().getDatabaseReference().child("user_doubles").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                String userId = snapshot.getKey();
+                for (DataSnapshot d : snapshot.getChildren()) {
+                    String surpriseId = d.getKey() != null ? d.getKey() : "";
+
+                    SurpriseDao.getSurpriseById(new CallbackInterface<Surprise>() {
+                        @Override
+                        public void onStart() {
+
+                        }
+
+                        @Override
+                        public void onSuccess(Surprise surprise) {
+                            SurprixApplication.getInstance().getDatabaseReference().child("user_doubles").child(userId).child(surpriseId).setValue(surprise.isSet_effective_code() ? surprise.getCode() : "ZZZ_" + surprise.getId());
+                            //collectionDao.addSetInCollection(surprise.getSet_producer_id(), surprise.getSet_year_id(), surprise.getSet_id());
+                        }
+
+                        @Override
+                        public void onFailure() {
+
+                        }
+                    }, surpriseId);
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
     public void addMissing(String surpId) {
-        Missing missing = new Missing(surpId);
-        missingRef.child(surpId).setValue(missing);
-        collectionDao.addMissingInCollectionSet(surpId);
+        SurpriseDao.getSurpriseById(new CallbackInterface<Surprise>() {
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onSuccess(Surprise surprise) {
+                missingRef.child(surpId).setValue(surprise.isSet_effective_code() ? surprise.getCode() : "ZZZ_" + surpId);
+                collectionDao.addMissingInCollectionSet(surpId);
+            }
+
+            @Override
+            public void onFailure() {
+
+            }
+        }, surpId);
     }
 
     public void removeMissing(String surpId) {
@@ -149,12 +211,11 @@ public class MissingListDao {
         collectionDao.removeMissingFromCollection(surpId);
     }
 
-    public void getMissingList(FirebaseListCallback<Surprise> listen) {
-        missingRef.addListenerForSingleValueEvent(new ValueEventListener() {
+    public void getMissingList(CallbackInterface<Surprise> listen) {
+        missingRef.orderByValue().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    List<Surprise> surprises = new ArrayList<>();
                     for (DataSnapshot d : dataSnapshot.getChildren()) {
                         String surpriseId = d.getKey() != null ? d.getKey() : "";
 
@@ -166,8 +227,7 @@ public class MissingListDao {
 
                             @Override
                             public void onSuccess(Surprise surprise) {
-                                surprises.add(surprise);
-                                listen.onSuccess(surprises);
+                                listen.onSuccess(surprise);
                             }
 
                             @Override
