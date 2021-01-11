@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/navigation_missing_list"
-        android:name="com.lucagiorgetti.surprix.ui.mainfragments.missinglist.MissingListFragment"
+        android:name="com.lucagiorgetti.surprix.ui.mainfragments.surpriseList.missinglist.MissingListFragment"
         tools:layout="@layout/fragment_missing_list" >
         <action
             android:id="@+id/action_navigation_missing_list_to_navigation_missing_owners"
@@ -15,7 +15,7 @@
 
     <fragment
         android:id="@+id/navigation_double_list"
-        android:name="com.lucagiorgetti.surprix.ui.mainfragments.doublelist.DoubleListFragment"
+        android:name="com.lucagiorgetti.surprix.ui.mainfragments.surpriseList.doublelist.DoubleListFragment"
         tools:layout="@layout/fragment_double_list" />
 
     <fragment
@@ -125,7 +125,7 @@
     </fragment>
     <fragment
         android:id="@+id/navigation_other_for_you"
-        android:name="com.lucagiorgetti.surprix.ui.mainfragments.otherforyou.OtherForYouFragment"
+        android:name="com.lucagiorgetti.surprix.ui.mainfragments.surpriseList.otherforyou.OtherForYouFragment"
         tools:layout="@layout/fragment_other_for_you">
         <argument
             android:name="ownerUsername"

@@ -1,4 +1,4 @@
-package com.lucagiorgetti.surprix.ui.mainfragments.doublelist;
+package com.lucagiorgetti.surprix.ui.mainfragments.surpriseList.doublelist;
 
 import android.app.Application;
 

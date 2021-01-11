@@ -1,4 +1,4 @@
-package com.lucagiorgetti.surprix.ui.mainfragments.missinglist;
+package com.lucagiorgetti.surprix.ui.mainfragments.surpriseList;
 
 import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.chip.Chip;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.model.Colors;
@@ -30,20 +29,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-/**
- * Adapter for showing a list of Surprises.
- * <p>
- * Created by Luca on 28/10/2017.
- */
-
-public class MissingRecyclerAdapter extends ListAdapter<Surprise, MissingRecyclerAdapter.SurpViewHolder> implements Filterable {
-    private SurpRecylerAdapterListener listener;
+public class SurpriseRecyclerAdapter extends ListAdapter<Surprise, SurpriseRecyclerAdapter.SurpViewHolder> implements Filterable {
+    private BaseSurpriseRecyclerAdapterListener listener;
     private List<Surprise> filterableList;
     List<Surprise> searchViewFilteredValues = new ArrayList<>();
     private ChipFilters chipFilters = null;
+    private SurpriseListType type = null;
 
-    MissingRecyclerAdapter() {
+    public SurpriseRecyclerAdapter() {
         super(DIFF_CALLBACK);
+    }
+
+    public SurpriseRecyclerAdapter(SurpriseListType type) {
+        this();
+        this.type = type;
     }
 
     private static final DiffUtil.ItemCallback<Surprise> DIFF_CALLBACK = new DiffUtil.ItemCallback<Surprise>() {
@@ -60,14 +59,14 @@ public class MissingRecyclerAdapter extends ListAdapter<Surprise, MissingRecycle
 
     @NonNull
     @Override
-    public SurpViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public SurpriseRecyclerAdapter.SurpViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.element_surprise_list, parent, false);
-        return new SurpViewHolder(v);
+        return new SurpriseRecyclerAdapter.SurpViewHolder(v);
     }
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(@NonNull SurpViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull SurpriseRecyclerAdapter.SurpViewHolder holder, int position) {
         Surprise surp = getItem(position);
         holder.vSetName.setText(surp.getSet_name());
 
@@ -93,11 +92,17 @@ public class MissingRecyclerAdapter extends ListAdapter<Surprise, MissingRecycle
         holder.vLayout.setBackgroundColor(ContextCompat.getColor(SurprixApplication.getSurprixContext(), Colors.getHexColor(surp.getSet_producer_color())));
 
         String path = surp.getImg_path();
-
         SystemUtils.loadImage(path, holder.vImage, R.drawable.ic_logo_shape_primary);
 
-        holder.vBtnOwners.setVisibility(View.VISIBLE);
-        holder.vBtnOwners.setOnClickListener(view -> listener.onShowMissingOwnerClick(surp));
+        switch (type) {
+            case MISSINGS:
+                holder.vBtnOwners.setVisibility(View.VISIBLE);
+                holder.vBtnOwners.setOnClickListener(view -> ((MissingRecyclerAdapterListener) listener).onShowMissingOwnerClick(surp));
+                break;
+            case DOUBLES:
+                holder.vBtnOwners.setVisibility(View.GONE);
+                break;
+        }
 
         holder.delete.setOnClickListener(v -> listener.onSurpriseDelete(position));
 
@@ -171,20 +176,20 @@ public class MissingRecyclerAdapter extends ListAdapter<Surprise, MissingRecycle
         }
     };
 
-    void setFilterableList(List<Surprise> missingList) {
+    public void setFilterableList(List<Surprise> missingList) {
         this.filterableList = missingList;
         this.searchViewFilteredValues = missingList;
     }
 
-    void removeFilterableItem(Surprise surprise) {
+    public void removeFilterableItem(Surprise surprise) {
         this.filterableList.remove(surprise);
     }
 
-    void addFilterableItem(Surprise surprise, int position) {
+    public void addFilterableItem(Surprise surprise, int position) {
         this.filterableList.add(position, surprise);
     }
 
-    void setListener(SurpRecylerAdapterListener listener) {
+    public void setListener(BaseSurpriseRecyclerAdapterListener listener) {
         this.listener = listener;
     }
 

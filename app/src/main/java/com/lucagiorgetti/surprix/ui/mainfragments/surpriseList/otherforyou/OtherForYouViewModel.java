@@ -1,4 +1,4 @@
-package com.lucagiorgetti.surprix.ui.mainfragments.otherforyou;
+package com.lucagiorgetti.surprix.ui.mainfragments.surpriseList.otherforyou;
 
 import android.app.Application;
 

@@ -1,4 +1,4 @@
-package com.lucagiorgetti.surprix.ui.mainfragments.otherforyou;
+package com.lucagiorgetti.surprix.ui.mainfragments.surpriseList.otherforyou;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -21,7 +21,7 @@ import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.model.Surprise;
 import com.lucagiorgetti.surprix.model.User;
-import com.lucagiorgetti.surprix.ui.mainfragments.doublelist.DoubleRecyclerAdapter;
+import com.lucagiorgetti.surprix.ui.mainfragments.surpriseList.SurpriseRecyclerAdapter;
 import com.lucagiorgetti.surprix.utility.BaseFragment;
 
 import java.util.List;
@@ -37,7 +37,7 @@ public class OtherForYouFragment extends BaseFragment {
         ProgressBar progress = root.findViewById(R.id.other_for_you_loading);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        DoubleRecyclerAdapter adapter = new DoubleRecyclerAdapter();
+        SurpriseRecyclerAdapter adapter = new SurpriseRecyclerAdapter();
         recyclerView.setAdapter(adapter);
 
         OtherForYouViewModel mViewModel = new ViewModelProvider(this).get(OtherForYouViewModel.class);
