@@ -16,13 +16,14 @@ import com.lucagiorgetti.surprix.utility.BaseFragment;
 public abstract class BaseSetDetailFragment extends BaseFragment {
     BaseSetDetailAdapter mAdapter;
     RecyclerView recyclerView;
-    ProgressBar progress;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_set_detail, container, false);
 
-        progress = root.findViewById(R.id.set_detail_loading);
+        ProgressBar progress = root.findViewById(R.id.set_detail_loading);
+        setProgressBar(progress);
+
         recyclerView = root.findViewById(R.id.set_detail_recycler);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());

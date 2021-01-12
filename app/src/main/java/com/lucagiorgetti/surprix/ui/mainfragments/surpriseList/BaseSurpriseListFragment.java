@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.lucagiorgetti.surprix.R;
@@ -28,13 +29,14 @@ public abstract class BaseSurpriseListFragment extends BaseFragment {
     public View root;
     public View emptyList;
     public ChipFilters chipFilters;
+    public SwipeRefreshLayout swipeRefreshLayout;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         if (root == null) {
-            root = inflater.inflate(R.layout.fragment_double_list, container, false);
+            root = inflater.inflate(R.layout.fragment_surprise_list, container, false);
         }
 
         emptyList = root.findViewById(R.id.double_empty_list);
@@ -44,6 +46,9 @@ public abstract class BaseSurpriseListFragment extends BaseFragment {
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
+
+        swipeRefreshLayout = root.findViewById(R.id.swipe_refresh);
+        swipeRefreshLayout.setOnRefreshListener(this::loadData);
 
         setupData();
 
@@ -65,6 +70,8 @@ public abstract class BaseSurpriseListFragment extends BaseFragment {
     public abstract void deleteSurprise(SurpriseRecyclerAdapter mAdapter, int position);
 
     public abstract void setupData();
+
+    public abstract void loadData();
 
     private void openBottomSheet() {
         if (chipFilters != null) {

@@ -68,7 +68,13 @@ public class CollectionProducerFragment extends BaseProducerFragment {
             mAdapter.notifyDataSetChanged();
         });
 
-        producerViewModel.isLoading().observe(getViewLifecycleOwner(), isLoading -> progress.setVisibility(isLoading ? View.VISIBLE : View.GONE));
+        producerViewModel.isLoading().observe(getViewLifecycleOwner(), isLoading -> {
+            if (isLoading) {
+                showLoading();
+            } else {
+                hideLoading();
+            }
+        });
 
         fab.setVisibility(View.GONE);
     }

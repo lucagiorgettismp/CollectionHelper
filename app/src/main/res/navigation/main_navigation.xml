@@ -16,7 +16,7 @@
     <fragment
         android:id="@+id/navigation_double_list"
         android:name="com.lucagiorgetti.surprix.ui.mainfragments.surpriseList.doublelist.DoubleListFragment"
-        tools:layout="@layout/fragment_double_list" />
+        tools:layout="@layout/fragment_surprise_list" />
 
     <fragment
         android:id="@+id/navigation_catalog_producer"

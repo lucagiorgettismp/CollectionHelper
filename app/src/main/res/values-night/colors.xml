@@ -32,6 +32,8 @@
 
     <color name="navbarItemSelected">@color/surprixOrange</color>
     <color name="navbarItem">@color/grey10</color>
+    <color name="navbarItemIconSelected">@color/grey10</color>
+
 
     <color name="empty_list_icon">@color/grey80</color>
 </resources>

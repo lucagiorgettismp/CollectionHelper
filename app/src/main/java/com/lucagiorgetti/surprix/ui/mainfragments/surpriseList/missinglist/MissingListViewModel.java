@@ -33,7 +33,7 @@ public class MissingListViewModel extends BaseViewModel {
     }
 
     void loadMissingSurprises() {
-        List<Surprise> asd = new ArrayList<>();
+        List<Surprise> surprises = new ArrayList<>();
         new MissingListDao(SurprixApplication.getInstance().getCurrentUser().getUsername()).getMissingList(new CallbackInterface<Surprise>() {
             @Override
             public void onStart() {
@@ -42,8 +42,8 @@ public class MissingListViewModel extends BaseViewModel {
 
             @Override
             public void onSuccess(Surprise missingSurprise) {
-                asd.add(missingSurprise);
-                allMissingSurprises.setValue(asd);
+                surprises.add(missingSurprise);
+                allMissingSurprises.setValue(surprises);
                 setLoading(false);
             }
 

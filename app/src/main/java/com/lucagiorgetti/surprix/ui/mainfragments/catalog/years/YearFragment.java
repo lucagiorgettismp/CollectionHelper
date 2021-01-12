@@ -53,7 +53,13 @@ public class YearFragment extends BaseYearFragment {
             mAdapter.notifyDataSetChanged();
         });
 
-        yearViewModel.isLoading().observe(getViewLifecycleOwner(), isLoading -> progress.setVisibility(isLoading ? View.VISIBLE : View.GONE));
+        yearViewModel.isLoading().observe(getViewLifecycleOwner(), isLoading -> {
+            if (isLoading) {
+                showLoading();
+            } else {
+                hideLoading();
+            }
+        });
     }
 
     private void onLongYearClicked(final String yearId, int year) {

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
@@ -51,6 +50,11 @@ public class SetListFragment extends BaseSetListFragment {
     }
 
     @Override
+    public void reloadData() {
+        setListViewModel.loadSets(yearId, producerId, navigationMode);
+    }
+
+    @Override
     public void setupView() {
         setListViewModel = new ViewModelProvider(this).get(SetListViewModel.class);
         setListViewModel.getSets(yearId, producerId, navigationMode).observe(getViewLifecycleOwner(), sets -> {
@@ -63,7 +67,14 @@ public class SetListFragment extends BaseSetListFragment {
             }
         });
 
-        setListViewModel.isLoading().observe(getViewLifecycleOwner(), isLoading -> progress.setVisibility(isLoading ? View.VISIBLE : View.GONE));
+        setListViewModel.isLoading().observe(getViewLifecycleOwner(), isLoading -> {
+            if (isLoading) {
+                showLoading();
+            } else {
+                hideLoading();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
     }
 
     @Override

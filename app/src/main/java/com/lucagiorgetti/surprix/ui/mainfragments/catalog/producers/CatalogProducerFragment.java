@@ -35,7 +35,13 @@ public class CatalogProducerFragment extends BaseProducerFragment {
             mAdapter.notifyDataSetChanged();
         });
 
-        producerViewModel.isLoading().observe(getViewLifecycleOwner(), isLoading -> progress.setVisibility(isLoading ? View.VISIBLE : View.GONE));
+        producerViewModel.isLoading().observe(getViewLifecycleOwner(), isLoading -> {
+            if (isLoading) {
+                showLoading();
+            } else {
+                hideLoading();
+            }
+        });
 
         fab.setOnClickListener(view -> Navigation.findNavController(view).navigate(CatalogProducerFragmentDirections.goToSearch()));
     }

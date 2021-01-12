@@ -40,8 +40,8 @@ public class SearchFragment extends BaseFragment {
         SearchViewModel searchViewModel = new ViewModelProvider(this).get(SearchViewModel.class);
         if (root == null) {
             root = inflater.inflate(R.layout.fragment_search, container, false);
-
         }
+
         RadioGroup radioGroup = root.findViewById(R.id.search_radio_group);
         recyclerView = root.findViewById(R.id.search_recycler_view);
         recyclerView.setHasFixedSize(true);

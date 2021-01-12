@@ -19,7 +19,6 @@ public abstract class BaseProducerFragment extends BaseFragment {
     ProducerRecyclerAdapter mAdapter;
     RecyclerView recyclerView;
     FloatingActionButton fab;
-    ProgressBar progress;
 
     @Nullable
     @Override
@@ -27,7 +26,9 @@ public abstract class BaseProducerFragment extends BaseFragment {
 
         View root = inflater.inflate(R.layout.fragment_catalog, container, false);
 
-        progress = root.findViewById(R.id.catalog_loading);
+        ProgressBar progress = root.findViewById(R.id.catalog_loading);
+        setProgressBar(progress);
+
         fab = root.findViewById(R.id.catalog_fab_search);
 
         recyclerView = root.findViewById(R.id.catalog_recycler);

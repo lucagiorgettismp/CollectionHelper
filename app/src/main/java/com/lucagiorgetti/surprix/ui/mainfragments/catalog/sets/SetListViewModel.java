@@ -32,7 +32,7 @@ public class SetListViewModel extends BaseViewModel {
         return allSets;
     }
 
-    private void loadSets(String yearId, String producerId, CatalogNavigationMode mode) {
+    void loadSets(String yearId, String producerId, CatalogNavigationMode mode) {
         if (mode.equals(CatalogNavigationMode.CATALOG)) {
             YearDao.getYearCatalogSets(yearId, new FirebaseListCallback<CatalogSet>() {
                 @Override

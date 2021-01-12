@@ -21,6 +21,7 @@ import com.lucagiorgetti.surprix.utility.dao.DoubleListDao;
 
 public class DoubleListFragment extends BaseSurpriseListFragment {
     private DoubleListDao doubleListDao;
+    private DoubleListViewModel doubleListViewModel;
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
@@ -99,7 +100,7 @@ public class DoubleListFragment extends BaseSurpriseListFragment {
 
         mAdapter.setListener(position -> deleteSurprise(mAdapter, position));
 
-        DoubleListViewModel doubleListViewModel = new ViewModelProvider(this).get(DoubleListViewModel.class);
+        doubleListViewModel = new ViewModelProvider(this).get(DoubleListViewModel.class);
 
         doubleListViewModel.getDoubleSurprises().observe(getViewLifecycleOwner(), doubleList -> {
             emptyList.setVisibility(doubleList == null || doubleList.isEmpty() ? View.VISIBLE : View.GONE);
@@ -119,12 +120,19 @@ public class DoubleListFragment extends BaseSurpriseListFragment {
         doubleListViewModel.isLoading().observe(getViewLifecycleOwner(), isLoading -> {
             if (isLoading) {
                 showLoading();
+                emptyList.setVisibility(View.GONE);
             } else {
                 hideLoading();
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
 
         setTitle(getString(R.string.doubles));
+    }
+
+    @Override
+    public void loadData() {
+        doubleListViewModel.loadDoubleSurprises();
     }
 }
 

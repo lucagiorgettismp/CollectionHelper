@@ -42,6 +42,7 @@
 
     <color name="navbarItemSelected">@color/surprixOrange</color>
     <color name="navbarItem">@color/surprixBlue</color>
+    <color name="navbarItemIconSelected">@color/white</color>
 
     <color name="dialogTextColor">@color/grey20</color>
 
@@ -86,6 +87,5 @@
 
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-
 </resources>
 
