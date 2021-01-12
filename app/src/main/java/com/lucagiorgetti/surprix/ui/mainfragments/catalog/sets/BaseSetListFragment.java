@@ -42,9 +42,11 @@ public abstract class BaseSetListFragment extends BaseFragment {
         return root;
     }
 
-    public abstract void reloadData();
+    //protected abstract void loadData();
 
-    public abstract void setupView();
+    protected abstract void reloadData();
 
-    public abstract SetRecyclerAdapter setAdapter();
+    protected abstract void setupView();
+
+    protected abstract SetRecyclerAdapter setAdapter();
 }
