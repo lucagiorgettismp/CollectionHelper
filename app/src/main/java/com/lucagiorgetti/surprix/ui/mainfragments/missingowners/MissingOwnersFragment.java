@@ -34,7 +34,10 @@ public class MissingOwnersFragment extends BaseFragment {
         setProgressBar(progress);
 
         SwipeRefreshLayout swipeRefreshLayout = root.findViewById(R.id.swipe_refresh);
-        swipeRefreshLayout.setOnRefreshListener(() -> mViewModel.getMissingOwners(surpriseId));
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            emptyList.setVisibility(View.GONE);
+            mViewModel.loadOwners(surpriseId);
+        });
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         MissingOwnersAdapter adapter = new MissingOwnersAdapter();

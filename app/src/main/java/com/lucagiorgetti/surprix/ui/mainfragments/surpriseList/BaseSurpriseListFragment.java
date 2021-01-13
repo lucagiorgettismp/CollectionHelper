@@ -48,7 +48,10 @@ public abstract class BaseSurpriseListFragment extends BaseFragment {
         recyclerView.setLayoutManager(layoutManager);
 
         swipeRefreshLayout = root.findViewById(R.id.swipe_refresh);
-        swipeRefreshLayout.setOnRefreshListener(this::loadData);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            emptyList.setVisibility(View.GONE);
+            loadData();
+        });
 
         setupData();
 

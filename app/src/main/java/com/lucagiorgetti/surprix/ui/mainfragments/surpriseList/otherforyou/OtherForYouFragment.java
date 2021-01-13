@@ -45,12 +45,11 @@ public class OtherForYouFragment extends BaseFragment {
         setProgressBar(progress);
 
         SwipeRefreshLayout swipeRefreshLayout = root.findViewById(R.id.swipe_refresh);
-        swipeRefreshLayout.setOnRefreshListener(() -> mViewModel.getOtherForYou(ownerUsername));
+        swipeRefreshLayout.setOnRefreshListener(() -> mViewModel.loadOtherForYou(ownerUsername));
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         SurpriseRecyclerAdapter adapter = new SurpriseRecyclerAdapter(SurpriseListType.SEARCH);
         recyclerView.setAdapter(adapter);
-
 
         FloatingActionButton fab = root.findViewById(R.id.other_for_you_fab_mail);
 
