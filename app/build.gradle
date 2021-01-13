@@ -52,6 +52,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:19.6.0'
     implementation 'com.google.firebase:firebase-storage:19.2.1'
     implementation 'com.google.firebase:firebase-messaging:21.0.1'
+    implementation 'com.google.firebase:firebase-config:20.0.2'
+
     implementation 'com.firebaseui:firebase-ui-storage:3.3.0'
 
     implementation 'com.google.firebase:firebase-crashlytics:17.3.0'

@@ -132,4 +132,8 @@
     <string name="producer">Produttore</string>
     <string name="reset_btn">Reset</string>
     <string name="set_completion">Completamento</string>
+    <string name="update_app_dialog_title">Surprix si aggiorna</string>
+    <string name="update_app_message">Per continuare a collezionare, ti chiediamo di aggiornare l\'app all\'ultima versione disponibile.</string>
+    <string name="btn_update">Aggiorna</string>
+    <string name="btn_no_thanks">No, grazie</string>
 </resources>
