@@ -163,7 +163,8 @@ public class SurpriseRecyclerAdapter extends ListAdapter<Surprise, SurpriseRecyc
                 String pattern = charSequence.toString().toLowerCase().trim();
                 for (Surprise surprise : filterableList) {
                     if (surprise.getCode().toLowerCase().contains(pattern)
-                            || surprise.getDescription().toLowerCase().contains(pattern)) {
+                            || surprise.getDescription().toLowerCase().contains(pattern)
+                            || surprise.getSet_name().toLowerCase().contains(pattern)) {
                         filteredValues.add(surprise);
                     }
                 }
