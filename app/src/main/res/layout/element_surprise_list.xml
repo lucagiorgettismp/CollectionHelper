@@ -60,8 +60,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Description"
-                        android:textColor="@color/cardTextColor"
-                        android:textSize="16sp"
+                        android:textColor="@color/titleColor"
+                        android:textSize="18sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -71,16 +71,10 @@
                         android:paddingStart="4dp"
                         android:paddingEnd="4dp"
                         android:text="X"
-                        android:textColor="@color/xColor"
-                        android:textSize="16sp"
+                        android:textColor="@color/titleColor"
+                        android:textSize="18sp"
                         android:textStyle="bold" />
                 </LinearLayout>
-
-                <View
-                    android:id="@+id/layout_surp_elem_titlebar"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/divider_height"
-                    android:background="@color/cardDivider" />
 
                 <LinearLayout
                     android:layout_width="match_parent"

@@ -74,7 +74,6 @@ public class SearchSetRecyclerAdapter extends ListAdapter<Set, SearchSetRecycler
         holder.vNation.setText(nation);
         holder.vProducer.setText(set.getProducer_name());
         holder.vYear.setText(set.getYear_desc());
-        holder.vLayout.setBackgroundColor(ContextCompat.getColor(ctx, Colors.getHexColor(set.getProducer_color())));
 
         String path = set.getImg_path();
         SystemUtils.loadImage(path, holder.vImage, R.drawable.ic_bpz_placeholder);
@@ -129,7 +128,6 @@ public class SearchSetRecyclerAdapter extends ListAdapter<Set, SearchSetRecycler
         TextView vProducer;
         TextView vYear;
         ImageView vImage;
-        View vLayout;
 
         SetViewHolder(View v) {
             super(v);
@@ -138,7 +136,6 @@ public class SearchSetRecyclerAdapter extends ListAdapter<Set, SearchSetRecycler
             vNation = v.findViewById(R.id.txv_set_elem_nation);
             vProducer = v.findViewById(R.id.txv_set_elem_producer);
             vYear = v.findViewById(R.id.txv_set_elem_year);
-            vLayout = v.findViewById(R.id.set_divider);
         }
     }
 }
