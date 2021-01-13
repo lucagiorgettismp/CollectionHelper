@@ -24,6 +24,7 @@ import com.google.android.gms.tasks.Task;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.listenerInterfaces.CallbackWithExceptionInterface;
+import com.lucagiorgetti.surprix.ui.activities.MainActivity;
 import com.lucagiorgetti.surprix.utility.BaseFragment;
 import com.lucagiorgetti.surprix.utility.LoginFlowHelper;
 import com.lucagiorgetti.surprix.utility.SystemUtils;
@@ -71,7 +72,8 @@ public class LoginHomeFragment extends BaseFragment {
                     @Override
                     public void onSuccess() {
                         hideLoading();
-                        getActivity().finish();
+                        SystemUtils.openNewActivityWithFinishing(getActivity(), MainActivity.class);
+                       // getActivity().finish();
                     }
 
                     @Override
@@ -119,7 +121,7 @@ public class LoginHomeFragment extends BaseFragment {
                     @Override
                     public void onSuccess() {
                         hideLoading();
-                        getActivity().finish();
+                        SystemUtils.openNewActivityWithFinishing(getActivity(), MainActivity.class);
                     }
 
                     @Override
@@ -139,7 +141,11 @@ public class LoginHomeFragment extends BaseFragment {
 
 
         } else {
-            callbackManager.onActivityResult(requestCode, resultCode, data);
+            try {
+                callbackManager.onActivityResult(requestCode, resultCode, data);
+            } catch (Exception e){
+                System.out.println(e.getLocalizedMessage());
+            }
         }
     }
 

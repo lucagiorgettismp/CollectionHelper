@@ -42,7 +42,9 @@ public class MissingListViewModel extends BaseViewModel {
 
             @Override
             public void onSuccess(Surprise missingSurprise) {
-                surprises.add(missingSurprise);
+                if (missingSurprise != null) {
+                    surprises.add(missingSurprise);
+                }
                 allMissingSurprises.setValue(surprises);
                 setLoading(false);
             }
