@@ -62,7 +62,8 @@
                         android:text="Description"
                         android:textColor="@color/titleColor"
                         android:textSize="18sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:lineSpacingMultiplier="0.7"/>
 
                     <TextView
                         android:id="@+id/delete"
@@ -72,7 +73,7 @@
                         android:paddingEnd="4dp"
                         android:text="X"
                         android:textColor="@color/titleColor"
-                        android:textSize="18sp"
+                        android:textSize="14sp"
                         android:textStyle="bold" />
                 </LinearLayout>
 
@@ -198,6 +199,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="5"
                         android:text="@string/find"
+                        app:iconTint="@color/surpriseActionAccent"
+                        android:textColor="@color/surpriseActionAccent"
                         app:icon="@drawable/ic_search"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent" />

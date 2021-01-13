@@ -34,6 +34,7 @@
     <color name="navbarItem">@color/grey10</color>
     <color name="navbarItemIconSelected">@color/grey10</color>
 
+    <color name="about_me_user_background">@color/grey10</color>
 
     <color name="empty_list_icon">@color/grey80</color>
 </resources>
