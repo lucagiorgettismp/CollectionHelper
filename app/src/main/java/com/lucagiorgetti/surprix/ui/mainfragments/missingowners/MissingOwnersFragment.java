@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.model.User;
@@ -22,10 +23,21 @@ public class MissingOwnersFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+
+        MissingOwnersViewModel mViewModel = new ViewModelProvider(this).get(MissingOwnersViewModel.class);
+        String surpriseId = MissingOwnersFragmentArgs.fromBundle(requireArguments()).getMissingSurpriseId();
+
         View root = inflater.inflate(R.layout.fragment_missing_owners, container, false);
         View emptyList = root.findViewById(R.id.missing_owner_empty_list);
         RecyclerView recyclerView = root.findViewById(R.id.missing_owner_recycler);
         ProgressBar progress = root.findViewById(R.id.missing_owner_loading);
+        setProgressBar(progress);
+
+        SwipeRefreshLayout swipeRefreshLayout = root.findViewById(R.id.swipe_refresh);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            emptyList.setVisibility(View.GONE);
+            mViewModel.loadOwners(surpriseId);
+        });
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         MissingOwnersAdapter adapter = new MissingOwnersAdapter();
@@ -33,8 +45,6 @@ public class MissingOwnersFragment extends BaseFragment {
 
         recyclerView.setAdapter(adapter);
 
-        MissingOwnersViewModel mViewModel = new ViewModelProvider(this).get(MissingOwnersViewModel.class);
-        String surpriseId = MissingOwnersFragmentArgs.fromBundle(requireArguments()).getMissingSurpriseId();
         mViewModel.getMissingOwners(surpriseId).observe(getViewLifecycleOwner(), owners -> {
             emptyList.setVisibility(owners == null || owners.isEmpty() ? View.VISIBLE : View.GONE);
             if (!owners.isEmpty()) {
@@ -43,7 +53,14 @@ public class MissingOwnersFragment extends BaseFragment {
             }
         });
 
-        mViewModel.isLoading().observe(getViewLifecycleOwner(), isLoading -> progress.setVisibility(isLoading ? View.VISIBLE : View.GONE));
+        mViewModel.isLoading().observe(getViewLifecycleOwner(), isLoading -> {
+            if (isLoading) {
+                showLoading();
+            } else {
+                hideLoading();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
         setTitle(getString(R.string.find_surprise));
         return root;

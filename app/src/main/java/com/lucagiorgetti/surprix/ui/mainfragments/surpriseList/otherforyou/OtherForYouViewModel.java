@@ -30,7 +30,7 @@ public class OtherForYouViewModel extends BaseViewModel {
         return otherForYou;
     }
 
-    private void loadOtherForYou(String username) {
+    void loadOtherForYou(String username) {
         new MissingListDao(SurprixApplication.getInstance().getCurrentUser().getUsername()).getMissingOwnerOtherSurprises(username, new FirebaseListCallback<Surprise>() {
             @Override
             public void onSuccess(List<Surprise> surprises) {

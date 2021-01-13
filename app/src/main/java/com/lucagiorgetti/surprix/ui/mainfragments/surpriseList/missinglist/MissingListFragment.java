@@ -24,6 +24,7 @@ import com.lucagiorgetti.surprix.utility.dao.MissingListDao;
 public class MissingListFragment extends BaseSurpriseListFragment {
 
     private MissingListDao missingListDao;
+    private MissingListViewModel missingListViewModel;
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
@@ -98,7 +99,7 @@ public class MissingListFragment extends BaseSurpriseListFragment {
     public void setupData() {
         missingListDao = new MissingListDao(SurprixApplication.getInstance().getCurrentUser().getUsername());
 
-        MissingListViewModel missingListViewModel = new ViewModelProvider(this).get(MissingListViewModel.class);
+        missingListViewModel = new ViewModelProvider(this).get(MissingListViewModel.class);
 
         mAdapter = new SurpriseRecyclerAdapter(SurpriseListType.MISSINGS);
 
@@ -132,12 +133,19 @@ public class MissingListFragment extends BaseSurpriseListFragment {
 
         missingListViewModel.isLoading().observe(getViewLifecycleOwner(), isLoading -> {
             if (isLoading) {
+                emptyList.setVisibility(View.GONE);
                 showLoading();
             } else {
                 hideLoading();
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
 
         setTitle(getString(R.string.missings));
+    }
+
+    @Override
+    public void loadData() {
+        missingListViewModel.loadMissingSurprises();
     }
 }

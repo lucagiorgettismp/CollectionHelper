@@ -32,7 +32,7 @@ public class MissingOwnersViewModel extends BaseViewModel {
         return missingOwners;
     }
 
-    private void loadOwners(String surpriseId) {
+    void loadOwners(String surpriseId) {
         new DoubleListDao(SurprixApplication.getInstance().getCurrentUser().getUsername()).getMissingOwners(surpriseId, new FirebaseListCallback<User>() {
             @Override
             public void onSuccess(List<User> users) {

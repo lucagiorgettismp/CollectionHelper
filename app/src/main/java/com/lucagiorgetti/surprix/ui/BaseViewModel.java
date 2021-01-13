@@ -7,7 +7,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
 public class BaseViewModel extends AndroidViewModel {
-    private MutableLiveData<Boolean> loading;
+    private final MutableLiveData<Boolean> loading;
 
     public BaseViewModel(@NonNull Application application) {
         super(application);

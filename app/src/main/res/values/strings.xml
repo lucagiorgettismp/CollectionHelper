@@ -150,6 +150,7 @@
     <string name="producer">Producer</string>
     <string name="reset_btn">Reset</string>
     <string name="set_completion">Set completion</string>
+    <string name="search_between">Search between:</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

@@ -3,28 +3,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".ui.mainfragments.catalog.search.SearchFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/cardBackground"
+        android:background="@color/toolbarColor"
         android:orientation="vertical"
-        android:padding="8dp">
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp">
 
-        <SearchView
+        <androidx.appcompat.widget.SearchView
             android:id="@+id/search_field"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:iconifiedByDefault="false" />
+            app:iconifiedByDefault="false" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Cerca tra:"
-            android:textColor="@color/cardTextColor"
+            android:text="@string/search_between"
+            android:textColor="@color/white"
             android:textSize="16sp" />
 
         <RadioGroup
@@ -39,7 +40,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/surprises"
-                android:textColor="@color/cardTextColor"
+                android:textColor="@color/white"
+                android:buttonTint="@color/radio_btn_white_tint"
                 android:textSize="16sp" />
 
             <RadioButton
@@ -48,7 +50,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:text="@string/sets"
-                android:textColor="@color/cardTextColor"
+                android:textColor="@color/white"
+                android:buttonTint="@color/radio_btn_white_tint"
                 android:textSize="16sp" />
         </RadioGroup>
 

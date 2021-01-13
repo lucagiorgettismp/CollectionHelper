@@ -89,8 +89,6 @@ public class SurpriseRecyclerAdapter extends ListAdapter<Surprise, SurpriseRecyc
 
         holder.vNation.setText(nation);
 
-        holder.vLayout.setBackgroundColor(ContextCompat.getColor(SurprixApplication.getSurprixContext(), Colors.getHexColor(surp.getSet_producer_color())));
-
         String path = surp.getImg_path();
         SystemUtils.loadImage(path, holder.vImage, R.drawable.ic_logo_shape_primary);
 
@@ -235,7 +233,6 @@ public class SurpriseRecyclerAdapter extends ListAdapter<Surprise, SurpriseRecyc
         ImageView vStar2Off;
         ImageView vStar3Off;
         Button vBtnOwners;
-        View vLayout;
 
         SurpViewHolder(View v) {
             super(v);
@@ -245,7 +242,6 @@ public class SurpriseRecyclerAdapter extends ListAdapter<Surprise, SurpriseRecyc
             vProducer = v.findViewById(R.id.txv_surp_elem_producer);
             vNation = v.findViewById(R.id.txv_surp_elem_nation);
             vImage = v.findViewById(R.id.img_surp_elem);
-            vLayout = v.findViewById(R.id.layout_surp_elem_titlebar);
             vStar1On = v.findViewById(R.id.img_surp_elem_star_1_on);
             vStar2On = v.findViewById(R.id.img_surp_elem_star_2_on);
             vStar3On = v.findViewById(R.id.img_surp_elem_star_3_on);

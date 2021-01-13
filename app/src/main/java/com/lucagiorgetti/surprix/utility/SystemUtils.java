@@ -4,14 +4,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
-import android.widget.SearchView;
 
+import androidx.appcompat.widget.SearchView;
 import androidx.preference.PreferenceManager;
 
 import com.bumptech.glide.Glide;
@@ -20,7 +21,6 @@ import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageException;
 import com.google.firebase.storage.StorageReference;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
@@ -198,9 +198,19 @@ public class SystemUtils {
     }
 
     public static void setSearchViewStyle(SearchView searchView) {
-        androidx.appcompat.widget.SearchView.SearchAutoComplete searchAutoComplete =
-                searchView.findViewById(R.id.search_src_text);
+        final SearchView.SearchAutoComplete searchAutoComplete = searchView.findViewById(R.id.search_src_text);
+        final ImageView mCloseButton = searchView.findViewById(androidx.appcompat.R.id.search_close_btn);
+        final ImageView mSearchButton = searchView.findViewById(androidx.appcompat.R.id.search_button);
+        final ImageView search_mag_icon = searchView.findViewById(androidx.appcompat.R.id.search_mag_icon);
+        final ImageView search_badge = searchView.findViewById(androidx.appcompat.R.id.search_go_btn);
+        final View zxc = searchView.findViewById(androidx.appcompat.R.id.search_plate);
+
         searchAutoComplete.setHintTextColor(SurprixApplication.getSurprixContext().getResources().getColor(R.color.white));
         searchAutoComplete.setTextColor(SurprixApplication.getSurprixContext().getResources().getColor(R.color.white));
+        search_mag_icon.setColorFilter(SurprixApplication.getSurprixContext().getResources().getColor(R.color.white));
+        search_badge.setColorFilter(SurprixApplication.getSurprixContext().getResources().getColor(R.color.white));
+        mCloseButton.setColorFilter(SurprixApplication.getSurprixContext().getResources().getColor(R.color.white));
+        mSearchButton.setColorFilter(SurprixApplication.getSurprixContext().getResources().getColor(R.color.white));
+        zxc.setBackgroundColor(Color.TRANSPARENT);
     }
 }

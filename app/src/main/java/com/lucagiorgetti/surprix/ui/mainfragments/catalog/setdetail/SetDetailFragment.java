@@ -1,7 +1,5 @@
 package com.lucagiorgetti.surprix.ui.mainfragments.catalog.setdetail;
 
-import android.view.View;
-
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -78,7 +76,13 @@ public class SetDetailFragment extends BaseSetDetailFragment {
             mAdapter.notifyDataSetChanged();
         });
 
-        setDetailViewModel.isLoading().observe(getViewLifecycleOwner(), isLoading -> progress.setVisibility(isLoading ? View.VISIBLE : View.GONE));
+        setDetailViewModel.isLoading().observe(getViewLifecycleOwner(), isLoading -> {
+            if (isLoading) {
+                showLoading();
+            } else {
+                hideLoading();
+            }
+        });
     }
 
     private void showAlertAddSetInCollection(String setName, Surprise surprise) {
@@ -92,9 +96,7 @@ public class SetDetailFragment extends BaseSetDetailFragment {
                     addSurpriseToMissingList(surprise);
                 });
         alertDialog.setButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE, getString(R.string.discard_btn),
-                (dialog, which) -> {
-                    alertDialog.dismiss();
-                });
+                (dialog, which) -> alertDialog.dismiss());
         alertDialog.show();
     }
 

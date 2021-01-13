@@ -26,13 +26,14 @@ public class SetListViewModel extends BaseViewModel {
     MutableLiveData<List<CatalogSet>> getSets(String yearId, String producerId, CatalogNavigationMode mode) {
         if (allSets == null) {
             allSets = new MutableLiveData<>();
-            loadSets(yearId, producerId, mode);
         }
+
+        loadSets(yearId, producerId, mode);
 
         return allSets;
     }
 
-    private void loadSets(String yearId, String producerId, CatalogNavigationMode mode) {
+    void loadSets(String yearId, String producerId, CatalogNavigationMode mode) {
         if (mode.equals(CatalogNavigationMode.CATALOG)) {
             YearDao.getYearCatalogSets(yearId, new FirebaseListCallback<CatalogSet>() {
                 @Override

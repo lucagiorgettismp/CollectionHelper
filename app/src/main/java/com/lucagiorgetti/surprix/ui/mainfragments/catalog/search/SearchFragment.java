@@ -5,10 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioGroup;
-import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -40,8 +40,8 @@ public class SearchFragment extends BaseFragment {
         SearchViewModel searchViewModel = new ViewModelProvider(this).get(SearchViewModel.class);
         if (root == null) {
             root = inflater.inflate(R.layout.fragment_search, container, false);
-
         }
+
         RadioGroup radioGroup = root.findViewById(R.id.search_radio_group);
         recyclerView = root.findViewById(R.id.search_recycler_view);
         recyclerView.setHasFixedSize(true);
@@ -85,6 +85,7 @@ public class SearchFragment extends BaseFragment {
         });
 
         searchView = root.findViewById(R.id.search_field);
+        SystemUtils.setSearchViewStyle(searchView);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {

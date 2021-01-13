@@ -42,6 +42,7 @@
 
     <color name="navbarItemSelected">@color/surprixOrange</color>
     <color name="navbarItem">@color/surprixBlue</color>
+    <color name="navbarItemIconSelected">@color/white</color>
 
     <color name="dialogTextColor">@color/grey20</color>
 
@@ -53,6 +54,8 @@
 
     <color name="miss_icon_tint">#f73b3b</color>
     <color name="check_icon_tint">#09c306</color>
+
+    <color name="about_me_user_background">@color/surprixBlue</color>
 
     <color name="facebookColor">#002f6c</color>
     <color name="GreySet">#bdbdbd</color>
@@ -86,6 +89,5 @@
 
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-
 </resources>
 

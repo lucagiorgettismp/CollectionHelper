@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.lucagiorgetti.surprix.R;
@@ -34,16 +35,21 @@ public class OtherForYouFragment extends BaseFragment {
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_other_for_you, container, false);
 
+        OtherForYouViewModel mViewModel = new ViewModelProvider(this).get(OtherForYouViewModel.class);
+        String ownerUsername = OtherForYouFragmentArgs.fromBundle(requireArguments()).getOwnerUsername();
+        String ownerEmail = OtherForYouFragmentArgs.fromBundle(requireArguments()).getOwnerEmail();
+
         RecyclerView recyclerView = root.findViewById(R.id.other_for_you_recycler);
+
         ProgressBar progress = root.findViewById(R.id.other_for_you_loading);
+        setProgressBar(progress);
+
+        SwipeRefreshLayout swipeRefreshLayout = root.findViewById(R.id.swipe_refresh);
+        swipeRefreshLayout.setOnRefreshListener(() -> mViewModel.loadOtherForYou(ownerUsername));
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         SurpriseRecyclerAdapter adapter = new SurpriseRecyclerAdapter(SurpriseListType.SEARCH);
         recyclerView.setAdapter(adapter);
-
-        OtherForYouViewModel mViewModel = new ViewModelProvider(this).get(OtherForYouViewModel.class);
-        String ownerUsername = OtherForYouFragmentArgs.fromBundle(requireArguments()).getOwnerUsername();
-        String ownerEmail = OtherForYouFragmentArgs.fromBundle(requireArguments()).getOwnerEmail();
 
         FloatingActionButton fab = root.findViewById(R.id.other_for_you_fab_mail);
 
@@ -52,15 +58,20 @@ public class OtherForYouFragment extends BaseFragment {
                 fab.setVisibility(View.VISIBLE);
                 adapter.submitList(surprises);
                 adapter.notifyDataSetChanged();
-                fab.setOnClickListener(v -> {
-                    sendEmailToUser(ownerEmail, surprises);
-                });
+                fab.setOnClickListener(v -> sendEmailToUser(ownerEmail, surprises));
             } else {
                 fab.setVisibility(View.GONE);
             }
         });
 
-        mViewModel.isLoading().observe(getViewLifecycleOwner(), isLoading -> progress.setVisibility(isLoading ? View.VISIBLE : View.GONE));
+        mViewModel.isLoading().observe(getViewLifecycleOwner(), isLoading -> {
+            if (isLoading) {
+                showLoading();
+            } else {
+                hideLoading();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
         setTitle(String.format(Locale.getDefault(), getString(R.string.other_for_you_title), ownerUsername));
         return root;
@@ -68,7 +79,6 @@ public class OtherForYouFragment extends BaseFragment {
 
     private void sendEmailToUser(String ownerEmail, List<Surprise> surprises) {
         User currentUser = SurprixApplication.getInstance().getCurrentUser();
-        String to = ownerEmail;
         String subject = SurprixApplication.getInstance().getString(R.string.mail_subject, currentUser.getUsername());
 
         StringBuilder sb = new StringBuilder();
@@ -87,7 +97,7 @@ public class OtherForYouFragment extends BaseFragment {
             body = Html.fromHtml(html);
         }
 
-        sendMail(to, subject, body);
+        sendMail(ownerEmail, subject, body);
     }
 
     private void sendMail(String recipient, String subject, Spanned html_body) {

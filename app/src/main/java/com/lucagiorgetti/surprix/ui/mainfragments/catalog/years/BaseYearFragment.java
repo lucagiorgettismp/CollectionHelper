@@ -15,7 +15,6 @@ import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.utility.BaseFragment;
 
 public abstract class BaseYearFragment extends BaseFragment {
-    ProgressBar progress;
     RecyclerView recyclerView;
     YearRecyclerAdapter mAdapter;
 
@@ -24,7 +23,9 @@ public abstract class BaseYearFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_years, container, false);
-        progress = root.findViewById(R.id.year_loading);
+        ProgressBar progress = root.findViewById(R.id.year_loading);
+        setProgressBar(progress);
+
         recyclerView = root.findViewById(R.id.year_recycler);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
