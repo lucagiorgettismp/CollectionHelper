@@ -37,9 +37,7 @@ import timber.log.Timber;
  * Created by Luca on 13/11/2017.
  */
 public class SystemUtils {
-    private static final String FIRST_TIME_YEAR_HELP_SHOW = "showYearHelp";
-    private static final String FIRST_TIME_SET_HELP_SHOW = "showSetHelp";
-    private static final String PRIVACY_POLICY_ACCEPTED = "privacyPolicyAccepted";
+    private static final String SET_HINT_DISPLAYED = "setHintDisplayed";
     private static final String THEME_DARK_SELECTED = "darkThemeSelected";
 
     public static boolean checkNetworkAvailability() {
@@ -92,9 +90,16 @@ public class SystemUtils {
 
     public static void firstTimeOpeningApp() {
         Context applicationContext = SurprixApplication.getSurprixContext();
-        SharedPreferences.Editor edit = PreferenceManager.getDefaultSharedPreferences(applicationContext).edit();
-        edit.putBoolean(FIRST_TIME_SET_HELP_SHOW, true);
-        edit.putBoolean(FIRST_TIME_YEAR_HELP_SHOW, true);
+        setSetHintDisplayed(false);
+    }
+
+    public static boolean isSetHintDisplayed() {
+        return PreferenceManager.getDefaultSharedPreferences(SurprixApplication.getSurprixContext()).getBoolean(SET_HINT_DISPLAYED, true);
+    }
+
+    public static void setSetHintDisplayed(boolean displayed) {
+        SharedPreferences.Editor edit = PreferenceManager.getDefaultSharedPreferences(SurprixApplication.getSurprixContext()).edit();
+        edit.putBoolean(SET_HINT_DISPLAYED, displayed);
         edit.apply();
     }
 
@@ -170,12 +175,6 @@ public class SystemUtils {
         SystemUtils.removeSessionUser();
         FirebaseAuth.getInstance().signOut();
         LoginManager.getInstance().logOut();
-    }
-
-    public static void setPrivacyPolicyAccepted(boolean accepted) {
-        SharedPreferences.Editor edit = PreferenceManager.getDefaultSharedPreferences(SurprixApplication.getSurprixContext()).edit();
-        edit.putBoolean(PRIVACY_POLICY_ACCEPTED, accepted);
-        edit.apply();
     }
 
     public static void loadImage(String path, ImageView vImage, int placeHolder) {

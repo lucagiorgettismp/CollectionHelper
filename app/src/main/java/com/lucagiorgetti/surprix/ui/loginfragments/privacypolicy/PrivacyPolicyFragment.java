@@ -15,7 +15,6 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.lucagiorgetti.surprix.R;
-import com.lucagiorgetti.surprix.utility.SystemUtils;
 
 public class PrivacyPolicyFragment extends Fragment {
     private String email;
@@ -47,12 +46,10 @@ public class PrivacyPolicyFragment extends Fragment {
         }
 
         accept.setOnClickListener(view -> {
-            SystemUtils.setPrivacyPolicyAccepted(true);
             Navigation.findNavController(view).navigate(PrivacyPolicyFragmentDirections.actionNavigationLoginPrivacyToNavigationLoginSignup(email, fromFacebook));
         });
 
         refuse.setOnClickListener(view -> {
-            SystemUtils.setPrivacyPolicyAccepted(true);
             Navigation.findNavController(view).popBackStack();
         });
 

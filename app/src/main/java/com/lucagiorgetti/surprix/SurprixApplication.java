@@ -7,9 +7,15 @@ import androidx.appcompat.app.AppCompatDelegate;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.google.firebase.storage.FirebaseStorage;
 import com.lucagiorgetti.surprix.model.User;
+import com.lucagiorgetti.surprix.utility.ForceUpdateChecker;
 import com.lucagiorgetti.surprix.utility.SystemUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import timber.log.Timber;
 
@@ -21,6 +27,8 @@ public class SurprixApplication extends Application {
     private FirebaseStorage firebaseStorage;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
+    private FirebaseRemoteConfig firebaseRemoteConfig;
+
     private static SurprixApplication mInstance;
     private User currentUser;
 
@@ -38,7 +46,7 @@ public class SurprixApplication extends Application {
         mInstance = this;
         boolean dark = SystemUtils.getDarkThemePreference();
         AppCompatDelegate.setDefaultNightMode(dark ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
-        if(BuildConfig.DEBUG){
+        if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
         }
     }
@@ -61,13 +69,39 @@ public class SurprixApplication extends Application {
     synchronized public DatabaseReference getDatabaseReference() {
         if (firebaseDatabase == null) {
             firebaseDatabase = FirebaseDatabase.getInstance();
-            //firebaseDatabase.setPersistenceEnabled(true);
         }
         if (databaseReference == null) {
             databaseReference = firebaseDatabase.getReference();
-            //databaseReference.keepSynced(true);
         }
 
         return databaseReference;
+    }
+
+    synchronized public FirebaseRemoteConfig getFirebaseRemoteConfig() {
+        if (firebaseRemoteConfig == null) {
+
+            firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+
+            Map<String, Object> remoteConfigDefaults = new HashMap();
+            remoteConfigDefaults.put(ForceUpdateChecker.KEY_UPDATE_REQUIRED, false);
+            remoteConfigDefaults.put(ForceUpdateChecker.KEY_CURRENT_VERSION, "1.0.0");
+            remoteConfigDefaults.put(ForceUpdateChecker.KEY_UPDATE_URL,
+                    "https://play.google.com/store/apps/details?id=com.lucagiorgetti.surprix");
+
+            FirebaseRemoteConfigSettings settings = new FirebaseRemoteConfigSettings.Builder()
+                    .setMinimumFetchIntervalInSeconds(60)
+                    .build();
+
+            firebaseRemoteConfig.setConfigSettingsAsync(settings);
+            firebaseRemoteConfig.setDefaultsAsync(remoteConfigDefaults);
+
+            firebaseRemoteConfig.fetchAndActivate() // fetch every minutes
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Timber.d("remote config is fetched.");
+                        }
+                    });
+        }
+        return firebaseRemoteConfig;
     }
 }
