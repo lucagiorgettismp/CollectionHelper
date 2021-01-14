@@ -155,6 +155,9 @@
     <string name="update_app_message">Please, update app to new version to continue collecting.</string>
     <string name="btn_update">Update</string>
     <string name="btn_no_thanks">No, thanks</string>
+    <string name="set_hint_dialog_title">Just a tip</string>
+    <string name="set_hint_dialog_message">To easily create your missing list, keep a set pressed: you will add all of its surprises to your missing list!</string>
+    <string name="btn_ok_thanks">Ok, thanks</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

@@ -57,9 +57,9 @@ public class SetListFragment extends BaseSetListFragment {
 
     private void showHintAlert() {
         androidx.appcompat.app.AlertDialog dialog = new androidx.appcompat.app.AlertDialog.Builder(getContext())
-                .setTitle("Hint")
-                .setMessage("To easily create your missing list, add the set to your collection and keep the set pressed. You will add all of its surprises to your missing list!")
-                .setPositiveButton("Ok. thanks", (dialog1, which) -> {
+                .setTitle(R.string.set_hint_dialog_title)
+                .setMessage(R.string.set_hint_dialog_message)
+                .setPositiveButton(R.string.btn_ok_thanks, (dialog1, which) -> {
                     SystemUtils.setSetHintDisplayed(true);
                     dialog1.dismiss();
                 })

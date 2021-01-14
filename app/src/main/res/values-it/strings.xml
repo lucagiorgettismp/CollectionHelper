@@ -137,4 +137,7 @@
     <string name="update_app_message">Per continuare a collezionare, ti chiediamo di aggiornare l\'app all\'ultima versione disponibile.</string>
     <string name="btn_update">Aggiorna</string>
     <string name="btn_no_thanks">No, grazie</string>
+    <string name="set_hint_dialog_title">Un suggerimento</string>
+    <string name="set_hint_dialog_message">Per creare più velocemente la lista dei mancanti, tieni premuta una serie: tutte le sue sorpresine saranno aggiune alla tua lista dei mancanti!</string>
+    <string name="btn_ok_thanks">Ok, grazie</string>
 </resources>
