@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.model.Set;
@@ -184,7 +185,7 @@ public class SetListFragment extends BaseSetListFragment {
             }
 
             @Override
-            public boolean onSetLongClicked(Set set, boolean inCollection) {
+            public boolean onSetLongClicked(Set set, SwitchMaterial inCollection) {
                 onLongSetClicked(set, inCollection);
                 return true;
             }
@@ -210,18 +211,16 @@ public class SetListFragment extends BaseSetListFragment {
         alertDialog.show();
     }
 
-    private void onLongSetClicked(Set set, boolean inCollection) {
+    private void onLongSetClicked(Set set, SwitchMaterial inCollection) {
         final AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
         alertDialog.setTitle(getString(R.string.dialog_add_set_title));
         alertDialog.setMessage(getString(R.string.dialog_add_set_text) + " " + set.getName() + "?");
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.dialog_positive),
                 (dialog, which) -> {
                     new MissingListDao(SurprixApplication.getInstance().getCurrentUser().getUsername()).addMissingsBySet(set.getId());
-
-                    if (!inCollection) {
-                        setListViewModel.loadSets(yearId, producerId, navigationMode);
-                    }
+                    inCollection.setChecked(true);
                     alertDialog.dismiss();
+                    Snackbar.make(getView(), SurprixApplication.getInstance().getString(R.string.added_to_missings), Snackbar.LENGTH_SHORT).show();
                 });
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.discard_btn),
                 (dialog, which) -> alertDialog.dismiss());
@@ -233,7 +232,7 @@ public class SetListFragment extends BaseSetListFragment {
 
         void onSetClicked(Set set);
 
-        boolean onSetLongClicked(Set set, boolean inCollection);
+        boolean onSetLongClicked(Set set, SwitchMaterial inCollection);
     }
 
 }

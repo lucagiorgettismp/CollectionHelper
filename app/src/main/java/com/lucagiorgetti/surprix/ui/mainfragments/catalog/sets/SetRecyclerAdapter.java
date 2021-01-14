@@ -102,7 +102,7 @@ public class SetRecyclerAdapter extends ListAdapter<CatalogSet, SetRecyclerAdapt
             boolean inCollection = getItem(position).isInCollection();
             holder.myCollectionSwitch.setChecked(inCollection);
 
-            View.OnLongClickListener onLongClick = v -> listener.onSetLongClicked(set, holder.myCollectionSwitch.isChecked());
+            View.OnLongClickListener onLongClick = v -> listener.onSetLongClicked(set, holder.myCollectionSwitch);
 
             holder.vImage.setOnLongClickListener(onLongClick);
             holder.clickableZone.setOnLongClickListener(onLongClick);
