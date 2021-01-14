@@ -140,4 +140,6 @@
     <string name="set_hint_dialog_title">Un suggerimento</string>
     <string name="set_hint_dialog_message">Per creare più velocemente la lista dei mancanti, tieni premuta una serie: tutte le sue sorpresine saranno aggiune alla tua lista dei mancanti!</string>
     <string name="btn_ok_thanks">Ok, grazie</string>
+    <string name="collection_producer_empty">Al momento non ci sono serie nella tua collezione. Puoi aggiungerle dal catalogo!</string>
+    <string name="catalog_producers_empty">Ancora non ci sono produttori. Controlla tra un po\'!</string>
 </resources>

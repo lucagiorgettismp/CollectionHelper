@@ -71,7 +71,7 @@ public class ChipFilters {
     }
 
     public void clearSelection() {
-        for (FilterType type : FilterType.values()) {
+        for (FilterType type : FilterType.getValues(FilterSelectableType.SURPRISE)) {
             for (ChipFilter chipFilter : filters.get(type).values()) {
                 chipFilter.setSelected(true);
             }
@@ -79,3 +79,4 @@ public class ChipFilters {
     }
 
 }
+

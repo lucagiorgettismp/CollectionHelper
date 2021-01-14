@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +20,8 @@ public abstract class BaseProducerFragment extends BaseFragment {
     ProducerRecyclerAdapter mAdapter;
     RecyclerView recyclerView;
     FloatingActionButton fab;
+    View emptyList;
+    TextView emptyListText;
 
     @Nullable
     @Override
@@ -30,6 +33,9 @@ public abstract class BaseProducerFragment extends BaseFragment {
         setProgressBar(progress);
 
         fab = root.findViewById(R.id.catalog_fab_search);
+
+        emptyList = root.findViewById(R.id.empty_list);
+        emptyListText = root.findViewById(R.id.empty_list_text);
 
         recyclerView = root.findViewById(R.id.catalog_recycler);
         recyclerView.setHasFixedSize(true);

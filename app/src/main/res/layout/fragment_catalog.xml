@@ -27,6 +27,34 @@
             android:layout_gravity="center_horizontal|center"
             android:visibility="gone" />
 
+        <LinearLayout
+            android:id="@+id/empty_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="130dp"
+            android:layout_marginRight="20dp"
+            android:gravity="center_vertical|center_horizontal"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:cropToPadding="false"
+                android:scaleType="fitCenter"
+                app:tint="@color/empty_list_icon"
+                app:srcCompat="@drawable/ic_catalog" />
+
+            <TextView
+                android:id="@+id/empty_list_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/catalog_producers_empty"
+                android:textAlignment="center"
+                android:textSize="18sp" />
+        </LinearLayout>
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/catalog_fab_search"
             android:layout_width="wrap_content"

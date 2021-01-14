@@ -20,7 +20,7 @@
 
         <ImageView
             android:id="@+id/imgSet"
-            android:layout_width="377dp"
+            android:layout_width="match_parent"
             android:layout_height="120dp"
             android:adjustViewBounds="true"
             android:contentDescription="@string/set_image"

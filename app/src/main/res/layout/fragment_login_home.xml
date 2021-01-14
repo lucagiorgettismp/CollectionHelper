@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/loginBackground"
-    android:gravity="center_vertical"
+    android:gravity="center_vertical|center_horizontal"
     android:orientation="vertical"
     android:padding="10dp"
     android:weightSum="1">
@@ -18,39 +18,47 @@
         app:tint="@color/logo"
         app:srcCompat="@drawable/ic_logo" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_sign_up"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:backgroundTint="@color/loginSignUp"
-        android:text="@string/sign_up"
-        android:textColor="@color/loginSignUpText"/>
+        android:minWidth="300dp"
+        android:orientation="vertical">
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_sign_up"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:backgroundTint="@color/loginSignUp"
+            android:text="@string/sign_up"
+            android:textColor="@color/loginSignUpText"/>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_sign_in"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:backgroundTint="@color/loginSignIn"
-        android:text="@string/login"
-        android:textColor="@android:color/background_light"/>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_sign_in"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:backgroundTint="@color/loginSignIn"
+            android:text="@string/login"
+            android:textColor="@android:color/background_light"/>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_start_facebook"
-        app:icon="@drawable/ic_facebook"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:backgroundTint="@color/loginFacebook"
-        android:text="@string/login_with_facebook"
-        android:textColor="@android:color/background_light"/>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_start_facebook"
+            app:icon="@drawable/ic_facebook"
+            app:iconTint="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:backgroundTint="@color/loginFacebook"
+            android:text="@string/login_with_facebook"
+            android:textColor="@android:color/background_light"/>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_google_login"
-        app:icon="@drawable/ic_google"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:backgroundTint="@color/surprixOrange"
-        android:text="Login with Google"
-        android:textColor="@android:color/background_light"/>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_google_login"
+            app:icon="@drawable/ic_google"
+            app:iconTint="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:backgroundTint="@color/surprixOrange"
+            android:text="Login with Google"
+            android:textColor="@android:color/background_light"/>
+    </LinearLayout>
 
     <ProgressBar
         android:id="@+id/login_loading"

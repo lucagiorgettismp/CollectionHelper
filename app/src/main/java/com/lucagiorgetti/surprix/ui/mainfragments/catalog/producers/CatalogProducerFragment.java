@@ -5,6 +5,7 @@ import android.view.View;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.model.Producer;
 import com.lucagiorgetti.surprix.ui.mainfragments.catalog.CatalogNavigationMode;
 import com.lucagiorgetti.surprix.utility.RecyclerItemClickListener;
@@ -31,12 +32,14 @@ public class CatalogProducerFragment extends BaseProducerFragment {
         );
 
         producerViewModel.getProducers(CatalogNavigationMode.CATALOG).observe(getViewLifecycleOwner(), producers -> {
+            emptyList.setVisibility(producers == null || producers.isEmpty() ? View.VISIBLE : View.GONE);
             mAdapter.setYears(producers);
             mAdapter.notifyDataSetChanged();
         });
 
         producerViewModel.isLoading().observe(getViewLifecycleOwner(), isLoading -> {
             if (isLoading) {
+                emptyList.setVisibility(View.GONE);
                 showLoading();
             } else {
                 hideLoading();

@@ -158,6 +158,8 @@
     <string name="set_hint_dialog_title">Just a tip</string>
     <string name="set_hint_dialog_message">To easily create your missing list, keep a set pressed: you will add all of its surprises to your missing list!</string>
     <string name="btn_ok_thanks">Ok, thanks</string>
+    <string name="collection_producer_empty">There isn\'t any set in your collection. You can add them from catalog.</string>
+    <string name="catalog_producers_empty">Still no producer available. Please check later.</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

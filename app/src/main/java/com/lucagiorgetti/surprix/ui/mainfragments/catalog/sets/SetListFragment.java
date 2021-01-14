@@ -28,6 +28,7 @@ import com.lucagiorgetti.surprix.utility.dao.MissingListDao;
 public class SetListFragment extends BaseSetListFragment {
     CatalogNavigationMode navigationMode;
     String yearId;
+    String yearName;
     String producerId;
     CollectionDao collectionDao;
     MissingListDao missingListDao;
@@ -43,9 +44,8 @@ public class SetListFragment extends BaseSetListFragment {
         if (getArguments() != null) {
             yearId = SetListFragmentArgs.fromBundle(getArguments()).getYearId();
             producerId = SetListFragmentArgs.fromBundle(getArguments()).getProducerId();
-            String yearName = SetListFragmentArgs.fromBundle(getArguments()).getYearName();
+            yearName = SetListFragmentArgs.fromBundle(getArguments()).getYearName();
             navigationMode = SetListFragmentArgs.fromBundle(getArguments()).getNavigationMode();
-            setTitle(yearName);
 
             if (navigationMode.equals(CatalogNavigationMode.CATALOG) && !SystemUtils.isSetHintDisplayed()) {
                 showHintAlert();
@@ -76,6 +76,8 @@ public class SetListFragment extends BaseSetListFragment {
 
     @Override
     public void setupView() {
+        setTitle(yearName);
+
         setListViewModel = new ViewModelProvider(this).get(SetListViewModel.class);
         setListViewModel.getSets(yearId, producerId, navigationMode).observe(getViewLifecycleOwner(), sets -> {
             mAdapter.submitList(sets);
