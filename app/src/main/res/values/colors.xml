@@ -57,6 +57,8 @@
 
     <color name="about_me_user_background">@color/surprixBlue</color>
 
+    <color name="bottomsheet_background">@color/white</color>
+
     <color name="facebookColor">#002f6c</color>
     <color name="GreySet">#bdbdbd</color>
     <color name="DarkGreySet">#a4a4a4</color>

@@ -36,6 +36,9 @@
 
     <color name="about_me_user_background">@color/grey10</color>
 
+    <color name="bottomsheet_background">@color/grey10</color>
+
+
     <color name="empty_list_icon">@color/grey80</color>
 </resources>
 

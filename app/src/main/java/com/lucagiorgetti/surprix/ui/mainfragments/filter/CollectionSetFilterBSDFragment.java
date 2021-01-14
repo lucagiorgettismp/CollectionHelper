@@ -31,7 +31,7 @@ public class CollectionSetFilterBSDFragment extends BottomSheetDialogFragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.collection_set_bottom_sheet, container,
+        View view = inflater.inflate(R.layout.bottom_sheet_collection_set, container,
                 false);
 
         Button resetFilters = view.findViewById(R.id.filter_reset);

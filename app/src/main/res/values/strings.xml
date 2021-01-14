@@ -134,7 +134,7 @@
     <string name="asia">Asia</string>
     <string name="africa">Africa</string>
     <string name="australia">Australia</string>
-    <string name="everywhere">Ovunque</string>
+    <string name="everywhere">World wide</string>
     <string name="add_in_collection_title">Add in collection</string>
     <string name="add_in_collection_message">If you want to add %s to your missing list, you must add the set %s in your collection</string>
     <string name="add_btn">Add</string>
