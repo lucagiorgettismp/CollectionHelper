@@ -151,6 +151,10 @@
     <string name="reset_btn">Reset</string>
     <string name="set_completion">Set completion</string>
     <string name="search_between">Search between:</string>
+    <string name="update_app_dialog_title">Surprix updates</string>
+    <string name="update_app_message">Please, update app to new version to continue collecting.</string>
+    <string name="btn_update">Update</string>
+    <string name="btn_no_thanks">No, thanks</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 </resources>
