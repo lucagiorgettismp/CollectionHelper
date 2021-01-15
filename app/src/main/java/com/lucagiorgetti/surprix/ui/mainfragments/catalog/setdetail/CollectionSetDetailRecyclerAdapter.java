@@ -51,7 +51,6 @@ public class CollectionSetDetailRecyclerAdapter extends BaseSetDetailAdapter<Col
         } else {
             holder.vDescription.setText(s.getDescription());
         }
-        holder.vLayout.setBackgroundColor(ContextCompat.getColor(ctx, Colors.getHexColor(s.getSet_producer_color())));
 
         String path = s.getImg_path();
         SystemUtils.loadImage(path, holder.vImage, R.drawable.ic_logo_shape_primary);
@@ -108,7 +107,6 @@ public class CollectionSetDetailRecyclerAdapter extends BaseSetDetailAdapter<Col
     }
 
     static class SetDetailViewHolder extends RecyclerView.ViewHolder {
-        View vLayout;
         TextView vDescription;
         ImageView vImage;
         ImageView vStar1On;
@@ -120,11 +118,9 @@ public class CollectionSetDetailRecyclerAdapter extends BaseSetDetailAdapter<Col
         ImageView miss;
         ImageView check;
 
-
         SetDetailViewHolder(View v) {
             super(v);
 
-            vLayout = v.findViewById(R.id.layout_item_titlebar);
             vDescription = v.findViewById(R.id.txv_item_desc);
             vImage = v.findViewById(R.id.img_item);
             vStar1On = v.findViewById(R.id.img_item_star_1_on);

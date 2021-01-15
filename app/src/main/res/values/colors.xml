@@ -48,8 +48,6 @@
 
     <color name="hintTextColor">@color/grey20</color>
 
-    <color name="xColor">@color/grey50</color>
-
     <color name="empty_list_icon">@color/surprixBlueVariant</color>
 
     <color name="miss_icon_tint">#f73b3b</color>
@@ -84,7 +82,6 @@
     <color name="DarkBrownSet">#b93912</color>
 
     <color name="grey80">#cccccc</color>
-    <color name="grey50">#808080</color>
     <color name="grey30">#4d4d4d</color>
     <color name="grey20">#333333</color>
     <color name="grey10">#1a1a1a</color>

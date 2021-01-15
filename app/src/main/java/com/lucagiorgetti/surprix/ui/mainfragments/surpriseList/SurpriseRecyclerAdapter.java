@@ -11,14 +11,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lucagiorgetti.surprix.R;
-import com.lucagiorgetti.surprix.SurprixApplication;
-import com.lucagiorgetti.surprix.model.Colors;
 import com.lucagiorgetti.surprix.model.ExtraLocales;
 import com.lucagiorgetti.surprix.model.Surprise;
 import com.lucagiorgetti.surprix.ui.mainfragments.filter.ChipFilters;

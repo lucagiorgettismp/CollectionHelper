@@ -62,10 +62,6 @@ public class ChipFilters {
         return filters.get(type);
     }
 
-    public boolean isSelected(FilterType type, String value) {
-        return filters.get(type).get(value).isSelected();
-    }
-
     public void setFilterSelection(FilterType type, String value, boolean selected) {
         filters.get(type).get(value).setSelected(selected);
     }

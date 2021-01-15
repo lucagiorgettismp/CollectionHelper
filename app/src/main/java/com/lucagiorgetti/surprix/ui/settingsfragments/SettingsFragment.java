@@ -25,7 +25,6 @@ import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.listenerInterfaces.CallbackInterface;
 import com.lucagiorgetti.surprix.model.User;
-import com.lucagiorgetti.surprix.ui.activities.LoginActivity;
 import com.lucagiorgetti.surprix.utility.SystemUtils;
 import com.lucagiorgetti.surprix.utility.dao.UserDao;
 import com.mikelau.countrypickerx.CountryPickerDialog;

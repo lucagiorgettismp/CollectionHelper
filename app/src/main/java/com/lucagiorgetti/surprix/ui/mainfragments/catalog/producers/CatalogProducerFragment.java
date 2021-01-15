@@ -5,7 +5,6 @@ import android.view.View;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.model.Producer;
 import com.lucagiorgetti.surprix.ui.mainfragments.catalog.CatalogNavigationMode;
 import com.lucagiorgetti.surprix.utility.RecyclerItemClickListener;

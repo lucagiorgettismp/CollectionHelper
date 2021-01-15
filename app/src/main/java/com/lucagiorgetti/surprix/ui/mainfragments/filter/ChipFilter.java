@@ -11,12 +11,6 @@ public class ChipFilter {
         this.selected = true;
     }
 
-    public ChipFilter(String name, String value, boolean selected) {
-        this.name = name;
-        this.value = value;
-        this.selected = selected;
-    }
-
     public String getName() {
         return name;
     }

@@ -17,7 +17,6 @@ import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.model.ExtraLocales;
 import com.lucagiorgetti.surprix.model.Set;
-import com.lucagiorgetti.surprix.model.Surprise;
 import com.lucagiorgetti.surprix.ui.mainfragments.catalog.CatalogNavigationMode;
 import com.lucagiorgetti.surprix.ui.mainfragments.filter.ChipFilters;
 import com.lucagiorgetti.surprix.ui.mainfragments.filter.FilterType;

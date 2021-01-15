@@ -27,7 +27,7 @@ public abstract class BaseProducerFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View root = inflater.inflate(R.layout.fragment_catalog, container, false);
+        View root = inflater.inflate(R.layout.fragment_producer_list, container, false);
 
         ProgressBar progress = root.findViewById(R.id.catalog_loading);
         setProgressBar(progress);

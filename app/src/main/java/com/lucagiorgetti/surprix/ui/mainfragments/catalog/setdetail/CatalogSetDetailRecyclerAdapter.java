@@ -56,7 +56,6 @@ public class CatalogSetDetailRecyclerAdapter extends BaseSetDetailAdapter<Catalo
         } else {
             holder.vDescription.setText(s.getDescription());
         }
-        holder.vLayout.setBackgroundColor(ContextCompat.getColor(ctx, Colors.getHexColor(s.getSet_producer_color())));
 
         String path = s.getImg_path();
         SystemUtils.loadImage(path, holder.vImage, R.drawable.ic_logo_shape_primary);
@@ -107,7 +106,6 @@ public class CatalogSetDetailRecyclerAdapter extends BaseSetDetailAdapter<Catalo
     }
 
     static class SetDetailViewHolder extends RecyclerView.ViewHolder {
-        View vLayout;
         TextView vDescription;
         ImageView vImage;
         MaterialButton vAddMissing;
@@ -123,7 +121,6 @@ public class CatalogSetDetailRecyclerAdapter extends BaseSetDetailAdapter<Catalo
         SetDetailViewHolder(View v) {
             super(v);
 
-            vLayout = v.findViewById(R.id.layout_item_titlebar);
             vDescription = v.findViewById(R.id.txv_item_desc);
             vImage = v.findViewById(R.id.img_item);
             vAddMissing = v.findViewById(R.id.add_missing_btn);

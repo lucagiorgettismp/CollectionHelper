@@ -68,12 +68,10 @@ public class YearRecyclerAdapter extends RecyclerView.Adapter<YearRecyclerAdapte
 
     static class SetViewHolder extends RecyclerView.ViewHolder {
         TextView vName;
-        View vLayout;
 
         SetViewHolder(View v) {
             super(v);
             vName = v.findViewById(R.id.txv_year_number);
-            vLayout = v.findViewById(R.id.layout_year_select);
         }
     }
 }

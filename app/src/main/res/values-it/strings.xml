@@ -37,7 +37,6 @@
     <string name="username_existing">Username già esistente</string>
     <string name="list_is_empty">La lista è vuota. Aggiungi elementi tramite il catalogo!</string>
     <string name="back">Indietro</string>
-    <string name="surprise_image">immagine sorpresina</string>
     <string name="set_image">immagine serie</string>
     <string name="network_unavailable">Connessione internet assente. Riprova più tardi</string>
     <string name="signup_email_format">Controlla il formato della e-mail</string>
@@ -97,8 +96,8 @@
     <string name="settings_night_mode_title">Modalità scura</string>
     <string name="change_country">Cambia nazione</string>
     <string name="password_cannot_be_null">La password non può essere vuota</string>
-    <string name="settings_delete_user_summary">Questa operazione cancella l\'utente dal nostro database</string>
-    <string name="settings_contact_us_summary">Conttaci per suggerirci milgiorie o chiederci di inserire una serie in particolare. Invia una e-mail anche se vuoi collaborare alla crescita di Surprix</string>
+    <string name="settings_delete_user_summary">Questa operazione cancella l\'utente dal nostro database.</string>
+    <string name="settings_contact_us_summary">Conttaci per suggerirci milgiorie o chiederci di inserire una serie in particolare. Invia una e-mail anche se vuoi collaborare alla crescita di Surprix.</string>
     <string name="cannot_send_recovery_email">Impossibile inviare la e-mail per il recupero della password</string>
     <string name="logout">Esci</string>
     <string name="double_removed">Rimossa sorpresina doppia</string>
@@ -118,7 +117,7 @@
     <string name="australia">Australia</string>
     <string name="everywhere">Tutto il mondo</string>
     <string name="add_in_collection_title">Aggiungi in collezione</string>
-    <string name="add_in_collection_message">Per aggiungere %s ai mancanti, devi aggiungere la serie %s alla tua collezione</string>
+    <string name="add_in_collection_message">Per aggiungere %s ai mancanti, devi aggiungere la serie %s alla tua collezione.</string>
     <string name="add_btn">Aggiungi</string>
     <string name="discard_btn">Annulla</string>
     <string name="remove_from_collection_title">Rimuovi dalla collezione</string>

@@ -13,12 +13,6 @@ public class CatalogSet {
         this.hasMissing = hasMissing;
     }
 
-    public CatalogSet(Set set) {
-        this.set = set;
-        this.inCollection = true;
-        this.hasMissing = false;
-    }
-
     public CatalogSet(Set set, Boolean hasMissing) {
         this.set = set;
         this.inCollection = true;
