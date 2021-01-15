@@ -95,6 +95,7 @@ public class SetRecyclerAdapter extends ListAdapter<CatalogSet, SetRecyclerAdapt
         } else {
             holder.myCollectionSwitch.setOnClickListener(v -> {
                 boolean isChecked = holder.myCollectionSwitch.isChecked();
+                checkItemAtPostion(position, isChecked);
                 listener.onSetInCollectionChanged(set, isChecked);
             });
 
@@ -123,6 +124,11 @@ public class SetRecyclerAdapter extends ListAdapter<CatalogSet, SetRecyclerAdapt
     void setFilterableList(List<CatalogSet> sets) {
         this.filterableList = sets;
         this.searchViewFilteredValues = sets;
+    }
+
+    private void checkItemAtPostion(int position, boolean checked){
+        this.filterableList.get(position).setInCollection(checked);
+        notifyItemChanged(position);
     }
 
     private final Filter filter = new Filter() {
