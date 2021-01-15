@@ -10,15 +10,7 @@ public class Uid {
     public Uid(String uid, String username, LoginFlowHelper.AuthMode authMode) {
         this.uid = uid;
         this.username = username;
-
-        switch (authMode){
-            case EMAIL_PASSWORD:
-                this.provider = "password";
-                break;
-            case FACEBOOK:
-                this.provider = "facebook.com";
-                break;
-        }
+        this.provider = authMode.getProvider();
     }
 
     public Uid() {

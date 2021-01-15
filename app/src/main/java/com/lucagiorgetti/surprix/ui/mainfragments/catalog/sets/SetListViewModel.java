@@ -27,9 +27,7 @@ public class SetListViewModel extends BaseViewModel {
         if (allSets == null) {
             allSets = new MutableLiveData<>();
         }
-
         loadSets(yearId, producerId, mode);
-
         return allSets;
     }
 

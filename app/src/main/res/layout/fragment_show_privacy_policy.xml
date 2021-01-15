@@ -3,27 +3,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/surprixBackground"
+    android:orientation="vertical"
     tools:context=".ui.settingsfragments.ShowPrivacyPolicyFragment">
 
     <LinearLayout
         android:id="@+id/form_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="10dp"
         android:background="@color/white"
-        android:padding="10dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="10dp">
 
         <TextView
             android:id="@+id/policy_text"
+            style="@style/TextAppearance.Surprix.Body1"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:textColor="@color/textColor"
-            android:scrollbars="vertical"/>
+            android:scrollbars="vertical"
+            android:textColor="@color/textColor" />
     </LinearLayout>
 </RelativeLayout>

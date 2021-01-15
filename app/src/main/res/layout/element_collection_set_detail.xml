@@ -8,10 +8,12 @@
     android:layout_marginEnd="8dp"
     app:cardBackgroundColor="@color/cardBackground"
     app:cardCornerRadius="10dp">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -24,10 +26,10 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_marginBottom="8dp"
                 android:layout_weight="25"
                 app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="10dp"
-                android:layout_marginBottom="8dp"
                 app:cardElevation="0dp">
 
                 <ImageView
@@ -45,13 +47,12 @@
 
                 <TextView
                     android:id="@+id/txv_item_desc"
+                    style="@style/TextAppearance.Surprix.Headline6"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:lineSpacingMultiplier="0.8"
+                    android:lineSpacingMultiplier="0.9"
                     android:text="@string/description"
                     android:textColor="@color/titleColor"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -66,68 +67,19 @@
                     app:layout_constraintTop_toBottomOf="@+id/txv_item_desc">
 
                     <TextView
+                        style="@style/TextAppearance.Surprix.Body1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
+                        android:fontFamily="@font/roboto_medium"
                         android:text="@string/difficulty"
                         android:textColor="@color/cardTextColor" />
 
-                    <LinearLayout
+                    <com.lucagiorgetti.surprix.ui.StarRank
+                        android:id="@+id/star_rank"
                         android:layout_width="wrap_content"
                         android:layout_height="30dp"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:id="@+id/img_item_star_1_on"
-                            android:layout_width="22dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="4dp"
-                            android:visibility="gone"
-                            app:srcCompat="@drawable/ic_star_full"
-                            app:tint="@color/surpriseActionAccent" />
-
-                        <ImageView
-                            android:id="@+id/img_item_star_1_off"
-                            android:layout_width="22dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginEnd="4dp"
-                            app:srcCompat="@drawable/ic_star_empty"
-                            app:tint="@color/surpriseActionAccent" />
-
-                        <ImageView
-                            android:id="@+id/img_item_star_2_on"
-                            android:layout_width="22dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="4dp"
-                            android:visibility="gone"
-                            app:srcCompat="@drawable/ic_star_full"
-                            app:tint="@color/surpriseActionAccent" />
-
-                        <ImageView
-                            android:id="@+id/img_item_star_2_off"
-                            android:layout_width="22dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginEnd="4dp"
-                            app:srcCompat="@drawable/ic_star_empty"
-                            app:tint="@color/surpriseActionAccent" />
-
-                        <ImageView
-                            android:id="@+id/img_item_star_3_on"
-                            android:layout_width="22dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="4dp"
-                            android:visibility="gone"
-                            app:srcCompat="@drawable/ic_star_full"
-                            app:tint="@color/surpriseActionAccent" />
-
-                        <ImageView
-                            android:id="@+id/img_item_star_3_off"
-                            android:layout_width="22dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginEnd="4dp"
-                            app:srcCompat="@drawable/ic_star_empty"
-                            app:tint="@color/surpriseActionAccent" />
-                    </LinearLayout>
+                        android:orientation="horizontal"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -154,7 +106,6 @@
                         app:srcCompat="@drawable/ic_check"
                         app:tint="@color/check_icon_tint" />
                 </LinearLayout>
-
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

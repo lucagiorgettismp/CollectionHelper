@@ -41,7 +41,8 @@
     <string name="network_unavailable">Connessione internet assente. Riprova più tardi</string>
     <string name="signup_email_format">Controlla il formato della e-mail</string>
     <string name="privacy_policy">Termini e condizioni</string>
-    <string name="privacy_policy_text"><![CDATA[<p>I termini e condizioni per la protezione dei dati personali sono stati scritti per informare gli utenti riguardo ai dati personali che vengono raccolti in Surprix. Ti preghiamo di leggere i termini e le condizioni attentamente, per essere consapevole di come raccogliamo, utilizziamo, proteggiamo o gestiamo le tue informazioni personali.</p>
+    <string name="privacy_policy_text">
+        <![CDATA[<p>I termini e condizioni per la protezione dei dati personali sono stati scritti per informare gli utenti riguardo ai dati personali che vengono raccolti in Surprix. Ti preghiamo di leggere i termini e le condizioni attentamente, per essere consapevole di come raccogliamo, utilizziamo, proteggiamo o gestiamo le tue informazioni personali.</p>
         <div><strong>Quali informazioni raccogliamo al momento della iscrizione a Surprix?</strong></div>
         <div>Al momento della registrazione, ti verr&agrave; chiesto di inserire il tuo indirizzo email e la tua nazione.</div>
         <div><strong>Quando raccogliamo le informazioni?</strong></div>
@@ -89,7 +90,6 @@
     <string name="email_app_chooser">Seleziona l\' app per inviare le email</string>
     <string name="signup_mail_existinig">La mail è già presente nel nostro databese. Sicuro di non esserti già iscritto?</string>
     <string name="signup_weak_password">La password inserito è troppo semplice.</string>
-    <string name="signup_default_error" translatable="false">Qualcosa è andato storto.. riprova!</string>
     <string name="username_delete_success">Username eliminato con successo</string>
     <string name="settings_contact_us_title">Contattaci</string>
     <string name="settings_category_theme">Tema</string>
@@ -141,4 +141,12 @@
     <string name="btn_ok_thanks">Ok, grazie</string>
     <string name="collection_producer_empty">Al momento non ci sono serie nella tua collezione. Puoi aggiungerle dal catalogo!</string>
     <string name="catalog_producers_empty">Ancora non ci sono produttori. Controlla tra un po\'!</string>
+    <string name="signup_default_error">Qualcosa è andato storto.. riprova!</string>
+    <string name="my_collection">Mia collezione</string>
+    <string name="login_with_google">Login con Google</string>
+    <string name="empty_list_icon">Icona lista vuota</string>
+    <string name="send_e_mail_button">Bottone invia e-mail</string>
+    <string name="search_in_catalog">Cerca nel catalogo</string>
+    <string name="app_logo">Logo app</string>
+    <string name="user_icon">Icona utente</string>
 </resources>

@@ -19,6 +19,7 @@ import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.listenerInterfaces.CallbackInterface;
 import com.lucagiorgetti.surprix.listenerInterfaces.CallbackWithExceptionInterface;
+import com.lucagiorgetti.surprix.model.Uid;
 import com.lucagiorgetti.surprix.model.User;
 import com.lucagiorgetti.surprix.utility.dao.UserDao;
 
@@ -28,7 +29,31 @@ import timber.log.Timber;
 
 public class LoginFlowHelper {
     public enum AuthMode {
-        EMAIL_PASSWORD, FACEBOOK
+        EMAIL_PASSWORD, FACEBOOK, GOOGLE;
+
+        public static AuthMode fromString(String provider) {
+            switch (provider) {
+                case "password":
+                    return EMAIL_PASSWORD;
+                case "facebook.com":
+                    return FACEBOOK;
+                case "google.com":
+                    return GOOGLE;
+            }
+            return null;
+        }
+
+        public String getProvider() {
+            switch (this) {
+                case EMAIL_PASSWORD:
+                    return "password";
+                case FACEBOOK:
+                    return "facebook.com";
+                case GOOGLE:
+                    return "google.com";
+            }
+            return "undefined";
+        }
     }
 
     public static class UserNeedToCompleteSignUpException extends Exception {
@@ -261,7 +286,8 @@ public class LoginFlowHelper {
     }
 
     private static void completeUserCreation(String uid, String username, String email, String country, AuthMode authMode, CallbackWithExceptionInterface flowListener) {
-        UserDao.addUid(uid, username, authMode);
+        Uid uidModel = new Uid(uid, username, authMode);
+        UserDao.addUid(uidModel);
         UserDao.newCreateUser(email, username, country, authMode);
 
         SystemUtils.firstTimeOpeningApp();

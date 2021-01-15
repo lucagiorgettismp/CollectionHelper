@@ -15,9 +15,6 @@
     <color name="btnImportantBackground">@color/grey30</color>
     <color name="btnImportantText">@color/white</color>
 
-    <color name="fabIconColor">@color/grey20</color>
-    <color name="fabBackColor">@color/surprixOrange</color>
-
     <color name="toolbarColor">@color/grey10</color>
     <color name="cardBackground">@color/grey20</color>
     <color name="cardTitle">@color/white</color>

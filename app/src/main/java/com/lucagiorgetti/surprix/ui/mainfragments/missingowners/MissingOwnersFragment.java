@@ -74,7 +74,7 @@ public class MissingOwnersFragment extends BaseFragment {
         }
 
         void onOwnerClicked(User user) {
-            Navigation.findNavController(root).navigate(MissingOwnersFragmentDirections.actionNavigationMissingOwnersToNavigationOtherForYou(user.getUsername(), user.getCleanedEmail()));
+            Navigation.findNavController(root).navigate(MissingOwnersFragmentDirections.actionNavigationMissingOwnersToNavigationOtherForYou(user.getUsername(), user.clearedEmail()));
         }
     }
 }

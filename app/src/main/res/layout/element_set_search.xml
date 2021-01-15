@@ -48,22 +48,22 @@
 
                 <TextView
                     android:id="@+id/txv_set_elem_name"
+                    style="@style/TextAppearance.Surprix.Headline6"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start|center_vertical"
                     android:text="@string/name"
                     android:textAllCaps="false"
-                    android:textColor="@color/titleColor"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textColor="@color/titleColor" />
+
                 <TextView
                     android:id="@+id/txv_set_elem_producer"
+                    style="@style/TextAppearance.Surprix.Body1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start|center_vertical"
-                    android:text="Producer"
-                    android:textColor="@color/titleColor"
-                    android:textSize="16sp" />
+                    android:text="@string/producer"
+                    android:textColor="@color/titleColor" />
 
             </LinearLayout>
 
@@ -77,28 +77,24 @@
 
                 <TextView
                     android:id="@+id/txv_set_elem_year"
+                    style="@style/TextAppearance.Surprix.Body1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="end|center_vertical"
                     android:text="@string/year"
-                    android:textColor="@color/titleColor"
-                    android:textSize="16sp"/>
+                    android:textColor="@color/titleColor" />
 
                 <TextView
                     android:id="@+id/txv_set_elem_nation"
+                    style="@style/TextAppearance.Surprix.Body1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="end|center_vertical"
                     android:text="@string/country"
-                    android:textColor="@color/titleColor"
-                    android:textSize="16sp" />
-
-
+                    android:textColor="@color/titleColor" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-
-
 </androidx.cardview.widget.CardView>
 
 

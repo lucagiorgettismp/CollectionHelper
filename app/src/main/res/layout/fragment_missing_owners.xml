@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".ui.mainfragments.missingowners.MissingOwnersFragment">
+
     <ProgressBar
         android:id="@+id/missing_owner_loading"
         style="?android:attr/progressBarStyle"
@@ -26,23 +27,25 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:contentDescription="@string/empty_list_icon"
             android:cropToPadding="false"
             android:scaleType="fitCenter"
-            app:tint="@color/empty_list_icon"
-            app:srcCompat="@drawable/ic_sad" />
+            app:srcCompat="@drawable/ic_sad"
+            app:tint="@color/empty_list_icon" />
 
         <TextView
+            style="@style/TextAppearance.Surprix.Body1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/nobody_have_what_you_miss"
-            android:textAlignment="center"
-            android:textSize="18sp" />
+            android:textAlignment="center" />
     </LinearLayout>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/missing_owner_recycler"
             android:layout_width="match_parent"

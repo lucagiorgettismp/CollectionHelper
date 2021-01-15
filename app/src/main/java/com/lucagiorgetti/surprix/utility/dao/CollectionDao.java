@@ -31,6 +31,7 @@ public class CollectionDao {
     }
 
     public void getCollectionProducers(FirebaseListCallback<Producer> listen) {
+        listen.onStart();
         collectionRef.child("producers").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -57,6 +58,8 @@ public class CollectionDao {
                             }
                         });
                     }
+                } else {
+                    listen.onSuccess(new ArrayList<>());
                 }
             }
 

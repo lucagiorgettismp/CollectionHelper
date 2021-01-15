@@ -159,6 +159,13 @@
     <string name="btn_ok_thanks">Ok, thanks</string>
     <string name="collection_producer_empty">There isn\'t any set in your collection. You can add them from catalog.</string>
     <string name="catalog_producers_empty">Still no producer available. Please check later.</string>
+    <string name="my_collection">My collection</string>
+    <string name="login_with_google">Login with Google</string>
+    <string name="empty_list_icon">Empty list icon</string>
+    <string name="send_e_mail_button">Sand e-mail button</string>
+    <string name="search_in_catalog">Search in catalog</string>
+    <string name="app_logo">App logo</string>
+    <string name="user_icon">User icon</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

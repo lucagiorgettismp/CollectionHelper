@@ -20,6 +20,7 @@ import com.lucagiorgetti.surprix.ui.mainfragments.surpriseList.MissingRecyclerAd
 import com.lucagiorgetti.surprix.ui.mainfragments.surpriseList.SurpriseListType;
 import com.lucagiorgetti.surprix.ui.mainfragments.surpriseList.SurpriseRecyclerAdapter;
 import com.lucagiorgetti.surprix.utility.dao.MissingListDao;
+import com.lucagiorgetti.surprix.utility.dao.UserDao;
 
 public class MissingListFragment extends BaseSurpriseListFragment {
 
@@ -97,6 +98,7 @@ public class MissingListFragment extends BaseSurpriseListFragment {
 
     @Override
     public void setupData() {
+
         missingListDao = new MissingListDao(SurprixApplication.getInstance().getCurrentUser().getUsername());
 
         missingListViewModel = new ViewModelProvider(this).get(MissingListViewModel.class);

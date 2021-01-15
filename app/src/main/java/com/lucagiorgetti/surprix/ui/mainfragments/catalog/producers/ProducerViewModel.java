@@ -49,6 +49,7 @@ public class ProducerViewModel extends BaseViewModel {
 
                 @Override
                 public void onFailure() {
+                    allProducers.setValue(null);
                     setLoading(false);
                 }
             });

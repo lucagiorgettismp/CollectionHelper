@@ -5,10 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/double_recycler"
             android:layout_width="match_parent"
@@ -38,17 +40,18 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:contentDescription="@string/empty_list_icon"
             android:cropToPadding="false"
             android:scaleType="fitCenter"
-            app:tint="@color/empty_list_icon"
-            app:srcCompat="@drawable/ic_catalog" />
+            app:srcCompat="@drawable/ic_catalog"
+            app:tint="@color/empty_list_icon" />
 
         <TextView
+            style="@style/TextAppearance.Surprix.Body1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/list_is_empty"
-            android:textAlignment="center"
-            android:textSize="18sp" />
+            android:textAlignment="center" />
     </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

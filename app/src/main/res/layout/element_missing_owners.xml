@@ -29,7 +29,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_user"
-            app:tint="@color/card_icon"/>
+            app:tint="@color/card_icon"
+            android:contentDescription="@string/user_icon" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -46,22 +47,22 @@
 
             <TextView
                 android:id="@+id/txv_collector_username"
+                style="@style/TextAppearance.Surprix.Body1Bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="@string/username"
-                android:textAlignment="viewStart"
-                android:textSize="16sp" />
+                android:textAlignment="viewStart" />
 
             <TextView
                 android:id="@+id/txv_collector_country"
+                style="@style/TextAppearance.Surprix.Body2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="@string/country"
-                android:textSize="14sp" />
+                android:text="@string/country" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

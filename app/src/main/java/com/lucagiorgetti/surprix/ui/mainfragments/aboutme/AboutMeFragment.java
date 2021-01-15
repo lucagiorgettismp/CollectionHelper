@@ -38,7 +38,7 @@ public class AboutMeFragment extends BaseFragment {
         TextView email = root.findViewById(R.id.email);
 
         username.setText(user.getUsername());
-        email.setText(user.getCleanedEmail());
+        email.setText(user.clearedEmail());
 
         collectionBtn.setOnClickListener(view -> {
             NavDirections action = AboutMeFragmentDirections.actionNavigationAboutMeToNavigationMyCollection();

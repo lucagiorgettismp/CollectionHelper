@@ -36,33 +36,31 @@
 
             <TextView
                 android:id="@+id/username"
+                style="@style/TextAppearance.Surprix.Headline5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/username"
                 android:textColor="@color/white"
-                android:textSize="24sp"
-                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
             <TextView
                 android:id="@+id/email"
+                style="@style/TextAppearance.Surprix.Body1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="16dp"
                 android:text="@string/email"
                 android:textColor="@color/white"
-                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/username" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
     </androidx.cardview.widget.CardView>
@@ -75,25 +73,25 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        app:cardCornerRadius="10dp"
         android:background="@color/cardBackground"
+        app:cardCornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView">
 
         <TextView
+            style="@style/TextAppearance.Surprix.Headline5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:text="@string/title_my_collection"
             android:textAlignment="center"
-            android:textColor="@color/cardTitle"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            android:textColor="@color/cardTitle" />
     </androidx.cardview.widget.CardView>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/logout_btn"
+        style="@style/TextAppearance.Surprix.ButtonPlain"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -101,6 +99,7 @@
         android:drawableLeft="@drawable/ic_exit_to_app"
         android:drawableTint="@color/fabIconColor"
         android:text="@string/logout"
+        android:textColor="@color/fabIconText"
         app:backgroundTint="@color/fabBackColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

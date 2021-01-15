@@ -26,7 +26,8 @@
     <color name="btnImportantBackground">@color/surprixBlue</color>
     <color name="btnImportantText">@color/white</color>
 
-    <color name="fabIconColor">@color/white</color>
+    <color name="fabIconColor">@color/surprixBlueVariant</color>
+    <color name="fabIconText">@color/surprixBlueVariant</color>
     <color name="fabBackColor">@color/surprixOrange</color>
 
     <color name="toolbarColor">@color/surprixBlue</color>

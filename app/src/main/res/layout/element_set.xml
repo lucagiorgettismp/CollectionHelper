@@ -32,11 +32,12 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:baselineAligned="false"
             android:orientation="horizontal"
-            android:paddingTop="2dp"
-            android:paddingBottom="10dp"
             android:paddingStart="10dp"
+            android:paddingTop="2dp"
             android:paddingEnd="10dp"
+            android:paddingBottom="10dp"
             android:weightSum="100">
 
             <LinearLayout
@@ -45,24 +46,24 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="65"
                 android:orientation="vertical">
+
                 <TextView
                     android:id="@+id/txv_set_elem_name"
+                    style="@style/TextAppearance.Surprix.Headline6"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="start|center_vertical"
                     android:text="@string/name"
                     android:textAllCaps="false"
-                    android:textColor="@color/titleColor"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textColor="@color/titleColor" />
 
                 <TextView
                     android:id="@+id/txv_set_elem_nation"
+                    style="@style/TextAppearance.Surprix.Body1"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="@string/country"
-                    android:textColor="@color/titleColor"
-                    android:textSize="16sp" />
+                    android:textColor="@color/titleColor" />
             </LinearLayout>
 
             <LinearLayout
@@ -71,16 +72,19 @@
                 android:layout_weight="35"
                 android:gravity="center_vertical|end"
                 android:orientation="vertical">
+
                 <TextView
+                    style="@style/TextAppearance.Surprix.Body1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAlignment="textEnd"
-                    android:text="My collection"/>
+                    android:text="@string/my_collection"
+                    android:textAlignment="textEnd" />
+
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/my_collection_switch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="true"/>
+                    android:checked="true" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
