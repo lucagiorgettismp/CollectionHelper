@@ -89,7 +89,6 @@ public class SystemUtils {
     }
 
     public static void firstTimeOpeningApp() {
-        Context applicationContext = SurprixApplication.getSurprixContext();
         setSetHintDisplayed(false);
     }
 

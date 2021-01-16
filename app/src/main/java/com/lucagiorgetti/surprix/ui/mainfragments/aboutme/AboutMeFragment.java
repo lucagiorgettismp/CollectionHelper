@@ -1,13 +1,6 @@
 package com.lucagiorgetti.surprix.ui.mainfragments.aboutme;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.NavDirections;
-import androidx.navigation.Navigation;
-
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,16 +8,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.SearchView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.model.User;
 import com.lucagiorgetti.surprix.ui.activities.LoginActivity;
 import com.lucagiorgetti.surprix.ui.activities.SettingsActivity;
-import com.lucagiorgetti.surprix.ui.mainfragments.catalog.CatalogNavigationMode;
-import com.lucagiorgetti.surprix.ui.mainfragments.catalog.producers.CatalogProducerFragmentDirections;
 import com.lucagiorgetti.surprix.utility.BaseFragment;
 import com.lucagiorgetti.surprix.utility.SystemUtils;
 
@@ -44,7 +38,7 @@ public class AboutMeFragment extends BaseFragment {
         TextView email = root.findViewById(R.id.email);
 
         username.setText(user.getUsername());
-        email.setText(user.getCleanedEmail());
+        email.setText(user.clearedEmail());
 
         collectionBtn.setOnClickListener(view -> {
             NavDirections action = AboutMeFragmentDirections.actionNavigationAboutMeToNavigationMyCollection();

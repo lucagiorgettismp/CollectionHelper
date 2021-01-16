@@ -13,7 +13,6 @@ import com.lucagiorgetti.surprix.ui.mainfragments.catalog.CatalogNavigationMode;
 import com.lucagiorgetti.surprix.utility.dao.CollectionDao;
 import com.lucagiorgetti.surprix.utility.dao.ProducerDao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ProducerViewModel extends BaseViewModel {
@@ -50,6 +49,7 @@ public class ProducerViewModel extends BaseViewModel {
 
                 @Override
                 public void onFailure() {
+                    allProducers.setValue(null);
                     setLoading(false);
                 }
             });

@@ -7,7 +7,7 @@
     <fragment
         android:id="@+id/navigation_missing_list"
         android:name="com.lucagiorgetti.surprix.ui.mainfragments.surpriseList.missinglist.MissingListFragment"
-        tools:layout="@layout/fragment_missing_list" >
+        tools:layout="@layout/fragment_surprise_list" >
         <action
             android:id="@+id/action_navigation_missing_list_to_navigation_missing_owners"
             app:destination="@id/navigation_missing_owners" />
@@ -22,7 +22,7 @@
         android:id="@+id/navigation_catalog_producer"
         android:name="com.lucagiorgetti.surprix.ui.mainfragments.catalog.producers.CatalogProducerFragment"
         android:label="@string/title_catalog"
-        tools:layout="@layout/fragment_catalog">
+        tools:layout="@layout/fragment_producer_list">
         <action
             android:id="@+id/producerSelectedAction"
             app:destination="@id/navigation_year"

@@ -25,7 +25,7 @@ public class ProducerRecyclerAdapter extends RecyclerView.Adapter<ProducerRecycl
     @NonNull
     @Override
     public SetViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.element_catalog, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.element_producer, parent, false);
         return new SetViewHolder(v);
     }
 
@@ -55,13 +55,11 @@ public class ProducerRecyclerAdapter extends RecyclerView.Adapter<ProducerRecycl
     static class SetViewHolder extends RecyclerView.ViewHolder {
         TextView vName;
         TextView vProduct;
-        View vLayout;
 
         SetViewHolder(View v) {
             super(v);
             vName = v.findViewById(R.id.txv_title_prd_select);
             vProduct = v.findViewById(R.id.txv_subtitle_prd_select);
-            vLayout = v.findViewById(R.id.layout_prd_select);
         }
     }
 }

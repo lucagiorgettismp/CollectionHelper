@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="TextAppearance.Surprix.Headline1" parent="TextAppearance.MaterialComponents.Headline1">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">95sp</item>
+    </style>
+    <style name="TextAppearance.Surprix.Headline2" parent="TextAppearance.MaterialComponents.Headline2">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">59sp</item>
+    </style>
+    <style name="TextAppearance.Surprix.Headline3" parent="TextAppearance.MaterialComponents.Headline3">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">48sp</item>
+    </style>
+    <style name="TextAppearance.Surprix.Headline4" parent="TextAppearance.MaterialComponents.Headline4">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">28sp</item>
+    </style>
+    <style name="TextAppearance.Surprix.Headline5" parent="TextAppearance.MaterialComponents.Headline5">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+    <style name="TextAppearance.Surprix.Headline6" parent="TextAppearance.MaterialComponents.Headline3">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+    <style name="TextAppearance.Surprix.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+    <style name="TextAppearance.Surprix.Subtitle2" parent="TextAppearance.MaterialComponents.Subtitle2">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    <style name="TextAppearance.Surprix.Body1" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:textSize">16sp</item>
+    </style>
+    <style name="TextAppearance.Surprix.Body1Bold" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+    <style name="TextAppearance.Surprix.Body1Condensed" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+    <style name="TextAppearance.Surprix.Body2" parent="TextAppearance.MaterialComponents.Body2">
+        <item name="android:textSize">14sp</item>
+    </style>
+    <style name="TextAppearance.Surprix.Button" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:textSize">14sp</item>
+    </style>
+    <style name="TextAppearance.Surprix.ButtonPlain" parent="TextAppearance.AppCompat.Button">
+        <item name="android:textSize">14sp</item>
+    </style>
+    <style name="TextAppearance.Surprix.Caption" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:textSize">12sp</item>
+    </style>
+    <style name="TextAppearance.Surprix.Overline" parent="TextAppearance.MaterialComponents.Overline">
+        <item name="android:textSize">10sp</item>
+    </style>
+</resources>

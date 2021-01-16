@@ -57,7 +57,7 @@ public class ForceUpdateChecker {
                     .versionName;
             result = result.replaceAll("[a-zA-Z]|-", "");
         } catch (PackageManager.NameNotFoundException e) {
-            Timber.e(e.getMessage());
+            Timber.e(e);
         }
 
         return result;

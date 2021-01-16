@@ -4,19 +4,13 @@ import com.lucagiorgetti.surprix.model.Set;
 
 public class CatalogSet {
     private final Set set;
-    private final boolean inCollection;
+    private boolean inCollection;
     private final boolean hasMissing;
 
     public CatalogSet(Set set, boolean inCollection, boolean hasMissing) {
         this.inCollection = inCollection;
         this.set = set;
         this.hasMissing = hasMissing;
-    }
-
-    public CatalogSet(Set set) {
-        this.set = set;
-        this.inCollection = true;
-        this.hasMissing = false;
     }
 
     public CatalogSet(Set set, Boolean hasMissing) {
@@ -35,5 +29,9 @@ public class CatalogSet {
 
     public boolean hasMissing() {
         return hasMissing;
+    }
+
+    public void setInCollection(boolean inCollection) {
+        this.inCollection = inCollection;
     }
 }

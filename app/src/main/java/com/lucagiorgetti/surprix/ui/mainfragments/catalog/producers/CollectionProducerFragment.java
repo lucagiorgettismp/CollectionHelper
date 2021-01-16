@@ -46,6 +46,7 @@ public class CollectionProducerFragment extends BaseProducerFragment {
     public void setupView() {
         ProducerViewModel producerViewModel = new ViewModelProvider(this).get(ProducerViewModel.class);
 
+        emptyListText.setText(R.string.collection_producer_empty);
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
@@ -64,6 +65,7 @@ public class CollectionProducerFragment extends BaseProducerFragment {
         );
 
         producerViewModel.getProducers(CatalogNavigationMode.COLLECTION).observe(getViewLifecycleOwner(), producers -> {
+            emptyList.setVisibility(producers == null || producers.isEmpty() ? View.VISIBLE : View.GONE);
             mAdapter.setYears(producers);
             mAdapter.notifyDataSetChanged();
         });
@@ -71,6 +73,7 @@ public class CollectionProducerFragment extends BaseProducerFragment {
         producerViewModel.isLoading().observe(getViewLifecycleOwner(), isLoading -> {
             if (isLoading) {
                 showLoading();
+                emptyList.setVisibility(View.GONE);
             } else {
                 hideLoading();
             }

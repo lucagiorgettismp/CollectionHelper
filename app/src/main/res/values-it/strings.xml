@@ -37,12 +37,12 @@
     <string name="username_existing">Username già esistente</string>
     <string name="list_is_empty">La lista è vuota. Aggiungi elementi tramite il catalogo!</string>
     <string name="back">Indietro</string>
-    <string name="surprise_image">immagine sorpresina</string>
     <string name="set_image">immagine serie</string>
     <string name="network_unavailable">Connessione internet assente. Riprova più tardi</string>
     <string name="signup_email_format">Controlla il formato della e-mail</string>
     <string name="privacy_policy">Termini e condizioni</string>
-    <string name="privacy_policy_text"><![CDATA[<p>I termini e condizioni per la protezione dei dati personali sono stati scritti per informare gli utenti riguardo ai dati personali che vengono raccolti in Surprix. Ti preghiamo di leggere i termini e le condizioni attentamente, per essere consapevole di come raccogliamo, utilizziamo, proteggiamo o gestiamo le tue informazioni personali.</p>
+    <string name="privacy_policy_text">
+        <![CDATA[<p>I termini e condizioni per la protezione dei dati personali sono stati scritti per informare gli utenti riguardo ai dati personali che vengono raccolti in Surprix. Ti preghiamo di leggere i termini e le condizioni attentamente, per essere consapevole di come raccogliamo, utilizziamo, proteggiamo o gestiamo le tue informazioni personali.</p>
         <div><strong>Quali informazioni raccogliamo al momento della iscrizione a Surprix?</strong></div>
         <div>Al momento della registrazione, ti verr&agrave; chiesto di inserire il tuo indirizzo email e la tua nazione.</div>
         <div><strong>Quando raccogliamo le informazioni?</strong></div>
@@ -90,15 +90,14 @@
     <string name="email_app_chooser">Seleziona l\' app per inviare le email</string>
     <string name="signup_mail_existinig">La mail è già presente nel nostro databese. Sicuro di non esserti già iscritto?</string>
     <string name="signup_weak_password">La password inserito è troppo semplice.</string>
-    <string name="signup_default_error" translatable="false">Qualcosa è andato storto.. riprova!</string>
     <string name="username_delete_success">Username eliminato con successo</string>
     <string name="settings_contact_us_title">Contattaci</string>
     <string name="settings_category_theme">Tema</string>
     <string name="settings_night_mode_title">Modalità scura</string>
     <string name="change_country">Cambia nazione</string>
     <string name="password_cannot_be_null">La password non può essere vuota</string>
-    <string name="settings_delete_user_summary">Questa operazione cancella l\'utente dal nostro database</string>
-    <string name="settings_contact_us_summary">Conttaci per suggerirci milgiorie o chiederci di inserire una serie in particolare. Invia una e-mail anche se vuoi collaborare alla crescita di Surprix</string>
+    <string name="settings_delete_user_summary">Questa operazione cancella l\'utente dal nostro database.</string>
+    <string name="settings_contact_us_summary">Conttaci per suggerirci milgiorie o chiederci di inserire una serie in particolare. Invia una e-mail anche se vuoi collaborare alla crescita di Surprix.</string>
     <string name="cannot_send_recovery_email">Impossibile inviare la e-mail per il recupero della password</string>
     <string name="logout">Esci</string>
     <string name="double_removed">Rimossa sorpresina doppia</string>
@@ -116,9 +115,9 @@
     <string name="asia">Asia</string>
     <string name="africa">Africa</string>
     <string name="australia">Australia</string>
-    <string name="everywhere">World wide</string>
+    <string name="everywhere">Tutto il mondo</string>
     <string name="add_in_collection_title">Aggiungi in collezione</string>
-    <string name="add_in_collection_message">Per aggiungere %s ai mancanti, devi aggiungere la serie %s alla tua collezione</string>
+    <string name="add_in_collection_message">Per aggiungere %s ai mancanti, devi aggiungere la serie %s alla tua collezione.</string>
     <string name="add_btn">Aggiungi</string>
     <string name="discard_btn">Annulla</string>
     <string name="remove_from_collection_title">Rimuovi dalla collezione</string>
@@ -140,4 +139,14 @@
     <string name="set_hint_dialog_title">Un suggerimento</string>
     <string name="set_hint_dialog_message">Per creare più velocemente la lista dei mancanti, tieni premuta una serie: tutte le sue sorpresine saranno aggiune alla tua lista dei mancanti!</string>
     <string name="btn_ok_thanks">Ok, grazie</string>
+    <string name="collection_producer_empty">Al momento non ci sono serie nella tua collezione. Puoi aggiungerle dal catalogo!</string>
+    <string name="catalog_producers_empty">Ancora non ci sono produttori. Controlla tra un po\'!</string>
+    <string name="signup_default_error">Qualcosa è andato storto.. riprova!</string>
+    <string name="my_collection">Mia collezione</string>
+    <string name="login_with_google">Login con Google</string>
+    <string name="empty_list_icon">Icona lista vuota</string>
+    <string name="send_e_mail_button">Bottone invia e-mail</string>
+    <string name="search_in_catalog">Cerca nel catalogo</string>
+    <string name="app_logo">Logo app</string>
+    <string name="user_icon">Icona utente</string>
 </resources>

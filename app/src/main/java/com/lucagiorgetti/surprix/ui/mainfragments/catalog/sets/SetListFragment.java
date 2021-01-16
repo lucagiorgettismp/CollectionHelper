@@ -28,11 +28,13 @@ import com.lucagiorgetti.surprix.utility.dao.MissingListDao;
 public class SetListFragment extends BaseSetListFragment {
     CatalogNavigationMode navigationMode;
     String yearId;
+    String yearName;
     String producerId;
     CollectionDao collectionDao;
     MissingListDao missingListDao;
     SetListViewModel setListViewModel;
     private ChipFilters chipFilters;
+    SharedViewModel sharedViewModel = null;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,9 +45,8 @@ public class SetListFragment extends BaseSetListFragment {
         if (getArguments() != null) {
             yearId = SetListFragmentArgs.fromBundle(getArguments()).getYearId();
             producerId = SetListFragmentArgs.fromBundle(getArguments()).getProducerId();
-            String yearName = SetListFragmentArgs.fromBundle(getArguments()).getYearName();
+            yearName = SetListFragmentArgs.fromBundle(getArguments()).getYearName();
             navigationMode = SetListFragmentArgs.fromBundle(getArguments()).getNavigationMode();
-            setTitle(yearName);
 
             if (navigationMode.equals(CatalogNavigationMode.CATALOG) && !SystemUtils.isSetHintDisplayed()) {
                 showHintAlert();
@@ -76,6 +77,12 @@ public class SetListFragment extends BaseSetListFragment {
 
     @Override
     public void setupView() {
+        setTitle(yearName);
+
+        if (navigationMode.equals(CatalogNavigationMode.CATALOG)) {
+            sharedViewModel = new ViewModelProvider(getActivity()).get(SharedViewModel.class);
+        }
+
         setListViewModel = new ViewModelProvider(this).get(SetListViewModel.class);
         setListViewModel.getSets(yearId, producerId, navigationMode).observe(getViewLifecycleOwner(), sets -> {
             mAdapter.submitList(sets);
@@ -95,6 +102,12 @@ public class SetListFragment extends BaseSetListFragment {
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
+
+        if (navigationMode.equals(CatalogNavigationMode.CATALOG)) {
+            sharedViewModel.getChecked().observe(getViewLifecycleOwner(), checked -> {
+                mAdapter.notifyItemChecked(sharedViewModel.getPosition(), checked);
+            });
+        }
     }
 
     @Override
@@ -169,16 +182,21 @@ public class SetListFragment extends BaseSetListFragment {
     public SetRecyclerAdapter setAdapter() {
         return new SetRecyclerAdapter(navigationMode, new MyClickListener() {
             @Override
-            public void onSetInCollectionChanged(Set set, boolean isChecked) {
+            public void onSetInCollectionChanged(Set set, boolean isChecked, int position) {
                 if (isChecked) {
                     collectionDao.addSetInCollection(set);
+                    mAdapter.notifyItemChecked(position, true);
                 } else {
-                    alertRemoveCollection(set);
+                    alertRemoveCollection(set, position);
                 }
             }
 
             @Override
-            public void onSetClicked(Set set) {
+            public void onSetClicked(Set set, int position) {
+                if (navigationMode.equals(CatalogNavigationMode.CATALOG)) {
+                    sharedViewModel.setPosition(position);
+                }
+
                 SetListFragmentDirections.SetSelectedAction action = SetListFragmentDirections.setSelectedAction(set.getId(), set.getName(), navigationMode);
                 Navigation.findNavController(getView()).navigate(action);
                 SystemUtils.closeKeyboard(getActivity());
@@ -192,7 +210,7 @@ public class SetListFragment extends BaseSetListFragment {
         });
     }
 
-    private void alertRemoveCollection(Set set) {
+    private void alertRemoveCollection(Set set, int position) {
         final androidx.appcompat.app.AlertDialog alertDialog = new androidx.appcompat.app.AlertDialog.Builder(getActivity()).create();
         alertDialog.setTitle(getString(R.string.remove_from_collection_title));
         alertDialog.setMessage(getString(R.string.remove_from_collection_message));
@@ -200,13 +218,13 @@ public class SetListFragment extends BaseSetListFragment {
                 (dialog, which) -> {
                     missingListDao.removeItemsFromSet(set);
                     collectionDao.removeSetInCollection(set);
+                    mAdapter.notifyItemChecked(position, false);
                     alertDialog.dismiss();
                 });
         alertDialog.setButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE, getString(R.string.discard_btn),
                 (dialog, which) -> {
+                    mAdapter.notifyItemChecked(position, true);
                     alertDialog.dismiss();
-                    setListViewModel.getSets(yearId, producerId, navigationMode);
-                    mAdapter.notifyDataSetChanged();
                 });
         alertDialog.show();
     }
@@ -228,9 +246,9 @@ public class SetListFragment extends BaseSetListFragment {
     }
 
     public interface MyClickListener {
-        void onSetInCollectionChanged(Set set, boolean isChecked);
+        void onSetInCollectionChanged(Set set, boolean isChecked, int position);
 
-        void onSetClicked(Set set);
+        void onSetClicked(Set set, int position);
 
         boolean onSetLongClicked(Set set, SwitchMaterial inCollection);
     }

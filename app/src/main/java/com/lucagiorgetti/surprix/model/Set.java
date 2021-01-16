@@ -93,13 +93,6 @@ public class Set {
         return category;
     }
 
-    public static class SortBySetName implements Comparator<Set> {
-        @Override
-        public int compare(Set o1, Set o2) {
-            return o1.getName().compareTo(o2.getName());
-        }
-    }
-
     public String getYear_desc() {
         return year_desc;
     }

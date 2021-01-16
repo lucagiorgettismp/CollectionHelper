@@ -21,23 +21,21 @@
 
         <TextView
             android:id="@+id/txv_title_prd_select"
+            style="@style/TextAppearance.Surprix.Headline4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/name"
             android:textAlignment="center"
-            android:textColor="@color/cardTitle"
-            android:textSize="26sp"
-            android:textStyle="bold" />
+            android:textColor="@color/cardTitle" />
 
         <TextView
             android:id="@+id/txv_subtitle_prd_select"
+            style="@style/TextAppearance.Surprix.Headline5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/product"
             android:textAlignment="center"
-            android:textColor="@color/cardTitle"
-            android:textSize="22sp"
-            android:textStyle="bold" />
+            android:textColor="@color/cardTitle" />
 
     </LinearLayout>
 

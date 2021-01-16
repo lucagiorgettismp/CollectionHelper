@@ -31,7 +31,7 @@ public class SurpriseFilterBSDFragment extends BottomSheetDialogFragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.surprise_bottom_sheet, container,
+        View view = inflater.inflate(R.layout.bottom_sheet_surprise, container,
                 false);
 
         Button resetFilters = view.findViewById(R.id.filter_reset);

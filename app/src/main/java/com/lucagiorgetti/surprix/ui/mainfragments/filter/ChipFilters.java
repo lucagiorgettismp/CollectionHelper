@@ -62,16 +62,12 @@ public class ChipFilters {
         return filters.get(type);
     }
 
-    public boolean isSelected(FilterType type, String value) {
-        return filters.get(type).get(value).isSelected();
-    }
-
     public void setFilterSelection(FilterType type, String value, boolean selected) {
         filters.get(type).get(value).setSelected(selected);
     }
 
     public void clearSelection() {
-        for (FilterType type : FilterType.values()) {
+        for (FilterType type : FilterType.getValues(FilterSelectableType.SURPRISE)) {
             for (ChipFilter chipFilter : filters.get(type).values()) {
                 chipFilter.setSelected(true);
             }
@@ -79,3 +75,4 @@ public class ChipFilters {
     }
 
 }
+

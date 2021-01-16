@@ -12,6 +12,7 @@
         android:layout_height="100dp"
         android:layout_above="@id/form_layout"
         android:layout_marginBottom="20dp"
+        android:contentDescription="@string/app_logo"
         app:srcCompat="@drawable/ic_logo"
         app:tint="@color/logo" />
 
@@ -29,78 +30,82 @@
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/UserFormEditText"
-            app:startIconTint="@color/signUpIcon"
-            app:startIconDrawable="@drawable/ic_mail">
+            app:startIconDrawable="@drawable/ic_mail"
+            app:startIconTint="@color/signUpIcon">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_reg_email"
-                android:hint="@string/email"
-                android:textColor="@color/textColor"
-                android:textColorHint="@color/hintTextColor"
-                android:inputType="textEmailAddress"
+                style="@style/TextAppearance.Surprix.Body1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/textColor"
+                android:textColorHint="@color/hintTextColor" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/UserFormEditText"
-            app:startIconTint="@color/signUpIcon"
-            app:startIconDrawable="@drawable/ic_user">
+            app:startIconDrawable="@drawable/ic_user"
+            app:startIconTint="@color/signUpIcon">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_reg_username"
-                android:hint="@string/username"
-                android:textColor="@color/textColor"
-                android:textColorHint="@color/hintTextColor"
-                android:inputType="textAutoComplete"
-                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890_"
+                style="@style/TextAppearance.Surprix.Body1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890_"
+                android:hint="@string/username"
+                android:inputType="textAutoComplete"
+                android:textColor="@color/textColor"
+                android:textColorHint="@color/hintTextColor" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/password_field"
             style="@style/UserFormEditText"
-            app:endIconTint="@color/signUpIcon"
             app:endIconMode="password_toggle"
-            app:startIconTint="@color/signUpIcon"
-            app:startIconDrawable="@drawable/ic_key">
+            app:endIconTint="@color/signUpIcon"
+            app:startIconDrawable="@drawable/ic_key"
+            app:startIconTint="@color/signUpIcon">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_reg_password"
-                android:hint="@string/password"
-                android:textColor="@color/textColor"
-                android:textColorHint="@color/hintTextColor"
-                android:inputType="textPassword"
+                style="@style/TextAppearance.Surprix.Body1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:hint="@string/password"
+                android:inputType="textPassword"
+                android:textColor="@color/textColor"
+                android:textColorHint="@color/hintTextColor" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/UserFormEditText"
-            app:startIconTint="@color/signUpIcon"
-            app:startIconDrawable="@drawable/ic_flag">
+            app:startIconDrawable="@drawable/ic_flag"
+            app:startIconTint="@color/signUpIcon">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_reg_nation"
-                android:inputType="textAutoComplete"
-                android:hint="@string/country"
-                android:textColor="@color/textColor"
-                android:textColorHint="@color/hintTextColor"
+                style="@style/TextAppearance.Surprix.Body1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:clickable="true"
                 android:focusable="true"
+                android:hint="@string/country"
                 android:imeOptions="actionNext"
+                android:inputType="textAutoComplete"
                 android:nextFocusRight="@+id/login_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:textColor="@color/textColor"
+                android:textColorHint="@color/hintTextColor" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_sign_up"
+            style="@style/TextAppearance.Surprix.ButtonPlain"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/sign_up"
-            android:textAllCaps="false"
             android:textColor="@android:color/background_light" />
     </LinearLayout>
 </RelativeLayout>

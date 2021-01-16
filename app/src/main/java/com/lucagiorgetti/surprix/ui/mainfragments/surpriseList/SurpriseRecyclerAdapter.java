@@ -11,16 +11,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lucagiorgetti.surprix.R;
-import com.lucagiorgetti.surprix.SurprixApplication;
-import com.lucagiorgetti.surprix.model.Colors;
 import com.lucagiorgetti.surprix.model.ExtraLocales;
 import com.lucagiorgetti.surprix.model.Surprise;
+import com.lucagiorgetti.surprix.ui.StarRank;
 import com.lucagiorgetti.surprix.ui.mainfragments.filter.ChipFilters;
 import com.lucagiorgetti.surprix.ui.mainfragments.filter.FilterType;
 import com.lucagiorgetti.surprix.utility.SystemUtils;
@@ -111,35 +109,7 @@ public class SurpriseRecyclerAdapter extends ListAdapter<Surprise, SurpriseRecyc
         }
 
         Integer rarity = surp.getIntRarity();
-        holder.vStar1On.setVisibility(View.GONE);
-        holder.vStar2On.setVisibility(View.GONE);
-        holder.vStar3On.setVisibility(View.GONE);
-        holder.vStar1Off.setVisibility(View.VISIBLE);
-        holder.vStar2Off.setVisibility(View.VISIBLE);
-        holder.vStar3Off.setVisibility(View.VISIBLE);
-
-        if (rarity != null) {
-            switch (rarity) {
-                case 1:
-                    holder.vStar1On.setVisibility(View.VISIBLE);
-                    holder.vStar1Off.setVisibility(View.GONE);
-                    break;
-                case 2:
-                    holder.vStar1On.setVisibility(View.VISIBLE);
-                    holder.vStar2On.setVisibility(View.VISIBLE);
-                    holder.vStar1Off.setVisibility(View.GONE);
-                    holder.vStar2Off.setVisibility(View.GONE);
-                    break;
-                case 3:
-                    holder.vStar1On.setVisibility(View.VISIBLE);
-                    holder.vStar2On.setVisibility(View.VISIBLE);
-                    holder.vStar3On.setVisibility(View.VISIBLE);
-                    holder.vStar1Off.setVisibility(View.GONE);
-                    holder.vStar2Off.setVisibility(View.GONE);
-                    holder.vStar3Off.setVisibility(View.GONE);
-                    break;
-            }
-        }
+        holder.vStar.setValue(rarity);
     }
 
     public Surprise getItemAtPosition(int position) {
@@ -227,12 +197,7 @@ public class SurpriseRecyclerAdapter extends ListAdapter<Surprise, SurpriseRecyc
         TextView vNation;
         TextView delete;
         ImageView vImage;
-        ImageView vStar1On;
-        ImageView vStar2On;
-        ImageView vStar3On;
-        ImageView vStar1Off;
-        ImageView vStar2Off;
-        ImageView vStar3Off;
+        StarRank vStar;
         Button vBtnOwners;
 
         SurpViewHolder(View v) {
@@ -243,12 +208,7 @@ public class SurpriseRecyclerAdapter extends ListAdapter<Surprise, SurpriseRecyc
             vProducer = v.findViewById(R.id.txv_surp_elem_producer);
             vNation = v.findViewById(R.id.txv_surp_elem_nation);
             vImage = v.findViewById(R.id.img_surp_elem);
-            vStar1On = v.findViewById(R.id.img_surp_elem_star_1_on);
-            vStar2On = v.findViewById(R.id.img_surp_elem_star_2_on);
-            vStar3On = v.findViewById(R.id.img_surp_elem_star_3_on);
-            vStar1Off = v.findViewById(R.id.img_surp_elem_star_1_off);
-            vStar2Off = v.findViewById(R.id.img_surp_elem_star_2_off);
-            vStar3Off = v.findViewById(R.id.img_surp_elem_star_3_off);
+            vStar = v.findViewById(R.id.star_rank);
             vBtnOwners = v.findViewById(R.id.show_owners);
             delete = v.findViewById(R.id.delete);
         }

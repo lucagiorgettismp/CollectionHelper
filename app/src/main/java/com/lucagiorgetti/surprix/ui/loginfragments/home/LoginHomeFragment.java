@@ -111,7 +111,7 @@ public class LoginHomeFragment extends BaseFragment {
             try {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
-                Timber.d("firebaseAuthWithGoogle:" + account.getId());
+                Timber.d("firebaseAuthWithGoogle:%s", account.getId());
                 LoginFlowHelper.loginWithGoogle(getActivity(), account.getIdToken(), new CallbackWithExceptionInterface() {
                     @Override
                     public void onStart() {

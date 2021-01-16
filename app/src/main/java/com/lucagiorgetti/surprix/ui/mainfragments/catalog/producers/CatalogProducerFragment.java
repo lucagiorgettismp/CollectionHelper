@@ -31,12 +31,14 @@ public class CatalogProducerFragment extends BaseProducerFragment {
         );
 
         producerViewModel.getProducers(CatalogNavigationMode.CATALOG).observe(getViewLifecycleOwner(), producers -> {
+            emptyList.setVisibility(producers == null || producers.isEmpty() ? View.VISIBLE : View.GONE);
             mAdapter.setYears(producers);
             mAdapter.notifyDataSetChanged();
         });
 
         producerViewModel.isLoading().observe(getViewLifecycleOwner(), isLoading -> {
             if (isLoading) {
+                emptyList.setVisibility(View.GONE);
                 showLoading();
             } else {
                 hideLoading();

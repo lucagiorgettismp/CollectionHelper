@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".ui.mainfragments.catalog.search.SearchFragment">
 
@@ -22,11 +22,11 @@
             app:iconifiedByDefault="false" />
 
         <TextView
+            style="@style/TextAppearance.Surprix.Body2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/search_between"
-            android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:textColor="@color/white" />
 
         <RadioGroup
             android:id="@+id/search_radio_group"
@@ -37,24 +37,23 @@
 
             <RadioButton
                 android:id="@+id/search_radio_surprise"
+                style="@style/TextAppearance.Surprix.Body2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/surprises"
-                android:textColor="@color/white"
                 android:buttonTint="@color/radio_btn_white_tint"
-                android:textSize="16sp" />
+                android:text="@string/surprises"
+                android:textColor="@color/white" />
 
             <RadioButton
                 android:id="@+id/search_radio_sets"
+                style="@style/TextAppearance.Surprix.Body2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="@string/sets"
-                android:textColor="@color/white"
                 android:buttonTint="@color/radio_btn_white_tint"
-                android:textSize="16sp" />
+                android:text="@string/sets"
+                android:textColor="@color/white" />
         </RadioGroup>
-
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView

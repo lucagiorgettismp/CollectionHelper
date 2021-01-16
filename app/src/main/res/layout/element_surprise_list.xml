@@ -3,6 +3,7 @@
 
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="8dp"
@@ -28,9 +29,9 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_marginBottom="8dp"
                 android:layout_weight="25"
                 app:cardBackgroundColor="@color/white"
-                android:layout_marginBottom="8dp"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="0dp">
 
@@ -56,14 +57,14 @@
 
                     <TextView
                         android:id="@+id/txv_surp_elem_desc"
+                        style="@style/TextAppearance.Surprix.Headline6"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:lineSpacingMultiplier="0.9"
                         android:text="Description"
                         android:textColor="@color/titleColor"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:lineSpacingMultiplier="0.7"/>
+                        tools:ignore="HardcodedText" />
 
                     <TextView
                         android:id="@+id/delete"
@@ -74,35 +75,37 @@
                         android:text="X"
                         android:textColor="@color/titleColor"
                         android:textSize="14sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        tools:ignore="HardcodedText" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="4dp"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:weightSum="100">
+                    android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/txv_surp_elem_set"
+                        style="@style/TextAppearance.Surprix.Body1Bold"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="70"
+                        android:layout_weight="1"
+                        android:lineSpacingMultiplier="0.9"
                         android:text="TextView"
                         android:textColor="@color/cardTextColor"
-                        android:textStyle="bold" />
+                        tools:ignore="HardcodedText" />
 
                     <TextView
                         android:id="@+id/txv_surp_elem_year"
-                        android:layout_width="0dp"
+                        style="@style/TextAppearance.Surprix.Body1Condensed"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="30"
-                        android:text="TextView"
                         android:textAlignment="textEnd"
+                        android:layout_gravity="end|bottom"
+                        android:text="2020/2021"
                         android:textColor="@color/cardTextColor"
-                        android:textStyle="bold" />
+                        tools:ignore="HardcodedText" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -113,119 +116,53 @@
 
                     <TextView
                         android:id="@+id/txv_surp_elem_producer"
+                        style="@style/TextAppearance.Surprix.Body1"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="70"
                         android:text="TextView"
-                        android:textColor="@color/cardTextColor" />
+                        android:textColor="@color/cardTextColor"
+                        tools:ignore="HardcodedText" />
 
                     <TextView
                         android:id="@+id/txv_surp_elem_nation"
+                        style="@style/TextAppearance.Surprix.Body1"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="30"
                         android:text="TextView"
                         android:textAlignment="textEnd"
-                        android:textColor="@color/cardTextColor" />
+                        android:textColor="@color/cardTextColor"
+                        tools:ignore="HardcodedText" />
                 </LinearLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-                    <LinearLayout
+
+                    <com.lucagiorgetti.surprix.ui.StarRank
+                        android:id="@+id/star_rank"
                         android:layout_width="wrap_content"
-                        android:layout_height="35dp"
-                        android:orientation="horizontal"
+                        android:layout_height="wrap_content"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <ImageView
-                            android:id="@+id/img_surp_elem_star_1_on"
-                            android:layout_width="22dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="4dp"
-                            android:visibility="gone"
-                            app:srcCompat="@drawable/ic_star_full"
-                            app:tint="@color/surpriseActionAccent" />
-
-                        <ImageView
-                            android:id="@+id/img_surp_elem_star_1_off"
-                            android:layout_width="22dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginEnd="4dp"
-                            app:srcCompat="@drawable/ic_star_empty"
-                            app:tint="@color/surpriseActionAccent" />
-
-                        <ImageView
-                            android:id="@+id/img_surp_elem_star_2_on"
-                            android:layout_width="22dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="4dp"
-                            android:visibility="gone"
-                            app:srcCompat="@drawable/ic_star_full"
-                            app:tint="@color/surpriseActionAccent" />
-
-                        <ImageView
-                            android:id="@+id/img_surp_elem_star_2_off"
-                            android:layout_width="22dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginEnd="4dp"
-                            app:srcCompat="@drawable/ic_star_empty"
-                            app:tint="@color/surpriseActionAccent" />
-
-                        <ImageView
-                            android:id="@+id/img_surp_elem_star_3_on"
-                            android:layout_width="22dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="4dp"
-                            android:visibility="gone"
-                            app:srcCompat="@drawable/ic_star_full"
-                            app:tint="@color/surpriseActionAccent" />
-
-                        <ImageView
-                            android:id="@+id/img_surp_elem_star_3_off"
-                            android:layout_width="22dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginEnd="4dp"
-                            app:srcCompat="@drawable/ic_star_empty"
-                            app:tint="@color/surpriseActionAccent" />
-                    </LinearLayout>
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/show_owners"
-                        style="?attr/borderlessButtonStyle"
+                        style="@style/TextAppearance.Surprix.Button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="5"
                         android:text="@string/find"
-                        app:iconTint="@color/surpriseActionAccent"
                         android:textColor="@color/surpriseActionAccent"
                         app:icon="@drawable/ic_search"
+                        app:iconTint="@color/surpriseActionAccent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="100">
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:orientation="horizontal"
-            android:visibility="gone"
-            android:weightSum="1">
-        </LinearLayout>
-
     </LinearLayout>
-
 </androidx.cardview.widget.CardView>
 

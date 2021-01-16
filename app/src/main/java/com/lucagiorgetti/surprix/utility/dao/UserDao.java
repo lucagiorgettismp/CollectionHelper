@@ -1,9 +1,11 @@
 package com.lucagiorgetti.surprix.utility.dao;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -107,11 +109,41 @@ public class UserDao {
 
     public static void newCreateUser(String email, String username, String nation, LoginFlowHelper.AuthMode authMode) {
         String emailCod = email.replaceAll("\\.", ",");
-        User user = new User(emailCod, username, nation); //ObjectClass for Users
+        User user = new User(emailCod, username, nation, authMode); //ObjectClass for Users
         users.child(username).setValue(user);
     }
 
-    public static void addUid(String uid, String username, LoginFlowHelper.AuthMode authMode) {
-        uids.child(uid).setValue(new Uid(uid, username, authMode));
+    public static void addUid(Uid uid) {
+        uids.child(uid.getUid()).setValue(uid);
+    }
+
+    public void fixUsers() {
+        uids.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Uid uid = (Uid) snapshot.getValue(Uid.class);
+                users.child(uid.getUsername()).child("provider").setValue(uid.getProvider());
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }

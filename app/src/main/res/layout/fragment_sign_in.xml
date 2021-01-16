@@ -6,75 +6,80 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".ui.loginfragments.signin.SignInFragment">
+
     <ImageView
-        android:layout_above="@id/form_layout"
         android:layout_width="match_parent"
         android:layout_height="100dp"
+        android:layout_above="@id/form_layout"
         android:layout_marginBottom="20dp"
-        app:tint="@color/logo"
-        app:srcCompat="@drawable/ic_logo" />
+        android:contentDescription="@string/app_logo"
+        app:srcCompat="@drawable/ic_logo"
+        app:tint="@color/logo" />
 
     <LinearLayout
         android:id="@+id/form_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
         android:background="@color/white"
-        android:padding="20dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="20dp">
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/UserFormEditText"
-            app:startIconTint="@color/signUpIcon"
-            app:startIconDrawable="@drawable/ic_mail">
+            app:startIconDrawable="@drawable/ic_mail"
+            app:startIconTint="@color/signUpIcon">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/sign_in_email"
-                android:hint="@string/email"
-                android:textColor="@color/textColor"
-                android:textColorHint="@color/hintTextColor"
-                android:inputType="textEmailAddress"
+                style="@style/TextAppearance.Surprix.Body1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/textColor"
+                android:textColorHint="@color/hintTextColor" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/UserFormEditText"
-            app:endIconTint="@color/signUpIcon"
             app:endIconMode="password_toggle"
-            app:startIconTint="@color/signUpIcon"
-            app:startIconDrawable="@drawable/ic_key">
+            app:endIconTint="@color/signUpIcon"
+            app:startIconDrawable="@drawable/ic_key"
+            app:startIconTint="@color/signUpIcon">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/sign_in_password"
-                android:hint="@string/password"
-                android:textColor="@color/textColor"
-                android:textColorHint="@color/hintTextColor"
-                android:inputType="textPassword"
+                style="@style/TextAppearance.Surprix.Body1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:hint="@string/password"
+                android:inputType="textPassword"
+                android:textColor="@color/textColor"
+                android:textColorHint="@color/hintTextColor" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/login_button"
+            style="@style/TextAppearance.Surprix.ButtonPlain"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="4dp"
-            android:textAllCaps="false"
             android:text="@string/login"
-            android:textColor="@android:color/background_light"/>
+            android:textColor="@android:color/background_light" />
 
         <TextView
             android:id="@+id/login_forgot_password"
+            style="@style/TextAppearance.Surprix.Body1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
             android:layout_gravity="center_horizontal"
-            android:textColor="@color/btnImportantBackground"
-            android:text="@string/forgot_yout_password"/>
+            android:layout_marginTop="4dp"
+            android:text="@string/forgot_yout_password"
+            android:textColor="@color/btnImportantBackground" />
     </LinearLayout>
 </RelativeLayout>

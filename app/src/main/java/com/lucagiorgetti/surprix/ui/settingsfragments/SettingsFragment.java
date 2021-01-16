@@ -25,7 +25,7 @@ import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.listenerInterfaces.CallbackInterface;
 import com.lucagiorgetti.surprix.model.User;
-import com.lucagiorgetti.surprix.ui.activities.LoginActivity;
+import com.lucagiorgetti.surprix.utility.LoginFlowHelper;
 import com.lucagiorgetti.surprix.utility.SystemUtils;
 import com.lucagiorgetti.surprix.utility.dao.UserDao;
 import com.mikelau.countrypickerx.CountryPickerDialog;
@@ -33,6 +33,7 @@ import com.mikelau.countrypickerx.CountryPickerDialog;
 public class SettingsFragment extends PreferenceFragmentCompat {
 
     private Activity activity;
+    private User user;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,6 +46,8 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.surprix_preferences, rootKey);
+
+        user = SurprixApplication.getInstance().getCurrentUser();
 
         Preference privacyPolicy = findPreference(getResources().getString(R.string.settings_privacy_key));
         Preference contactUs = findPreference(getResources().getString(R.string.settings_contact_us_key));
@@ -78,7 +81,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         }
 
         if (countryEdit != null) {
-            User user = SurprixApplication.getInstance().getCurrentUser();
             countryEdit.setSummary(user.getCountry());
 
             countryEdit.setOnPreferenceClickListener(preference -> {
@@ -128,56 +130,59 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         }
 
         if (changePassword != null) {
-            changePassword.setOnPreferenceClickListener(preference -> {
-                final View view = getLayoutInflater().inflate(R.layout.dialog_change_password, null);
+            if (LoginFlowHelper.AuthMode.fromString(user.getProvider()).equals(LoginFlowHelper.AuthMode.EMAIL_PASSWORD)){
+                changePassword.setOnPreferenceClickListener(preference -> {
+                    final View view = getLayoutInflater().inflate(R.layout.dialog_change_password, null);
 
-                final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-                builder.setView(view);
-                builder.setTitle(R.string.change_password);
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                    builder.setView(view);
+                    builder.setTitle(R.string.change_password);
 
-                final EditText oldPassword = view.findViewById(R.id.edt_dialog_old_pwd);
-                final EditText newPassword = view.findViewById(R.id.edt_dialog_new_pwd);
-                Button btnChangePwd = view.findViewById(R.id.btn_dialog_submit);
+                    final EditText oldPassword = view.findViewById(R.id.edt_dialog_old_pwd);
+                    final EditText newPassword = view.findViewById(R.id.edt_dialog_new_pwd);
+                    Button btnChangePwd = view.findViewById(R.id.btn_dialog_submit);
 
-                final AlertDialog changePwd = builder.create();
+                    final AlertDialog changePwd = builder.create();
 
-                changePwd.show();
-                btnChangePwd.setOnClickListener(v -> {
-                    String oldPwd = oldPassword.getText().toString().trim();
-                    final String newPwd = newPassword.getText().toString().trim();
+                    changePwd.show();
+                    btnChangePwd.setOnClickListener(v -> {
+                        String oldPwd = oldPassword.getText().toString().trim();
+                        final String newPwd = newPassword.getText().toString().trim();
 
-                    final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-                    String email;
-                    if (user != null) {
-                        email = user.getEmail();
-                        if (email != null) {
-                            if (!oldPwd.equals("") && !newPwd.equals("")) {
-                                AuthCredential credential = EmailAuthProvider.getCredential(email, oldPwd);
-                                user.reauthenticate(credential).addOnCompleteListener(task -> {
-                                    if (task.isSuccessful()) {
-                                        user.updatePassword(newPwd).addOnCompleteListener(task1 -> {
-                                            if (!task1.isSuccessful()) {
-                                                Toast.makeText(getContext(), R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
-                                            } else {
-                                                Toast.makeText(getContext(), R.string.password_changed, Toast.LENGTH_SHORT).show();
-                                            }
-                                        });
-                                        changePwd.dismiss();
+                        String email;
+                        if (user != null) {
+                            email = user.getEmail();
+                            if (email != null) {
+                                if (!oldPwd.equals("") && !newPwd.equals("")) {
+                                    AuthCredential credential = EmailAuthProvider.getCredential(email, oldPwd);
+                                    user.reauthenticate(credential).addOnCompleteListener(task -> {
+                                        if (task.isSuccessful()) {
+                                            user.updatePassword(newPwd).addOnCompleteListener(task1 -> {
+                                                if (!task1.isSuccessful()) {
+                                                    Toast.makeText(getContext(), R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
+                                                } else {
+                                                    Toast.makeText(getContext(), R.string.password_changed, Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                            changePwd.dismiss();
 
-                                    } else {
-                                        Toast.makeText(getContext(), R.string.old_password_wrong, Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                            } else {
-                                Toast.makeText(getContext(), R.string.password_cannot_be_null, Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            Toast.makeText(getContext(), R.string.old_password_wrong, Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                } else {
+                                    Toast.makeText(getContext(), R.string.password_cannot_be_null, Toast.LENGTH_SHORT).show();
+                                }
                             }
                         }
-                    }
+                    });
+                    return false;
                 });
-                return false;
-            });
+            } else {
+                changePassword.setVisible(false);
+            }
         }
-
     }
 }
