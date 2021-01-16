@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements ForceUpdateChecke
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        ForceUpdateChecker.with(this).onUpdateNeeded(this).check();
+        //ForceUpdateChecker.with(this).onUpdateNeeded(this).check();
 
         NavController navController = Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(MainActivity.this, navController, appBarConfiguration);
