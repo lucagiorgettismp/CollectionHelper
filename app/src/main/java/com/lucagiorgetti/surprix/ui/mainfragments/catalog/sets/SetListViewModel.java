@@ -26,8 +26,8 @@ public class SetListViewModel extends BaseViewModel {
     MutableLiveData<List<CatalogSet>> getSets(String yearId, String producerId, CatalogNavigationMode mode) {
         if (allSets == null) {
             allSets = new MutableLiveData<>();
+            loadSets(yearId, producerId, mode);
         }
-        loadSets(yearId, producerId, mode);
         return allSets;
     }
 

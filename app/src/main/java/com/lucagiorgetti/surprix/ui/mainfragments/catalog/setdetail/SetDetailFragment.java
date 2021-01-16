@@ -8,6 +8,7 @@ import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.listenerInterfaces.CallbackInterface;
 import com.lucagiorgetti.surprix.model.Surprise;
 import com.lucagiorgetti.surprix.ui.mainfragments.catalog.CatalogNavigationMode;
+import com.lucagiorgetti.surprix.ui.mainfragments.catalog.sets.SharedViewModel;
 import com.lucagiorgetti.surprix.utility.dao.CollectionDao;
 import com.lucagiorgetti.surprix.utility.dao.DoubleListDao;
 import com.lucagiorgetti.surprix.utility.dao.MissingListDao;
@@ -64,6 +65,7 @@ public class SetDetailFragment extends BaseSetDetailFragment {
                             });
                         }
                     });
+
                     break;
                 case COLLECTION:
                     mAdapter = new CollectionSetDetailRecyclerAdapter();
@@ -93,6 +95,8 @@ public class SetDetailFragment extends BaseSetDetailFragment {
                 (dialog, which) -> {
                     alertDialog.dismiss();
                     collectionDao.addSetInCollection(setId);
+                    SharedViewModel sharedViewModel = new ViewModelProvider(getActivity()).get(SharedViewModel.class);
+                    sharedViewModel.setChecked(true);
                     addSurpriseToMissingList(surprise);
                 });
         alertDialog.setButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE, getString(R.string.discard_btn),
