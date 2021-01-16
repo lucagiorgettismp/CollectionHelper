@@ -103,9 +103,11 @@ public class SetListFragment extends BaseSetListFragment {
             }
         });
 
-        sharedViewModel.getChecked().observe(getViewLifecycleOwner(), checked -> {
-            mAdapter.notifyItemChecked(sharedViewModel.getPosition(), checked);
-        });
+        if (navigationMode.equals(CatalogNavigationMode.CATALOG)) {
+            sharedViewModel.getChecked().observe(getViewLifecycleOwner(), checked -> {
+                mAdapter.notifyItemChecked(sharedViewModel.getPosition(), checked);
+            });
+        }
     }
 
     @Override
@@ -191,8 +193,10 @@ public class SetListFragment extends BaseSetListFragment {
 
             @Override
             public void onSetClicked(Set set, int position) {
+                if (navigationMode.equals(CatalogNavigationMode.CATALOG)) {
+                    sharedViewModel.setPosition(position);
+                }
 
-                sharedViewModel.setPosition(position);
                 SetListFragmentDirections.SetSelectedAction action = SetListFragmentDirections.setSelectedAction(set.getId(), set.getName(), navigationMode);
                 Navigation.findNavController(getView()).navigate(action);
                 SystemUtils.closeKeyboard(getActivity());
