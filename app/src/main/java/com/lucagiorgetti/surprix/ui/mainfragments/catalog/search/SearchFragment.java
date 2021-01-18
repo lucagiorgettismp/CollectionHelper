@@ -11,7 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lucagiorgetti.surprix.R;
@@ -45,7 +45,7 @@ public class SearchFragment extends BaseFragment {
         RadioGroup radioGroup = root.findViewById(R.id.search_radio_group);
         recyclerView = root.findViewById(R.id.search_recycler_view);
         recyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), SystemUtils.getColumnsNumber(recyclerView));
         recyclerView.setLayoutManager(layoutManager);
 
         searchSurpriseRecyclerAdapter = new SurpriseRecyclerAdapter(SurpriseListType.SEARCH);

@@ -1,5 +1,6 @@
 package com.lucagiorgetti.surprix.ui.mainfragments.surpriseList;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -10,8 +11,8 @@ import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -22,6 +23,7 @@ import com.lucagiorgetti.surprix.ui.mainfragments.filter.ChipFilters;
 import com.lucagiorgetti.surprix.ui.mainfragments.filter.FilterBottomSheetListener;
 import com.lucagiorgetti.surprix.ui.mainfragments.filter.SurpriseFilterBSDFragment;
 import com.lucagiorgetti.surprix.utility.BaseFragment;
+import com.lucagiorgetti.surprix.utility.SystemUtils;
 
 public abstract class BaseSurpriseListFragment extends BaseFragment {
     public SurpriseRecyclerAdapter mAdapter;
@@ -44,7 +46,7 @@ public abstract class BaseSurpriseListFragment extends BaseFragment {
         setProgressBar(progress);
         RecyclerView recyclerView = root.findViewById(R.id.double_recycler);
         recyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), SystemUtils.getColumnsNumber(recyclerView));
         recyclerView.setLayoutManager(layoutManager);
 
         swipeRefreshLayout = root.findViewById(R.id.swipe_refresh);

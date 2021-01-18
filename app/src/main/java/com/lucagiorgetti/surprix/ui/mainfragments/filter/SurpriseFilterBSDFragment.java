@@ -5,9 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 
 import androidx.annotation.Nullable;
 
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.chip.ChipGroup;
 import com.lucagiorgetti.surprix.R;
@@ -63,5 +66,15 @@ public class SurpriseFilterBSDFragment extends BottomSheetDialogFragment {
             }
         }
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        BottomSheetDialog dialog = (BottomSheetDialog) getDialog();
+        FrameLayout bottomSheet = dialog.findViewById(com.google.android.material.R.id.design_bottom_sheet);
+        BottomSheetBehavior behavior = BottomSheetBehavior.from(bottomSheet);
+        behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
     }
 }

@@ -9,12 +9,13 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.utility.BaseFragment;
+import com.lucagiorgetti.surprix.utility.SystemUtils;
 
 public abstract class BaseProducerFragment extends BaseFragment {
     ProducerRecyclerAdapter mAdapter;
@@ -39,7 +40,7 @@ public abstract class BaseProducerFragment extends BaseFragment {
 
         recyclerView = root.findViewById(R.id.catalog_recycler);
         recyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), SystemUtils.getColumnsNumber(recyclerView));
         recyclerView.setLayoutManager(layoutManager);
         mAdapter = new ProducerRecyclerAdapter();
         recyclerView.setAdapter(mAdapter);

@@ -10,13 +10,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.model.User;
 import com.lucagiorgetti.surprix.utility.BaseFragment;
+import com.lucagiorgetti.surprix.utility.SystemUtils;
 
 public class MissingOwnersFragment extends BaseFragment {
 
@@ -39,7 +40,7 @@ public class MissingOwnersFragment extends BaseFragment {
             mViewModel.loadOwners(surpriseId);
         });
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), SystemUtils.getColumnsNumber(recyclerView)));
         MissingOwnersAdapter adapter = new MissingOwnersAdapter();
         adapter.setListener(new MyClickListener(root));
 

@@ -8,11 +8,12 @@ import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.utility.BaseFragment;
+import com.lucagiorgetti.surprix.utility.SystemUtils;
 
 public abstract class BaseYearFragment extends BaseFragment {
     RecyclerView recyclerView;
@@ -28,7 +29,7 @@ public abstract class BaseYearFragment extends BaseFragment {
 
         recyclerView = root.findViewById(R.id.year_recycler);
         recyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), SystemUtils.getColumnsNumber(recyclerView));
         recyclerView.setLayoutManager(layoutManager);
         mAdapter = new YearRecyclerAdapter();
         recyclerView.setAdapter(mAdapter);
