@@ -286,6 +286,7 @@ public class LoginFlowHelper {
     }
 
     private static void completeUserCreation(String uid, String username, String email, String country, AuthMode authMode, CallbackWithExceptionInterface flowListener) {
+        flowListener.onStart();
         Uid uidModel = new Uid(uid, username, authMode);
         UserDao.addUid(uidModel);
         UserDao.newCreateUser(email, username, country, authMode);
