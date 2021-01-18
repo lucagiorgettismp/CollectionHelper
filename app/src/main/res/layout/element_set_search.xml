@@ -73,6 +73,7 @@
                 android:layout_weight="35"
                 android:gravity="bottom"
                 android:orientation="vertical"
+                android:layout_marginStart="4dp"
                 android:textSize="16sp">
 
                 <TextView

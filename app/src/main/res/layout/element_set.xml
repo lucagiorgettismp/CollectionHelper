@@ -78,6 +78,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/my_collection"
+                    android:layout_marginStart="4dp"
                     android:textAlignment="textEnd" />
 
                 <com.google.android.material.switchmaterial.SwitchMaterial

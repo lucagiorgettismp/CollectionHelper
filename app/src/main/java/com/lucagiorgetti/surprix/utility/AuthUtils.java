@@ -15,6 +15,7 @@ public class AuthUtils {
     private static final FirebaseAuth fireAuth = FirebaseAuth.getInstance();
 
     public static void sendPasswordResetEmail(String email, CallbackInterface<Boolean> listener) {
+        listener.onStart();
         FirebaseAuth.getInstance().sendPasswordResetEmail(email)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -26,6 +27,7 @@ public class AuthUtils {
     }
 
     public static void signInWithEmailAndPassword(Activity activity, String email, String pwd, CallbackInterface<FirebaseUser> listener) {
+        listener.onStart();
         fireAuth.signInWithEmailAndPassword(email, pwd).addOnCompleteListener(activity, task -> {
             if (!task.isSuccessful()) {
                 listener.onFailure();
@@ -36,6 +38,7 @@ public class AuthUtils {
     }
 
     public static void createUserWithEmailAndPassword(Activity activity, String email, String password, CallbackWithExceptionInterface listener) {
+        listener.onStart();
         fireAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(activity, task -> {
                     if (!task.isSuccessful()) {

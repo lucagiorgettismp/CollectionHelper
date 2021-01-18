@@ -13,7 +13,7 @@ import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -25,6 +25,7 @@ import com.lucagiorgetti.surprix.model.User;
 import com.lucagiorgetti.surprix.ui.mainfragments.surpriseList.SurpriseListType;
 import com.lucagiorgetti.surprix.ui.mainfragments.surpriseList.SurpriseRecyclerAdapter;
 import com.lucagiorgetti.surprix.utility.BaseFragment;
+import com.lucagiorgetti.surprix.utility.SystemUtils;
 
 import java.util.List;
 import java.util.Locale;
@@ -47,7 +48,7 @@ public class OtherForYouFragment extends BaseFragment {
         SwipeRefreshLayout swipeRefreshLayout = root.findViewById(R.id.swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(() -> mViewModel.loadOtherForYou(ownerUsername));
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), SystemUtils.getColumnsNumber(recyclerView)));
         SurpriseRecyclerAdapter adapter = new SurpriseRecyclerAdapter(SurpriseListType.SEARCH);
         recyclerView.setAdapter(adapter);
 

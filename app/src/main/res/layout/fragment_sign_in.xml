@@ -18,7 +18,8 @@
 
     <LinearLayout
         android:id="@+id/form_layout"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
+        android:minWidth="500dp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
@@ -26,6 +27,7 @@
         android:layout_marginEnd="20dp"
         android:background="@color/white"
         android:orientation="vertical"
+        android:gravity="center"
         android:padding="20dp">
 
         <com.google.android.material.textfield.TextInputLayout
@@ -65,7 +67,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/login_button"
             style="@style/TextAppearance.Surprix.ButtonPlain"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="4dp"
@@ -82,4 +84,16 @@
             android:text="@string/forgot_yout_password"
             android:textColor="@color/btnImportantBackground" />
     </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/form_layout"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal|center"
+        android:layout_marginTop="32dp"
+        android:indeterminateTint="@color/white"
+        android:visibility="invisible" />
 </RelativeLayout>

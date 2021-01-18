@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -14,6 +15,7 @@ import android.widget.ImageView;
 
 import androidx.appcompat.widget.SearchView;
 import androidx.preference.PreferenceManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -210,5 +212,9 @@ public class SystemUtils {
         mCloseButton.setColorFilter(SurprixApplication.getSurprixContext().getResources().getColor(R.color.white));
         mSearchButton.setColorFilter(SurprixApplication.getSurprixContext().getResources().getColor(R.color.white));
         zxc.setBackgroundColor(Color.TRANSPARENT);
+    }
+
+    public static int getColumnsNumber(RecyclerView recyclerView) {
+        return recyclerView.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT ? 1 : 2;
     }
 }

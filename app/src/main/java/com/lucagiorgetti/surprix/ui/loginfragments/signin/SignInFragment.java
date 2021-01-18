@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -70,6 +71,8 @@ public class SignInFragment extends BaseFragment {
         resetDialog.show();
 
         resetBtn.setOnClickListener(v -> {
+            SystemUtils.closeKeyboard(getActivity());
+
             if (inEmail == null || inEmail.getText().toString().equals("")) {
                 Toast.makeText(getContext(), R.string.signup_complete_all_fields, Toast.LENGTH_SHORT).show();
             } else {
@@ -101,6 +104,8 @@ public class SignInFragment extends BaseFragment {
     private class LoginOnClick implements View.OnClickListener {
         @Override
         public void onClick(View view) {
+            SystemUtils.closeKeyboard(getActivity());
+
             if (!SystemUtils.checkNetworkAvailability()) {
                 Toast.makeText(getApplicationContext(), R.string.network_unavailable, Toast.LENGTH_SHORT).show();
                 return;

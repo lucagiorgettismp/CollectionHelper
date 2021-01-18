@@ -7,12 +7,13 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.utility.BaseFragment;
+import com.lucagiorgetti.surprix.utility.SystemUtils;
 
 public abstract class BaseSetListFragment extends BaseFragment {
     SetRecyclerAdapter mAdapter;
@@ -29,7 +30,7 @@ public abstract class BaseSetListFragment extends BaseFragment {
 
         recyclerView = root.findViewById(R.id.set_recycler);
         recyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), SystemUtils.getColumnsNumber(recyclerView));
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(mAdapter);
 

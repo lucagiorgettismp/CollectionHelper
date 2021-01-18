@@ -103,6 +103,7 @@
                         android:layout_height="wrap_content"
                         android:textAlignment="textEnd"
                         android:layout_gravity="end|bottom"
+                        android:layout_marginStart="4dp"
                         android:text="2020/2021"
                         android:textColor="@color/cardTextColor"
                         tools:ignore="HardcodedText" />
@@ -131,6 +132,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="30"
                         android:text="TextView"
+                        android:layout_marginStart="4dp"
                         android:textAlignment="textEnd"
                         android:textColor="@color/cardTextColor"
                         tools:ignore="HardcodedText" />

@@ -11,6 +11,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.listenerInterfaces.CallbackInterface;
 import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseListCallback;
+import com.lucagiorgetti.surprix.model.CollectionSet;
 import com.lucagiorgetti.surprix.model.Producer;
 import com.lucagiorgetti.surprix.model.Set;
 import com.lucagiorgetti.surprix.model.Surprise;
@@ -190,7 +191,8 @@ public class CollectionDao {
     }
 
     public void addSetInCollection(Set set) {
-        collectionRef.child("producers").child(set.getProducer_id()).child("years").child(set.getYear_id()).child("sets").child(set.getId()).setValue(true);
+        CollectionSet collectionSet = new CollectionSet(set.getId());
+        collectionRef.child("producers").child(set.getProducer_id()).child("years").child(set.getYear_id()).child("sets").child(set.getId()).setValue(collectionSet);
     }
 
     public void addSetInCollection(String setId) {
@@ -303,8 +305,7 @@ public class CollectionDao {
         }, surpId);
     }
 
-    public void getSetItemsWithMissing(String
-                                               setId, FirebaseListCallback<CollectionSurprise> listen) {
+    public void getSetItemsWithMissing(String setId, FirebaseListCallback<CollectionSurprise> listen) {
         final ArrayList<CollectionSurprise> surprises = new ArrayList<>();
 
         setsRef.child(setId).child("surprises").addChildEventListener(new ChildEventListener() {
