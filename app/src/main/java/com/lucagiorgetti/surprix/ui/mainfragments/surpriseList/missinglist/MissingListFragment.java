@@ -19,6 +19,7 @@ import com.lucagiorgetti.surprix.ui.mainfragments.surpriseList.BaseSurpriseListF
 import com.lucagiorgetti.surprix.ui.mainfragments.surpriseList.MissingRecyclerAdapterListener;
 import com.lucagiorgetti.surprix.ui.mainfragments.surpriseList.SurpriseListType;
 import com.lucagiorgetti.surprix.ui.mainfragments.surpriseList.SurpriseRecyclerAdapter;
+import com.lucagiorgetti.surprix.utility.dao.CollectionDao;
 import com.lucagiorgetti.surprix.utility.dao.MissingListDao;
 import com.lucagiorgetti.surprix.utility.dao.UserDao;
 
