@@ -1,6 +1,5 @@
 package com.lucagiorgetti.surprix.ui.mainfragments.catalog.search;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,14 +14,12 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lucagiorgetti.surprix.R;
-import com.lucagiorgetti.surprix.SurprixApplication;
-import com.lucagiorgetti.surprix.model.ExtraLocales;
+import com.lucagiorgetti.surprix.model.SurprixLocales;
 import com.lucagiorgetti.surprix.model.Set;
 import com.lucagiorgetti.surprix.utility.SystemUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Adapter for showing a list of Sets.
@@ -61,14 +58,8 @@ public class SearchSetRecyclerAdapter extends ListAdapter<Set, SearchSetRecycler
         Set set = getItem(position);
         holder.vName.setText(set.getName());
 
-        String nation;
-        if (ExtraLocales.isExtraLocale(set.getNation())) {
-            nation = ExtraLocales.getDisplayName(set.getNation());
-        } else {
-            Locale l = new Locale("", set.getNation());
-            nation = l.getDisplayCountry();
-        }
-        holder.vNation.setText(nation);
+        holder.vNation.setText(SurprixLocales.getDisplayName(set.getNation().toLowerCase()));
+
         holder.vProducer.setText(set.getProducer_name());
         holder.vYear.setText(set.getYear_desc());
 

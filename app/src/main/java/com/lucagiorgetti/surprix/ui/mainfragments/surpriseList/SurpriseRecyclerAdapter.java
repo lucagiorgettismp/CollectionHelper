@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lucagiorgetti.surprix.R;
-import com.lucagiorgetti.surprix.model.ExtraLocales;
+import com.lucagiorgetti.surprix.model.SurprixLocales;
 import com.lucagiorgetti.surprix.model.Surprise;
 import com.lucagiorgetti.surprix.ui.StarRank;
 import com.lucagiorgetti.surprix.ui.mainfragments.filter.ChipFilters;
@@ -25,7 +25,6 @@ import com.lucagiorgetti.surprix.utility.SystemUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class SurpriseRecyclerAdapter extends ListAdapter<Surprise, SurpriseRecyclerAdapter.SurpViewHolder> implements Filterable {
     private BaseSurpriseRecyclerAdapterListener listener;
@@ -77,15 +76,7 @@ public class SurpriseRecyclerAdapter extends ListAdapter<Surprise, SurpriseRecyc
         holder.vYear.setText(surp.getSet_year_name());
         holder.vProducer.setText(surp.getSet_producer_name());
 
-        String nation;
-        if (ExtraLocales.isExtraLocale(surp.getSet_nation())) {
-            nation = ExtraLocales.getDisplayName(surp.getSet_nation());
-        } else {
-            Locale l = new Locale("", surp.getSet_nation());
-            nation = l.getDisplayCountry();
-        }
-
-        holder.vNation.setText(nation);
+        holder.vNation.setText(SurprixLocales.getDisplayName(surp.getSet_nation().toLowerCase()));
 
         String path = surp.getImg_path();
         SystemUtils.loadImage(path, holder.vImage, R.drawable.ic_logo_shape_primary);

@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.lucagiorgetti.surprix.R;
-import com.lucagiorgetti.surprix.model.ExtraLocales;
+import com.lucagiorgetti.surprix.model.SurprixLocales;
 import com.lucagiorgetti.surprix.model.Set;
 import com.lucagiorgetti.surprix.ui.mainfragments.catalog.CatalogNavigationMode;
 import com.lucagiorgetti.surprix.ui.mainfragments.filter.ChipFilters;
@@ -24,7 +24,6 @@ import com.lucagiorgetti.surprix.utility.SystemUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Adapter for showing a list of Sets.
@@ -74,14 +73,7 @@ public class SetRecyclerAdapter extends ListAdapter<CatalogSet, SetRecyclerAdapt
         Set set = getItem(position).getSet();
         holder.vName.setText(set.getName());
 
-        String nation;
-        if (ExtraLocales.isExtraLocale(set.getNation())) {
-            nation = ExtraLocales.getDisplayName(set.getNation());
-        } else {
-            Locale l = new Locale("", set.getNation());
-            nation = l.getDisplayCountry();
-        }
-        holder.vNation.setText(nation);
+        holder.vNation.setText(SurprixLocales.getDisplayName(set.getNation().toLowerCase()));
 
         if (navigationMode.equals(CatalogNavigationMode.COLLECTION)) {
             CatalogSet cs = getItem(position);

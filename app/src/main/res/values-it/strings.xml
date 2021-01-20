@@ -149,4 +149,26 @@
     <string name="search_in_catalog">Cerca nel catalogo</string>
     <string name="app_logo">Logo app</string>
     <string name="user_icon">Icona utente</string>
+
+    <string name="italia">Italia</string>
+    <string name="francia">Francia</string>
+    <string name="germania">Germania</string>
+    <string name="austria">Austria</string>
+    <string name="united_kingdom">Regno Unito</string>
+    <string name="portogallo">Portogallo</string>
+    <string name="svizzera">Svizzera</string>
+    <string name="spagna">Spagna</string>
+    <string name="polonia">Polonia</string>
+    <string name="russia">Russia</string>
+    <string name="cina">Cina</string>
+    <string name="giappone">Giappone</string>
+    <string name="libano">Libano</string>
+    <string name="egitto">Egitto</string>
+    <string name="india">India</string>
+    <string name="usa">USA</string>
+    <string name="canada">Canada</string>
+    <string name="argentina">Argentina</string>
+    <string name="brasile">Brasile</string>
+    <string name="messico">Messico</string>
+    <string name="sud_africa">Sud Africa</string>
 </resources>

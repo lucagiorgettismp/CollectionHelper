@@ -89,7 +89,6 @@
     <string name="title_catalog">Catalog</string>
     <string name="title_about_me">About me</string>
     <string name="title_my_collection">My Collection</string>
-
     <string name="title_activity_main" translatable="false">MainActivity</string>
     <string name="missing_removed">Missing surprise removed</string>
     <string name="surprises">Surprises</string>
@@ -98,7 +97,7 @@
     <string name="email_app_chooser">Select the e-mail app</string>
     <string name="signup_mail_existinig">The e-mail is just present in our database. Maybe you have already signed up?</string>
     <string name="signup_weak_password">The password you entered is too weak.</string>
-    <string name="signup_default_error">Something went wrong.. please try again!</string>
+    <string name="signup_default_error">Something went wrong... please try again!</string>
     <string name="username_delete_success">Username successfully deleted</string>
     <string name="cannot_send_recovery_email">Cannot send the password recovery e-mail</string>
     <string name="settings_night_mode_key" translatable="false">night_mode</string>
@@ -125,7 +124,6 @@
     <string name="compo">Composable</string>
     <string name="handpainted">Handpainted</string>
     <string name="cannot_oper_filters">No elements to be filtered</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="other">Other</string>
     <string name="north_america">North America</string>
     <string name="south_america">South America</string>
@@ -167,5 +165,25 @@
     <string name="app_logo">App logo</string>
     <string name="user_icon">User icon</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="italia">Italy</string>
+    <string name="francia">France</string>
+    <string name="germania">Germany</string>
+    <string name="austria">Austria</string>
+    <string name="united_kingdom">United Kingdom</string>
+    <string name="portogallo">Portugal</string>
+    <string name="svizzera">Switzerland</string>
+    <string name="spagna">Spain</string>
+    <string name="polonia">Poland</string>
+    <string name="russia">Russia</string>
+    <string name="cina">China</string>
+    <string name="giappone">Japan</string>
+    <string name="libano">Lebanon</string>
+    <string name="egitto">Egypt</string>
+    <string name="india">India</string>
+    <string name="usa">USA</string>
+    <string name="canada">Canada</string>
+    <string name="argentina">Argentina</string>
+    <string name="brasile">Brazil</string>
+    <string name="messico">Mexico</string>
+    <string name="sud_africa">South Africa</string>
 </resources>
