@@ -104,13 +104,8 @@ public class OtherForYouFragment extends BaseFragment {
     private void sendMail(String recipient, String subject, Spanned html_body) {
         Intent intent = new Intent(Intent.ACTION_SENDTO);
         intent.setType("message/rfc822");
-        intent.setData(Uri.parse("mailto:" + recipient));
-        if (subject != null && !subject.isEmpty()) {
-            intent.putExtra(Intent.EXTRA_SUBJECT, subject);
-        }
-        if (html_body != null && html_body.length() > 0) {
-            intent.putExtra(Intent.EXTRA_TEXT, html_body);
-        }
+        intent.setData(Uri.parse(String.format("mailto:%s?subject=%s&body=%s",recipient,subject, html_body)));
+
         startActivity(Intent.createChooser(intent, getString(R.string.email_app_chooser)));
     }
 }
