@@ -71,6 +71,16 @@ public class SearchSetRecyclerAdapter extends ListAdapter<Set, SearchSetRecycler
         return getItem(position);
     }
 
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
     void setFilterableList(List<Set> sets) {
         this.filterableList = sets;
     }

@@ -48,6 +48,16 @@ public class ProducerRecyclerAdapter extends RecyclerView.Adapter<ProducerRecycl
         return this.producers.get(position);
     }
 
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
     void setYears(List<Producer> producers) {
         this.producers = producers;
     }

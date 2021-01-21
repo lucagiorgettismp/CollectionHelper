@@ -39,6 +39,16 @@ public class CatalogSetDetailRecyclerAdapter extends BaseSetDetailAdapter<Catalo
         return this.items.get(position);
     }
 
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
     @NonNull
     @Override
     public SetDetailViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int position) {

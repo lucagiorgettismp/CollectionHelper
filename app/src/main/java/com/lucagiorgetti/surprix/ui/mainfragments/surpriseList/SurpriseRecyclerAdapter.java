@@ -108,6 +108,16 @@ public class SurpriseRecyclerAdapter extends ListAdapter<Surprise, SurpriseRecyc
     }
 
     @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    @Override
     public Filter getFilter() {
         return filter;
     }

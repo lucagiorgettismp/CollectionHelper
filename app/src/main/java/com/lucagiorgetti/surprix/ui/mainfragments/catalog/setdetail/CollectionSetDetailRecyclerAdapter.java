@@ -55,6 +55,7 @@ public class CollectionSetDetailRecyclerAdapter extends BaseSetDetailAdapter<Col
         SystemUtils.loadImage(path, holder.vImage, R.drawable.ic_logo_shape_primary);
 
         Integer rarity = s.getIntRarity();
+
         holder.vStarRank.setValue(rarity);
 
         if (items.get(position).isMissing()) {
@@ -64,6 +65,16 @@ public class CollectionSetDetailRecyclerAdapter extends BaseSetDetailAdapter<Col
             holder.miss.setVisibility(View.GONE);
             holder.check.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
     }
 
     @Override

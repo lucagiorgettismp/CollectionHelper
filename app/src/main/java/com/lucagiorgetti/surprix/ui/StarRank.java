@@ -53,6 +53,13 @@ public class StarRank extends LinearLayout {
                     star3Off.setVisibility(View.GONE);
                     break;
             }
+        } else {
+            star1Off.setVisibility(View.VISIBLE);
+            star2Off.setVisibility(View.VISIBLE);
+            star3Off.setVisibility(View.VISIBLE);
+            star1On.setVisibility(View.GONE);
+            star2On.setVisibility(View.GONE);
+            star3On.setVisibility(View.GONE);
         }
     }
 }

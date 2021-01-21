@@ -61,6 +61,16 @@ public class YearRecyclerAdapter extends RecyclerView.Adapter<YearRecyclerAdapte
         return this.years.get(position);
     }
 
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
     void setYears(List<Year> years) {
         Collections.sort(years, new Year.SortByDescYear());
         this.years = years;
