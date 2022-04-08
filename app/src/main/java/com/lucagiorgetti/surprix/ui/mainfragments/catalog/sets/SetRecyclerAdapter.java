@@ -182,8 +182,10 @@ public class SetRecyclerAdapter extends ListAdapter<CatalogSet, SetRecyclerAdapt
     }
 
     public void notifyItemChecked(int position, boolean checked) {
-        this.filterableList.get(position).setInCollection(checked);
-        notifyItemChanged(position);
+        if (filterableList != null && !filterableList.isEmpty()){
+            this.filterableList.get(position).setInCollection(checked);
+            notifyItemChanged(position);
+        }
     }
 
     static class SetViewHolder extends RecyclerView.ViewHolder {

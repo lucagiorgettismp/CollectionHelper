@@ -95,4 +95,72 @@ public class SetDao {
             }
         });
     }
+
+    public static void moveSetIntoAnother(String fromId, String toId) {
+        // get surprises by set
+        // update surprises set
+        // put surprises into set
+
+        getSetById(toId, new CallbackInterface<Set>() {
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onSuccess(Set toSet) {
+
+                sets.child(fromId).child("surprises").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            for (DataSnapshot d : dataSnapshot.getChildren()) {
+                                SurpriseDao.getSurpriseById(new CallbackInterface<Surprise>() {
+                                    @Override
+                                    public void onStart() {
+
+                                    }
+
+                                    @Override
+                                    public void onSuccess(Surprise surprise) {
+                                        surprise.setSet_name(toSet.getName());
+                                        surprise.setSet_nation(toSet.getNation());
+                                        surprise.setSet_year_id(toSet.getYear_id());
+                                        surprise.setSet_category(toSet.getCategory());
+                                        surprise.setSet_producer_color(toSet.getProducer_color());
+                                        surprise.setSet_producer_id(toSet.getProducer_id());
+                                        surprise.setSet_producer_name(toSet.getProducer_name());
+                                        surprise.setSet_year_name(toSet.getYear_desc());
+                                        surprise.setSet_year_year(toSet.getYear_year());
+
+                                        SurpriseDao.addSurprise(surprise);
+
+                                        sets.child(fromId).child("surprises").child(surprise.getId()).setValue(null);
+                                        sets.child(toId).child("surprises").child(surprise.getId()).setValue(true);
+                                    }
+
+                                    @Override
+                                    public void onFailure() {
+
+                                    }
+                                }, d.getKey());
+                            }
+                        } else {
+                            onSuccess(null);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure() {
+
+            }
+        });
+
+    }
 }

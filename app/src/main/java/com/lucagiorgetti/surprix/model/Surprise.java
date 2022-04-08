@@ -117,6 +117,42 @@ public class Surprise implements Comparable<Surprise>{
         return set_category;
     }
 
+    public void setSet_name(String set_name) {
+        this.set_name = set_name;
+    }
+
+    public void setSet_year_year(int set_year_year) {
+        this.set_year_year = set_year_year;
+    }
+
+    public void setSet_year_id(String set_year_id) {
+        this.set_year_id = set_year_id;
+    }
+
+    public void setSet_year_name(String set_year_name) {
+        this.set_year_name = set_year_name;
+    }
+
+    public void setSet_producer_name(String set_producer_name) {
+        this.set_producer_name = set_producer_name;
+    }
+
+    public void setSet_producer_id(String set_producer_id) {
+        this.set_producer_id = set_producer_id;
+    }
+
+    public void setSet_producer_color(String set_producer_color) {
+        this.set_producer_color = set_producer_color;
+    }
+
+    public void setSet_nation(String set_nation) {
+        this.set_nation = set_nation;
+    }
+
+    public void setSet_category(String set_category) {
+        this.set_category = set_category;
+    }
+
     @Override
     public int compareTo(Surprise surprise) {
         try {

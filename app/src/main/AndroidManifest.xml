@@ -28,7 +28,8 @@
             android:theme="@style/Theme.Surprix.NoActionBar" />
         <activity
             android:name=".ui.activities.SplashActivity"
-            android:theme="@style/Theme.Surprix.SplashScreenTheme">
+            android:theme="@style/Theme.Surprix.SplashScreenTheme"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
@@ -44,7 +45,6 @@
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name"
             android:theme="@style/FullyTranslucent"
             tools:replace="android:theme" />
         <activity
@@ -73,7 +73,8 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <service android:name=".service.MyFirebaseMessaging">
+        <service android:name=".service.MyFirebaseMessaging"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
