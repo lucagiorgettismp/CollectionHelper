@@ -29,15 +29,15 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:itemBackground="@drawable/navbar_item"
-        app:itemIconTint="@color/navabar_item_icon_tin"
-        app:itemTextColor="@color/navabar_item_icon_tin"
+        app:itemIconTint="@color/navabar_item_icon_tint"
+        app:itemTextColor="@color/navabar_item_icon_tint"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:labelVisibilityMode="labeled"
         app:menu="@menu/bottom_nav_menu" />
 
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="0dp"

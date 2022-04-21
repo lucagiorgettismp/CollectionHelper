@@ -29,12 +29,5 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
-
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_missing_list, R.id.navigation_double_list, R.id.navigation_catalog_producer)
-                .build();
-
-        NavController navController = Navigation.findNavController(SettingsActivity.this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(SettingsActivity.this, navController, appBarConfiguration);
     }
 }

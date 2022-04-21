@@ -36,7 +36,7 @@
 
             <TextView
                 android:id="@+id/username"
-                style="@style/TextAppearance.Surprix.Headline5"
+                style="@style/TextAppearance.Surprix.Headline3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -80,7 +80,7 @@
         app:layout_constraintTop_toBottomOf="@+id/cardView">
 
         <TextView
-            style="@style/TextAppearance.Surprix.Headline6"
+            style="@style/TextAppearance.Surprix.Headline4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
