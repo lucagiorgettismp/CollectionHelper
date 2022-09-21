@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,7 +17,7 @@ import androidx.navigation.Navigation;
 
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.listenerInterfaces.CallbackInterface;
-import com.lucagiorgetti.surprix.listenerInterfaces.CallbackWithExceptionInterface;
+import com.lucagiorgetti.surprix.listenerInterfaces.LoginFlowCallbackInterface;
 import com.lucagiorgetti.surprix.utility.AuthUtils;
 import com.lucagiorgetti.surprix.utility.BaseFragment;
 import com.lucagiorgetti.surprix.utility.LoginFlowHelper;
@@ -116,7 +115,7 @@ public class SignInFragment extends BaseFragment {
             String pwd = inPassword.getText().toString().trim();
             Timber.d("Input pwd : %s", pwd);
 
-            LoginFlowHelper.signInWithEmailPassword(email, pwd, getActivity(), new CallbackWithExceptionInterface() {
+            LoginFlowHelper.signInWithEmailPassword(email, pwd, getActivity(), new LoginFlowCallbackInterface() {
                 @Override
                 public void onStart() {
                     showLoading();

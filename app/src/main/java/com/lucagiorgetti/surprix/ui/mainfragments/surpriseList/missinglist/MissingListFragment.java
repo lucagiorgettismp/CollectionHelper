@@ -141,8 +141,6 @@ public class MissingListFragment extends BaseSurpriseListFragment {
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
-
-        setTitle(getString(R.string.missings));
     }
 
     @Override

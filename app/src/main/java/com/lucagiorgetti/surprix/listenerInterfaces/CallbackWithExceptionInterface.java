@@ -1,9 +1,9 @@
 package com.lucagiorgetti.surprix.listenerInterfaces;
 
-public interface CallbackWithExceptionInterface {
+public interface CallbackWithExceptionInterface<T> {
     void onStart();
 
-    void onSuccess();
+    void onSuccess(T item);
 
-    void onFailure(Exception e);
+    void onFailure(Exception exception);
 }

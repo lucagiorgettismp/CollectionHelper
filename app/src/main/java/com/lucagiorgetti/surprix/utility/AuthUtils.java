@@ -6,10 +6,14 @@ import com.facebook.AccessToken;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.lucagiorgetti.surprix.listenerInterfaces.CallbackInterface;
+import com.lucagiorgetti.surprix.listenerInterfaces.LoginFlowCallbackInterface;
 import com.lucagiorgetti.surprix.listenerInterfaces.CallbackWithExceptionInterface;
+
+import timber.log.Timber;
 
 public class AuthUtils {
     private static final FirebaseAuth fireAuth = FirebaseAuth.getInstance();
@@ -37,7 +41,7 @@ public class AuthUtils {
         });
     }
 
-    public static void createUserWithEmailAndPassword(Activity activity, String email, String password, CallbackWithExceptionInterface listener) {
+    public static void createUserWithEmailAndPassword(Activity activity, String email, String password, LoginFlowCallbackInterface listener) {
         listener.onStart();
         fireAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(activity, task -> {
@@ -49,23 +53,29 @@ public class AuthUtils {
                 });
     }
 
-    public static void signInWithGoogleToken(Activity activity, String idToken, CallbackInterface<FirebaseUser> listener) {
+    public static void signInWithGoogleToken(Activity activity, String idToken, CallbackWithExceptionInterface<FirebaseUser> listener) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         signInWithCredentials(activity, credential, listener);
     }
 
-    public static void signInWithFacebookToken(Activity activity, AccessToken token, CallbackInterface<FirebaseUser> listener) {
+    public static void signInWithFacebookToken(Activity activity, AccessToken token, CallbackWithExceptionInterface<FirebaseUser> listener) {
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+        Timber.d("signInWithFacebookToken:credential: %s", credential);
         signInWithCredentials(activity, credential, listener);
     }
 
-    private static void signInWithCredentials(Activity activity, AuthCredential credential, CallbackInterface<FirebaseUser> listener) {
+    private static void signInWithCredentials(Activity activity, AuthCredential credential, CallbackWithExceptionInterface<FirebaseUser> listener) {
         fireAuth.signInWithCredential(credential)
                 .addOnCompleteListener(activity, task -> {
                     if (task.isSuccessful()) {
-                        listener.onSuccess(task.getResult().getUser());
+                        listener.onSuccess(fireAuth.getCurrentUser());
                     } else {
-                        listener.onFailure();
+                        if(task.getException() instanceof FirebaseAuthUserCollisionException) {
+
+                            listener.onFailure(task.getException());
+                        } else {
+                            listener.onFailure(new GenericLoginException());
+                        }
                     }
                 });
     }
