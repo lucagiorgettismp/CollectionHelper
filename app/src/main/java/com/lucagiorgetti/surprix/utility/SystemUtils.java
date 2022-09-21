@@ -27,7 +27,7 @@ import com.google.firebase.storage.StorageReference;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.listenerInterfaces.CallbackInterface;
-import com.lucagiorgetti.surprix.listenerInterfaces.CallbackWithExceptionInterface;
+import com.lucagiorgetti.surprix.listenerInterfaces.LoginFlowCallbackInterface;
 import com.lucagiorgetti.surprix.model.User;
 import com.lucagiorgetti.surprix.utility.dao.UserDao;
 
@@ -143,7 +143,7 @@ public class SystemUtils {
     }
 
 
-    public static void setSessionUser(String uid, CallbackWithExceptionInterface listener) {
+    public static void setSessionUser(String uid, LoginFlowCallbackInterface listener) {
         UserDao.getUserByUid(uid, new CallbackInterface<User>() {
             @Override
             public void onSuccess(User currentUser) {

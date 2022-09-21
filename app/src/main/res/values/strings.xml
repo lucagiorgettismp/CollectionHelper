@@ -2,6 +2,7 @@
     <string name="app_name" translatable="false">Surprix</string>
     <string name="facebook_app_id" translatable="false">1965236533694397</string>
     <string name="fb_login_protocol_scheme" translatable="false">fb1965236533694397</string>
+    <string name="facebook_client_token" translatable="false">40305460d16581265359476b878dccee</string>
 
     <string name="old_password">Old Password</string>
     <string name="new_password">New Password</string>
@@ -186,4 +187,5 @@
     <string name="brasile">Brazil</string>
     <string name="messico">Mexico</string>
     <string name="sud_africa">South Africa</string>
+    <string name="auth_failed_other_provider">Authentication failed: email registered with another provider</string>
 </resources>
