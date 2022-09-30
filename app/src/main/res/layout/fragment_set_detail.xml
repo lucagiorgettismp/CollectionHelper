@@ -26,6 +26,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|center"
             tools:visibility="gone" />
+
+        <include layout="@layout/surprise_expanded_view"/>
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

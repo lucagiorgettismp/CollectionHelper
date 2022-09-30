@@ -51,7 +51,8 @@ public class SplashActivity extends AppCompatActivity {
         };
 
         fireAuth = FirebaseAuth.getInstance();
-        checkForUpdates();
+        //checkForUpdates();
+        checkSession();
     }
 
     private void checkForUpdates() {

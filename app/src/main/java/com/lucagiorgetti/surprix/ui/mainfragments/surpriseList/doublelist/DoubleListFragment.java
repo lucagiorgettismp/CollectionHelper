@@ -4,6 +4,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
@@ -15,6 +16,7 @@ import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.model.Surprise;
 import com.lucagiorgetti.surprix.ui.mainfragments.filter.ChipFilters;
 import com.lucagiorgetti.surprix.ui.mainfragments.surpriseList.BaseSurpriseListFragment;
+import com.lucagiorgetti.surprix.ui.mainfragments.surpriseList.BaseSurpriseRecyclerAdapterListener;
 import com.lucagiorgetti.surprix.ui.mainfragments.surpriseList.SurpriseListType;
 import com.lucagiorgetti.surprix.ui.mainfragments.surpriseList.SurpriseRecyclerAdapter;
 import com.lucagiorgetti.surprix.utility.dao.DoubleListDao;
@@ -98,7 +100,17 @@ public class DoubleListFragment extends BaseSurpriseListFragment {
 
         mAdapter = new SurpriseRecyclerAdapter(SurpriseListType.DOUBLES);
 
-        mAdapter.setListener(position -> deleteSurprise(mAdapter, position));
+        mAdapter.setListener(new BaseSurpriseRecyclerAdapterListener() {
+            @Override
+            public void onSurpriseDelete(int position) {
+                deleteSurprise(mAdapter, position);
+            }
+
+            @Override
+            public void onImageClicked(String imagePath, ImageView imageView, int placeHolderId) {
+                zoomImageFromThumb(imagePath, imageView, placeHolderId);
+            }
+         });
 
         doubleListViewModel = new ViewModelProvider(this).get(DoubleListViewModel.class);
 

@@ -2,6 +2,7 @@
 <resources>
     <color name="surprixBlue">#00838f</color>
     <color name="surprixBackground">#4fb3be</color>
+    <color name="surprixBackgroundAlpha50">#804fb3be</color>
     <color name="surprixBlueVariant">#005661</color>
     <color name="surprixOrange">#ffa726</color>
 

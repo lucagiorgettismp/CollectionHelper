@@ -28,6 +28,11 @@ import java.util.Locale;
 public class CollectionSetDetailRecyclerAdapter extends BaseSetDetailAdapter<CollectionSetDetailRecyclerAdapter.SetDetailViewHolder> {
 
     private List<CollectionSurprise> items;
+    private final SetDetailClickListener listener;
+
+    public CollectionSetDetailRecyclerAdapter(SetDetailClickListener myClickListener) {
+        listener = myClickListener;
+    }
 
     public CollectionSurprise getItemAtPosition(int position) {
         return this.items.get(position);
@@ -53,6 +58,8 @@ public class CollectionSetDetailRecyclerAdapter extends BaseSetDetailAdapter<Col
 
         String path = s.getImg_path();
         SystemUtils.loadImage(path, holder.vImage, R.drawable.ic_logo_shape_primary);
+
+        holder.vImage.setOnClickListener(v -> listener.onImageClicked(path, holder.vImage, R.drawable.ic_logo_shape_primary));
 
         Integer rarity = s.getIntRarity();
 

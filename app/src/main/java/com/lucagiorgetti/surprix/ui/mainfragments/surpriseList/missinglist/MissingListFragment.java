@@ -4,6 +4,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
@@ -113,6 +114,11 @@ public class MissingListFragment extends BaseSurpriseListFragment {
             @Override
             public void onSurpriseDelete(int position) {
                 deleteSurprise(mAdapter, position);
+            }
+
+            @Override
+            public void onImageClicked(String path, ImageView imageView, int placeHolderId) {
+                zoomImageFromThumb(path, imageView, placeHolderId);
             }
         });
 
