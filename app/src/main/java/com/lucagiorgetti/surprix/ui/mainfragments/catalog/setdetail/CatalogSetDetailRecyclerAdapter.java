@@ -29,9 +29,9 @@ import java.util.Locale;
 public class CatalogSetDetailRecyclerAdapter extends BaseSetDetailAdapter<CatalogSetDetailRecyclerAdapter.SetDetailViewHolder> {
 
     private List<CollectionSurprise> items;
-    private final SetDetailFragment.MyClickListener listener;
+    private final CatalogSetDetailClickListener listener;
 
-    public CatalogSetDetailRecyclerAdapter(SetDetailFragment.MyClickListener myClickListener) {
+    public CatalogSetDetailRecyclerAdapter(CatalogSetDetailClickListener myClickListener) {
         listener = myClickListener;
     }
 
@@ -73,6 +73,7 @@ public class CatalogSetDetailRecyclerAdapter extends BaseSetDetailAdapter<Catalo
         holder.vStarRank.setValue(rarity);
         holder.vAddMissing.setOnClickListener(v -> listener.onSurpriseAddedToMissings(s));
         holder.vAddDouble.setOnClickListener(v -> listener.onSurpriseAddedToDoubles(s));
+        holder.vImage.setOnClickListener(v -> listener.onImageClicked(path, holder.vImage, R.drawable.ic_logo_shape_primary));
     }
 
     @Override

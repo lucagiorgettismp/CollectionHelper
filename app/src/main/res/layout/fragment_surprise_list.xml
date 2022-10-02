@@ -26,6 +26,8 @@
         android:layout_gravity="center_horizontal|center"
         android:visibility="gone" />
 
+    <include layout="@layout/surprise_expanded_view"/>
+
     <LinearLayout
         android:id="@+id/double_empty_list"
         android:layout_width="match_parent"

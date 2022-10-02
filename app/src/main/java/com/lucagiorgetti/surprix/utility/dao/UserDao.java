@@ -117,33 +117,10 @@ public class UserDao {
         uids.child(uid.getUid()).setValue(uid);
     }
 
-    public void fixUsers() {
-        uids.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                Uid uid = (Uid) snapshot.getValue(Uid.class);
-                users.child(uid.getUsername()).child("provider").setValue(uid.getProvider());
-            }
+    public static void deleteUser(String username) {
 
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+        new MissingListDao(username).clearMissings();
+        new DoubleListDao(username).clearDoubles();
+        users.child(username).setValue(null);
     }
 }

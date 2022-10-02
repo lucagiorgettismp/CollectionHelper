@@ -2,6 +2,9 @@
 <resources>
     <color name="card_icon">@color/grey80</color>
 
+    <color name="surprixBackground">@color/grey10</color>
+    <color name="surprixBackgroundAlpha50">#801a1a1a</color>
+
     <color name="loginBackground">@color/grey10</color>
     <color name="loginSignIn">@color/surprixBlueVariant</color>
     <color name="loginSecondBackground">@color/surprixBlueVariant</color>

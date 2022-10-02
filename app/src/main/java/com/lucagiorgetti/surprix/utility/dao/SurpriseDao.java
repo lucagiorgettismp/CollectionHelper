@@ -59,4 +59,8 @@ public class SurpriseDao {
             }
         });
     }
+
+    public static void addSurprise(Surprise surprise) {
+        surprises.child(surprise.getId()).setValue(surprise);
+    }
 }

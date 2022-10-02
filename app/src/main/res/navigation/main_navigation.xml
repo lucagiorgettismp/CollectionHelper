@@ -2,161 +2,16 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    app:startDestination="@+id/navigation_missing_list">
+    android:id="@+id/main_navigation"
+    app:startDestination="@+id/missing_navigation">
 
-    <fragment
-        android:id="@+id/navigation_missing_list"
-        android:name="com.lucagiorgetti.surprix.ui.mainfragments.surpriseList.missinglist.MissingListFragment"
-        tools:layout="@layout/fragment_surprise_list" >
-        <action
-            android:id="@+id/action_navigation_missing_list_to_navigation_missing_owners"
-            app:destination="@id/navigation_missing_owners" />
-    </fragment>
+    <include app:graph="@navigation/missing_navigation"/>
 
     <fragment
         android:id="@+id/navigation_double_list"
         android:name="com.lucagiorgetti.surprix.ui.mainfragments.surpriseList.doublelist.DoubleListFragment"
         tools:layout="@layout/fragment_surprise_list" />
 
-    <fragment
-        android:id="@+id/navigation_catalog_producer"
-        android:name="com.lucagiorgetti.surprix.ui.mainfragments.catalog.producers.CatalogProducerFragment"
-        android:label="@string/title_catalog"
-        tools:layout="@layout/fragment_producer_list">
-        <action
-            android:id="@+id/producerSelectedAction"
-            app:destination="@id/navigation_year"
-            app:enterAnim="@anim/slide_from_right"
-            app:exitAnim="@anim/slide_to_left"
-            app:popEnterAnim="@anim/slide_from_left"
-            app:popExitAnim="@anim/slide_to_right" />
-        <action
-            android:id="@+id/goToSearch"
-            app:destination="@id/navigation_search"
-            app:enterAnim="@anim/slide_from_right"
-            app:exitAnim="@anim/slide_to_left"
-            app:popEnterAnim="@anim/slide_from_left"
-            app:popExitAnim="@anim/slide_to_right" />
-        <argument
-            android:name="navigation_mode"
-            app:argType="com.lucagiorgetti.surprix.ui.mainfragments.catalog.CatalogNavigationMode" />
-    </fragment>
-    <fragment
-        android:id="@+id/navigation_year"
-        android:name="com.lucagiorgetti.surprix.ui.mainfragments.catalog.years.YearFragment"
-        tools:layout="@layout/fragment_years">
-        <argument
-            android:name="producer_id"
-            app:argType="string" />
-        <argument
-            android:name="producer_name"
-            app:argType="string" />
-        <action
-            android:id="@+id/yearSelectedAction"
-            app:destination="@id/navigation_set_list"
-            app:enterAnim="@anim/slide_from_right"
-            app:exitAnim="@anim/slide_to_left"
-            app:popEnterAnim="@anim/slide_from_left"
-            app:popExitAnim="@anim/slide_to_right" />
-        <argument
-            android:name="navigation_mode"
-            app:argType="com.lucagiorgetti.surprix.ui.mainfragments.catalog.CatalogNavigationMode" />
-    </fragment>
-    <fragment
-        android:id="@+id/navigation_set_list"
-        android:name="com.lucagiorgetti.surprix.ui.mainfragments.catalog.sets.SetListFragment"
-        tools:layout="@layout/fragment_set_list">
-        <argument
-            android:name="year_id"
-            app:argType="string" />
-        <action
-            android:id="@+id/setSelectedAction"
-            app:destination="@id/navigation_set_detail"
-            app:enterAnim="@anim/slide_from_right"
-            app:exitAnim="@anim/slide_to_left"
-            app:popEnterAnim="@anim/slide_from_left"
-            app:popExitAnim="@anim/slide_to_right"
-            app:popUpToInclusive="false" />
-        <argument
-            android:name="year_name"
-            app:argType="string" />
-        <argument
-            android:name="navigation_mode"
-            app:argType="com.lucagiorgetti.surprix.ui.mainfragments.catalog.CatalogNavigationMode" />
-        <argument
-            android:name="producer_id"
-            app:argType="string" />
-    </fragment>
-    <fragment
-        android:id="@+id/navigation_set_detail"
-        android:name="com.lucagiorgetti.surprix.ui.mainfragments.catalog.setdetail.SetDetailFragment"
-        tools:layout="@layout/fragment_set_detail">
-        <argument
-            android:name="set_id"
-            app:argType="string" />
-        <argument
-            android:name="set_name"
-            app:argType="string" />
-        <argument
-            android:name="navigation_mode"
-            app:argType="com.lucagiorgetti.surprix.ui.mainfragments.catalog.CatalogNavigationMode" />
-    </fragment>
-    <fragment
-        android:id="@+id/navigation_search"
-        android:name="com.lucagiorgetti.surprix.ui.mainfragments.catalog.search.SearchFragment"
-        tools:layout="@layout/fragment_search">
-        <action
-            android:id="@+id/onSearchedItemClick"
-            app:destination="@id/navigation_set_detail"
-            app:enterAnim="@anim/slide_from_right"
-            app:exitAnim="@anim/slide_to_left"
-            app:popEnterAnim="@anim/slide_from_left"
-            app:popExitAnim="@anim/slide_to_right" />
-    </fragment>
-    <fragment
-        android:id="@+id/navigation_missing_owners"
-        android:name="com.lucagiorgetti.surprix.ui.mainfragments.missingowners.MissingOwnersFragment"
-        tools:layout="@layout/fragment_missing_owners" >
-        <action
-            android:id="@+id/action_navigation_missing_owners_to_navigation_other_for_you"
-            app:destination="@id/navigation_other_for_you" />
-        <argument android:name="missingSurpriseId"
-            app:argType="string" />
-    </fragment>
-    <fragment
-        android:id="@+id/navigation_other_for_you"
-        android:name="com.lucagiorgetti.surprix.ui.mainfragments.surpriseList.otherforyou.OtherForYouFragment"
-        tools:layout="@layout/fragment_other_for_you">
-        <argument
-            android:name="ownerUsername"
-            app:argType="string" />
-        <argument
-            android:name="ownerEmail"
-            app:argType="string" />
-    </fragment>
-    <fragment
-        android:id="@+id/navigation_about_me"
-        android:name="com.lucagiorgetti.surprix.ui.mainfragments.aboutme.AboutMeFragment"
-        android:label="@string/title_about_me"
-        tools:layout="@layout/fragment_about_me">
-        <action
-            android:id="@+id/action_navigation_about_me_to_navigation_my_collection"
-            app:destination="@id/navigation_my_collection"
-            app:enterAnim="@anim/slide_from_right"
-            app:exitAnim="@anim/slide_to_left"
-            app:popEnterAnim="@anim/slide_from_left"
-            app:popExitAnim="@anim/slide_to_right" />
-    </fragment>
-    <fragment
-        android:id="@+id/navigation_my_collection"
-        android:name="com.lucagiorgetti.surprix.ui.mainfragments.catalog.producers.CollectionProducerFragment"
-        android:label="@string/title_my_collection">
-        <action
-            android:id="@+id/action_collectionProducerFragment_to_navigation_year"
-            app:destination="@id/navigation_year"
-            app:enterAnim="@anim/slide_from_right"
-            app:exitAnim="@anim/slide_to_left"
-            app:popEnterAnim="@anim/slide_from_left"
-            app:popExitAnim="@anim/slide_to_right" />
-    </fragment>
+    <include app:graph="@navigation/catalog_navigation"/>
+    <include app:graph="@navigation/user_navigation"/>
 </navigation>

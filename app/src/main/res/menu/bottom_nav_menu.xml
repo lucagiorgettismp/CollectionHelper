@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/navigation_missing_list"
+        android:id="@+id/missing_navigation"
         android:icon="@drawable/ic_missings"
         android:title="@string/title_missing_list" />
 
@@ -11,12 +11,12 @@
         android:title="@string/title_double_list" />
 
     <item
-        android:id="@+id/navigation_catalog_producer"
+        android:id="@+id/catalog_navigation"
         android:icon="@drawable/ic_catalog"
         android:title="@string/title_catalog" />
 
     <item
-        android:id="@+id/navigation_about_me"
+        android:id="@+id/user_navigation"
         android:icon="@drawable/ic_user"
         android:title="@string/title_about_me"/>
 

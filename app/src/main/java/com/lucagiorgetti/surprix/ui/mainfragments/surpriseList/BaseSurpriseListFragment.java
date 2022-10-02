@@ -1,16 +1,20 @@
 package com.lucagiorgetti.surprix.ui.mainfragments.surpriseList;
 
-import android.content.res.Configuration;
+import android.animation.Animator;
+import android.graphics.Point;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,13 +23,13 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.snackbar.Snackbar;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
+import com.lucagiorgetti.surprix.ui.mainfragments.ZoomImageFragment;
 import com.lucagiorgetti.surprix.ui.mainfragments.filter.ChipFilters;
 import com.lucagiorgetti.surprix.ui.mainfragments.filter.FilterBottomSheetListener;
 import com.lucagiorgetti.surprix.ui.mainfragments.filter.SurpriseFilterBSDFragment;
-import com.lucagiorgetti.surprix.utility.BaseFragment;
 import com.lucagiorgetti.surprix.utility.SystemUtils;
 
-public abstract class BaseSurpriseListFragment extends BaseFragment {
+public abstract class BaseSurpriseListFragment extends ZoomImageFragment {
     public SurpriseRecyclerAdapter mAdapter;
     public SearchView searchView;
     public View root;

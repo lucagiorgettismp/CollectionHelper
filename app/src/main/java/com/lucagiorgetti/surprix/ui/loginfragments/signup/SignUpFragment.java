@@ -19,7 +19,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
-import com.lucagiorgetti.surprix.listenerInterfaces.CallbackWithExceptionInterface;
+import com.lucagiorgetti.surprix.listenerInterfaces.LoginFlowCallbackInterface;
 import com.lucagiorgetti.surprix.utility.BaseFragment;
 import com.lucagiorgetti.surprix.utility.LoginFlowHelper;
 import com.lucagiorgetti.surprix.utility.SystemUtils;
@@ -107,7 +107,7 @@ public class SignUpFragment extends BaseFragment {
             }
 
             LoginFlowHelper.AuthMode authMode = fromFacebook ? LoginFlowHelper.AuthMode.FACEBOOK : LoginFlowHelper.AuthMode.EMAIL_PASSWORD;
-            LoginFlowHelper.signUp(email, password, username, nation, getActivity(), authMode, new CallbackWithExceptionInterface() {
+            LoginFlowHelper.signUp(email, password, username, nation, getActivity(), authMode, new LoginFlowCallbackInterface() {
                 @Override
                 public void onStart() {
                     showLoading();

@@ -87,11 +87,13 @@ public class SurpriseRecyclerAdapter extends ListAdapter<Surprise, SurpriseRecyc
                 holder.vBtnOwners.setOnClickListener(view -> ((MissingRecyclerAdapterListener) listener).onShowMissingOwnerClick(surp));
                 holder.delete.setVisibility(View.VISIBLE);
                 holder.delete.setOnClickListener(v -> listener.onSurpriseDelete(position));
+                holder.vImage.setOnClickListener(v -> listener.onImageClicked(path, holder.vImage, R.drawable.ic_logo_shape_primary));
                 break;
             case DOUBLES:
                 holder.vBtnOwners.setVisibility(View.GONE);
                 holder.delete.setVisibility(View.VISIBLE);
                 holder.delete.setOnClickListener(v -> listener.onSurpriseDelete(position));
+                holder.vImage.setOnClickListener(v -> listener.onImageClicked(path, holder.vImage, R.drawable.ic_logo_shape_primary));
                 break;
             case SEARCH:
                 holder.delete.setVisibility(View.GONE);

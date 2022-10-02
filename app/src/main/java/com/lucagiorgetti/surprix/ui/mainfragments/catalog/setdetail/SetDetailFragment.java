@@ -1,5 +1,7 @@
 package com.lucagiorgetti.surprix.ui.mainfragments.catalog.setdetail;
 
+import android.widget.ImageView;
+
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -34,7 +36,7 @@ public class SetDetailFragment extends BaseSetDetailFragment {
             switch (navigationMode) {
                 case CATALOG:
                     String finalSetId = setId;
-                    mAdapter = new CatalogSetDetailRecyclerAdapter(new MyClickListener() {
+                    mAdapter = new CatalogSetDetailRecyclerAdapter(new CatalogSetDetailClickListener() {
                         @Override
                         public void onSurpriseAddedToDoubles(Surprise s) {
                             doubleListDao.addDouble(s.getId());
@@ -64,11 +66,21 @@ public class SetDetailFragment extends BaseSetDetailFragment {
                                 }
                             });
                         }
+
+                        @Override
+                        public void onImageClicked(String imagePath, ImageView imageView, int placeHolderId) {
+                            zoomImageFromThumb(imagePath, imageView, placeHolderId);
+                        }
                     });
 
                     break;
                 case COLLECTION:
-                    mAdapter = new CollectionSetDetailRecyclerAdapter();
+                    mAdapter = new CollectionSetDetailRecyclerAdapter(new SetDetailClickListener() {
+                        @Override
+                        public void onImageClicked(String imagePath, ImageView imageView, int placeHolderId) {
+                            zoomImageFromThumb(imagePath, imageView, placeHolderId);
+                        }
+                    });
                     break;
             }
         }
@@ -108,11 +120,5 @@ public class SetDetailFragment extends BaseSetDetailFragment {
         missingListDao.addMissing(surprise.getId());
         Snackbar.make(getView(), SurprixApplication.getInstance().getString(R.string.added_to_missings) + ": " + surprise.getDescription(), Snackbar.LENGTH_LONG)
                 .setAction(SurprixApplication.getInstance().getString(R.string.discard_btn), view -> missingListDao.removeMissing(surprise.getId())).show();
-    }
-
-    public interface MyClickListener {
-        void onSurpriseAddedToDoubles(Surprise s);
-
-        void onSurpriseAddedToMissings(Surprise s);
     }
 }

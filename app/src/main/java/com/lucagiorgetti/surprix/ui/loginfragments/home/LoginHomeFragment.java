@@ -23,7 +23,7 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
-import com.lucagiorgetti.surprix.listenerInterfaces.CallbackWithExceptionInterface;
+import com.lucagiorgetti.surprix.listenerInterfaces.LoginFlowCallbackInterface;
 import com.lucagiorgetti.surprix.ui.activities.MainActivity;
 import com.lucagiorgetti.surprix.utility.BaseFragment;
 import com.lucagiorgetti.surprix.utility.LoginFlowHelper;
@@ -63,7 +63,7 @@ public class LoginHomeFragment extends BaseFragment {
 
         facebookCustomLogin.setOnClickListener(view -> {
             if (SystemUtils.checkNetworkAvailability()) {
-                LoginFlowHelper.loginWithFacebook(getActivity(), this, callbackManager, new CallbackWithExceptionInterface() {
+                LoginFlowHelper.loginWithFacebook(getActivity(), this, callbackManager, new LoginFlowCallbackInterface() {
                     @Override
                     public void onStart() {
                         showLoading();
@@ -112,7 +112,7 @@ public class LoginHomeFragment extends BaseFragment {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 Timber.d("firebaseAuthWithGoogle:%s", account.getId());
-                LoginFlowHelper.loginWithGoogle(getActivity(), account.getIdToken(), new CallbackWithExceptionInterface() {
+                LoginFlowHelper.loginWithGoogle(getActivity(), account.getIdToken(), new LoginFlowCallbackInterface() {
                     @Override
                     public void onStart() {
 

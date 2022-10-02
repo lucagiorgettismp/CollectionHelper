@@ -4,4 +4,20 @@
     <dimen name="design_fab_image_size" tools:override="true">36dp</dimen>
     <dimen name="actionBarSize">56dp</dimen>
     <dimen name="divider_height">3dp</dimen>
+    <dimen name="font_headline1">@dimen/_95sdp</dimen>
+    <dimen name="font_headline2">@dimen/_59sdp</dimen>
+    <dimen name="font_headline3">@dimen/_24sdp</dimen>
+    <dimen name="font_headline4">@dimen/_22sdp</dimen>
+    <dimen name="font_headline5">@dimen/_18sdp</dimen>
+    <dimen name="font_headline6">@dimen/_14sdp</dimen>
+    <dimen name="font_subtitle1">@dimen/_12sdp</dimen>
+    <dimen name="font_subtitle2">@dimen/_10sdp</dimen>
+    <dimen name="font_body1">@dimen/_13sdp</dimen>
+    <dimen name="font_body2">@dimen/_12sdp</dimen>
+    <dimen name="font_button">@dimen/_12sdp</dimen>
+    <dimen name="font_caption">@dimen/_10sdp</dimen>
+    <dimen name="font_overline">@dimen/_8sdp</dimen>
+    <dimen name="zoomed_image_width">360dp</dimen>
+    <dimen name="zoomed_image_height">440dp</dimen>
+    <dimen name="zoomed_image_widtha" />
 </resources>

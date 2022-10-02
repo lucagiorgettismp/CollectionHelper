@@ -29,14 +29,14 @@
                 android:layout_width="185dp"
                 android:layout_height="164dp"
                 android:layout_marginTop="16dp"
-                android:src="@drawable/ic_logo"
+                app:srcCompat="@drawable/ic_logo"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/username"
-                style="@style/TextAppearance.Surprix.Headline5"
+                style="@style/TextAppearance.Surprix.Headline3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -80,7 +80,7 @@
         app:layout_constraintTop_toBottomOf="@+id/cardView">
 
         <TextView
-            style="@style/TextAppearance.Surprix.Headline5"
+            style="@style/TextAppearance.Surprix.Headline4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
@@ -96,8 +96,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginBottom="24dp"
-        android:drawableLeft="@drawable/ic_exit_to_app"
-        android:drawableTint="@color/fabIconColor"
+        app:icon="@drawable/ic_exit_to_app"
+        app:iconTint="@color/fabIconColor"
         android:text="@string/logout"
         android:textColor="@color/fabIconText"
         app:backgroundTint="@color/fabBackColor"

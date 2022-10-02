@@ -18,12 +18,13 @@ import com.google.firebase.auth.FirebaseUser;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.listenerInterfaces.CallbackInterface;
+import com.lucagiorgetti.surprix.listenerInterfaces.LoginFlowCallbackInterface;
 import com.lucagiorgetti.surprix.listenerInterfaces.CallbackWithExceptionInterface;
 import com.lucagiorgetti.surprix.model.Uid;
 import com.lucagiorgetti.surprix.model.User;
 import com.lucagiorgetti.surprix.utility.dao.UserDao;
 
-import java.util.Collections;
+import java.util.Arrays;
 
 import timber.log.Timber;
 
@@ -69,7 +70,7 @@ public class LoginFlowHelper {
     }
 
     // SUP
-    public static void signUp(String email, String password, String username, String country, Activity activity, AuthMode authMode, CallbackWithExceptionInterface flowListener) {
+    public static void signUp(String email, String password, String username, String country, Activity activity, AuthMode authMode, LoginFlowCallbackInterface flowListener) {
         flowListener.onStart();
 
         if (email.isEmpty() || username.isEmpty() || country.isEmpty()) {
@@ -111,7 +112,7 @@ public class LoginFlowHelper {
     }
 
     // SIGNIN
-    public static void signInWithEmailPassword(String email, String pwd, Activity activity, CallbackWithExceptionInterface flowListener) {
+    public static void signInWithEmailPassword(String email, String pwd, Activity activity, LoginFlowCallbackInterface flowListener) {
         if (!email.equals("") && !pwd.equals("")) {
             AuthUtils.signInWithEmailAndPassword(activity, email, pwd, new CallbackInterface<FirebaseUser>() {
                 @Override
@@ -135,8 +136,8 @@ public class LoginFlowHelper {
         }
     }
 
-    public static void loginWithGoogle(Activity activity, String idToken, CallbackWithExceptionInterface flowListener) {
-        AuthUtils.signInWithGoogleToken(activity, idToken, new CallbackInterface<FirebaseUser>() {
+    public static void loginWithGoogle(Activity activity, String idToken, LoginFlowCallbackInterface flowListener) {
+        AuthUtils.signInWithGoogleToken(activity, idToken, new CallbackWithExceptionInterface<FirebaseUser>() {
             @Override
             public void onStart() {
 
@@ -148,16 +149,16 @@ public class LoginFlowHelper {
             }
 
             @Override
-            public void onFailure() {
-                flowListener.onFailure(new Exception(SurprixApplication.getSurprixContext().getString(R.string.auth_failed)));
+            public void onFailure(Exception e) {
+                manageProviderLoginException(e, flowListener);
             }
         });
     }
 
     // LOGFACE
-    public static void loginWithFacebook(Activity activity, Fragment fragment, CallbackManager callbackManager, CallbackWithExceptionInterface flowListener) {
+    public static void loginWithFacebook(Activity activity, Fragment fragment, CallbackManager callbackManager, LoginFlowCallbackInterface flowListener) {
 
-        LoginManager.getInstance().logInWithReadPermissions(fragment, Collections.singletonList("email"));
+        LoginManager.getInstance().logInWithReadPermissions(fragment, callbackManager, Arrays.asList("email", "public_profile"));
         try {
             flowListener.onStart();
             LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
@@ -165,7 +166,7 @@ public class LoginFlowHelper {
                 public void onSuccess(LoginResult loginResult) {
                     Timber.d("facebook:onSuccess: %s", loginResult);
 
-                    AuthUtils.signInWithFacebookToken(activity, loginResult.getAccessToken(), new CallbackInterface<FirebaseUser>() {
+                    AuthUtils.signInWithFacebookToken(activity, loginResult.getAccessToken(), new CallbackWithExceptionInterface<FirebaseUser>() {
                         @Override
                         public void onStart() {
 
@@ -177,8 +178,8 @@ public class LoginFlowHelper {
                         }
 
                         @Override
-                        public void onFailure() {
-                            flowListener.onFailure(new Exception(SurprixApplication.getSurprixContext().getString(R.string.auth_failed)));
+                        public void onFailure(Exception exception) {
+                            manageProviderLoginException(exception, flowListener);
                         }
                     });
                 }
@@ -190,6 +191,7 @@ public class LoginFlowHelper {
 
                 @Override
                 public void onError(FacebookException error) {
+                    Timber.d("facebook:onError: %s", error.getMessage());
                     flowListener.onFailure(new Exception("Facebook login error"));
                 }
             });
@@ -198,7 +200,7 @@ public class LoginFlowHelper {
         }
     }
 
-    private static void afterProvidersSignIn(FirebaseUser currentUser, CallbackWithExceptionInterface flowListener) {
+    private static void afterProvidersSignIn(FirebaseUser currentUser, LoginFlowCallbackInterface flowListener) {
         if (currentUser != null) {
             UserDao.getUserByUid(currentUser.getUid(), new CallbackInterface<User>() {
                 @Override
@@ -226,21 +228,21 @@ public class LoginFlowHelper {
     }
 
     // SIS
-    private static void signInSucceeded(FirebaseUser currentUser, CallbackWithExceptionInterface listener) {
+    private static void signInSucceeded(FirebaseUser currentUser, LoginFlowCallbackInterface listener) {
         String uid = currentUser.getUid();
         SystemUtils.setSessionUser(uid, listener);
         SystemUtils.enableFCM();
     }
 
     // CREASIG
-    private static void createUserAndSignIn(String email, String password, String username, String country, AuthMode authMode, Activity activity, CallbackWithExceptionInterface flowListener) {
+    private static void createUserAndSignIn(String email, String password, String username, String country, AuthMode authMode, Activity activity, LoginFlowCallbackInterface flowListener) {
         switch (authMode) {
             case FACEBOOK:
                 String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 completeUserCreation(uid, username, email, country, authMode, flowListener);
                 break;
             case EMAIL_PASSWORD:
-                AuthUtils.createUserWithEmailAndPassword(activity, email, password, new CallbackWithExceptionInterface() {
+                AuthUtils.createUserWithEmailAndPassword(activity, email, password, new LoginFlowCallbackInterface() {
                     @Override
                     public void onStart() {
 
@@ -285,7 +287,7 @@ public class LoginFlowHelper {
         }
     }
 
-    private static void completeUserCreation(String uid, String username, String email, String country, AuthMode authMode, CallbackWithExceptionInterface flowListener) {
+    private static void completeUserCreation(String uid, String username, String email, String country, AuthMode authMode, LoginFlowCallbackInterface flowListener) {
         flowListener.onStart();
         Uid uidModel = new Uid(uid, username, authMode);
         UserDao.addUid(uidModel);
@@ -294,5 +296,12 @@ public class LoginFlowHelper {
         SystemUtils.firstTimeOpeningApp();
         SystemUtils.enableFCM();
         SystemUtils.setSessionUser(uid, flowListener);
+    }
+
+    private static void manageProviderLoginException(Exception exception, LoginFlowCallbackInterface flowListener) {
+        if (exception instanceof FirebaseAuthUserCollisionException){
+            flowListener.onFailure(new Exception(SurprixApplication.getSurprixContext().getString(R.string.auth_failed_other_provider)));
+        }
+        flowListener.onFailure(new Exception(SurprixApplication.getSurprixContext().getString(R.string.auth_failed)));
     }
 }
