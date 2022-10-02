@@ -23,20 +23,19 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.snackbar.Snackbar;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
+import com.lucagiorgetti.surprix.ui.mainfragments.ZoomImageFragment;
 import com.lucagiorgetti.surprix.ui.mainfragments.filter.ChipFilters;
 import com.lucagiorgetti.surprix.ui.mainfragments.filter.FilterBottomSheetListener;
 import com.lucagiorgetti.surprix.ui.mainfragments.filter.SurpriseFilterBSDFragment;
-import com.lucagiorgetti.surprix.utility.BaseFragment;
 import com.lucagiorgetti.surprix.utility.SystemUtils;
 
-public abstract class BaseSurpriseListFragment extends BaseFragment {
+public abstract class BaseSurpriseListFragment extends ZoomImageFragment {
     public SurpriseRecyclerAdapter mAdapter;
     public SearchView searchView;
     public View root;
     public View emptyList;
     public ChipFilters chipFilters;
     public SwipeRefreshLayout swipeRefreshLayout;
-    private Animator currentAnimator = null;
 
     @Nullable
     @Override
@@ -103,39 +102,6 @@ public abstract class BaseSurpriseListFragment extends BaseFragment {
         } else {
             Snackbar.make(getView(), SurprixApplication.getInstance().getString(R.string.cannot_oper_filters), Snackbar.LENGTH_SHORT).show();
         }
-    }
-
-    public void zoomImageFromThumb(String path, ImageView imageView, int placeHolderId){
-        if (currentAnimator != null) {
-            currentAnimator.cancel();
-        }
-
-        final ImageView expandedImageView = getView().findViewById(R.id.surp_image_expanded);
-        final ConstraintLayout imageContainer = getView().findViewById(R.id.surp_expanded_container);
-        SystemUtils.loadImage(path, expandedImageView, placeHolderId);
-
-        final Rect startBounds = new Rect();
-        final Rect finalBounds = new Rect();
-        final Point globalOffset = new Point();
-
-        imageView.getGlobalVisibleRect(startBounds);
-        getView().findViewById(R.id.coordinator)
-                .getGlobalVisibleRect(finalBounds, globalOffset);
-        startBounds.offset(-globalOffset.x, -globalOffset.y);
-        finalBounds.offset(-globalOffset.x, -globalOffset.y);
-
-        imageView.setAlpha(0f);
-        imageContainer.setVisibility(View.VISIBLE);
-        expandedImageView.setVisibility(View.VISIBLE);
-
-        expandedImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                imageView.setAlpha(1f);
-                imageContainer.setVisibility(View.GONE);
-                expandedImageView.setVisibility(View.GONE);
-            }
-        });
     }
 
     private void initSwipe(RecyclerView recyclerView) {
