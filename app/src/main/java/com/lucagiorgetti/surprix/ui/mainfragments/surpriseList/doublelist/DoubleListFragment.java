@@ -22,7 +22,6 @@ import com.lucagiorgetti.surprix.ui.mainfragments.surpriseList.SurpriseRecyclerA
 import com.lucagiorgetti.surprix.utility.dao.DoubleListDao;
 
 public class DoubleListFragment extends BaseSurpriseListFragment {
-    private DoubleListDao doubleListDao;
     private DoubleListViewModel doubleListViewModel;
 
     @Override
@@ -58,6 +57,8 @@ public class DoubleListFragment extends BaseSurpriseListFragment {
     public void deleteSurprise(SurpriseRecyclerAdapter mAdapter, int position) {
         Surprise surprise = mAdapter.getItemAtPosition(position);
         mAdapter.removeFilterableItem(surprise);
+
+        DoubleListDao doubleListDao = new DoubleListDao(SurprixApplication.getInstance().getCurrentUser().getUsername());
 
         CharSequence query = searchView.getQuery();
         if (query != null && query.length() != 0) {
@@ -96,8 +97,6 @@ public class DoubleListFragment extends BaseSurpriseListFragment {
 
     @Override
     public void setupData() {
-        doubleListDao = new DoubleListDao(SurprixApplication.getInstance().getCurrentUser().getUsername());
-
         mAdapter = new SurpriseRecyclerAdapter(SurpriseListType.DOUBLES);
 
         mAdapter.setListener(new BaseSurpriseRecyclerAdapterListener() {

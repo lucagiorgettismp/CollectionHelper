@@ -15,6 +15,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.lucagiorgetti.surprix.R;
 import com.lucagiorgetti.surprix.SurprixApplication;
 import com.lucagiorgetti.surprix.model.Surprise;
+import com.lucagiorgetti.surprix.model.User;
 import com.lucagiorgetti.surprix.ui.mainfragments.filter.ChipFilters;
 import com.lucagiorgetti.surprix.ui.mainfragments.surpriseList.BaseSurpriseListFragment;
 import com.lucagiorgetti.surprix.ui.mainfragments.surpriseList.MissingRecyclerAdapterListener;
@@ -23,8 +24,6 @@ import com.lucagiorgetti.surprix.ui.mainfragments.surpriseList.SurpriseRecyclerA
 import com.lucagiorgetti.surprix.utility.dao.MissingListDao;
 
 public class MissingListFragment extends BaseSurpriseListFragment {
-
-    private MissingListDao missingListDao;
     private MissingListViewModel missingListViewModel;
 
     @Override
@@ -60,8 +59,10 @@ public class MissingListFragment extends BaseSurpriseListFragment {
 
     @Override
     public void deleteSurprise(SurpriseRecyclerAdapter mAdapter, int position) {
+        MissingListDao missingListDao = new MissingListDao(SurprixApplication.getInstance().getCurrentUser().getUsername());
         Surprise surprise = mAdapter.getItemAtPosition(position);
         CharSequence query = searchView.getQuery();
+
         missingListDao.removeMissing(surprise.getId());
         mAdapter.removeFilterableItem(surprise);
         if (query != null && query.length() != 0) {
@@ -98,11 +99,7 @@ public class MissingListFragment extends BaseSurpriseListFragment {
 
     @Override
     public void setupData() {
-
-        missingListDao = new MissingListDao(SurprixApplication.getInstance().getCurrentUser().getUsername());
-
         missingListViewModel = new ViewModelProvider(this).get(MissingListViewModel.class);
-
         mAdapter = new SurpriseRecyclerAdapter(SurpriseListType.MISSINGS);
 
         mAdapter.setListener(new MissingRecyclerAdapterListener() {

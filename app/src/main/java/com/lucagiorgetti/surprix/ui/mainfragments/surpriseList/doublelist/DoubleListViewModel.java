@@ -31,7 +31,6 @@ public class DoubleListViewModel extends BaseViewModel {
         return allDoubleSurprises;
     }
 
-
     public void loadDoubleSurprises() {
         new DoubleListDao(SurprixApplication.getInstance().getCurrentUser().getUsername()).getDoubles(new FirebaseListCallback<Surprise>() {
             @Override
