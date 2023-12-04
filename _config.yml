@@ -169,17 +169,17 @@ header_transparent: true
 #   home:
 #     heading: "Your awesome heading"
 #     subheading: "Your awesome subheading"
-banner: "/assets/images/banners/home.jpg"
+#banner: "/assets/images/banners/home.jpg"
 
 # Banner default settings
 # These banner settings are for global banner default, but you can also
 # config it by the front matter for one specific post
-# banner:
+banner:
 #   video: null             # Video banner source
 #   loop: true              # Video loop
 #   volume: 0               # Video volume (100% is 1.0)
 #   start_at: 0             # Video start time
-#   image: null             # Image banner source
+   image: "/assets/images/banners/home.jpg"             # Image banner source
 #   opacity: 1.0            # Banner opacity (100% is 1.0)
 #   background: "rgba(0, 0, 0, 0.8)"  # Banner background (Could be a image)
 #   height: "640px"         # Banner default height
