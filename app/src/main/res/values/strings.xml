@@ -3,6 +3,7 @@
     <string name="facebook_app_id" translatable="false">1965236533694397</string>
     <string name="fb_login_protocol_scheme" translatable="false">fb1965236533694397</string>
     <string name="facebook_client_token" translatable="false">40305460d16581265359476b878dccee</string>
+    <string name="default_web_client_id" translatable="false">500151287055-9bfc22ikerphe068lfte9bsotm1fpukn.apps.googleusercontent.com</string>
 
     <string name="old_password">Old Password</string>
     <string name="new_password">New Password</string>
