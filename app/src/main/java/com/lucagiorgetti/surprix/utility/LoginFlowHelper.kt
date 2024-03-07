@@ -14,7 +14,7 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.auth.FirebaseUser
 import com.lucagiorgetti.surprix.R
-import com.lucagiorgetti.surprix.SurprixApplication.Companion.surprixContext
+import com.lucagiorgetti.surprix.SurprixApplication
 import com.lucagiorgetti.surprix.listenerInterfaces.CallbackInterface
 import com.lucagiorgetti.surprix.listenerInterfaces.CallbackWithExceptionInterface
 import com.lucagiorgetti.surprix.listenerInterfaces.LoginFlowCallbackInterface
@@ -25,29 +25,36 @@ import timber.log.Timber
 
 object LoginFlowHelper {
     // SUP
-    fun signUp(email: String, password: String, username: String, country: String, activity: Activity?, authMode: AuthMode, flowListener: LoginFlowCallbackInterface) {
+    fun signUp(
+        email: String,
+        password: String,
+        username: String,
+        country: String,
+        authMode: AuthMode,
+        flowListener: LoginFlowCallbackInterface
+    ) {
         flowListener.onStart()
         if (email.isEmpty() || username.isEmpty() || country.isEmpty()) {
-            flowListener.onFailure(Exception(surprixContext.getString(R.string.signup_complete_all_fields)))
+            flowListener.onFailure(Exception(SurprixApplication.instance.applicationContext.getString(R.string.signup_complete_all_fields)))
         }
         if (authMode == AuthMode.EMAIL_PASSWORD) {
             if (password.isEmpty() || password.length < 6) {
-                flowListener.onFailure(Exception(surprixContext.getString(R.string.signup_password_lenght)))
+                flowListener.onFailure(Exception(SurprixApplication.instance.applicationContext.getString(R.string.signup_password_lenght)))
                 return
             }
             if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                flowListener.onFailure(Exception(surprixContext.getString(R.string.signup_email_format)))
+                flowListener.onFailure(Exception(SurprixApplication.instance.applicationContext.getString(R.string.signup_email_format)))
                 return
             }
         }
         UserDao.getUserByUsername(username, object : CallbackInterface<User> {
             override fun onStart() {}
             override fun onSuccess(userAlreadyPresent: User) {
-                flowListener.onFailure(Exception(surprixContext.getString(R.string.username_existing)))
+                flowListener.onFailure(Exception(SurprixApplication.instance.applicationContext.getString(R.string.username_existing)))
             }
 
             override fun onFailure() {
-                flowListener.onFailure(Exception(surprixContext.getString(R.string.data_sync_error)))
+                flowListener.onFailure(Exception(SurprixApplication.instance.applicationContext.getString(R.string.data_sync_error)))
             }
         })
     }
@@ -65,11 +72,11 @@ object LoginFlowHelper {
                 }
 
                 override fun onFailure() {
-                    flowListener.onFailure(Exception(surprixContext.getString(R.string.wrong_email_or_password)))
+                    flowListener.onFailure(Exception(SurprixApplication.instance.applicationContext.getString(R.string.wrong_email_or_password)))
                 }
             })
         } else {
-            flowListener.onFailure(Exception(surprixContext.getString(R.string.wrong_email_or_password)))
+            flowListener.onFailure(Exception(SurprixApplication.instance.applicationContext.getString(R.string.wrong_email_or_password)))
         }
     }
 
@@ -137,7 +144,7 @@ object LoginFlowHelper {
                 }
             })
         } else {
-            flowListener.onFailure(UserNeedToCompleteSignUpException(currentUser))
+            flowListener.onFailure(UserNeedToCompleteSignUpException(null))
         }
     }
 
@@ -168,21 +175,28 @@ object LoginFlowHelper {
                         }
 
                         override fun onFailure() {
-                            flowListener.onFailure(Exception(surprixContext.getString(R.string.signup_default_error)))
+                            flowListener.onFailure(Exception(SurprixApplication.instance.applicationContext.getString(R.string.signup_default_error)))
                         }
                     })
                 }
 
                 override fun onFailure(e: Exception) {
-                    val message: String
-                    message = if (e is FirebaseAuthWeakPasswordException) {
-                        surprixContext.getString(R.string.signup_weak_password)
-                    } else if (e is FirebaseAuthInvalidCredentialsException) {
-                        surprixContext.getString(R.string.signup_email_format)
-                    } else if (e is FirebaseAuthUserCollisionException) {
-                        surprixContext.getString(R.string.signup_mail_existinig)
-                    } else {
-                        surprixContext.getString(R.string.signup_default_error)
+                    val message: String = when (e) {
+                        is FirebaseAuthWeakPasswordException -> {
+                            SurprixApplication.instance.applicationContext.getString(R.string.signup_weak_password)
+                        }
+
+                        is FirebaseAuthInvalidCredentialsException -> {
+                            SurprixApplication.instance.applicationContext.getString(R.string.signup_email_format)
+                        }
+
+                        is FirebaseAuthUserCollisionException -> {
+                            SurprixApplication.instance.applicationContext.getString(R.string.signup_mail_existinig)
+                        }
+
+                        else -> {
+                            SurprixApplication.instance.applicationContext.getString(R.string.signup_default_error)
+                        }
                     }
                     flowListener.onFailure(Exception(message))
                 }
@@ -204,9 +218,9 @@ object LoginFlowHelper {
 
     private fun manageProviderLoginException(exception: Exception, flowListener: LoginFlowCallbackInterface) {
         if (exception is FirebaseAuthUserCollisionException) {
-            flowListener.onFailure(Exception(surprixContext.getString(R.string.auth_failed_other_provider)))
+            flowListener.onFailure(Exception(SurprixApplication.instance.applicationContext.getString(R.string.auth_failed_other_provider)))
         }
-        flowListener.onFailure(Exception(surprixContext.getString(R.string.auth_failed)))
+        flowListener.onFailure(Exception(SurprixApplication.instance.applicationContext.getString(R.string.auth_failed)))
     }
 
     enum class AuthMode {
@@ -221,11 +235,10 @@ object LoginFlowHelper {
                     FACEBOOK -> "facebook.com"
                     GOOGLE -> "google.com"
                 }
-                return "undefined"
             }
 
         companion object {
-            fun fromString(provider: String?): AuthMode? {
+            fun fromString(provider: String): AuthMode? {
                 when (provider) {
                     "password" -> return EMAIL_PASSWORD
                     "facebook.com" -> return FACEBOOK

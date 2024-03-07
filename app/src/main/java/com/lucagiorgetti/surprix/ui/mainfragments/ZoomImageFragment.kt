@@ -34,7 +34,7 @@ open class ZoomImageFragment : BaseFragment() {
             imageView.alpha = 0f
             imageContainer.visibility = View.VISIBLE
             expandedImageView.visibility = View.VISIBLE
-            expandedImageView.setOnClickListener { view: View? ->
+            expandedImageView.setOnClickListener {
                 imageView.alpha = 1f
                 imageContainer.visibility = View.GONE
                 expandedImageView.visibility = View.GONE

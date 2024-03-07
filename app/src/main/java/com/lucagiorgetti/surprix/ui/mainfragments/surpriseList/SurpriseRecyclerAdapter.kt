@@ -18,11 +18,11 @@ import com.lucagiorgetti.surprix.model.SurprixLocales
 import com.lucagiorgetti.surprix.ui.StarRank
 import com.lucagiorgetti.surprix.ui.mainfragments.filter.ChipFilters
 import com.lucagiorgetti.surprix.ui.mainfragments.filter.FilterType
-import com.lucagiorgetti.surprix.ui.mainfragments.surpriseList.SurpriseRecyclerAdapter.SurpViewHolder
+import com.lucagiorgetti.surprix.ui.mainfragments.surpriseList.SurpriseRecyclerAdapter.SurpriseViewHolder
 import com.lucagiorgetti.surprix.utility.SystemUtils
 import java.util.Locale
 
-class SurpriseRecyclerAdapter private constructor() : ListAdapter<Surprise, SurpViewHolder>(DIFF_CALLBACK), Filterable {
+class SurpriseRecyclerAdapter private constructor() : ListAdapter<Surprise, SurpriseViewHolder>(DIFF_CALLBACK), Filterable {
     private var listener: BaseSurpriseRecyclerAdapterListener? = null
     private var filterableList: MutableList<Surprise>? = null
     var searchViewFilteredValues: List<Surprise> = ArrayList()
@@ -33,39 +33,39 @@ class SurpriseRecyclerAdapter private constructor() : ListAdapter<Surprise, Surp
         this.type = type
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SurpViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SurpriseViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.element_surprise_list, parent, false)
-        return SurpViewHolder(v)
+        return SurpriseViewHolder(v)
     }
 
     @SuppressLint("SetTextI18n")
-    override fun onBindViewHolder(holder: SurpViewHolder, position: Int) {
-        val surp = getItem(position)
-        holder.vSetName.text = surp.set_name
-        if (surp!!.isSet_effective_code) {
-            holder.vDescription.text = surp.code + " - " + surp.description
+    override fun onBindViewHolder(holder: SurpriseViewHolder, position: Int) {
+        val surprise = getItem(position)
+        holder.vSetName.text = surprise.set_name
+        if (surprise!!.isSet_effective_code) {
+            holder.vDescription.text = surprise.code + " - " + surprise.description
         } else {
-            holder.vDescription.text = surp.description
+            holder.vDescription.text = surprise.description
         }
-        holder.vYear.text = surp.set_year_name
-        holder.vProducer.text = surp.set_producer_name
-        holder.vNation.text = SurprixLocales.Companion.getDisplayName(surp.set_nation?.lowercase(Locale.getDefault()))
-        val path = surp.img_path!!
+        holder.vYear.text = surprise.set_year_name
+        holder.vProducer.text = surprise.set_producer_name
+        holder.vNation.text = SurprixLocales.getDisplayName(surprise.set_nation?.lowercase(Locale.getDefault()))
+        val path = surprise.img_path!!
         SystemUtils.loadImage(path, holder.vImage, R.drawable.ic_logo_shape_primary)
         when (type) {
             SurpriseListType.MISSINGS -> {
                 holder.vBtnOwners.visibility = View.VISIBLE
-                holder.vBtnOwners.setOnClickListener { view: View? -> (listener as MissingRecyclerAdapterListener?)!!.onShowMissingOwnerClick(surp) }
+                holder.vBtnOwners.setOnClickListener { (listener as MissingRecyclerAdapterListener?)!!.onShowMissingOwnerClick(surprise) }
                 holder.delete.visibility = View.VISIBLE
-                holder.delete.setOnClickListener { v: View? -> listener!!.onSurpriseDelete(position) }
-                holder.vImage.setOnClickListener { v: View? -> listener!!.onImageClicked(path, holder.vImage, R.drawable.ic_logo_shape_primary) }
+                holder.delete.setOnClickListener { listener!!.onSurpriseDelete(position) }
+                holder.vImage.setOnClickListener { listener!!.onImageClicked(path, holder.vImage, R.drawable.ic_logo_shape_primary) }
             }
 
             SurpriseListType.DOUBLES -> {
                 holder.vBtnOwners.visibility = View.GONE
                 holder.delete.visibility = View.VISIBLE
-                holder.delete.setOnClickListener { v: View? -> listener!!.onSurpriseDelete(position) }
-                holder.vImage.setOnClickListener { v: View? -> listener!!.onImageClicked(path, holder.vImage, R.drawable.ic_logo_shape_primary) }
+                holder.delete.setOnClickListener { listener!!.onSurpriseDelete(position) }
+                holder.vImage.setOnClickListener { listener!!.onImageClicked(path, holder.vImage, R.drawable.ic_logo_shape_primary) }
             }
 
             SurpriseListType.SEARCH -> {
@@ -75,7 +75,7 @@ class SurpriseRecyclerAdapter private constructor() : ListAdapter<Surprise, Surp
 
             else -> {}
         }
-        val rarity = surp.intRarity
+        val rarity = surprise.intRarity
         holder.vStar.setValue(rarity)
     }
 
@@ -98,14 +98,14 @@ class SurpriseRecyclerAdapter private constructor() : ListAdapter<Surprise, Surp
     private val filter: Filter = object : Filter() {
         override fun performFiltering(charSequence: CharSequence): FilterResults {
             val filteredValues: MutableList<Surprise> = ArrayList()
-            if (charSequence == null || charSequence.length == 0) {
+            if (charSequence.isEmpty()) {
                 filteredValues.addAll(filterableList!!)
             } else {
                 val pattern = charSequence.toString().lowercase(Locale.getDefault()).trim { it <= ' ' }
                 for (surprise in filterableList!!) {
-                    if (surprise?.code?.lowercase(Locale.getDefault())!!.contains(pattern)
-                            || surprise?.description?.lowercase(Locale.getDefault())!!.contains(pattern)
-                            || surprise?.set_name?.lowercase(Locale.getDefault())!!.contains(pattern)) {
+                    if (surprise.code?.lowercase(Locale.getDefault())!!.contains(pattern)
+                            || surprise.description?.lowercase(Locale.getDefault())!!.contains(pattern)
+                            || surprise.set_name?.lowercase(Locale.getDefault())!!.contains(pattern)) {
                         filteredValues.add(surprise)
                     }
                 }
@@ -159,7 +159,7 @@ class SurpriseRecyclerAdapter private constructor() : ListAdapter<Surprise, Surp
         }
     }
 
-    inner class SurpViewHolder(v: View) : RecyclerView.ViewHolder(v) {
+    inner class SurpriseViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         var vSetName: TextView
         var vDescription: TextView
         var vYear: TextView

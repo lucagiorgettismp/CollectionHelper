@@ -1,7 +1,7 @@
 package com.lucagiorgetti.surprix.ui.mainfragments.filter
 
 import com.lucagiorgetti.surprix.R
-import com.lucagiorgetti.surprix.SurprixApplication.Companion.getInstance
+import com.lucagiorgetti.surprix.SurprixApplication
 import com.lucagiorgetti.surprix.model.Categories
 import com.lucagiorgetti.surprix.model.Surprise
 import com.lucagiorgetti.surprix.ui.mainfragments.catalog.sets.CatalogSet
@@ -33,7 +33,7 @@ class ChipFilters {
         val completionValues = HashMap<String?, ChipFilter?>()
         for (set in sets!!) {
             val completionString = if (set!!.hasMissing()) COMPLETION_NON_COMPLETED else COMPLETION_COMPLETED
-            val label = if (set.hasMissing()) getInstance().getString(R.string.incomplete) else getInstance().getString(R.string.complete)
+            val label = if (set.hasMissing()) SurprixApplication.instance.getString(R.string.incomplete) else SurprixApplication.instance.getString(R.string.complete)
             if (!completionValues.containsKey(completionString)) {
                 completionValues[completionString] = ChipFilter(label, completionString)
             }
@@ -51,7 +51,7 @@ class ChipFilters {
     }
 
     fun clearSelection() {
-        for (type in FilterType.Companion.getValues(FilterSelectableType.SURPRISE)) {
+        for (type in FilterType.getValues(FilterSelectableType.SURPRISE)) {
             for (chipFilter in filters!![type]!!.values) {
                 chipFilter?.isSelected = true
             }

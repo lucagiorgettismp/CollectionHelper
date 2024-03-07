@@ -7,12 +7,12 @@ import android.widget.LinearLayout
 import com.lucagiorgetti.surprix.R
 
 class StarRank(context: Context?, attrs: AttributeSet?) : LinearLayout(context, attrs) {
-    var star1On: ImageView
-    var star1Off: ImageView
-    var star2On: ImageView
-    var star2Off: ImageView
-    var star3On: ImageView
-    var star3Off: ImageView
+    private var star1On: ImageView
+    private var star1Off: ImageView
+    private var star2On: ImageView
+    private var star2Off: ImageView
+    private var star3On: ImageView
+    private var star3Off: ImageView
 
     init {
         inflate(context, R.layout.star_rank, this)

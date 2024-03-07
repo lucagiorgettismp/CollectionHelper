@@ -2,7 +2,7 @@ package com.lucagiorgetti.surprix.ui.mainfragments.catalog.years
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
-import com.lucagiorgetti.surprix.SurprixApplication.Companion.getInstance
+import com.lucagiorgetti.surprix.SurprixApplication
 import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseListCallback
 import com.lucagiorgetti.surprix.model.Year
 import com.lucagiorgetti.surprix.ui.BaseViewModel
@@ -42,7 +42,7 @@ class YearViewModel(application: Application) : BaseViewModel(application) {
                 }
             })
         } else {
-            CollectionDao(getInstance().currentUser?.username).getCollectionYears(producerId, object : FirebaseListCallback<Year> {
+            CollectionDao(SurprixApplication.instance.currentUser?.username).getCollectionYears(producerId, object : FirebaseListCallback<Year> {
                 override fun onStart() {
                     setLoading(true)
                 }

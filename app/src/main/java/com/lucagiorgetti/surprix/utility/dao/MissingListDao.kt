@@ -5,7 +5,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
-import com.lucagiorgetti.surprix.SurprixApplication.Companion.getInstance
+import com.lucagiorgetti.surprix.SurprixApplication
 import com.lucagiorgetti.surprix.listenerInterfaces.CallbackInterface
 import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseListCallback
 import com.lucagiorgetti.surprix.model.Set
@@ -20,10 +20,12 @@ class MissingListDao(username: String?) {
     private val collectionDao: CollectionDao
 
     init {
-        missingRef = getInstance().databaseReference!!.child("missings").child(username!!)
-        userDoubles = getInstance().databaseReference!!.child("user_doubles")
-        years = getInstance().databaseReference!!.child("years")
-        sets = getInstance().databaseReference!!.child("sets")
+        val reference = SurprixApplication.instance.databaseReference!!
+
+        missingRef = reference.child("missings").child(username!!)
+        userDoubles = reference.child("user_doubles")
+        years = reference.child("years")
+        sets = reference.child("sets")
         collectionDao = CollectionDao(username)
     }
 
@@ -115,8 +117,8 @@ class MissingListDao(username: String?) {
                         sets.child(Objects.requireNonNull(d.key!!)).child("surprises").addListenerForSingleValueEvent(object : ValueEventListener {
                             override fun onDataChange(dataSnapshot: DataSnapshot) {
                                 if (dataSnapshot.exists()) {
-                                    for (d in dataSnapshot.children) {
-                                        addMissing(d.key)
+                                    for (missing in dataSnapshot.children) {
+                                        addMissing(missing.key)
                                     }
                                 }
                             }

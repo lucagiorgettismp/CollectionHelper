@@ -25,12 +25,12 @@ class CollectionSetFilterBSDFragment(private val chipFilters: ChipFilters?) : Bo
         val view = inflater.inflate(R.layout.bottom_sheet_collection_set, container,
                 false)
         val resetFilters = view.findViewById<Button>(R.id.filter_reset)
-        resetFilters.setOnClickListener { v: View? -> listener!!.onFilterCleared() }
+        resetFilters.setOnClickListener { listener!!.onFilterCleared() }
         val completionChipsGroup = view.findViewById<ChipGroup>(R.id.filter_category_completion)
-        for (type in FilterType.Companion.getValues(FilterSelectableType.CATALOG_SET)) {
+        for (type in FilterType.getValues(FilterSelectableType.CATALOG_SET)) {
             for (filter in chipFilters!!.getFiltersByType(type).values) {
                 val chip = BottomSheetChip(context, filter)
-                chip.setOnCheckedChangeListener { buttonView: CompoundButton?, isChecked: Boolean ->
+                chip.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
                     chipFilters.setFilterSelection(type, filter?.value, isChecked)
                     listener!!.onFilterChanged(chipFilters)
                 }

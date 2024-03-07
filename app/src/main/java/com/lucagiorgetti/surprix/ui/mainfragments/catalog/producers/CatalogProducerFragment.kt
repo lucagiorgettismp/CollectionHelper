@@ -9,7 +9,7 @@ import com.lucagiorgetti.surprix.utility.RecyclerItemClickListener
 
 class CatalogProducerFragment : BaseProducerFragment() {
     override fun setupView() {
-        val producerViewModel = ViewModelProvider(this).get(ProducerViewModel::class.java)
+        val producerViewModel = ViewModelProvider(this)[ProducerViewModel::class.java]
         recyclerView!!.addOnItemTouchListener(RecyclerItemClickListener(context, recyclerView, object : RecyclerItemClickListener.OnItemClickListener {
             override fun onItemClick(view: View?, position: Int) {
                 val producer = mAdapter!!.getItemAtPosition(position)!!
@@ -34,6 +34,6 @@ class CatalogProducerFragment : BaseProducerFragment() {
                 hideLoading()
             }
         }
-        fab!!.setOnClickListener { view: View? -> findNavController(requireView()).navigate(CatalogProducerFragmentDirections.goToSearch()) }
+        fab!!.setOnClickListener { findNavController(requireView()).navigate(CatalogProducerFragmentDirections.goToSearch()) }
     }
 }

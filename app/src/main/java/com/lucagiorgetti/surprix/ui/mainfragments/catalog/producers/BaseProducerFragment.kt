@@ -29,9 +29,9 @@ abstract class BaseProducerFragment : BaseFragment() {
         recyclerView = root.findViewById(R.id.catalog_recycler)
         recyclerView!!.setHasFixedSize(true)
         val layoutManager: RecyclerView.LayoutManager = GridLayoutManager(context, SystemUtils.getColumnsNumber(recyclerView))
-        recyclerView!!.setLayoutManager(layoutManager)
+        recyclerView!!.layoutManager = layoutManager
         mAdapter = ProducerRecyclerAdapter()
-        recyclerView!!.setAdapter(mAdapter)
+        recyclerView!!.adapter = mAdapter
         setupView()
         return root
     }

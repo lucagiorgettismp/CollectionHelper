@@ -26,18 +26,6 @@ class YearRecyclerAdapter : RecyclerView.Adapter<YearRecyclerAdapter.SetViewHold
     override fun onBindViewHolder(holder: SetViewHolder, position: Int) {
         val year = years!![position]
         holder.vName.text = year?.descr
-
-        /*
-        //holder.vName.setTextColor(ContextCompat.getColor(SurprixApplication.getSurprixContext(), R.color.cardBackground));
-        switch (position % 2) {
-            case 0:
-                holder.vLayout.setBackgroundColor(ContextCompat.getColor(SurprixApplication.getSurprixContext(), Colors.getHexColor(year.getProducer_color())));
-                break;
-            case 1:
-                holder.vLayout.setBackgroundColor(ContextCompat.getColor(SurprixApplication.getSurprixContext(), Colors.getDarkHexColor(year.getProducer_color())));
-                break;
-        }
-        */
     }
 
     override fun getItemCount(): Int {

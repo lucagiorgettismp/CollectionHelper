@@ -29,7 +29,7 @@ class SearchFragment : BaseFragment() {
     private var root: View? = null
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val searchViewModel = ViewModelProvider(this).get(SearchViewModel::class.java)
+        val searchViewModel = ViewModelProvider(this)[SearchViewModel::class.java]
         if (root == null) {
             root = inflater.inflate(R.layout.fragment_search, container, false)
         }
@@ -37,21 +37,21 @@ class SearchFragment : BaseFragment() {
         recyclerView = root!!.findViewById(R.id.search_recycler_view)
         recyclerView!!.setHasFixedSize(true)
         val layoutManager: RecyclerView.LayoutManager = GridLayoutManager(context, SystemUtils.getColumnsNumber(recyclerView))
-        recyclerView!!.setLayoutManager(layoutManager)
+        recyclerView!!.layoutManager = layoutManager
         searchSurpriseRecyclerAdapter = SurpriseRecyclerAdapter(SurpriseListType.SEARCH)
         searchSetRecyclerAdapter = SearchSetRecyclerAdapter()
         when (radioGroup.checkedRadioButtonId) {
             R.id.search_radio_surprise -> {
-                recyclerView!!.setAdapter(searchSurpriseRecyclerAdapter)
+                recyclerView!!.adapter = searchSurpriseRecyclerAdapter
                 mode = SearchMode.SURPRISE
             }
 
             R.id.search_radio_sets -> {
-                recyclerView!!.setAdapter(searchSetRecyclerAdapter)
+                recyclerView!!.adapter = searchSetRecyclerAdapter
                 mode = SearchMode.SET
             }
         }
-        radioGroup.setOnCheckedChangeListener { radioG: RadioGroup, checkId: Int ->
+        radioGroup.setOnCheckedChangeListener { radioG: RadioGroup, _: Int ->
             when (radioG.checkedRadioButtonId) {
                 R.id.search_radio_surprise -> changeMode(SearchMode.SURPRISE)
                 R.id.search_radio_sets -> changeMode(SearchMode.SET)
@@ -61,7 +61,7 @@ class SearchFragment : BaseFragment() {
             searchSurpriseRecyclerAdapter!!.submitList(surprises)
             searchSurpriseRecyclerAdapter!!.setFilterableList(surprises)
         }
-        searchViewModel.sets.observe(viewLifecycleOwner) { sets: List<Set?> ->
+        searchViewModel.sets.observe(viewLifecycleOwner) { sets: List<Set> ->
             searchSetRecyclerAdapter!!.submitList(sets)
             searchSetRecyclerAdapter!!.setFilterableList(sets)
         }
@@ -78,7 +78,7 @@ class SearchFragment : BaseFragment() {
                 return false
             }
         })
-        searchView!!.setQueryHint(getString(R.string.search))
+        searchView!!.queryHint = getString(R.string.search)
         recyclerView!!.addOnItemTouchListener(RecyclerItemClickListener(activity, recyclerView, object : RecyclerItemClickListener.OnItemClickListener {
             override fun onItemClick(view: View?, position: Int) {
                 var setId: String? = null

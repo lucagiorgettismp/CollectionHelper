@@ -10,14 +10,12 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.OnBackPressedDispatcher
 import androidx.navigation.Navigation.findNavController
-import com.facebook.FacebookSdk
 import com.facebook.login.LoginManager
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.lucagiorgetti.surprix.R
-import com.lucagiorgetti.surprix.SurprixApplication.Companion.surprixContext
+import com.lucagiorgetti.surprix.SurprixApplication
 import com.lucagiorgetti.surprix.listenerInterfaces.LoginFlowCallbackInterface
 import com.lucagiorgetti.surprix.utility.BaseFragment
 import com.lucagiorgetti.surprix.utility.LoginFlowHelper
@@ -65,18 +63,18 @@ class SignUpFragment : BaseFragment() {
         val signUp = root.findViewById<Button>(R.id.btn_sign_up)
         if (fromFacebook) {
             edtEmail!!.setText(facebookEmail)
-            edtEmail!!.setEnabled(false)
+            edtEmail!!.isEnabled = false
             passwordField.visibility = View.GONE
         }
-        edtNation!!.setOnFocusChangeListener(OnFocusChangeListener { v: View?, hasFocus: Boolean ->
+        edtNation!!.onFocusChangeListener = OnFocusChangeListener { _: View?, hasFocus: Boolean ->
             if (hasFocus) {
-                countryPicker = CountryPickerDialog(context, { country: Country, flagResId: Int ->
-                    edtNation!!.setText(country.getCountryName(surprixContext))
+                countryPicker = CountryPickerDialog(context, { country: Country, _: Int ->
+                    edtNation!!.setText(country.getCountryName(SurprixApplication.instance.applicationContext))
                     countryPicker!!.dismiss()
                 }, false, 0)
                 countryPicker!!.show()
             }
-        })
+        }
         signUp.setOnClickListener(SignUpOnClick())
         return root
     }
@@ -93,7 +91,7 @@ class SignUpFragment : BaseFragment() {
                 return
             }
             val authMode = if (fromFacebook) AuthMode.FACEBOOK else AuthMode.EMAIL_PASSWORD
-            LoginFlowHelper.signUp(email, password, username, nation, getActivity(), authMode, object : LoginFlowCallbackInterface {
+            LoginFlowHelper.signUp(email, password, username, nation, authMode, object : LoginFlowCallbackInterface {
                 override fun onStart() {
                     showLoading()
                 }
@@ -106,7 +104,7 @@ class SignUpFragment : BaseFragment() {
 
                 override fun onFailure(e: Exception) {
                     hideLoading()
-                    Toast.makeText(context, e!!.message, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
                 }
             })
         }

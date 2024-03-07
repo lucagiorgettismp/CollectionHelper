@@ -31,8 +31,7 @@ class SetRecyclerAdapter(private val navigationMode: CatalogNavigationMode?, pri
     var searchViewFilteredValues: List<CatalogSet> = ArrayList()
     private var chipFilters: ChipFilters? = null
     override fun onCreateViewHolder(parent: ViewGroup, i: Int): SetViewHolder {
-        val v: View
-        v = if (navigationMode == CatalogNavigationMode.COLLECTION) {
+        val v: View = if (navigationMode == CatalogNavigationMode.COLLECTION) {
             LayoutInflater.from(parent.context).inflate(R.layout.element_collection_set, parent, false)
         } else {
             LayoutInflater.from(parent.context).inflate(R.layout.element_set, parent, false)
@@ -43,7 +42,7 @@ class SetRecyclerAdapter(private val navigationMode: CatalogNavigationMode?, pri
     override fun onBindViewHolder(holder: SetViewHolder, position: Int) {
         val set = getItem(position).set
         holder.vName.text = set.name
-        holder.vNation.setText(SurprixLocales.Companion.getDisplayName(set.nation?.lowercase(Locale.getDefault())))
+        holder.vNation.text = SurprixLocales.getDisplayName(set.nation?.lowercase(Locale.getDefault()))
         if (navigationMode == CatalogNavigationMode.COLLECTION) {
             val cs = getItem(position)
             if (cs!!.hasMissing()) {
@@ -54,17 +53,17 @@ class SetRecyclerAdapter(private val navigationMode: CatalogNavigationMode?, pri
                 holder.setComplete!!.visibility = View.VISIBLE
             }
         } else {
-            holder.myCollectionSwitch!!.setOnClickListener { v: View? ->
+            holder.myCollectionSwitch!!.setOnClickListener {
                 val isChecked = holder.myCollectionSwitch!!.isChecked
                 listener.onSetInCollectionChanged(set, isChecked, position)
             }
             val inCollection = getItem(position)!!.isInCollection
             holder.myCollectionSwitch!!.isChecked = inCollection
-            val onLongClick = OnLongClickListener { v: View? -> listener.onSetLongClicked(set, holder.myCollectionSwitch!!) }
+            val onLongClick = OnLongClickListener { listener.onSetLongClicked(set, holder.myCollectionSwitch!!) }
             holder.vImage.setOnLongClickListener(onLongClick)
             holder.clickableZone.setOnLongClickListener(onLongClick)
         }
-        val onClick = View.OnClickListener { v: View? -> listener.onSetClicked(set, position) }
+        val onClick = View.OnClickListener { listener.onSetClicked(set, position) }
         holder.vImage.setOnClickListener(onClick)
         holder.clickableZone.setOnClickListener(onClick)
         val path = set.img_path
@@ -128,7 +127,7 @@ class SetRecyclerAdapter(private val navigationMode: CatalogNavigationMode?, pri
         } else {
             val returnList: MutableList<CatalogSet?> = ArrayList()
             for (surprise in values!!) {
-                if (chipFilters!!.getFiltersByType(FilterType.COMPLETION).get(if (surprise!!.hasMissing()) ChipFilters.Companion.COMPLETION_NON_COMPLETED else ChipFilters.Companion.COMPLETION_COMPLETED)!!.isSelected) {
+                if (chipFilters!!.getFiltersByType(FilterType.COMPLETION)[if (surprise!!.hasMissing()) ChipFilters.COMPLETION_NON_COMPLETED else ChipFilters.COMPLETION_COMPLETED]!!.isSelected) {
                     returnList.add(surprise)
                 }
             }
@@ -137,8 +136,8 @@ class SetRecyclerAdapter(private val navigationMode: CatalogNavigationMode?, pri
     }
 
     fun notifyItemChecked(position: Int, checked: Boolean) {
-        if (filterableList != null && !filterableList!!.isEmpty()) {
-            filterableList!![position]?.isInCollection = checked
+        if (filterableList != null && filterableList!!.isNotEmpty()) {
+            filterableList!![position].isInCollection = checked
             notifyItemChanged(position)
         }
     }

@@ -8,7 +8,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.lucagiorgetti.surprix.R
-import com.lucagiorgetti.surprix.SurprixApplication.Companion.surprixContext
 import com.lucagiorgetti.surprix.ui.StarRank
 import com.lucagiorgetti.surprix.utility.SystemUtils
 import java.util.Locale
@@ -40,8 +39,7 @@ class CatalogSetDetailRecyclerAdapter(private val listener: CatalogSetDetailClic
 
     override fun onBindViewHolder(holder: SetDetailViewHolder, position: Int) {
         val s = items!![position].surprise
-        val ctx = surprixContext
-        if (s!!.isSet_effective_code) {
+        if (s.isSet_effective_code) {
             holder.vDescription.text = String.format(Locale.getDefault(), "%s - %s", s.code, s.description)
         } else {
             holder.vDescription.text = s.description
@@ -50,9 +48,9 @@ class CatalogSetDetailRecyclerAdapter(private val listener: CatalogSetDetailClic
         SystemUtils.loadImage(path, holder.vImage, R.drawable.ic_logo_shape_primary)
         val rarity = s.intRarity
         holder.vStarRank.setValue(rarity)
-        holder.vAddMissing.setOnClickListener { v: View? -> listener.onSurpriseAddedToMissings(s) }
-        holder.vAddDouble.setOnClickListener { v: View? -> listener.onSurpriseAddedToDoubles(s) }
-        holder.vImage.setOnClickListener { v: View? -> listener.onImageClicked(path, holder.vImage, R.drawable.ic_logo_shape_primary) }
+        holder.vAddMissing.setOnClickListener { listener.onSurpriseAddedToMissings(s) }
+        holder.vAddDouble.setOnClickListener { listener.onSurpriseAddedToDoubles(s) }
+        holder.vImage.setOnClickListener { listener.onImageClicked(path, holder.vImage, R.drawable.ic_logo_shape_primary) }
     }
 
     override fun getItemCount(): Int {
@@ -61,7 +59,7 @@ class CatalogSetDetailRecyclerAdapter(private val listener: CatalogSetDetailClic
         } else items!!.size
     }
 
-    public override fun setSurprises(surprises: List<CollectionSurprise>) {
+    override fun setSurprises(surprises: List<CollectionSurprise>) {
         items = surprises
     }
 

@@ -7,7 +7,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.lucagiorgetti.surprix.R
-import com.lucagiorgetti.surprix.SurprixApplication.Companion.surprixContext
 import com.lucagiorgetti.surprix.ui.StarRank
 import com.lucagiorgetti.surprix.utility.SystemUtils
 import java.util.Locale
@@ -38,7 +37,7 @@ class CollectionSetDetailRecyclerAdapter(private val listener: SetDetailClickLis
         }
         val path = s.img_path!!
         SystemUtils.loadImage(path, holder.vImage, R.drawable.ic_logo_shape_primary)
-        holder.vImage.setOnClickListener { v: View? -> listener.onImageClicked(path, holder.vImage, R.drawable.ic_logo_shape_primary) }
+        holder.vImage.setOnClickListener { listener.onImageClicked(path, holder.vImage, R.drawable.ic_logo_shape_primary) }
         val rarity = s.intRarity
         holder.vStarRank.setValue(rarity)
         if (items!![position].isMissing) {

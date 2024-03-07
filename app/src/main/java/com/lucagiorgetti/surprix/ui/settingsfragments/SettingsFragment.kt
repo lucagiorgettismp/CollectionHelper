@@ -5,7 +5,6 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -19,8 +18,7 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.lucagiorgetti.surprix.R
-import com.lucagiorgetti.surprix.SurprixApplication.Companion.getInstance
-import com.lucagiorgetti.surprix.SurprixApplication.Companion.surprixContext
+import com.lucagiorgetti.surprix.SurprixApplication
 import com.lucagiorgetti.surprix.listenerInterfaces.CallbackInterface
 import com.lucagiorgetti.surprix.model.User
 import com.lucagiorgetti.surprix.utility.LoginFlowHelper.AuthMode
@@ -40,7 +38,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private var countryPicker: CountryPickerDialog? = null
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.surprix_preferences, rootKey)
-        user = getInstance().currentUser
+        user = SurprixApplication.instance.currentUser
         val privacyPolicy = findPreference<Preference>(resources.getString(R.string.settings_privacy_key))
         val contactUs = findPreference<Preference>(resources.getString(R.string.settings_contact_us_key))
         val deleteAccount = findPreference<Preference>(resources.getString(R.string.settings_delete_user_key))
@@ -54,7 +52,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         }
         if (nightMode != null) {
             nightMode.isChecked = SystemUtils.darkThemePreference
-            nightMode.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { p: Preference?, state: Any ->
+            nightMode.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _: Preference?, state: Any ->
                 val checked = state as Boolean
                 SystemUtils.darkThemePreference = checked
                 AppCompatDelegate.setDefaultNightMode(if (checked) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO)
@@ -62,16 +60,16 @@ class SettingsFragment : PreferenceFragmentCompat() {
             }
         }
         if (privacyPolicy != null) {
-            privacyPolicy.onPreferenceClickListener = Preference.OnPreferenceClickListener { v: Preference? ->
+            privacyPolicy.onPreferenceClickListener = Preference.OnPreferenceClickListener {
                 findNavController(requireActivity(), R.id.nav_host_fragment).navigate(SettingsFragmentDirections.actionSettingsFragmentToPrivacyPolicyFragment())
                 true
             }
         }
         if (countryEdit != null) {
             countryEdit.summary = user?.country
-            countryEdit.onPreferenceClickListener = Preference.OnPreferenceClickListener { preference: Preference? ->
-                countryPicker = CountryPickerDialog(context, { country: Country, flagResId: Int ->
-                    val countryName = country.getCountryName(surprixContext)
+            countryEdit.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                countryPicker = CountryPickerDialog(context, { country: Country, _: Int ->
+                    val countryName = country.getCountryName(SurprixApplication.instance.applicationContext)
                     countryEdit.summary = countryName
                     countryPicker!!.dismiss()
                     UserDao.updateUser(countryName)
@@ -81,12 +79,12 @@ class SettingsFragment : PreferenceFragmentCompat() {
             }
         }
         if (deleteAccount != null) {
-            deleteAccount.onPreferenceClickListener = Preference.OnPreferenceClickListener { preference: Preference? ->
+            deleteAccount.onPreferenceClickListener = Preference.OnPreferenceClickListener {
                 val alertDialog = AlertDialog.Builder(requireActivity()).create()
                 alertDialog.setTitle(getString(R.string.delete_account))
                 alertDialog.setMessage(getString(R.string.dialod_delete_user_text))
                 alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.dialog_positive)
-                ) { dialog: DialogInterface?, which: Int ->
+                ) { _: DialogInterface?, _: Int ->
                     UserDao.deleteUser(object : CallbackInterface<Boolean?> {
                         override fun onStart() {}
                         override fun onSuccess(item: Boolean?) {
@@ -99,14 +97,14 @@ class SettingsFragment : PreferenceFragmentCompat() {
                     })
                 }
                 alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.discard_btn)
-                ) { dialog: DialogInterface?, which: Int -> alertDialog.dismiss() }
+                ) { _: DialogInterface?, _: Int -> alertDialog.dismiss() }
                 alertDialog.show()
                 false
             }
         }
         if (changePassword != null) {
-            if (AuthMode.Companion.fromString(user?.provider) == AuthMode.EMAIL_PASSWORD) {
-                changePassword.onPreferenceClickListener = Preference.OnPreferenceClickListener { preference: Preference? ->
+            if (AuthMode.fromString(user?.provider!!) == AuthMode.EMAIL_PASSWORD) {
+                changePassword.onPreferenceClickListener = Preference.OnPreferenceClickListener {
                     val view = layoutInflater.inflate(R.layout.dialog_change_password, null)
                     val builder = AlertDialog.Builder(requireActivity())
                     builder.setView(view)
@@ -116,7 +114,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                     val btnChangePwd = view.findViewById<Button>(R.id.btn_dialog_submit)
                     val changePwd = builder.create()
                     changePwd.show()
-                    btnChangePwd.setOnClickListener { v: View? ->
+                    btnChangePwd.setOnClickListener {
                         val oldPwd = oldPassword.text.toString().trim { it <= ' ' }
                         val newPwd = newPassword.text.toString().trim { it <= ' ' }
                         val user = FirebaseAuth.getInstance().currentUser

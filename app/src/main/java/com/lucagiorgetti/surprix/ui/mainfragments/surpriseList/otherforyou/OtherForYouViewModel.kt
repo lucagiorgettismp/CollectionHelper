@@ -2,7 +2,7 @@ package com.lucagiorgetti.surprix.ui.mainfragments.surpriseList.otherforyou
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
-import com.lucagiorgetti.surprix.SurprixApplication.Companion.getInstance
+import com.lucagiorgetti.surprix.SurprixApplication
 import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseListCallback
 import com.lucagiorgetti.surprix.model.Surprise
 import com.lucagiorgetti.surprix.ui.BaseViewModel
@@ -24,7 +24,7 @@ class OtherForYouViewModel(application: Application) : BaseViewModel(application
     }
 
     fun loadOtherForYou(username: String?) {
-        MissingListDao(getInstance().currentUser?.username).getMissingOwnerOtherSurprises(username, object : FirebaseListCallback<Surprise> {
+        MissingListDao(SurprixApplication.instance.currentUser?.username).getMissingOwnerOtherSurprises(username, object : FirebaseListCallback<Surprise> {
             override fun onSuccess(surprises: MutableList<Surprise>) {
                 otherForYou!!.value = surprises
                 setLoading(false)

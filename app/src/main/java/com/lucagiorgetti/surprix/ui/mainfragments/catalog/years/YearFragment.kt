@@ -6,7 +6,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation.findNavController
 import com.lucagiorgetti.surprix.R
-import com.lucagiorgetti.surprix.SurprixApplication.Companion.getInstance
+import com.lucagiorgetti.surprix.SurprixApplication
 import com.lucagiorgetti.surprix.model.Year
 import com.lucagiorgetti.surprix.ui.mainfragments.catalog.CatalogNavigationMode
 import com.lucagiorgetti.surprix.utility.RecyclerItemClickListener
@@ -16,7 +16,7 @@ import com.lucagiorgetti.surprix.utility.dao.MissingListDao
 class YearFragment : BaseYearFragment() {
     var navigationMode: CatalogNavigationMode? = null
     override fun setupView() {
-        val yearViewModel = ViewModelProvider(this).get(YearViewModel::class.java)
+        val yearViewModel = ViewModelProvider(this)[YearViewModel::class.java]
         var producerId: String? = null
         if (arguments != null) {
             producerId = YearFragmentArgs.fromBundle(requireArguments()).producerId
@@ -58,12 +58,12 @@ class YearFragment : BaseYearFragment() {
         alertDialog.setTitle(getString(R.string.dialog_add_year_title))
         alertDialog.setMessage(getString(R.string.dialog_add_year_text) + " " + year + "?")
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.dialog_positive)
-        ) { dialog: DialogInterface?, which: Int ->
-            MissingListDao(getInstance().currentUser?.username).addMissingsByYear(yearId)
+        ) { _: DialogInterface?, _: Int ->
+            MissingListDao(SurprixApplication.instance.currentUser?.username).addMissingsByYear(yearId)
             alertDialog.dismiss()
         }
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.discard_btn)
-        ) { dialog: DialogInterface?, which: Int -> alertDialog.dismiss() }
+        ) { _: DialogInterface?, _: Int -> alertDialog.dismiss() }
         alertDialog.show()
     }
 }

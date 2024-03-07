@@ -3,14 +3,14 @@ package com.lucagiorgetti.surprix.utility.dao
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
-import com.lucagiorgetti.surprix.SurprixApplication.Companion.getInstance
+import com.lucagiorgetti.surprix.SurprixApplication
 import com.lucagiorgetti.surprix.listenerInterfaces.CallbackInterface
 import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseListCallback
 import com.lucagiorgetti.surprix.model.Set
 import com.lucagiorgetti.surprix.model.Surprise
 
 object SetDao {
-    private val sets = getInstance().databaseReference!!.child("sets")
+    private val sets = SurprixApplication.instance.databaseReference!!.child("sets")
     fun getSetById(setId: String?, listen: CallbackInterface<Set>) {
         sets.child(setId!!).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {

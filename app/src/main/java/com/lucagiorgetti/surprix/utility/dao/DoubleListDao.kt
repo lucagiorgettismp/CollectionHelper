@@ -4,7 +4,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
-import com.lucagiorgetti.surprix.SurprixApplication.Companion.getInstance
+import com.lucagiorgetti.surprix.SurprixApplication
 import com.lucagiorgetti.surprix.listenerInterfaces.CallbackInterface
 import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseListCallback
 import com.lucagiorgetti.surprix.model.Surprise
@@ -16,8 +16,8 @@ class DoubleListDao(private val username: String?) {
     private val surpriseDoubleOwners: DatabaseReference
 
     init {
-        val reference = getInstance().databaseReference
-        userDoubles = reference!!.child("user_doubles").child(username!!)
+        val reference = SurprixApplication.instance.databaseReference!!
+        userDoubles = reference.child("user_doubles").child(username!!)
         surpriseDoubleOwners = reference.child("surprise_doubles")
     }
 

@@ -7,12 +7,15 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.SearchView
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.lucagiorgetti.surprix.R
-import com.lucagiorgetti.surprix.SurprixApplication.Companion.getInstance
+import com.lucagiorgetti.surprix.SurprixApplication
 import com.lucagiorgetti.surprix.model.Set
 import com.lucagiorgetti.surprix.ui.mainfragments.catalog.CatalogNavigationMode
 import com.lucagiorgetti.surprix.ui.mainfragments.filter.ChipFilters
@@ -23,17 +26,17 @@ import com.lucagiorgetti.surprix.utility.dao.CollectionDao
 import com.lucagiorgetti.surprix.utility.dao.MissingListDao
 
 class SetListFragment : BaseSetListFragment() {
-    var navigationMode: CatalogNavigationMode? = null
-    var yearId: String? = null
-    var yearName: String? = null
-    var producerId: String? = null
-    var collectionDao: CollectionDao? = null
-    var missingListDao: MissingListDao? = null
-    var setListViewModel: SetListViewModel? = null
+    private var navigationMode: CatalogNavigationMode? = null
+    private var yearId: String? = null
+    private var yearName: String? = null
+    private var producerId: String? = null
+    private var collectionDao: CollectionDao? = null
+    private var missingListDao: MissingListDao? = null
+    private var setListViewModel: SetListViewModel? = null
     private var chipFilters: ChipFilters? = null
     var sharedViewModel: SharedViewModel? = null
     override fun onCreate(savedInstanceState: Bundle?) {
-        val username = getInstance().currentUser?.username
+        val username = SurprixApplication.instance.currentUser?.username
         collectionDao = CollectionDao(username)
         missingListDao = MissingListDao(username)
         if (arguments != null) {
@@ -52,7 +55,7 @@ class SetListFragment : BaseSetListFragment() {
         val dialog = AlertDialog.Builder(requireContext())
                 .setTitle(R.string.set_hint_dialog_title)
                 .setMessage(R.string.set_hint_dialog_message)
-                .setPositiveButton(R.string.btn_ok_thanks) { dialog1: DialogInterface, which: Int ->
+                .setPositiveButton(R.string.btn_ok_thanks) { dialog1: DialogInterface, _: Int ->
                     SystemUtils.isSetHintDisplayed = true
                     dialog1.dismiss()
                 }
@@ -66,11 +69,55 @@ class SetListFragment : BaseSetListFragment() {
     }
 
     public override fun setupView() {
-        setTitle(yearName)
+
+        val menuHost: MenuHost = requireActivity()
+        menuHost.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                // Add menu items here
+                when (navigationMode) {
+                    CatalogNavigationMode.CATALOG -> menuInflater.inflate(R.menu.search_menu, menu)
+                    CatalogNavigationMode.COLLECTION -> menuInflater.inflate(R.menu.filter_search_menu, menu)
+                    else -> {}
+                }
+                val searchItem = menu.findItem(R.id.action_search)
+                val searchView = searchItem.actionView as SearchView?
+                searchView!!.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                    override fun onQueryTextSubmit(s: String): Boolean {
+                        return false
+                    }
+
+                    override fun onQueryTextChange(s: String): Boolean {
+                        mAdapter!!.filter.filter(s)
+                        return false
+                    }
+                })
+                searchView.queryHint = getString(R.string.search)
+                searchView.setOnCloseListener {
+                    if (mAdapter!!.itemCount > 0) {
+                        setTitle(getString(R.string.missings) + " (" + mAdapter!!.itemCount + ")")
+                    } else {
+                        setTitle(getString(R.string.missings))
+                    }
+                    false
+                }
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    R.id.action_filter -> {
+                        openBottomSheet()
+                        true
+                    }
+                    else -> false
+                }
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+
+        setTitle(yearName!!)
         if (navigationMode == CatalogNavigationMode.CATALOG) {
-            sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
+            sharedViewModel = ViewModelProvider(requireActivity())[SharedViewModel::class.java]
         }
-        setListViewModel = ViewModelProvider(this).get(SetListViewModel::class.java)
+        setListViewModel = ViewModelProvider(this)[SetListViewModel::class.java]
         setListViewModel!!.getSets(yearId, producerId, navigationMode).observe(viewLifecycleOwner) { sets: List<CatalogSet> ->
             mAdapter!!.submitList(sets)
             mAdapter!!.setFilterableList(sets)
@@ -92,43 +139,6 @@ class SetListFragment : BaseSetListFragment() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        when (navigationMode) {
-            CatalogNavigationMode.CATALOG -> inflater.inflate(R.menu.search_menu, menu)
-            CatalogNavigationMode.COLLECTION -> inflater.inflate(R.menu.filter_search_menu, menu)
-            else -> {}
-        }
-        val searchItem = menu.findItem(R.id.action_search)
-        val searchView = searchItem.actionView as SearchView?
-        searchView!!.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(s: String): Boolean {
-                return false
-            }
-
-            override fun onQueryTextChange(s: String): Boolean {
-                mAdapter!!.filter.filter(s)
-                return false
-            }
-        })
-        searchView.queryHint = getString(R.string.search)
-        searchView.setOnCloseListener {
-            if (mAdapter!!.itemCount > 0) {
-                setTitle(getString(R.string.missings) + " (" + mAdapter!!.itemCount + ")")
-            } else {
-                setTitle(getString(R.string.missings))
-            }
-            false
-        }
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.action_filter) {
-            openBottomSheet()
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
     private fun openBottomSheet() {
         if (chipFilters != null) {
             val bottomSheetDialogFragment = CollectionSetFilterBSDFragment(chipFilters)
@@ -145,7 +155,7 @@ class SetListFragment : BaseSetListFragment() {
             })
             bottomSheetDialogFragment.show(requireActivity().supportFragmentManager, "double_bottom_sheet")
         } else {
-            Snackbar.make(requireView(), getInstance().getString(R.string.cannot_oper_filters), Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(requireView(), SurprixApplication.instance.getString(R.string.cannot_oper_filters), Snackbar.LENGTH_SHORT).show()
         }
     }
 
@@ -181,14 +191,14 @@ class SetListFragment : BaseSetListFragment() {
         alertDialog.setTitle(getString(R.string.remove_from_collection_title))
         alertDialog.setMessage(getString(R.string.remove_from_collection_message))
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.proceed_btn)
-        ) { dialog: DialogInterface?, which: Int ->
+        ) { _: DialogInterface?, _: Int ->
             missingListDao!!.removeItemsFromSet(set)
             collectionDao!!.removeSetInCollection(set)
             mAdapter!!.notifyItemChecked(position, false)
             alertDialog.dismiss()
         }
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.discard_btn)
-        ) { dialog: DialogInterface?, which: Int ->
+        ) { _: DialogInterface?, _: Int ->
             mAdapter!!.notifyItemChecked(position, true)
             alertDialog.dismiss()
         }
@@ -200,14 +210,14 @@ class SetListFragment : BaseSetListFragment() {
         alertDialog.setTitle(getString(R.string.dialog_add_set_title))
         alertDialog.setMessage(getString(R.string.dialog_add_set_text) + " " + set.name + "?")
         alertDialog.setButton(android.app.AlertDialog.BUTTON_POSITIVE, getString(R.string.dialog_positive)
-        ) { dialog: DialogInterface?, which: Int ->
-            MissingListDao(getInstance().currentUser?.username).addMissingsBySet(set.id)
+        ) { _: DialogInterface?, _: Int ->
+            MissingListDao(SurprixApplication.instance.currentUser?.username).addMissingsBySet(set.id)
             inCollection!!.isChecked = true
             alertDialog.dismiss()
-            Snackbar.make(requireView(), getInstance().getString(R.string.added_to_missings), Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(requireView(), SurprixApplication.instance.getString(R.string.added_to_missings), Snackbar.LENGTH_SHORT).show()
         }
         alertDialog.setButton(android.app.AlertDialog.BUTTON_NEGATIVE, getString(R.string.discard_btn)
-        ) { dialog: DialogInterface?, which: Int -> alertDialog.dismiss() }
+        ) { _: DialogInterface?, _: Int -> alertDialog.dismiss() }
         alertDialog.show()
     }
 

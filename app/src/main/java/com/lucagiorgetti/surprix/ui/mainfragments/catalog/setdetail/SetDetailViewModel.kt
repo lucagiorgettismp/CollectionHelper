@@ -2,7 +2,7 @@ package com.lucagiorgetti.surprix.ui.mainfragments.catalog.setdetail
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
-import com.lucagiorgetti.surprix.SurprixApplication.Companion.getInstance
+import com.lucagiorgetti.surprix.SurprixApplication
 import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseListCallback
 import com.lucagiorgetti.surprix.model.Surprise
 import com.lucagiorgetti.surprix.ui.BaseViewModel
@@ -34,7 +34,7 @@ class SetDetailViewModel(application: Application) : BaseViewModel(application) 
                 }
 
                 override fun onSuccess(surprises: MutableList<Surprise>) {
-                    allSurprises!!.setValue(surprises!!.stream().map { surprise: Surprise -> CollectionSurprise(surprise) }.collect(Collectors.toList()))
+                    allSurprises!!.value = surprises.stream().map { surprise: Surprise -> CollectionSurprise(surprise) }.collect(Collectors.toList())
                     setLoading(false)
                 }
 
@@ -43,13 +43,13 @@ class SetDetailViewModel(application: Application) : BaseViewModel(application) 
                 }
             })
         } else {
-            CollectionDao(getInstance().currentUser?.username).getSetItemsWithMissing(setId, object : FirebaseListCallback<CollectionSurprise> {
+            CollectionDao(SurprixApplication.instance.currentUser?.username).getSetItemsWithMissing(setId, object : FirebaseListCallback<CollectionSurprise> {
                 override fun onStart() {
                     setLoading(true)
                 }
 
                 override fun onSuccess(items: MutableList<CollectionSurprise>) {
-                    allSurprises!!.setValue(items)
+                    allSurprises!!.value = items
                     setLoading(false)
                 }
 

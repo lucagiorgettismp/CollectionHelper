@@ -2,7 +2,7 @@ package com.lucagiorgetti.surprix.ui.mainfragments.missingowners
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
-import com.lucagiorgetti.surprix.SurprixApplication.Companion.getInstance
+import com.lucagiorgetti.surprix.SurprixApplication
 import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseListCallback
 import com.lucagiorgetti.surprix.model.User
 import com.lucagiorgetti.surprix.ui.BaseViewModel
@@ -24,12 +24,12 @@ class MissingOwnersViewModel(application: Application) : BaseViewModel(applicati
     }
 
     fun loadOwners(surpriseId: String?) {
-        DoubleListDao(getInstance().currentUser?.username).getMissingOwners(surpriseId, object : FirebaseListCallback<User> {
+        DoubleListDao(SurprixApplication.instance.currentUser?.username).getMissingOwners(surpriseId, object : FirebaseListCallback<User> {
             override fun onSuccess(users: MutableList<User>) {
                 val owners = ArrayList<User>()
                 val abroadOwners = ArrayList<User>()
                 for (u in users) {
-                    if (u.country == getInstance().currentUser?.country) {
+                    if (u.country == SurprixApplication.instance.currentUser?.country) {
                         owners.add(u)
                     } else {
                         abroadOwners.add(u)

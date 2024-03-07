@@ -1,7 +1,6 @@
 package com.lucagiorgetti.surprix.ui.activities
 
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.lucagiorgetti.surprix.R
@@ -17,6 +16,6 @@ class SettingsActivity : AppCompatActivity() {
             actionBar.setDisplayHomeAsUpEnabled(true)
             actionBar.setDisplayShowHomeEnabled(true)
         }
-        toolbar.setNavigationOnClickListener { v: View? -> onBackPressed() }
+        toolbar.setNavigationOnClickListener { onBackPressedDispatcher.onBackPressed() }
     }
 }

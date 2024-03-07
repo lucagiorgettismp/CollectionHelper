@@ -2,7 +2,6 @@ package com.lucagiorgetti.surprix.ui.mainfragments.surpriseList
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
@@ -11,10 +10,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 import com.google.android.material.snackbar.Snackbar
 import com.lucagiorgetti.surprix.R
-import com.lucagiorgetti.surprix.SurprixApplication.Companion.getInstance
+import com.lucagiorgetti.surprix.SurprixApplication
 import com.lucagiorgetti.surprix.ui.mainfragments.ZoomImageFragment
 import com.lucagiorgetti.surprix.ui.mainfragments.filter.ChipFilters
 import com.lucagiorgetti.surprix.ui.mainfragments.filter.FilterBottomSheetListener
@@ -40,28 +38,24 @@ abstract class BaseSurpriseListFragment : ZoomImageFragment() {
         val layoutManager: RecyclerView.LayoutManager = GridLayoutManager(context, SystemUtils.getColumnsNumber(recyclerView))
         recyclerView.layoutManager = layoutManager
         swipeRefreshLayout = root!!.findViewById(R.id.swipe_refresh)
-        swipeRefreshLayout!!.setOnRefreshListener(OnRefreshListener {
+        swipeRefreshLayout!!.setOnRefreshListener {
             emptyList!!.visibility = View.GONE
             loadData()
-        })
+        }
+
+        setupView()
         setupData()
         recyclerView.adapter = mAdapter
         initSwipe(recyclerView)
-        setHasOptionsMenu(true)
-        return root
-    }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.action_filter) {
-            openBottomSheet()
-        }
-        return super.onOptionsItemSelected(item)
+        return root
     }
 
     abstract fun deleteSurprise(mAdapter: SurpriseRecyclerAdapter?, position: Int)
     abstract fun setupData()
+    abstract fun setupView()
     abstract fun loadData()
-    private fun openBottomSheet() {
+    fun openBottomSheet() {
         if (chipFilters != null) {
             val bottomSheetDialogFragment = SurpriseFilterBSDFragment(chipFilters)
             bottomSheetDialogFragment.setListener(object : FilterBottomSheetListener {
@@ -77,7 +71,7 @@ abstract class BaseSurpriseListFragment : ZoomImageFragment() {
             })
             bottomSheetDialogFragment.show(requireActivity().supportFragmentManager, "surprise_list_bottom_sheet")
         } else {
-            Snackbar.make(requireView(), getInstance().getString(R.string.cannot_oper_filters), Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(requireView(), SurprixApplication.instance.getString(R.string.cannot_oper_filters), Snackbar.LENGTH_SHORT).show()
         }
     }
 

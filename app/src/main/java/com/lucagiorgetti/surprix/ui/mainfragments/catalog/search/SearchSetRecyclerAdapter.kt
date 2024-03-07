@@ -23,7 +23,7 @@ import java.util.Locale
  * Created by Luca on 24/10/2017.
  */
 class SearchSetRecyclerAdapter internal constructor() : ListAdapter<Set, SearchSetRecyclerAdapter.SetViewHolder>(DIFF_CALLBACK), Filterable {
-    private var filterableList: List<Set?>? = null
+    private var filterableList: List<Set>? = null
     override fun onCreateViewHolder(parent: ViewGroup, i: Int): SetViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.element_set_search, parent, false)
         return SetViewHolder(v)
@@ -32,7 +32,7 @@ class SearchSetRecyclerAdapter internal constructor() : ListAdapter<Set, SearchS
     override fun onBindViewHolder(holder: SetViewHolder, position: Int) {
         val set = getItem(position)
         holder.vName.text = set.name
-        holder.vNation.setText(SurprixLocales.Companion.getDisplayName(set.nation?.lowercase(Locale.getDefault())))
+        holder.vNation.text = SurprixLocales.getDisplayName(set.nation?.lowercase(Locale.getDefault()))
         holder.vProducer.text = set.producer_name
         holder.vYear.text = set.year_desc
         val path = set.img_path
@@ -51,20 +51,20 @@ class SearchSetRecyclerAdapter internal constructor() : ListAdapter<Set, SearchS
         return position
     }
 
-    fun setFilterableList(sets: List<Set?>?) {
+    fun setFilterableList(sets: List<Set>?) {
         filterableList = sets
     }
 
     private val filter: Filter = object : Filter() {
         override fun performFiltering(charSequence: CharSequence): FilterResults {
-            val filteredList: MutableList<Set?> = ArrayList()
-            if (charSequence == null || charSequence.length == 0) {
+            val filteredList: MutableList<Set> = ArrayList()
+            if (charSequence.isEmpty()) {
                 filteredList.addAll(filterableList!!)
             } else {
                 val pattern = charSequence.toString().lowercase(Locale.getDefault()).trim { it <= ' ' }
                 for (set in filterableList!!) {
-                    if (set?.code?.lowercase(Locale.getDefault())!!.contains(pattern)
-                            || set?.name?.lowercase(Locale.getDefault())!!.contains(pattern)) {
+                    if (set.code?.lowercase(Locale.getDefault())!!.contains(pattern)
+                            || set.name?.lowercase(Locale.getDefault())!!.contains(pattern)) {
                         filteredList.add(set)
                     }
                 }
@@ -75,7 +75,7 @@ class SearchSetRecyclerAdapter internal constructor() : ListAdapter<Set, SearchS
         }
 
         override fun publishResults(charSequence: CharSequence, filterResults: FilterResults) {
-            submitList(filterResults.values as List<Set?>)
+            submitList(filterResults.values as List<Set>)
         }
     }
 

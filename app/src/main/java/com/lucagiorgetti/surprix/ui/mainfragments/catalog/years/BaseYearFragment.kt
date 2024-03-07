@@ -21,9 +21,9 @@ abstract class BaseYearFragment : BaseFragment() {
         recyclerView = root.findViewById(R.id.year_recycler)
         recyclerView!!.setHasFixedSize(true)
         val layoutManager: RecyclerView.LayoutManager = GridLayoutManager(context, SystemUtils.getColumnsNumber(recyclerView))
-        recyclerView!!.setLayoutManager(layoutManager)
+        recyclerView!!.layoutManager = layoutManager
         mAdapter = YearRecyclerAdapter()
-        recyclerView!!.setAdapter(mAdapter)
+        recyclerView!!.adapter = mAdapter
         setupView()
         return root
     }

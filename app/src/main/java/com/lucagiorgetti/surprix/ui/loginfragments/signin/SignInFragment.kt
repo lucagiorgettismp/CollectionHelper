@@ -51,7 +51,7 @@ class SignInFragment : BaseFragment() {
         val resetBtn = view.findViewById<Button>(R.id.login_reset_pwd_submit)
         val resetDialog = builder.create()
         resetDialog.show()
-        resetBtn.setOnClickListener { v: View? ->
+        resetBtn.setOnClickListener {
             SystemUtils.closeKeyboard(getActivity())
             if (inEmail == null || inEmail.text.toString() == "") {
                 Toast.makeText(context, R.string.signup_complete_all_fields, Toast.LENGTH_SHORT).show()
@@ -102,7 +102,7 @@ class SignInFragment : BaseFragment() {
 
                 override fun onFailure(e: Exception) {
                     hideLoading()
-                    Toast.makeText(context, e!!.message, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
                 }
             })
         }

@@ -22,9 +22,9 @@ abstract class BaseSetDetailFragment : ZoomImageFragment() {
         recyclerView = root.findViewById(R.id.set_detail_recycler)
         recyclerView!!.setHasFixedSize(true)
         val layoutManager: RecyclerView.LayoutManager = GridLayoutManager(context, SystemUtils.getColumnsNumber(recyclerView))
-        recyclerView!!.setLayoutManager(layoutManager)
+        recyclerView!!.layoutManager = layoutManager
         setupView()
-        recyclerView!!.setAdapter(mAdapter)
+        recyclerView!!.adapter = mAdapter
         return root
     }
 

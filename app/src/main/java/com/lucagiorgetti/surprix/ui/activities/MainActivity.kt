@@ -1,10 +1,6 @@
 package com.lucagiorgetti.surprix.ui.activities
 
-import android.content.DialogInterface
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.NavController
@@ -15,9 +11,8 @@ import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.lucagiorgetti.surprix.R
-import com.lucagiorgetti.surprix.utility.ForceUpdateChecker.OnUpdateNeededListener
 
-class MainActivity : AppCompatActivity(), OnUpdateNeededListener {
+class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -37,22 +32,5 @@ class MainActivity : AppCompatActivity(), OnUpdateNeededListener {
         setupActionBarWithNavController(this@MainActivity, navController!!, appBarConfiguration)
         setupWithNavController(navView, navController)
         setupWithNavController(toolbar, navController, appBarConfiguration)
-    }
-
-    override fun onUpdateNeeded(updateUrl: String) {
-        val dialog = AlertDialog.Builder(this)
-                .setTitle(R.string.update_app_dialog_title)
-                .setMessage(R.string.update_app_message)
-                .setPositiveButton(R.string.btn_update) { dialog1: DialogInterface?, which: Int -> redirectStore(updateUrl) }
-                .setNegativeButton(R.string.btn_no_thanks) { dialog12: DialogInterface?, which: Int -> finish() }
-                .create()
-        dialog.setCanceledOnTouchOutside(false)
-        dialog.show()
-    }
-
-    private fun redirectStore(updateUrl: String) {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(updateUrl))
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        startActivity(intent)
     }
 }

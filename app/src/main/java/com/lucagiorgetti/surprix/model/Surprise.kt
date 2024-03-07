@@ -51,13 +51,13 @@ class Surprise : Comparable<Surprise> {
     val intRarity: Int?
         get() = if (rarity != null) rarity!!.toInt() else null
 
-    override fun compareTo(surprise: Surprise): Int {
+    override fun compareTo(other: Surprise): Int {
         try {
             val a = this.code!!.toInt()
-            val b = surprise.code!!.toInt()
+            val b = other.code!!.toInt()
             return a - b
         } catch (ignored: Exception) {
         }
-        return this.code!!.compareTo(surprise.code!!)
+        return this.code!!.compareTo(other.code!!)
     }
 }

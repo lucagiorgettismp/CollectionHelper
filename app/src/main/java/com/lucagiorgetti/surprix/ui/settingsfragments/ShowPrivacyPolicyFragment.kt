@@ -1,6 +1,5 @@
 package com.lucagiorgetti.surprix.ui.settingsfragments
 
-import android.os.Build
 import android.os.Bundle
 import android.text.Html
 import android.text.method.ScrollingMovementMethod
@@ -17,11 +16,7 @@ class ShowPrivacyPolicyFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_show_privacy_policy, container, false)
         val policyText = root.findViewById<TextView>(R.id.policy_text)
         policyText.movementMethod = ScrollingMovementMethod()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            policyText.text = Html.fromHtml(getString(R.string.privacy_policy_text), Html.FROM_HTML_MODE_LEGACY)
-        } else {
-            policyText.text = Html.fromHtml(getString(R.string.privacy_policy_text))
-        }
+        policyText.text = Html.fromHtml(getString(R.string.privacy_policy_text), Html.FROM_HTML_MODE_LEGACY)
         return root
     }
 }

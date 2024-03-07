@@ -2,7 +2,7 @@ package com.lucagiorgetti.surprix.ui.mainfragments.surpriseList.missinglist
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
-import com.lucagiorgetti.surprix.SurprixApplication.Companion.getInstance
+import com.lucagiorgetti.surprix.SurprixApplication
 import com.lucagiorgetti.surprix.listenerInterfaces.CallbackInterface
 import com.lucagiorgetti.surprix.model.Surprise
 import com.lucagiorgetti.surprix.ui.BaseViewModel
@@ -26,7 +26,7 @@ class MissingListViewModel(application: Application) : BaseViewModel(application
 
     fun loadMissingSurprises() {
         val surprises: MutableList<Surprise> = ArrayList()
-        MissingListDao(getInstance().currentUser?.username).getMissingList(object : CallbackInterface<Surprise> {
+        MissingListDao(SurprixApplication.instance.currentUser?.username).getMissingList(object : CallbackInterface<Surprise> {
             override fun onStart() {
                 setLoading(true)
             }
@@ -38,13 +38,13 @@ class MissingListViewModel(application: Application) : BaseViewModel(application
             }
 
             override fun onFailure() {
-                allMissingSurprises!!.setValue(null)
+                allMissingSurprises!!.value = null
                 setLoading(false)
             }
         })
     }
 
-    fun addMissing(missingSurprise: Surprise, position: Int) {
+    fun addMissing(missingSurprise: Surprise) {
         val list = allMissingSurprises!!.value
         list!!.add(missingSurprise)
         allMissingSurprises!!.value = list

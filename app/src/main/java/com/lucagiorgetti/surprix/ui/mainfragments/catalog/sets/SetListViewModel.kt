@@ -2,7 +2,7 @@ package com.lucagiorgetti.surprix.ui.mainfragments.catalog.sets
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
-import com.lucagiorgetti.surprix.SurprixApplication.Companion.getInstance
+import com.lucagiorgetti.surprix.SurprixApplication
 import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseListCallback
 import com.lucagiorgetti.surprix.ui.BaseViewModel
 import com.lucagiorgetti.surprix.ui.mainfragments.catalog.CatalogNavigationMode
@@ -41,7 +41,7 @@ class SetListViewModel(application: Application) : BaseViewModel(application) {
                 }
             })
         } else {
-            CollectionDao(getInstance().currentUser?.username).getCollectionSets(producerId, yearId, object : FirebaseListCallback<CatalogSet> {
+            CollectionDao(SurprixApplication.instance.currentUser?.username).getCollectionSets(producerId, yearId, object : FirebaseListCallback<CatalogSet> {
                 override fun onStart() {}
                 override fun onSuccess(items: MutableList<CatalogSet>) {
                     allSets!!.value = items

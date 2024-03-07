@@ -1,8 +1,6 @@
 package com.lucagiorgetti.surprix.ui.loginfragments.privacypolicy
 
-import android.os.Build
 import android.os.Bundle
-import android.text.Html
 import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
 import android.view.View
@@ -27,15 +25,13 @@ class PrivacyPolicyFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_privacy_policy, container, false)
         val policyText = root.findViewById<TextView>(R.id.policy_text)
         policyText.movementMethod = ScrollingMovementMethod()
+
         val accept = root.findViewById<Button>(R.id.btn_accept)
         val refuse = root.findViewById<TextView>(R.id.btn_refuse)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            policyText.text = Html.fromHtml(getString(R.string.privacy_policy_text), Html.FROM_HTML_MODE_LEGACY)
-        } else {
-            policyText.text = Html.fromHtml(getString(R.string.privacy_policy_text))
-        }
-        accept.setOnClickListener { view: View? -> findNavController(requireView()).navigate(PrivacyPolicyFragmentDirections.actionNavigationLoginPrivacyToNavigationLoginSignup(email, fromFacebook)) }
-        refuse.setOnClickListener { view: View? -> findNavController(requireView()).popBackStack() }
+
+        accept.setOnClickListener { findNavController(requireView()).navigate(PrivacyPolicyFragmentDirections.actionNavigationLoginPrivacyToNavigationLoginSignup(email, fromFacebook)) }
+        refuse.setOnClickListener { findNavController(requireView()).popBackStack() }
+
         return root
     }
 }

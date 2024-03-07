@@ -5,7 +5,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
-import com.lucagiorgetti.surprix.SurprixApplication.Companion.getInstance
+import com.lucagiorgetti.surprix.SurprixApplication
 import com.lucagiorgetti.surprix.listenerInterfaces.CallbackInterface
 import com.lucagiorgetti.surprix.model.Uid
 import com.lucagiorgetti.surprix.model.User
@@ -13,7 +13,7 @@ import com.lucagiorgetti.surprix.utility.LoginFlowHelper.AuthMode
 import java.util.Objects
 
 object UserDao {
-    private val reference = getInstance().databaseReference
+    private val reference = SurprixApplication.instance.databaseReference
     private var users = reference!!.child("users")
     private var uids = reference!!.child("uids")
     fun getUserByUsername(username: String?, listen: CallbackInterface<User>) {
@@ -33,14 +33,14 @@ object UserDao {
     }
 
     fun updateUser(nation: String?) {
-        val username = getInstance().currentUser?.username
+        val username = SurprixApplication.instance.currentUser?.username
         users.child(username!!).child("country").setValue(nation)
     }
 
     fun deleteUser(listener: CallbackInterface<Boolean?>) {
         listener.onStart()
         val firebaseUser = FirebaseAuth.getInstance().currentUser
-        val username = getInstance().currentUser?.username
+        val username = SurprixApplication.instance.currentUser?.username
         users.child(username!!).setValue(null)
         if (firebaseUser != null) {
             users.child(Objects.requireNonNull(firebaseUser.uid)).setValue(null)

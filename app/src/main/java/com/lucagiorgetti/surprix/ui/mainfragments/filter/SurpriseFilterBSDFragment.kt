@@ -25,14 +25,14 @@ class SurpriseFilterBSDFragment(private val chipFilters: ChipFilters?) : BottomS
         val view = inflater.inflate(R.layout.bottom_sheet_surprise, container,
                 false)
         val resetFilters = view.findViewById<Button>(R.id.filter_reset)
-        resetFilters.setOnClickListener { v: View? -> listener!!.onFilterCleared() }
+        resetFilters.setOnClickListener { listener!!.onFilterCleared() }
         val categoriesChipsGroup = view.findViewById<ChipGroup>(R.id.filter_category_cg)
         val producersChipsGroup = view.findViewById<ChipGroup>(R.id.filter_producer_cg)
         val yearsChipsGroup = view.findViewById<ChipGroup>(R.id.filter_year_cg)
-        for (type in FilterType.Companion.getValues(FilterSelectableType.SURPRISE)) {
+        for (type in FilterType.getValues(FilterSelectableType.SURPRISE)) {
             for (filter in chipFilters!!.getFiltersByType(type).values) {
                 val chip = BottomSheetChip(context, filter)
-                chip.setOnCheckedChangeListener { buttonView: CompoundButton?, isChecked: Boolean ->
+                chip.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
                     chipFilters.setFilterSelection(type, filter?.value, isChecked)
                     listener!!.onFilterChanged(chipFilters)
                 }

@@ -18,7 +18,7 @@ import com.lucagiorgetti.surprix.utility.SystemUtils
 class MissingOwnersFragment : BaseFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val mViewModel = ViewModelProvider(this).get(MissingOwnersViewModel::class.java)
+        val mViewModel = ViewModelProvider(this)[MissingOwnersViewModel::class.java]
         val surpriseId = MissingOwnersFragmentArgs.fromBundle(requireArguments()).missingSurpriseId
         val root = inflater.inflate(R.layout.fragment_missing_owners, container, false)
         val emptyList = root.findViewById<View>(R.id.missing_owner_empty_list)
@@ -35,8 +35,8 @@ class MissingOwnersFragment : BaseFragment() {
         adapter.setListener(MyClickListener(root))
         recyclerView.adapter = adapter
         mViewModel.getMissingOwners(surpriseId).observe(viewLifecycleOwner) { owners: List<User?>? ->
-            emptyList.visibility = if (owners == null || owners.isEmpty()) View.VISIBLE else View.GONE
-            if (!owners!!.isEmpty()) {
+            emptyList.visibility = if (owners.isNullOrEmpty()) View.VISIBLE else View.GONE
+            if (owners!!.isNotEmpty()) {
                 adapter.setOwners(owners)
                 adapter.notifyDataSetChanged()
             }

@@ -2,15 +2,17 @@ package com.lucagiorgetti.surprix.utility.dao
 
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
-import com.lucagiorgetti.surprix.SurprixApplication.Companion.getInstance
+import com.lucagiorgetti.surprix.SurprixApplication
 import com.lucagiorgetti.surprix.listenerInterfaces.CallbackInterface
 import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseListCallback
 import com.lucagiorgetti.surprix.model.Producer
 import com.lucagiorgetti.surprix.model.Year
 
 object ProducerDao {
-    private val producers = getInstance().databaseReference!!.child("producers")
+    private val producers: DatabaseReference = SurprixApplication.instance.databaseReference!!.child("producers")
+
     fun getProducerYears(producerId: String?, listen: FirebaseListCallback<Year>) {
         listen.onStart()
         val years = ArrayList<Year>()

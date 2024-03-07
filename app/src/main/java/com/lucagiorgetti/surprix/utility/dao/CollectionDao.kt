@@ -5,7 +5,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
-import com.lucagiorgetti.surprix.SurprixApplication.Companion.getInstance
+import com.lucagiorgetti.surprix.SurprixApplication
 import com.lucagiorgetti.surprix.listenerInterfaces.CallbackInterface
 import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseListCallback
 import com.lucagiorgetti.surprix.model.CollectionSet
@@ -21,8 +21,9 @@ class CollectionDao(username: String?) {
     private val setsRef: DatabaseReference
 
     init {
-        collectionRef = getInstance().databaseReference!!.child("collection").child(username!!)
-        setsRef = getInstance().databaseReference!!.child("sets")
+        val reference = SurprixApplication.instance.databaseReference!!
+        collectionRef = reference.child("collection").child(username!!)
+        setsRef = reference.child("sets")
     }
 
     fun getCollectionProducers(listen: FirebaseListCallback<Producer>) {
@@ -103,7 +104,7 @@ class CollectionDao(username: String?) {
     fun isSetInCollection(set: Set, listen: CallbackInterface<Boolean>) {
         set.producer_id?.let {
             set.year_id?.let { it1 ->
-                collectionRef.child("producers").child(it).child("years").child(it1).child("sets").child(set?.id!!).addListenerForSingleValueEvent(object : ValueEventListener {
+                collectionRef.child("producers").child(it).child("years").child(it1).child("sets").child(set.id!!).addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     listen.onSuccess(snapshot.exists())
                 }
@@ -159,14 +160,14 @@ class CollectionDao(username: String?) {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (!snapshot.exists()) {
                     // remove year
-                    collectionRef.child("producers").child(set?.producer_id!!).child("years").child(set.year_id!!).setValue(null)
+                    collectionRef.child("producers").child(set.producer_id!!).child("years").child(set.year_id!!).setValue(null)
 
                     // check if producer has years
-                    collectionRef.child("producers").child(set?.producer_id!!).child("years").addListenerForSingleValueEvent(object : ValueEventListener {
+                    collectionRef.child("producers").child(set.producer_id!!).child("years").addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onDataChange(snapshot: DataSnapshot) {
                             if (!snapshot.exists()) {
                                 // delete producer
-                                collectionRef.child("producers").child(set?.producer_id!!).setValue(null)
+                                collectionRef.child("producers").child(set.producer_id!!).setValue(null)
                             }
                         }
 
@@ -184,7 +185,7 @@ class CollectionDao(username: String?) {
     }
 
     fun addMissingInCollectionSet(surprise: Surprise) {
-        collectionRef.child("producers").child(surprise?.set_producer_id!!).child("years").child(surprise.set_year_id!!).child("sets").child(surprise.set_id!!).child("missings").child(surprise.id!!).setValue(true)
+        collectionRef.child("producers").child(surprise.set_producer_id!!).child("years").child(surprise.set_year_id!!).child("sets").child(surprise.set_id!!).child("missings").child(surprise.id!!).setValue(true)
     }
 
     fun addMissingInCollectionSet(surpId: String?) {
@@ -202,7 +203,7 @@ class CollectionDao(username: String?) {
         SurpriseDao.getSurpriseById(object : CallbackInterface<Surprise> {
             override fun onStart() {}
             override fun onSuccess(surprise: Surprise) {
-                collectionRef.child("producers").child(surprise?.set_producer_id!!).child("years").child(surprise.set_year_id!!).child("sets").child(surprise.set_id!!).child("missings").child(surprise.id!!).setValue(null)
+                collectionRef.child("producers").child(surprise.set_producer_id!!).child("years").child(surprise.set_year_id!!).child("sets").child(surprise.set_id!!).child("missings").child(surprise.id!!).setValue(null)
             }
 
             override fun onFailure() {}

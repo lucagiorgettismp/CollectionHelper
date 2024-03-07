@@ -4,12 +4,11 @@ import android.view.View
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import com.lucagiorgetti.surprix.ui.activities.MainActivity
-import java.util.Objects
 
 open class BaseFragment : Fragment() {
     private var progressBar: ProgressBar? = null
-    protected fun setTitle(title: String?) {
-        Objects.requireNonNull((requireActivity() as MainActivity).supportActionBar)?.title = title
+    protected fun setTitle(title: String) {
+        (requireActivity() as MainActivity).supportActionBar?.title = title
     }
 
     protected fun setProgressBar(progressBar: ProgressBar?) {

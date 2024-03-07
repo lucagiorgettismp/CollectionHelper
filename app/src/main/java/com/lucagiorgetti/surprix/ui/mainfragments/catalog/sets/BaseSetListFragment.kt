@@ -27,10 +27,10 @@ abstract class BaseSetListFragment : BaseFragment() {
         recyclerView!!.setHasFixedSize(true)
         val layoutManager: RecyclerView.LayoutManager = GridLayoutManager(context, SystemUtils.getColumnsNumber(recyclerView))
         recyclerView!!.layoutManager = layoutManager
-        recyclerView!!.setAdapter(mAdapter)
+        recyclerView!!.adapter = mAdapter
         swipeRefreshLayout = root.findViewById(R.id.swipe_refresh)
         swipeRefreshLayout!!.setOnRefreshListener(OnRefreshListener { reloadData() })
-        setHasOptionsMenu(true)
+
         setupView()
         return root
     }

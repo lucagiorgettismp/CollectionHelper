@@ -2,13 +2,17 @@ package com.lucagiorgetti.surprix.ui.mainfragments.surpriseList.doublelist
 
 import android.view.Menu
 import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.SearchView
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import com.lucagiorgetti.surprix.R
-import com.lucagiorgetti.surprix.SurprixApplication.Companion.getInstance
+import com.lucagiorgetti.surprix.SurprixApplication
 import com.lucagiorgetti.surprix.model.Surprise
 import com.lucagiorgetti.surprix.ui.mainfragments.filter.ChipFilters
 import com.lucagiorgetti.surprix.ui.mainfragments.surpriseList.BaseSurpriseListFragment
@@ -19,38 +23,13 @@ import com.lucagiorgetti.surprix.utility.dao.DoubleListDao
 
 class DoubleListFragment : BaseSurpriseListFragment() {
     private var doubleListViewModel: DoubleListViewModel? = null
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.filter_search_menu, menu)
-        val searchItem = menu.findItem(R.id.action_search)
-        searchView = searchItem.actionView as SearchView?
-        searchView!!.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(s: String): Boolean {
-                return false
-            }
-
-            override fun onQueryTextChange(s: String): Boolean {
-                mAdapter!!.filter.filter(s)
-                return false
-            }
-        })
-        searchView!!.setOnCloseListener {
-            if (mAdapter!!.itemCount > 0) {
-                setTitle(getString(R.string.doubles) + " (" + mAdapter!!.itemCount + ")")
-            } else {
-                setTitle(getString(R.string.doubles))
-            }
-            false
-        }
-        searchView!!.queryHint = getString(R.string.search)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
 
     override fun deleteSurprise(mAdapter: SurpriseRecyclerAdapter?, position: Int) {
         val surprise = mAdapter!!.getItemAtPosition(position)!!
         mAdapter.removeFilterableItem(surprise)
-        val doubleListDao = DoubleListDao(getInstance().currentUser?.username)
+        val doubleListDao = DoubleListDao(SurprixApplication.instance.currentUser?.username)
         val query = searchView!!.query
-        if (query != null && query.length != 0) {
+        if (query != null && query.isNotEmpty()) {
             mAdapter.filter.filter(query)
         } else {
             mAdapter.notifyItemRemoved(position)
@@ -64,10 +43,10 @@ class DoubleListFragment : BaseSurpriseListFragment() {
             setTitle(getString(R.string.doubles))
         }
         if (query != null && query.isNotEmpty()) {
-            Snackbar.make(requireView(), getInstance().getString(R.string.double_removed), Snackbar.LENGTH_LONG).show()
+            Snackbar.make(requireView(), SurprixApplication.instance.getString(R.string.double_removed), Snackbar.LENGTH_LONG).show()
         } else {
-            Snackbar.make(requireView(), getInstance().getString(R.string.double_removed), Snackbar.LENGTH_LONG)
-                    .setAction(getInstance().getString(R.string.discard_btn)) { view: View? ->
+            Snackbar.make(requireView(), SurprixApplication.instance.getString(R.string.double_removed), Snackbar.LENGTH_LONG)
+                    .setAction(SurprixApplication.instance.getString(R.string.discard_btn)) {
                         doubleListDao.addDouble(surprise.id)
                         mAdapter.addFilterableItem(surprise, position)
                         mAdapter.notifyItemInserted(position)
@@ -93,17 +72,15 @@ class DoubleListFragment : BaseSurpriseListFragment() {
                 zoomImageFromThumb(imagePath, imageView, placeHolderId)
             }
         })
-        doubleListViewModel = ViewModelProvider(this).get(DoubleListViewModel::class.java)
+        doubleListViewModel = ViewModelProvider(this)[DoubleListViewModel::class.java]
         doubleListViewModel!!.doubleSurprises.observe(viewLifecycleOwner) { doubleList: MutableList<Surprise> ->
             emptyList!!.visibility = if (doubleList.isEmpty()) View.VISIBLE else View.GONE
             mAdapter!!.submitList(doubleList)
             mAdapter!!.setFilterableList(doubleList)
             if (mAdapter!!.itemCount > 0) {
                 setTitle(getString(R.string.doubles) + " (" + mAdapter!!.itemCount + ")")
-                if (doubleList != null) {
-                    chipFilters = ChipFilters()
-                    chipFilters!!.initBySurprises(doubleList)
-                }
+                chipFilters = ChipFilters()
+                chipFilters!!.initBySurprises(doubleList)
             } else {
                 setTitle(getString(R.string.doubles))
             }
@@ -118,6 +95,49 @@ class DoubleListFragment : BaseSurpriseListFragment() {
             }
         }
         setTitle(getString(R.string.doubles))
+    }
+
+    override fun setupView() {
+        val menuHost: MenuHost = requireActivity()
+        menuHost.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                // Add menu items here
+                menuInflater.inflate(R.menu.filter_search_menu, menu)
+                val searchItem = menu.findItem(R.id.action_search)
+                searchView = searchItem.actionView as SearchView?
+                searchView!!.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                    override fun onQueryTextSubmit(s: String): Boolean {
+                        return false
+                    }
+
+                    override fun onQueryTextChange(s: String): Boolean {
+                        mAdapter!!.filter.filter(s)
+                        return false
+                    }
+                })
+                searchView!!.setOnCloseListener {
+                    if (mAdapter!!.itemCount > 0) {
+                        setTitle(getString(R.string.doubles) + " (" + mAdapter!!.itemCount + ")")
+                    } else {
+                        setTitle(getString(R.string.doubles))
+                    }
+                    false
+                }
+                searchView!!.queryHint = getString(R.string.search)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    R.id.action_filter -> {
+                        openBottomSheet()
+                        true
+                    }
+                    else -> false
+                }
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+
+
     }
 
     override fun loadData() {

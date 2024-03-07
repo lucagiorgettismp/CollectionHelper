@@ -1,7 +1,7 @@
 package com.lucagiorgetti.surprix.model
 
 import com.lucagiorgetti.surprix.R
-import com.lucagiorgetti.surprix.SurprixApplication.Companion.getInstance
+import com.lucagiorgetti.surprix.SurprixApplication
 
 /**
  * Created by Luca on 06/11/2017.
@@ -104,7 +104,7 @@ enum class SurprixLocales {
                 "mx" -> stringId = R.string.messico
                 "za" -> stringId = R.string.sud_africa
             }
-            return getInstance().getString(stringId)
+            return SurprixApplication.instance.getString(stringId)
         }
 
         fun getByCode(code: String?): SurprixLocales? {

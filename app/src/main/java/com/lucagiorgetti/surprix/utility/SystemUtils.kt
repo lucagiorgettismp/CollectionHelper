@@ -6,7 +6,7 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Color
 import android.net.ConnectivityManager
-import android.net.NetworkInfo
+import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -21,8 +21,7 @@ import com.facebook.login.LoginManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.messaging.FirebaseMessaging
 import com.lucagiorgetti.surprix.R
-import com.lucagiorgetti.surprix.SurprixApplication.Companion.getInstance
-import com.lucagiorgetti.surprix.SurprixApplication.Companion.surprixContext
+import com.lucagiorgetti.surprix.SurprixApplication
 import com.lucagiorgetti.surprix.listenerInterfaces.CallbackInterface
 import com.lucagiorgetti.surprix.listenerInterfaces.LoginFlowCallbackInterface
 import com.lucagiorgetti.surprix.model.User
@@ -38,25 +37,27 @@ import timber.log.Timber
 object SystemUtils {
     private const val SET_HINT_DISPLAYED = "setHintDisplayed"
     private const val THEME_DARK_SELECTED = "darkThemeSelected"
+
     fun checkNetworkAvailability(): Boolean {
-        var available = false
-        val context = surprixContext
-        val networkTypes = intArrayOf(ConnectivityManager.TYPE_MOBILE,
-                ConnectivityManager.TYPE_WIFI)
+        val context = SurprixApplication.instance.applicationContext
+
         try {
             val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            for (networkType in networkTypes) {
-                var activeNetworkInfo: NetworkInfo? = null
-                if (connectivityManager != null) {
-                    activeNetworkInfo = connectivityManager.activeNetworkInfo
-                }
-                if (activeNetworkInfo != null &&
-                        activeNetworkInfo.type == networkType) available = true
+            val activeNetwork = connectivityManager.activeNetwork
+            return if (activeNetwork == null) {
+                false // if there is no active network, then simply no internet connection.
+            } else {
+                // NetworkCapabilities object contains information about properties of a network
+                val netCapabilities = connectivityManager.getNetworkCapabilities(activeNetwork)
+                (netCapabilities != null
+                        // indicates that the network is set up to access the internet
+                        && netCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+                        // indicates that the network provides actual access to the public internet when it is probed
+                        && netCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED))
             }
         } catch (e: Exception) {
-            available = false
+            return false
         }
-        return available
     }
 
     fun closeKeyboard(activity: Activity?) {
@@ -65,11 +66,11 @@ object SystemUtils {
         if (view == null) {
             view = View(activity)
         }
-        imm?.hideSoftInputFromWindow(view.windowToken, 0)
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     fun openNewActivityWithFinishing(activity: Activity, cls: Class<*>?) {
-        val applicationContext = surprixContext
+        val applicationContext = SurprixApplication.instance.applicationContext
         val i = Intent(applicationContext, cls)
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -82,16 +83,16 @@ object SystemUtils {
     }
 
     var isSetHintDisplayed: Boolean
-        get() = PreferenceManager.getDefaultSharedPreferences(surprixContext).getBoolean(SET_HINT_DISPLAYED, true)
+        get() = PreferenceManager.getDefaultSharedPreferences(SurprixApplication.instance.applicationContext).getBoolean(SET_HINT_DISPLAYED, true)
         set(displayed) {
-            val edit = PreferenceManager.getDefaultSharedPreferences(surprixContext).edit()
+            val edit = PreferenceManager.getDefaultSharedPreferences(SurprixApplication.instance.applicationContext).edit()
             edit.putBoolean(SET_HINT_DISPLAYED, displayed)
             edit.apply()
         }
     var darkThemePreference: Boolean
-        get() = PreferenceManager.getDefaultSharedPreferences(surprixContext).getBoolean(THEME_DARK_SELECTED, false)
+        get() = PreferenceManager.getDefaultSharedPreferences(SurprixApplication.instance.applicationContext).getBoolean(THEME_DARK_SELECTED, false)
         set(darkEnabled) {
-            val applicationContext = surprixContext
+            val applicationContext = SurprixApplication.instance.applicationContext
             val edit = PreferenceManager.getDefaultSharedPreferences(applicationContext).edit()
             edit.putBoolean(THEME_DARK_SELECTED, darkEnabled)
             edit.apply()
@@ -116,7 +117,7 @@ object SystemUtils {
     }
 
     fun openNewActivity(cls: Class<*>?, b: Bundle?) {
-        val applicationContext = surprixContext
+        val applicationContext = SurprixApplication.instance.applicationContext
         val i = Intent(applicationContext, cls)
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         if (b != null) {
@@ -129,10 +130,10 @@ object SystemUtils {
         UserDao.getUserByUid(uid, object : CallbackInterface<User?> {
             override fun onSuccess(currentUser: User?) {
                 if (currentUser != null) {
-                    getInstance().setUser(currentUser)
+                    SurprixApplication.instance.currentUser = currentUser
                     listener.onSuccess()
                 } else {
-                    listener.onFailure(Exception(surprixContext.getString(R.string.something_went_wrong)))
+                    listener.onFailure(Exception(SurprixApplication.instance.applicationContext.getString(R.string.something_went_wrong)))
                 }
             }
 
@@ -141,13 +142,13 @@ object SystemUtils {
             }
 
             override fun onFailure() {
-                listener.onFailure(Exception(surprixContext.getString(R.string.something_went_wrong)))
+                listener.onFailure(Exception(SurprixApplication.instance.applicationContext.getString(R.string.something_went_wrong)))
             }
         })
     }
 
     private fun removeSessionUser() {
-        getInstance().setUser(null)
+        SurprixApplication.instance.currentUser = null
     }
 
     fun logout() {
@@ -159,13 +160,13 @@ object SystemUtils {
 
     fun loadImage(path: String?, vImage: ImageView?, placeHolder: Int) {
         if (path!!.startsWith("gs")) {
-            val storage = getInstance().firebaseStorage
+            val storage = SurprixApplication.instance.firebaseStorage
             val gsReference = storage!!.getReferenceFromUrl(path)
-            Glide.with(surprixContext).load(gsReference).apply(RequestOptions()
+            Glide.with(SurprixApplication.instance.applicationContext).load(gsReference).apply(RequestOptions()
                     .placeholder(placeHolder))
                     .into(vImage!!)
         } else {
-            Glide.with(surprixContext).load(path).apply(RequestOptions()
+            Glide.with(SurprixApplication.instance.applicationContext).load(path).apply(RequestOptions()
                     .placeholder(placeHolder))
                     .into(vImage!!)
         }
@@ -175,15 +176,15 @@ object SystemUtils {
         val searchAutoComplete = searchView!!.findViewById<SearchAutoComplete>(R.id.search_src_text)
         val mCloseButton = searchView.findViewById<ImageView>(androidx.appcompat.R.id.search_close_btn)
         val mSearchButton = searchView.findViewById<ImageView>(androidx.appcompat.R.id.search_button)
-        val search_mag_icon = searchView.findViewById<ImageView>(androidx.appcompat.R.id.search_mag_icon)
-        val search_badge = searchView.findViewById<ImageView>(androidx.appcompat.R.id.search_go_btn)
+        val searchMagIcon = searchView.findViewById<ImageView>(androidx.appcompat.R.id.search_mag_icon)
+        val searchBadge = searchView.findViewById<ImageView>(androidx.appcompat.R.id.search_go_btn)
         val zxc = searchView.findViewById<View>(androidx.appcompat.R.id.search_plate)
-        searchAutoComplete.setHintTextColor(surprixContext.resources.getColor(R.color.white))
-        searchAutoComplete.setTextColor(surprixContext.resources.getColor(R.color.white))
-        search_mag_icon.setColorFilter(surprixContext.resources.getColor(R.color.white))
-        search_badge.setColorFilter(surprixContext.resources.getColor(R.color.white))
-        mCloseButton.setColorFilter(surprixContext.resources.getColor(R.color.white))
-        mSearchButton.setColorFilter(surprixContext.resources.getColor(R.color.white))
+        searchAutoComplete.setHintTextColor(SurprixApplication.instance.applicationContext.resources.getColor(R.color.white, SurprixApplication.instance.applicationContext.theme))
+        searchAutoComplete.setTextColor(SurprixApplication.instance.applicationContext.resources.getColor(R.color.white, SurprixApplication.instance.applicationContext.theme))
+        searchMagIcon.setColorFilter(SurprixApplication.instance.applicationContext.resources.getColor(R.color.white, SurprixApplication.instance.applicationContext.theme))
+        searchBadge.setColorFilter(SurprixApplication.instance.applicationContext.resources.getColor(R.color.white, SurprixApplication.instance.applicationContext.theme))
+        mCloseButton.setColorFilter(SurprixApplication.instance.applicationContext.resources.getColor(R.color.white, SurprixApplication.instance.applicationContext.theme))
+        mSearchButton.setColorFilter(SurprixApplication.instance.applicationContext.resources.getColor(R.color.white, SurprixApplication.instance.applicationContext.theme))
         zxc.setBackgroundColor(Color.TRANSPARENT)
     }
 
