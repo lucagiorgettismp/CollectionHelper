@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.google.android.play.core.appupdate.AppUpdateInfo
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
@@ -19,7 +20,7 @@ import com.lucagiorgetti.surprix.utility.SystemUtils
 import timber.log.Timber
 
 
-class SplashActivity : AppCompatActivity() {
+class RoutingActivity : AppCompatActivity() {
     private var fireAuth: FirebaseAuth? = null
     private var fireAuthStateListener: AuthStateListener? = null
     private var appUpdateManager: AppUpdateManager? = null
@@ -38,7 +39,10 @@ class SplashActivity : AppCompatActivity() {
             }
         }
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        val splashScreen = installSplashScreen()
+
         super.onCreate(savedInstanceState)
         appUpdateManager = AppUpdateManagerFactory.create(applicationContext)
         updateCheckListener = object : CallbackInterface<Boolean> {
@@ -49,6 +53,8 @@ class SplashActivity : AppCompatActivity() {
 
             override fun onFailure() {}
         }
+
+        splashScreen.setKeepOnScreenCondition { true }
 
         fireAuth = FirebaseAuth.getInstance()
         //checkForUpdates();
@@ -87,11 +93,11 @@ class SplashActivity : AppCompatActivity() {
                 SystemUtils.setSessionUser(firebaseUser.uid, object : LoginFlowCallbackInterface {
                     override fun onStart() {}
                     override fun onSuccess() {
-                        SystemUtils.openNewActivityWithFinishing(this@SplashActivity, MainActivity::class.java)
+                        SystemUtils.openNewActivityWithFinishing(this@RoutingActivity, MainActivity::class.java)
                     }
 
                     override fun onFailure(e: Exception) {
-                        SystemUtils.openNewActivityWithFinishing(this@SplashActivity, LoginActivity::class.java)
+                        SystemUtils.openNewActivityWithFinishing(this@RoutingActivity, LoginActivity::class.java)
                     }
                 })
             } else {
