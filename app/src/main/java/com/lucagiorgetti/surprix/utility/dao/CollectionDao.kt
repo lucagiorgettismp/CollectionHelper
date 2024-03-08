@@ -78,7 +78,7 @@ class CollectionDao(username: String?) {
     }
 
     fun getCollectionSets(producerId: String?, yearId: String?, listen: FirebaseListCallback<CatalogSet>) {
-        collectionRef.child("producers").child(producerId!!).child("years").child(yearId!!).child("sets").addListenerForSingleValueEvent(object : ValueEventListener {
+        collectionRef.child("producers").child(producerId!!).child("years").child(yearId!!).child("sets").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
                     val sets: MutableList<CatalogSet> = ArrayList()

@@ -82,6 +82,7 @@ class MissingListFragment : BaseSurpriseListFragment() {
             emptyList!!.visibility = if (missingList!!.isEmpty()) View.VISIBLE else View.GONE
             mAdapter!!.submitList(missingList)
             mAdapter!!.setFilterableList(missingList)
+
             if (mAdapter!!.itemCount > 0) {
                 setTitle(getString(R.string.missings) + " (" + mAdapter!!.itemCount + ")")
                 chipFilters = ChipFilters()

@@ -41,7 +41,7 @@ class DoubleListDao(private val username: String?) {
     fun getMissingOwners(surpId: String?, listen: FirebaseListCallback<User>) {
         listen.onStart()
         val owners = ArrayList<User>()
-        surpriseDoubleOwners.child(surpId!!).addListenerForSingleValueEvent(object : ValueEventListener {
+        surpriseDoubleOwners.child(surpId!!).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()) {
                     for (d in dataSnapshot.children) {
@@ -68,7 +68,7 @@ class DoubleListDao(private val username: String?) {
         listen.onStart()
         val doubles = ArrayList<Surprise>()
         if (username != null) {
-            userDoubles.orderByValue().addListenerForSingleValueEvent(object : ValueEventListener {
+            userDoubles.orderByValue().addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     if (dataSnapshot.exists()) {
                         for (d in dataSnapshot.children) {

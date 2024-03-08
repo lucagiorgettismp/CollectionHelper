@@ -47,7 +47,7 @@ class MissingListDao(username: String?) {
     }
 
     fun getMissingList(listen: CallbackInterface<Surprise>) {
-        missingRef.orderByValue().addListenerForSingleValueEvent(object : ValueEventListener {
+        missingRef.orderByValue().addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()) {
                     for (d in dataSnapshot.children) {
@@ -73,7 +73,7 @@ class MissingListDao(username: String?) {
     fun getMissingOwnerOtherSurprises(ownerUsername: String?, listen: FirebaseListCallback<Surprise>) {
         listen.onStart()
         val surprises = ArrayList<Surprise>()
-        missingRef.addListenerForSingleValueEvent(object : ValueEventListener {
+        missingRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()) {
                     for (d in dataSnapshot.children) {
