@@ -91,7 +91,7 @@ class SignUpFragment : BaseFragment() {
                 return
             }
             val authMode = if (fromFacebook) AuthMode.FACEBOOK else AuthMode.EMAIL_PASSWORD
-            LoginFlowHelper.signUp(email, password, username, nation, authMode, object : LoginFlowCallbackInterface {
+            LoginFlowHelper.signUp(email, password, username, nation, authMode, activity!!, object : LoginFlowCallbackInterface {
                 override fun onStart() {
                     showLoading()
                 }

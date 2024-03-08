@@ -121,6 +121,7 @@ class SetListFragment : BaseSetListFragment() {
         setListViewModel!!.getSets(yearId, producerId, navigationMode).observe(viewLifecycleOwner) { sets: List<CatalogSet> ->
             mAdapter!!.submitList(sets)
             mAdapter!!.setFilterableList(sets)
+            mAdapter!!.notifyDataSetChanged()
             if (navigationMode == CatalogNavigationMode.COLLECTION) {
                 chipFilters = ChipFilters()
                 chipFilters!!.initByCatalogSets(sets)

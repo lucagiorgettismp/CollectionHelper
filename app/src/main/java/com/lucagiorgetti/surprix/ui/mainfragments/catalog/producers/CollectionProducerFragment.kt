@@ -1,10 +1,12 @@
 package com.lucagiorgetti.surprix.ui.mainfragments.catalog.producers
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
@@ -18,9 +20,11 @@ import com.lucagiorgetti.surprix.utility.RecyclerItemClickListener
 import com.lucagiorgetti.surprix.utility.SystemUtils
 
 class CollectionProducerFragment : BaseProducerFragment() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val menuHost: MenuHost = requireActivity()
         menuHost.addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -39,6 +43,9 @@ class CollectionProducerFragment : BaseProducerFragment() {
                 }
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+
+        return super.onCreateView(inflater, container, savedInstanceState)
+
     }
 
     override fun setupView() {

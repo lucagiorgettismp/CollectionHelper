@@ -32,9 +32,9 @@ class AboutMeFragment : BaseFragment() {
         val email = root.findViewById<TextView>(R.id.email)
         username.text = user.username
         email.text = user.clearedEmail()
-        collectionBtn.setOnClickListener {
+        collectionBtn.setOnClickListener { v ->
             val action = AboutMeFragmentDirections.actionNavigationAboutMeToNavigationMyCollection()
-            findNavController(requireView()).navigate(action)
+            findNavController(v!!).navigate(action)
         }
         logout.setOnClickListener {
             SystemUtils.logout()

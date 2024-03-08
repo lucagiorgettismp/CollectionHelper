@@ -60,10 +60,12 @@ class SearchFragment : BaseFragment() {
         searchViewModel.surprises.observe(viewLifecycleOwner) { surprises: MutableList<Surprise> ->
             searchSurpriseRecyclerAdapter!!.submitList(surprises)
             searchSurpriseRecyclerAdapter!!.setFilterableList(surprises)
+            searchSurpriseRecyclerAdapter!!.notifyDataSetChanged()
         }
         searchViewModel.sets.observe(viewLifecycleOwner) { sets: List<Set> ->
             searchSetRecyclerAdapter!!.submitList(sets)
             searchSetRecyclerAdapter!!.setFilterableList(sets)
+            searchSetRecyclerAdapter!!.notifyDataSetChanged()
         }
         searchView = root!!.findViewById(R.id.search_field)
         SystemUtils.setSearchViewStyle(searchView)

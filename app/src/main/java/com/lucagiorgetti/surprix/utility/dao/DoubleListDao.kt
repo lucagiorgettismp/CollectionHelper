@@ -45,10 +45,10 @@ class DoubleListDao(private val username: String?) {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()) {
                     for (d in dataSnapshot.children) {
-                        UserDao.getUserByUsername(d.key, object : CallbackInterface<User> {
+                        UserDao.getUserByUsername(d.key, object : CallbackInterface<User?> {
                             override fun onStart() {}
-                            override fun onSuccess(user: User) {
-                                owners.add(user)
+                            override fun onSuccess(user: User?) {
+                                owners.add(user!!)
                                 listen.onSuccess(owners)
                             }
 
@@ -68,7 +68,7 @@ class DoubleListDao(private val username: String?) {
         listen.onStart()
         val doubles = ArrayList<Surprise>()
         if (username != null) {
-            userDoubles.orderByValue().addValueEventListener(object : ValueEventListener {
+            userDoubles.orderByValue().addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     if (dataSnapshot.exists()) {
                         for (d in dataSnapshot.children) {
@@ -83,7 +83,7 @@ class DoubleListDao(private val username: String?) {
                             }, d.key!!)
                         }
                     } else {
-                        listen.onSuccess(doubles)
+                        listen.onSuccess(ArrayList())
                     }
                 }
 

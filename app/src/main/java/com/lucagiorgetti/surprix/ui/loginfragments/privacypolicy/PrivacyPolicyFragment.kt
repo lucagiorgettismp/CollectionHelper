@@ -1,6 +1,7 @@
 package com.lucagiorgetti.surprix.ui.loginfragments.privacypolicy
 
 import android.os.Bundle
+import android.text.Html
 import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
 import android.view.View
@@ -29,8 +30,10 @@ class PrivacyPolicyFragment : Fragment() {
         val accept = root.findViewById<Button>(R.id.btn_accept)
         val refuse = root.findViewById<TextView>(R.id.btn_refuse)
 
-        accept.setOnClickListener { findNavController(requireView()).navigate(PrivacyPolicyFragmentDirections.actionNavigationLoginPrivacyToNavigationLoginSignup(email, fromFacebook)) }
-        refuse.setOnClickListener { findNavController(requireView()).popBackStack() }
+        accept.setOnClickListener { v -> findNavController(v!!).navigate(PrivacyPolicyFragmentDirections.actionNavigationLoginPrivacyToNavigationLoginSignup(email, fromFacebook)) }
+        refuse.setOnClickListener { v -> findNavController(v!!).popBackStack() }
+
+        policyText.text = Html.fromHtml(getString(R.string.privacy_policy_text), Html.FROM_HTML_MODE_LEGACY)
 
         return root
     }

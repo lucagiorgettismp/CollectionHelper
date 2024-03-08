@@ -77,7 +77,7 @@ class OtherForYouFragment : BaseFragment() {
 
     private fun sendMail(recipient: String, subject: String, htmlBody: Spanned) {
         val intent = Intent(Intent.ACTION_SENDTO)
-        intent.setDataAndType(Uri.parse(String.format("mailto:%s?subject=%s&body=%s", recipient, subject, htmlBody)),"message/rfc822")
+        intent.setData(Uri.parse(String.format("mailto:%s?subject=%s&body=%s", recipient, subject, htmlBody)))
         startActivity(Intent.createChooser(intent, getString(R.string.email_app_chooser)))
     }
 }

@@ -31,6 +31,7 @@ object LoginFlowHelper {
         username: String,
         country: String,
         authMode: AuthMode,
+        activity: Activity,
         flowListener: LoginFlowCallbackInterface
     ) {
         flowListener.onStart()
@@ -47,10 +48,14 @@ object LoginFlowHelper {
                 return
             }
         }
-        UserDao.getUserByUsername(username, object : CallbackInterface<User> {
+        UserDao.getUserByUsername(username, object : CallbackInterface<User?> {
             override fun onStart() {}
-            override fun onSuccess(userAlreadyPresent: User) {
-                flowListener.onFailure(Exception(SurprixApplication.instance.applicationContext.getString(R.string.username_existing)))
+            override fun onSuccess(userAlreadyPresent: User?) {
+                if (userAlreadyPresent == null){
+                    createUserAndSignIn(email, password, username, country, authMode, activity, flowListener)
+                } else {
+                    flowListener.onFailure(Exception(SurprixApplication.instance.applicationContext.getString(R.string.username_existing)))
+                }
             }
 
             override fun onFailure() {

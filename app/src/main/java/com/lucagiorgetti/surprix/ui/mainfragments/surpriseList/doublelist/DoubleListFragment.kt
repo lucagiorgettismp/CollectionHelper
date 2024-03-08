@@ -77,6 +77,7 @@ class DoubleListFragment : BaseSurpriseListFragment() {
             emptyList!!.visibility = if (doubleList.isEmpty()) View.VISIBLE else View.GONE
             mAdapter!!.submitList(doubleList)
             mAdapter!!.setFilterableList(doubleList)
+            mAdapter!!.notifyDataSetChanged()
             if (mAdapter!!.itemCount > 0) {
                 setTitle(getString(R.string.doubles) + " (" + mAdapter!!.itemCount + ")")
                 chipFilters = ChipFilters()

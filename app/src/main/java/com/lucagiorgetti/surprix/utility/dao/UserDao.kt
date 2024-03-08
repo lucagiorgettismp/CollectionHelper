@@ -16,13 +16,13 @@ object UserDao {
     private val reference = SurprixApplication.instance.databaseReference
     private var users = reference!!.child("users")
     private var uids = reference!!.child("uids")
-    fun getUserByUsername(username: String?, listen: CallbackInterface<User>) {
+    fun getUserByUsername(username: String?, listen: CallbackInterface<User?>) {
         users.child(username!!).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
                     listen.onSuccess(snapshot.getValue(User::class.java)!!)
                 } else {
-                    listen.onFailure() // user not found
+                    listen.onSuccess(null) // user not found
                 }
             }
 
@@ -60,9 +60,9 @@ object UserDao {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()) {
                     val uidVal = dataSnapshot.getValue(Uid::class.java)
-                    getUserByUsername(uidVal?.username, object : CallbackInterface<User> {
+                    getUserByUsername(uidVal?.username, object : CallbackInterface<User?> {
                         override fun onStart() {}
-                        override fun onSuccess(user: User) {
+                        override fun onSuccess(user: User?) {
                             completionListener.onSuccess(user)
                         }
 

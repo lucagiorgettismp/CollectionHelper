@@ -34,6 +34,6 @@ class CatalogProducerFragment : BaseProducerFragment() {
                 hideLoading()
             }
         }
-        fab!!.setOnClickListener { findNavController(requireView()).navigate(CatalogProducerFragmentDirections.goToSearch()) }
+        fab!!.setOnClickListener { v-> findNavController(v!!).navigate(CatalogProducerFragmentDirections.goToSearch()) }
     }
 }

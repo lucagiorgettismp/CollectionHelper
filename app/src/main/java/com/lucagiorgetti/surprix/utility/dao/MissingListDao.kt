@@ -7,6 +7,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.lucagiorgetti.surprix.SurprixApplication
 import com.lucagiorgetti.surprix.listenerInterfaces.CallbackInterface
+import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseCallback
 import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseListCallback
 import com.lucagiorgetti.surprix.model.Set
 import com.lucagiorgetti.surprix.model.Surprise
@@ -46,9 +47,13 @@ class MissingListDao(username: String?) {
         collectionDao.removeMissingFromCollection(surpId)
     }
 
-    fun getMissingList(listen: CallbackInterface<Surprise>) {
-        missingRef.orderByValue().addValueEventListener(object : ValueEventListener {
+    fun getMissingList(listen: FirebaseCallback<Surprise>) {
+        listen.onStart()
+
+        missingRef.orderByValue().addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
+                listen.onNewData()
+
                 if (dataSnapshot.exists()) {
                     for (d in dataSnapshot.children) {
                         val surpriseId = if (d.key != null) d.key else ""
@@ -73,7 +78,7 @@ class MissingListDao(username: String?) {
     fun getMissingOwnerOtherSurprises(ownerUsername: String?, listen: FirebaseListCallback<Surprise>) {
         listen.onStart()
         val surprises = ArrayList<Surprise>()
-        missingRef.addValueEventListener(object : ValueEventListener {
+        missingRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()) {
                     for (d in dataSnapshot.children) {

@@ -79,14 +79,14 @@ class MissingListFragment : BaseSurpriseListFragment() {
             }
         })
         missingListViewModel!!.missingSurprises.observe(viewLifecycleOwner) { missingList: MutableList<Surprise>? ->
-            emptyList!!.visibility = if (missingList!!.isEmpty()) View.VISIBLE else View.GONE
             mAdapter!!.submitList(missingList)
-            mAdapter!!.setFilterableList(missingList)
+            mAdapter!!.setFilterableList(missingList!!)
+            mAdapter!!.notifyDataSetChanged()
 
             if (mAdapter!!.itemCount > 0) {
                 setTitle(getString(R.string.missings) + " (" + mAdapter!!.itemCount + ")")
                 chipFilters = ChipFilters()
-                chipFilters!!.initBySurprises(missingList)
+                chipFilters!!.initBySurprises(missingList!!)
             } else {
                 setTitle(getString(R.string.missings))
                 //fab.setVisibility(View.GONE);
@@ -98,6 +98,10 @@ class MissingListFragment : BaseSurpriseListFragment() {
                 showLoading()
             } else {
                 hideLoading()
+
+                if(mAdapter!!.itemCount <= 0){
+                    emptyList!!.visibility = View.VISIBLE
+                }
                 swipeRefreshLayout!!.isRefreshing = false
             }
         }
@@ -142,8 +146,6 @@ class MissingListFragment : BaseSurpriseListFragment() {
                 }
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
-
-
     }
 
     override fun loadData() {
