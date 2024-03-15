@@ -22,6 +22,8 @@ class Set {
         private set
     var producer_color: String? = null
         private set
+    var thanks_to: String? = null
+        private set
     var nation: String? = null
         private set
     var img_path: String? = null
@@ -30,6 +32,7 @@ class Set {
         private set
     var isEffectiveCode = true
         private set
+
 
     constructor(name: String?, code: String, year: Year, producer: Producer, nation: String?, img_path: String?, category: String?) {
         this.name = name

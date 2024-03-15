@@ -30,10 +30,10 @@ abstract class BaseSurpriseListFragment : ZoomImageFragment() {
         if (root == null) {
             root = inflater.inflate(R.layout.fragment_surprise_list, container, false)
         }
-        emptyList = root!!.findViewById(R.id.double_empty_list)
-        val progress = root!!.findViewById<ProgressBar>(R.id.double_loading)
+        emptyList = root!!.findViewById(R.id.surprise_empty_list)
+        val progress = root!!.findViewById<ProgressBar>(R.id.surprise_loading)
         setProgressBar(progress)
-        val recyclerView = root!!.findViewById<RecyclerView>(R.id.double_recycler)
+        val recyclerView = root!!.findViewById<RecyclerView>(R.id.surprise_recycler)
         recyclerView.setHasFixedSize(true)
         val layoutManager: RecyclerView.LayoutManager = GridLayoutManager(context, SystemUtils.getColumnsNumber(recyclerView))
         recyclerView.layoutManager = layoutManager

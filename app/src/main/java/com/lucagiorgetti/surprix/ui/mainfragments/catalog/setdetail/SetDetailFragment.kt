@@ -27,8 +27,13 @@ class SetDetailFragment : BaseSetDetailFragment() {
         if (arguments != null) {
             setId = SetDetailFragmentArgs.fromBundle(requireArguments()).setId
             val setName = SetDetailFragmentArgs.fromBundle(requireArguments()).setName
+            val setThanks = SetDetailFragmentArgs.fromBundle(requireArguments()).setThanks
             navigationMode = SetDetailFragmentArgs.fromBundle(requireArguments()).navigationMode
             setTitle(setName)
+
+            hAdapter = SetDetailHeaderAdapter()
+            hAdapter!!.setThanksTo(setThanks)
+
             when (navigationMode) {
                 CatalogNavigationMode.CATALOG -> {
                     val finalSetId = setId!!

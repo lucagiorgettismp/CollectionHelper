@@ -51,6 +51,9 @@
         <argument
             android:name="navigation_mode"
             app:argType="com.lucagiorgetti.surprix.ui.mainfragments.catalog.CatalogNavigationMode" />
+        <argument
+            android:name="set_thanks"
+            app:argType="string[]" />
     </fragment>
     <fragment
         android:id="@+id/navigation_set_list"

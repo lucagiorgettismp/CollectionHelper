@@ -56,7 +56,6 @@ class MissingListDao(username: String?) {
 
                 if (dataSnapshot.exists()) {
                     for (d in dataSnapshot.children) {
-                        val surpriseId = if (d.key != null) d.key else ""
                         SurpriseDao.getSurpriseById(object : CallbackInterface<Surprise> {
                             override fun onStart() {}
                             override fun onSuccess(surprise: Surprise) {
@@ -64,7 +63,7 @@ class MissingListDao(username: String?) {
                             }
 
                             override fun onFailure() {}
-                        }, surpriseId!!)
+                        }, d.key!!)
                     }
                 } else {
                     listen.onFailure()

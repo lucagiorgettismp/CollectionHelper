@@ -175,7 +175,9 @@ class SetListFragment : BaseSetListFragment() {
                 if (navigationMode == CatalogNavigationMode.CATALOG) {
                     sharedViewModel!!.position = position
                 }
-                val action = SetListFragmentDirections.setSelectedAction(set.id!!, set.name!!, navigationMode!!)
+
+                val thanks = set.thanks_to?.split(",")?.toTypedArray() ?: emptyArray()
+                val action = SetListFragmentDirections.setSelectedAction(set.id!!, set.name!!, navigationMode!!, thanks)
                 findNavController(view!!).navigate(action)
                 SystemUtils.closeKeyboard(activity)
             }
