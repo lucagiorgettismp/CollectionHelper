@@ -24,6 +24,7 @@ import com.lucagiorgetti.surprix.utility.dao.MissingListDao
 
 class MissingListFragment : BaseSurpriseListFragment() {
     private var missingListViewModel: MissingListViewModel? = null
+    private var skipLoadMissingsFirstTime = true
 
     override fun deleteSurprise(mAdapter: SurpriseRecyclerAdapter?, position: Int) {
         val missingListDao = MissingListDao(SurprixApplication.instance.currentUser?.username)
@@ -78,15 +79,15 @@ class MissingListFragment : BaseSurpriseListFragment() {
                 zoomImageFromThumb(imagePath, imageView, placeHolderId)
             }
         })
-        missingListViewModel!!.missingSurprises.observe(viewLifecycleOwner) { missingList: MutableList<Surprise>? ->
+        missingListViewModel!!.missingSurprises.observe(viewLifecycleOwner) { missingList: MutableList<Surprise> ->
             mAdapter!!.submitList(missingList)
-            mAdapter!!.setFilterableList(missingList!!)
+            mAdapter!!.setFilterableList(missingList)
             mAdapter!!.notifyDataSetChanged()
 
             if (mAdapter!!.itemCount > 0) {
                 setTitle(getString(R.string.missings) + " (" + mAdapter!!.itemCount + ")")
                 chipFilters = ChipFilters()
-                chipFilters!!.initBySurprises(missingList!!)
+                chipFilters!!.initBySurprises(missingList)
             } else {
                 setTitle(getString(R.string.missings))
                 //fab.setVisibility(View.GONE);
@@ -150,5 +151,15 @@ class MissingListFragment : BaseSurpriseListFragment() {
 
     override fun loadData() {
         missingListViewModel!!.loadMissingSurprises()
+    }
+
+    override fun onStart() {
+        if (skipLoadMissingsFirstTime){
+            skipLoadMissingsFirstTime = false
+        } else {
+            loadData()
+        }
+
+        super.onStart()
     }
 }

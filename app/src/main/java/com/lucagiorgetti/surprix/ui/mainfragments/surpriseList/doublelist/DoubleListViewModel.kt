@@ -3,7 +3,7 @@ package com.lucagiorgetti.surprix.ui.mainfragments.surpriseList.doublelist
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.lucagiorgetti.surprix.SurprixApplication
-import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseListCallback
+import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseCallback
 import com.lucagiorgetti.surprix.model.Surprise
 import com.lucagiorgetti.surprix.ui.BaseViewModel
 import com.lucagiorgetti.surprix.utility.dao.DoubleListDao
@@ -25,19 +25,28 @@ class DoubleListViewModel(application: Application) : BaseViewModel(application)
         }
 
     fun loadDoubleSurprises() {
-        DoubleListDao(SurprixApplication.instance.currentUser?.username).getDoubles(object : FirebaseListCallback<Surprise> {
+        val surprises: MutableList<Surprise> = ArrayList()
+
+        DoubleListDao(SurprixApplication.instance.currentUser?.username).getDoubles(object : FirebaseCallback<Surprise> {
             override fun onStart() {
                 setLoading(true)
             }
 
-            override fun onSuccess(doubleSurprises: MutableList<Surprise>) {
-                allDoubleSurprises!!.value = doubleSurprises
+            override fun onSuccess(doubleSurprises: Surprise) {
+                surprises.add(doubleSurprises)
+                allDoubleSurprises!!.value = surprises
                 setLoading(false)
             }
 
             override fun onFailure() {
-                allDoubleSurprises!!.value = null
+                allDoubleSurprises!!.value = ArrayList()
                 setLoading(false)
+            }
+
+            override fun onNewData() {
+                surprises.clear()
+                allDoubleSurprises!!.value = surprises
+
             }
         })
     }

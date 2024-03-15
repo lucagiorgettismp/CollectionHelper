@@ -3,15 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_navigation"
-    app:startDestination="@+id/missing_navigation">
+    app:startDestination="@id/missing_navigation">
 
     <include app:graph="@navigation/missing_navigation"/>
-
-    <fragment
-        android:id="@+id/navigation_double_list"
-        android:name="com.lucagiorgetti.surprix.ui.mainfragments.surpriseList.doublelist.DoubleListFragment"
-        tools:layout="@layout/fragment_surprise_list" />
-
+    <include app:graph="@navigation/double_navigation"/>
     <include app:graph="@navigation/catalog_navigation"/>
     <include app:graph="@navigation/user_navigation"/>
 </navigation>

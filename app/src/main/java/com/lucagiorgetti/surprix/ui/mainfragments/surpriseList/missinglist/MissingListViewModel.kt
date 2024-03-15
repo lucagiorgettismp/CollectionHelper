@@ -9,13 +9,13 @@ import com.lucagiorgetti.surprix.ui.BaseViewModel
 import com.lucagiorgetti.surprix.utility.dao.MissingListDao
 
 class MissingListViewModel(application: Application) : BaseViewModel(application) {
-    private var allMissingSurprises: MutableLiveData<MutableList<Surprise>?>? = null
+    private var allMissingSurprises: MutableLiveData<MutableList<Surprise>>? = null
 
     init {
         setLoading(false)
     }
 
-    val missingSurprises: MutableLiveData<MutableList<Surprise>?>
+    val missingSurprises: MutableLiveData<MutableList<Surprise>>
         get() {
             if (allMissingSurprises == null) {
                 allMissingSurprises = MutableLiveData()

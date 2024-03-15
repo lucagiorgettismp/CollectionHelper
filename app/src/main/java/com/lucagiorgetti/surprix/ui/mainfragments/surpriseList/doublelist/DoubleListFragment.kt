@@ -62,6 +62,7 @@ class DoubleListFragment : BaseSurpriseListFragment() {
     }
 
     override fun setupData() {
+        doubleListViewModel = ViewModelProvider(this)[DoubleListViewModel::class.java]
         mAdapter = SurpriseRecyclerAdapter(SurpriseListType.DOUBLES)
         mAdapter!!.setListener(object : BaseSurpriseRecyclerAdapterListener {
             override fun onSurpriseDelete(position: Int) {
@@ -72,12 +73,11 @@ class DoubleListFragment : BaseSurpriseListFragment() {
                 zoomImageFromThumb(imagePath, imageView, placeHolderId)
             }
         })
-        doubleListViewModel = ViewModelProvider(this)[DoubleListViewModel::class.java]
         doubleListViewModel!!.doubleSurprises.observe(viewLifecycleOwner) { doubleList: MutableList<Surprise> ->
-            emptyList!!.visibility = if (doubleList.isEmpty()) View.VISIBLE else View.GONE
             mAdapter!!.submitList(doubleList)
             mAdapter!!.setFilterableList(doubleList)
             mAdapter!!.notifyDataSetChanged()
+
             if (mAdapter!!.itemCount > 0) {
                 setTitle(getString(R.string.doubles) + " (" + mAdapter!!.itemCount + ")")
                 chipFilters = ChipFilters()
@@ -88,14 +88,17 @@ class DoubleListFragment : BaseSurpriseListFragment() {
         }
         doubleListViewModel!!.isLoading.observe(viewLifecycleOwner) { isLoading: Boolean ->
             if (isLoading) {
-                showLoading()
                 emptyList!!.visibility = View.GONE
+                showLoading()
             } else {
                 hideLoading()
+
+                if(mAdapter!!.itemCount <= 0){
+                    emptyList!!.visibility = View.VISIBLE
+                }
                 swipeRefreshLayout!!.isRefreshing = false
             }
         }
-        setTitle(getString(R.string.doubles))
     }
 
     override fun setupView() {
@@ -116,6 +119,7 @@ class DoubleListFragment : BaseSurpriseListFragment() {
                         return false
                     }
                 })
+                searchView!!.queryHint = getString(R.string.search)
                 searchView!!.setOnCloseListener {
                     if (mAdapter!!.itemCount > 0) {
                         setTitle(getString(R.string.doubles) + " (" + mAdapter!!.itemCount + ")")
@@ -124,7 +128,6 @@ class DoubleListFragment : BaseSurpriseListFragment() {
                     }
                     false
                 }
-                searchView!!.queryHint = getString(R.string.search)
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
@@ -137,11 +140,14 @@ class DoubleListFragment : BaseSurpriseListFragment() {
                 }
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
-
-
     }
 
     override fun loadData() {
         doubleListViewModel!!.loadDoubleSurprises()
+    }
+
+    override fun onStart() {
+        loadData()
+        super.onStart()
     }
 }
