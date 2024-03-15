@@ -44,13 +44,6 @@
         <item name="colorControlNormal">@color/white</item>
     </style>
 
-    <style name="Theme.Surprix.SplashScreenTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:windowBackground">@drawable/splash_screen</item>
-        <!-- Optional, on Android 5+ you can modify the colorPrimaryDark color to match the windowBackground color for further branding-->
-        <!-- <item name="colorPrimaryDark">@android:color/white</item> -->
-    </style>
-
     <style name="InvisibleProgress">
         <item name="android:visibility">gone</item>
     </style>
@@ -89,4 +82,18 @@
         <item name="cornerSize">20dp</item>
     </style>
 
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        <!-- Set the splash screen background, animated icon, and animation duration. -->
+        <item name="windowSplashScreenBackground">@color/surprixBlue</item>
+
+        <!-- Use windowSplashScreenAnimatedIcon to add either a drawable or an
+             animated drawable. One of these is required. -->
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_logo</item>
+        <!-- Required for animated icons -->
+        <!-- <item name="windowSplashScreenAnimationDuration">200</item> -->
+
+        <!-- Set the theme of the Activity that directly follows your splash screen. -->
+        <!-- Required -->
+        <item name="postSplashScreenTheme">@style/Theme.Surprix</item>
+    </style>
 </resources>

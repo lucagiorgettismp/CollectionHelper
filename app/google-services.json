@@ -8,18 +8,34 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:500151287055:android:3f47ee9ee1c8e935",
+        "mobilesdk_app_id": "1:500151287055:android:582d6dff994aae75",
         "android_client_info": {
-          "package_name": "com.lucagiorgetti.collectionhelper"
+          "package_name": "com.lucagiorgetti.surprix"
         }
       },
       "oauth_client": [
         {
-          "client_id": "500151287055-bq4psgqc31s8ebqpobfmjkgqg20cabev.apps.googleusercontent.com",
+          "client_id": "500151287055-9bfc22ikerphe068lfte9bsotm1fpukn.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.lucagiorgetti.collectionhelper",
-            "certificate_hash": "5441ec322d8d8e05f1b538a9438d62172cd20781"
+            "package_name": "com.lucagiorgetti.surprix",
+            "certificate_hash": "33365bd47affb3365ce537300ceffceec4f8c070"
+          }
+        },
+        {
+          "client_id": "500151287055-a5v387r9hfj6dgudhqiigmm9k9ja31sm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lucagiorgetti.surprix",
+            "certificate_hash": "e59566bfcfe1e58070bd67ab95ccfc8bafccddcc"
+          }
+        },
+        {
+          "client_id": "500151287055-ugp5lbrsd8kmmi1isio5oraoq8hh0u57.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lucagiorgetti.surprix",
+            "certificate_hash": "1abdd54d93e397ce73ad191eec796a592d32113f"
           }
         },
         {
@@ -29,39 +45,32 @@
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyByiINW2Li-37qatLObT1IpUU7Cqsx9Wso"
+          "current_key": "AIzaSyAfteNud9lVzi7_GrZwGIBXfbTbI7GSSHw"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
+            {
+              "client_id": "500151287055-r40li7rdm5ta8illnlpgjjv7rbqfh59a.apps.googleusercontent.com",
+              "client_type": 3
+            },
             {
               "client_id": "500151287055-m03tli5jrep2l8o12p2md1g021blpl5p.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
                 "bundle_id": "com.lucagiorgetti.Surprix"
               }
-            },
-            {
-              "client_id": "500151287055-r40li7rdm5ta8illnlpgjjv7rbqfh59a.apps.googleusercontent.com",
-              "client_type": 3
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:500151287055:android:582d6dff994aae75",
+        "mobilesdk_app_id": "1:500151287055:android:09480ae41741f96b",
         "android_client_info": {
-          "package_name": "com.lucagiorgetti.surprix"
+          "package_name": "com.lucagiorgetti.surprixtool"
         }
       },
       "oauth_client": [
@@ -72,19 +81,24 @@
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyByiINW2Li-37qatLObT1IpUU7Cqsx9Wso"
+          "current_key": "AIzaSyAfteNud9lVzi7_GrZwGIBXfbTbI7GSSHw"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
+          "other_platform_oauth_client": [
+            {
+              "client_id": "500151287055-r40li7rdm5ta8illnlpgjjv7rbqfh59a.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "500151287055-m03tli5jrep2l8o12p2md1g021blpl5p.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.lucagiorgetti.Surprix"
+              }
+            }
+          ]
         }
       }
     }

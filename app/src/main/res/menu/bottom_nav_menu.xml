@@ -6,7 +6,7 @@
         android:title="@string/title_missing_list" />
 
     <item
-        android:id="@+id/navigation_double_list"
+        android:id="@+id/double_navigation"
         android:icon="@drawable/ic_doubles"
         android:title="@string/title_double_list" />
 

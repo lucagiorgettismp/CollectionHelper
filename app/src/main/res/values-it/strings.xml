@@ -172,4 +172,5 @@
     <string name="messico">Messico</string>
     <string name="sud_africa">Sud Africa</string>
     <string name="auth_failed_other_provider">Errore di autenticazione: l\'email è stata utilizzata con un altro metodo di autenticazione</string>
+    <string name="thanks_to">"Grazie a: %s"</string>
 </resources>
