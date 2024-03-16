@@ -18,22 +18,22 @@ class SetDetailHeaderAdapter:  RecyclerView.Adapter<SetDetailHeaderAdapter.SetDe
     }
 
     override fun onBindViewHolder(holder: SetDetailHeaderViewHolder, position: Int) {
-        holder.bind(thanksTo!!)
+        holder.bind(thanksTo)
     }
 
     override fun getItemCount(): Int {
         return 1
     }
 
-    fun setThanksTo(thanks: Array<String>){
+    fun setThanksTo(thanks: Array<String>?){
         thanksTo = thanks
     }
 
     class SetDetailHeaderViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         private val vThanksTo: TextView
 
-        fun bind(thanks: Array<String>) {
-            if(!thanks.isEmpty()){
+        fun bind(thanks: Array<String>?) {
+            if(!thanks.isNullOrEmpty()){
                 vThanksTo.text = String.format(
                     SurprixApplication.instance.getString(R.string.thanks_to),
                     thanks.joinToString(", ")

@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.lucagiorgetti.surprix.R
+import com.lucagiorgetti.surprix.model.Surprise
 import com.lucagiorgetti.surprix.ui.StarRank
 import com.lucagiorgetti.surprix.utility.SystemUtils
 import java.util.Locale
@@ -18,9 +19,9 @@ import java.util.Locale
  *
  * Created by Luca on 28/10/2017.
  */
-class CatalogSetDetailRecyclerAdapter(private val listener: CatalogSetDetailClickListener) : BaseSetDetailAdapter<CatalogSetDetailRecyclerAdapter.SetDetailViewHolder>() {
-    private var items: List<CollectionSurprise>? = null
-    fun getItemAtPosition(position: Int): CollectionSurprise {
+class SetDetailRecyclerAdapter(private val listener: SetDetailClickListener) : RecyclerView.Adapter<SetDetailRecyclerAdapter.SetDetailViewHolder>() {
+    private var items: List<Surprise>? = null
+    fun getItemAtPosition(position: Int): Surprise {
         return items!![position]
     }
 
@@ -38,18 +39,18 @@ class CatalogSetDetailRecyclerAdapter(private val listener: CatalogSetDetailClic
     }
 
     override fun onBindViewHolder(holder: SetDetailViewHolder, position: Int) {
-        val s = items!![position].surprise
-        if (s.isSet_effective_code) {
-            holder.vDescription.text = String.format(Locale.getDefault(), "%s - %s", s.code, s.description)
+        val surprise = items!![position]
+        if (surprise.isSet_effective_code) {
+            holder.vDescription.text = String.format(Locale.getDefault(), "%s - %s", surprise.code, surprise.description)
         } else {
-            holder.vDescription.text = s.description
+            holder.vDescription.text = surprise.description
         }
-        val path = s.img_path!!
+        val path = surprise.img_path!!
         SystemUtils.loadImage(path, holder.vImage, R.drawable.ic_logo_shape_primary)
-        val rarity = s.intRarity
+        val rarity = surprise.intRarity
         holder.vStarRank.setValue(rarity)
-        holder.vAddMissing.setOnClickListener { listener.onSurpriseAddedToMissings(s) }
-        holder.vAddDouble.setOnClickListener { listener.onSurpriseAddedToDoubles(s) }
+        holder.vAddMissing.setOnClickListener { listener.onSurpriseAddedToMissings(surprise) }
+        holder.vAddDouble.setOnClickListener { listener.onSurpriseAddedToDoubles(surprise) }
         holder.vImage.setOnClickListener { listener.onImageClicked(path, holder.vImage, R.drawable.ic_logo_shape_primary) }
     }
 
@@ -59,7 +60,7 @@ class CatalogSetDetailRecyclerAdapter(private val listener: CatalogSetDetailClic
         } else items!!.size
     }
 
-    override fun setSurprises(surprises: List<CollectionSurprise>) {
+    fun setSurprises(surprises: List<Surprise>) {
         items = surprises
     }
 

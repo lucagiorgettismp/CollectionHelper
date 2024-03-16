@@ -73,19 +73,25 @@ class DoubleListFragment : BaseSurpriseListFragment() {
                 zoomImageFromThumb(imagePath, imageView, placeHolderId)
             }
         })
-        doubleListViewModel!!.doubleSurprises.observe(viewLifecycleOwner) { doubleList: MutableList<Surprise> ->
+        doubleListViewModel!!.getDoubleSurprises().observe(viewLifecycleOwner) { doubleList: MutableList<Surprise> ->
             mAdapter!!.submitList(doubleList)
             mAdapter!!.setFilterableList(doubleList)
             mAdapter!!.notifyDataSetChanged()
 
             if (mAdapter!!.itemCount > 0) {
-                setTitle(getString(R.string.doubles) + " (" + mAdapter!!.itemCount + ")")
                 chipFilters = ChipFilters()
                 chipFilters!!.initBySurprises(doubleList)
-            } else {
-                setTitle(getString(R.string.doubles))
             }
         }
+
+        doubleListViewModel!!.doublesSurprisesCount.observe(viewLifecycleOwner){
+            if (it == null){
+                setTitle(getString(R.string.doubles))
+            } else {
+                setTitle(getString(R.string.doubles) + " (" + it + ")")
+            }
+        }
+
         doubleListViewModel!!.isLoading.observe(viewLifecycleOwner) { isLoading: Boolean ->
             if (isLoading) {
                 emptyList!!.visibility = View.GONE

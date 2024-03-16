@@ -84,14 +84,14 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
+            <!--<TextView
                 style="@style/TextAppearance.Surprix.Headline5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:text="@string/title_my_collection"
                 android:textAlignment="center"
-                android:textColor="@color/cardTitle" />
+                android:textColor="@color/cardTitle" />-->
         </androidx.cardview.widget.CardView>
 
         <com.google.android.material.button.MaterialButton

@@ -1,10 +1,7 @@
 package com.lucagiorgetti.surprix.ui.mainfragments.filter
 
-import com.lucagiorgetti.surprix.R
-import com.lucagiorgetti.surprix.SurprixApplication
 import com.lucagiorgetti.surprix.model.Categories
 import com.lucagiorgetti.surprix.model.Surprise
-import com.lucagiorgetti.surprix.ui.mainfragments.catalog.sets.CatalogSet
 
 class ChipFilters {
     private var filters: HashMap<FilterType, HashMap<String?, ChipFilter?>>? = null
@@ -29,19 +26,6 @@ class ChipFilters {
         filters!![FilterType.YEAR] = years
     }
 
-    fun initByCatalogSets(sets: List<CatalogSet?>?) {
-        val completionValues = HashMap<String?, ChipFilter?>()
-        for (set in sets!!) {
-            val completionString = if (set!!.hasMissing()) COMPLETION_NON_COMPLETED else COMPLETION_COMPLETED
-            val label = if (set.hasMissing()) SurprixApplication.instance.getString(R.string.incomplete) else SurprixApplication.instance.getString(R.string.complete)
-            if (!completionValues.containsKey(completionString)) {
-                completionValues[completionString] = ChipFilter(label, completionString)
-            }
-        }
-        filters = HashMap()
-        filters!![FilterType.COMPLETION] = completionValues
-    }
-
     fun getFiltersByType(type: FilterType): HashMap<String?, ChipFilter?> {
         return filters!![type]!!
     }
@@ -56,10 +40,5 @@ class ChipFilters {
                 chipFilter?.isSelected = true
             }
         }
-    }
-
-    companion object {
-        const val COMPLETION_COMPLETED = "complete"
-        const val COMPLETION_NON_COMPLETED = "non_complete"
     }
 }

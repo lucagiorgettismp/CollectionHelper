@@ -44,7 +44,7 @@
                 android:id="@+id/clickable_zone"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="65"
+                android:layout_weight="100"
                 android:orientation="vertical">
 
                 <TextView
@@ -66,27 +66,6 @@
                     android:textColor="@color/titleColor" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="35"
-                android:gravity="center_vertical|end"
-                android:orientation="vertical">
-
-                <TextView
-                    style="@style/TextAppearance.Surprix.Body1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/my_collection"
-                    android:layout_marginStart="4dp"
-                    android:textAlignment="textEnd" />
-
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/my_collection_switch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="true" />
-            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 

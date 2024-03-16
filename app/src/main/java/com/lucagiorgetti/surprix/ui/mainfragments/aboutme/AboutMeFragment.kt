@@ -44,7 +44,7 @@ class AboutMeFragment : BaseFragment() {
         val menuHost:MenuHost = requireActivity()
         menuHost.addMenuProvider(object: MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.my_collection_menu, menu)
+                menuInflater.inflate(R.menu.about_me_menu, menu)
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {

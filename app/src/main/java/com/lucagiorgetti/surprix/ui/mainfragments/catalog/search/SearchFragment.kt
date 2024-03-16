@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.lucagiorgetti.surprix.R
 import com.lucagiorgetti.surprix.model.Set
 import com.lucagiorgetti.surprix.model.Surprise
-import com.lucagiorgetti.surprix.ui.mainfragments.catalog.CatalogNavigationMode
 import com.lucagiorgetti.surprix.ui.mainfragments.surpriseList.SurpriseListType
 import com.lucagiorgetti.surprix.ui.mainfragments.surpriseList.SurpriseRecyclerAdapter
 import com.lucagiorgetti.surprix.utility.BaseFragment
@@ -101,7 +100,7 @@ class SearchFragment : BaseFragment() {
                     else -> {}
                 }
                 searchView!!.setQuery("", false)
-                val action = SearchFragmentDirections.onSearchedItemClick(setId!!, setName!!, CatalogNavigationMode.CATALOG)
+                val action = SearchFragmentDirections.onSearchedItemClick(setId!!, setName!!)
                 findNavController(view!!).navigate(action)
                 SystemUtils.closeKeyboard(activity)
             }

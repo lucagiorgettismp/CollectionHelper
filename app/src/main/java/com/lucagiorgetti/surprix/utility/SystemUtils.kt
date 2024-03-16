@@ -79,16 +79,19 @@ object SystemUtils {
     }
 
     fun firstTimeOpeningApp() {
-        isSetHintDisplayed = false
+        setHintDisplayed(false)
     }
 
-    var isSetHintDisplayed: Boolean
-        get() = PreferenceManager.getDefaultSharedPreferences(SurprixApplication.instance.applicationContext).getBoolean(SET_HINT_DISPLAYED, true)
-        set(displayed) {
-            val edit = PreferenceManager.getDefaultSharedPreferences(SurprixApplication.instance.applicationContext).edit()
-            edit.putBoolean(SET_HINT_DISPLAYED, displayed)
-            edit.apply()
-        }
+    fun setHintDisplayed(displayed: Boolean){
+        val edit = PreferenceManager.getDefaultSharedPreferences(SurprixApplication.instance.applicationContext).edit()
+        edit.putBoolean(SET_HINT_DISPLAYED, displayed)
+        edit.apply()
+    }
+
+    fun getHintDisplayed() : Boolean{
+        return PreferenceManager.getDefaultSharedPreferences(SurprixApplication.instance.applicationContext).getBoolean(SET_HINT_DISPLAYED, true)
+    }
+
     var darkThemePreference: Boolean
         get() = PreferenceManager.getDefaultSharedPreferences(SurprixApplication.instance.applicationContext).getBoolean(THEME_DARK_SELECTED, false)
         set(darkEnabled) {

@@ -7,10 +7,10 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.lucagiorgetti.surprix.SurprixApplication
 import com.lucagiorgetti.surprix.listenerInterfaces.CallbackInterface
-import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseCallback
 import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseListCallback
 import com.lucagiorgetti.surprix.model.Set
 import com.lucagiorgetti.surprix.model.Surprise
+import com.lucagiorgetti.surprix.ui.mainfragments.surpriseList.SurpiseListFirebaseCallback
 import java.util.Objects
 
 class MissingListDao(username: String?) {
@@ -18,7 +18,6 @@ class MissingListDao(username: String?) {
     private val userDoubles: DatabaseReference
     private val years: DatabaseReference
     private val sets: DatabaseReference
-    private val collectionDao: CollectionDao
 
     init {
         val reference = SurprixApplication.instance.databaseReference!!
@@ -27,7 +26,6 @@ class MissingListDao(username: String?) {
         userDoubles = reference.child("user_doubles")
         years = reference.child("years")
         sets = reference.child("sets")
-        collectionDao = CollectionDao(username)
     }
 
     fun addMissing(surpId: String?) {
@@ -35,7 +33,6 @@ class MissingListDao(username: String?) {
             override fun onStart() {}
             override fun onSuccess(surprise: Surprise) {
                 missingRef.child(surpId!!).setValue(if (surprise.isSet_effective_code) surprise.code else "ZZZ_$surpId")
-                collectionDao.addMissingInCollectionSet(surpId)
             }
 
             override fun onFailure() {}
@@ -44,10 +41,9 @@ class MissingListDao(username: String?) {
 
     fun removeMissing(surpId: String?) {
         missingRef.child(surpId!!).setValue(null)
-        collectionDao.removeMissingFromCollection(surpId)
     }
 
-    fun getMissingList(listen: FirebaseCallback<Surprise>) {
+    fun getMissingList(listen: SurpiseListFirebaseCallback) {
         listen.onStart()
 
         missingRef.orderByValue().addListenerForSingleValueEvent(object : ValueEventListener {
@@ -55,6 +51,7 @@ class MissingListDao(username: String?) {
                 listen.onNewData()
 
                 if (dataSnapshot.exists()) {
+                    listen.onCountDiscovered(dataSnapshot.children.count())
                     for (d in dataSnapshot.children) {
                         SurpriseDao.getSurpriseById(object : CallbackInterface<Surprise> {
                             override fun onStart() {}

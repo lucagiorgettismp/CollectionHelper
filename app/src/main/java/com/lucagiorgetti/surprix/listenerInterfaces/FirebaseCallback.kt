@@ -4,5 +4,4 @@ interface FirebaseCallback<T> {
     fun onStart()
     fun onSuccess(items: T)
     fun onFailure()
-    fun onNewData()
 }

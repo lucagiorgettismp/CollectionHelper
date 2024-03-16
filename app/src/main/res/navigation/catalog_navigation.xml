@@ -26,9 +26,6 @@
             app:exitAnim="@anim/slide_to_left"
             app:popEnterAnim="@anim/slide_from_left"
             app:popExitAnim="@anim/slide_to_right" />
-        <argument
-            android:name="navigation_mode"
-            app:argType="com.lucagiorgetti.surprix.ui.mainfragments.catalog.CatalogNavigationMode" />
     </fragment>
     <fragment
         android:id="@+id/navigation_year"
@@ -46,10 +43,7 @@
             app:enterAnim="@anim/slide_from_right"
             app:exitAnim="@anim/slide_to_left"
             app:popEnterAnim="@anim/slide_from_left"
-            app:popExitAnim="@anim/slide_to_right" />
-        <argument
-            android:name="navigation_mode"
-            app:argType="com.lucagiorgetti.surprix.ui.mainfragments.catalog.CatalogNavigationMode" />
+            app:popExitAnim="@anim/slide_to_right" />>
     </fragment>
     <fragment
         android:id="@+id/navigation_set_list"
@@ -70,9 +64,6 @@
             android:name="year_name"
             app:argType="string" />
         <argument
-            android:name="navigation_mode"
-            app:argType="com.lucagiorgetti.surprix.ui.mainfragments.catalog.CatalogNavigationMode" />
-        <argument
             android:name="producer_id"
             app:argType="string" />
     </fragment>
@@ -86,9 +77,6 @@
         <argument
             android:name="set_name"
             app:argType="string" />
-        <argument
-            android:name="navigation_mode"
-            app:argType="com.lucagiorgetti.surprix.ui.mainfragments.catalog.CatalogNavigationMode" />
     </fragment>
     <fragment
         android:id="@+id/navigation_search"

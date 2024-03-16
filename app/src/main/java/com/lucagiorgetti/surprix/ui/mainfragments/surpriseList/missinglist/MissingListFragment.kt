@@ -79,20 +79,25 @@ class MissingListFragment : BaseSurpriseListFragment() {
                 zoomImageFromThumb(imagePath, imageView, placeHolderId)
             }
         })
-        missingListViewModel!!.missingSurprises.observe(viewLifecycleOwner) { missingList: MutableList<Surprise> ->
+        missingListViewModel!!.getMissingSurprises().observe(viewLifecycleOwner) { missingList: MutableList<Surprise> ->
             mAdapter!!.submitList(missingList)
             mAdapter!!.setFilterableList(missingList)
             mAdapter!!.notifyDataSetChanged()
 
             if (mAdapter!!.itemCount > 0) {
-                setTitle(getString(R.string.missings) + " (" + mAdapter!!.itemCount + ")")
                 chipFilters = ChipFilters()
                 chipFilters!!.initBySurprises(missingList)
-            } else {
-                setTitle(getString(R.string.missings))
-                //fab.setVisibility(View.GONE);
             }
         }
+
+        missingListViewModel!!.missingSurpriseCount.observe(viewLifecycleOwner){
+            if (it == null){
+                setTitle(getString(R.string.missings))
+            } else {
+                setTitle(getString(R.string.missings) + " (" + it + ")")
+            }
+        }
+
         missingListViewModel!!.isLoading.observe(viewLifecycleOwner) { isLoading: Boolean ->
             if (isLoading) {
                 emptyList!!.visibility = View.GONE

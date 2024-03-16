@@ -10,6 +10,7 @@ import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseCallback
 import com.lucagiorgetti.surprix.listenerInterfaces.FirebaseListCallback
 import com.lucagiorgetti.surprix.model.Surprise
 import com.lucagiorgetti.surprix.model.User
+import com.lucagiorgetti.surprix.ui.mainfragments.surpriseList.SurpiseListFirebaseCallback
 import java.util.Objects
 
 class DoubleListDao(private val username: String?) {
@@ -65,13 +66,14 @@ class DoubleListDao(private val username: String?) {
         })
     }
 
-    fun getDoubles(listen: FirebaseCallback<Surprise>) {
+    fun getDoubles(listen: SurpiseListFirebaseCallback) {
         listen.onStart()
 
         userDoubles.orderByValue().addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
                 if (dataSnapshot.exists()) {
+                    listen.onCountDiscovered(dataSnapshot.children.count())
                     for (d in dataSnapshot.children) {
                         SurpriseDao.getSurpriseById(object : CallbackInterface<Surprise> {
                             override fun onStart() {}
