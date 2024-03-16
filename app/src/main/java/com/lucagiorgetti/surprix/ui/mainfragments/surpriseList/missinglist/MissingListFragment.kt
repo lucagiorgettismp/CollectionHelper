@@ -37,13 +37,15 @@ class MissingListFragment : BaseSurpriseListFragment() {
         } else {
             mAdapter.notifyItemRemoved(position)
         }
+
+        setMissingTitle(mAdapter.itemCount)
+
         if (mAdapter.itemCount > 0) {
             emptyList!!.visibility = View.GONE
-            setTitle(getString(R.string.missings) + " (" + mAdapter.itemCount + ")")
         } else {
             emptyList!!.visibility = View.VISIBLE
-            setTitle(getString(R.string.missings))
         }
+
         if (query != null && query.isNotEmpty()) {
             Snackbar.make(requireView(), SurprixApplication.instance.getString(R.string.missing_removed), Snackbar.LENGTH_LONG).show()
         } else {
@@ -52,12 +54,11 @@ class MissingListFragment : BaseSurpriseListFragment() {
                         missingListDao.addMissing(surprise.id)
                         mAdapter.addFilterableItem(surprise, position)
                         mAdapter.notifyItemInserted(position)
+                        setMissingTitle(mAdapter.itemCount)
                         if (mAdapter.itemCount > 0) {
                             emptyList!!.visibility = View.GONE
-                            setTitle(getString(R.string.missings) + " (" + mAdapter.itemCount + ")")
                         } else {
                             emptyList!!.visibility = View.VISIBLE
-                            setTitle(getString(R.string.missings))
                         }
                     }.show()
         }
@@ -91,11 +92,7 @@ class MissingListFragment : BaseSurpriseListFragment() {
         }
 
         missingListViewModel!!.missingSurpriseCount.observe(viewLifecycleOwner){
-            if (it == null){
-                setTitle(getString(R.string.missings))
-            } else {
-                setTitle(getString(R.string.missings) + " (" + it + ")")
-            }
+            setMissingTitle(it)
         }
 
         missingListViewModel!!.isLoading.observe(viewLifecycleOwner) { isLoading: Boolean ->
@@ -133,11 +130,7 @@ class MissingListFragment : BaseSurpriseListFragment() {
                 })
                 searchView!!.queryHint = getString(R.string.search)
                 searchView!!.setOnCloseListener {
-                    if (mAdapter!!.itemCount > 0) {
-                        setTitle(getString(R.string.missings) + " (" + mAdapter!!.itemCount + ")")
-                    } else {
-                        setTitle(getString(R.string.missings))
-                    }
+                    setMissingTitle(missingListViewModel!!.missingSurpriseCount.value)
                     false
                 }
             }
@@ -166,5 +159,13 @@ class MissingListFragment : BaseSurpriseListFragment() {
         }
 
         super.onStart()
+    }
+
+    private fun setMissingTitle(count: Int?){
+        if (count == null){
+            setTitle(getString(R.string.missings))
+        } else {
+            setTitle(getString(R.string.missings) + " (" + count + ")")
+        }
     }
 }

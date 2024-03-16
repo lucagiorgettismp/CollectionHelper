@@ -63,8 +63,12 @@ class SetListFragment : BaseFragment() {
             yearId = SetListFragmentArgs.fromBundle(requireArguments()).yearId
             producerId = SetListFragmentArgs.fromBundle(requireArguments()).producerId
             yearName = SetListFragmentArgs.fromBundle(requireArguments()).yearName
+        }
+
+        if (!SystemUtils.getHintDisplayed()) {
             showHintAlert()
         }
+
         super.onCreate(savedInstanceState)
     }
 

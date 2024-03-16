@@ -35,12 +35,11 @@ class DoubleListFragment : BaseSurpriseListFragment() {
             mAdapter.notifyItemRemoved(position)
         }
         doubleListDao.removeDouble(surprise.id)
+        setDoublesTitle(mAdapter.itemCount)
         if (mAdapter.itemCount > 0) {
             emptyList!!.visibility = View.GONE
-            setTitle(getString(R.string.doubles) + " (" + mAdapter.itemCount + ")")
         } else {
             emptyList!!.visibility = View.VISIBLE
-            setTitle(getString(R.string.doubles))
         }
         if (query != null && query.isNotEmpty()) {
             Snackbar.make(requireView(), SurprixApplication.instance.getString(R.string.double_removed), Snackbar.LENGTH_LONG).show()
@@ -50,11 +49,10 @@ class DoubleListFragment : BaseSurpriseListFragment() {
                         doubleListDao.addDouble(surprise.id)
                         mAdapter.addFilterableItem(surprise, position)
                         mAdapter.notifyItemInserted(position)
+                        setDoublesTitle(mAdapter.itemCount)
                         if (mAdapter.itemCount > 0) {
-                            setTitle(getString(R.string.doubles) + " (" + mAdapter.itemCount + ")")
                             emptyList!!.visibility = View.GONE
                         } else {
-                            setTitle(getString(R.string.doubles))
                             emptyList!!.visibility = View.VISIBLE
                         }
                     }.show()
@@ -85,11 +83,7 @@ class DoubleListFragment : BaseSurpriseListFragment() {
         }
 
         doubleListViewModel!!.doublesSurprisesCount.observe(viewLifecycleOwner){
-            if (it == null){
-                setTitle(getString(R.string.doubles))
-            } else {
-                setTitle(getString(R.string.doubles) + " (" + it + ")")
-            }
+            setDoublesTitle(it)
         }
 
         doubleListViewModel!!.isLoading.observe(viewLifecycleOwner) { isLoading: Boolean ->
@@ -127,11 +121,7 @@ class DoubleListFragment : BaseSurpriseListFragment() {
                 })
                 searchView!!.queryHint = getString(R.string.search)
                 searchView!!.setOnCloseListener {
-                    if (mAdapter!!.itemCount > 0) {
-                        setTitle(getString(R.string.doubles) + " (" + mAdapter!!.itemCount + ")")
-                    } else {
-                        setTitle(getString(R.string.doubles))
-                    }
+                    setDoublesTitle(doubleListViewModel!!.doublesSurprisesCount.value)
                     false
                 }
             }
@@ -155,5 +145,13 @@ class DoubleListFragment : BaseSurpriseListFragment() {
     override fun onStart() {
         loadData()
         super.onStart()
+    }
+
+    private fun setDoublesTitle(count: Int?){
+        if (count == null){
+            setTitle(getString(R.string.doubles))
+        } else {
+            setTitle(getString(R.string.doubles) + " (" + count + ")")
+        }
     }
 }
