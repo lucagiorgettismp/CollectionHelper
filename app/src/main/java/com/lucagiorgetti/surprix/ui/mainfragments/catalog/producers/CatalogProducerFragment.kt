@@ -32,7 +32,7 @@ class CatalogProducerFragment : BaseFragment() {
         emptyList = root.findViewById(R.id.empty_list)
         emptyListText = root.findViewById(R.id.empty_list_text)
         recyclerView = root.findViewById(R.id.catalog_recycler)
-        recyclerView!!.setHasFixedSize(true)
+        //recyclerView!!.setHasFixedSize(true)
         val layoutManager: RecyclerView.LayoutManager = GridLayoutManager(context, SystemUtils.getColumnsNumber(recyclerView))
         recyclerView!!.layoutManager = layoutManager
         mAdapter = ProducerRecyclerAdapter()

@@ -11,6 +11,7 @@ import androidx.navigation.Navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lucagiorgetti.surprix.R
+import com.lucagiorgetti.surprix.listenerInterfaces.CallbackInterface
 import com.lucagiorgetti.surprix.model.Set
 import com.lucagiorgetti.surprix.model.Surprise
 import com.lucagiorgetti.surprix.ui.mainfragments.surpriseList.SurpriseListType
@@ -18,6 +19,7 @@ import com.lucagiorgetti.surprix.ui.mainfragments.surpriseList.SurpriseRecyclerA
 import com.lucagiorgetti.surprix.utility.BaseFragment
 import com.lucagiorgetti.surprix.utility.RecyclerItemClickListener
 import com.lucagiorgetti.surprix.utility.SystemUtils
+import com.lucagiorgetti.surprix.utility.dao.SetDao
 
 class SearchFragment : BaseFragment() {
     private var mode: SearchMode? = null
@@ -87,21 +89,32 @@ class SearchFragment : BaseFragment() {
                 when (mode) {
                     SearchMode.SURPRISE -> {
                         val surprise = searchSurpriseRecyclerAdapter!!.getItemAtPosition(position)!!
+                        SetDao.getSetById(surprise.set_id, object: CallbackInterface<Set>{
+                            override fun onStart() {
+                                TODO("Not yet implemented")
+                            }
+
+                            override fun onFailure() {
+                                TODO("Not yet implemented")
+                            }
+
+                            override fun onSuccess(set:Set) {
+                                openSet(view!!, set.id!!, set.name!!, set.thanks_to?.split(",")?.toTypedArray())
+                            }
+
+                        });
                         setId = surprise.set_id
                         setName = surprise.set_name
                     }
 
                     SearchMode.SET -> {
                         val set = searchSetRecyclerAdapter!!.getItemAtPosition(position)!!
-                        setId = set.id
-                        setName = set.name
+                        openSet(view!!, set.id!!, set.name!!, set.thanks_to?.split(",")?.toTypedArray())
                     }
 
                     else -> {}
                 }
                 searchView!!.setQuery("", false)
-                val action = SearchFragmentDirections.onSearchedItemClick(setId!!, setName!!)
-                findNavController(view!!).navigate(action)
                 SystemUtils.closeKeyboard(activity)
             }
 
@@ -110,6 +123,11 @@ class SearchFragment : BaseFragment() {
         )
         setTitle(getString(R.string.search_title))
         return root
+    }
+
+    private fun openSet(view: View, setId: String, setName: String, thanksTo: Array<String>?) {
+        val action = SearchFragmentDirections.onSearchedItemClick(setId, setName, thanksTo)
+        findNavController(view).navigate(action)
     }
 
     private fun changeMode(mode: SearchMode) {

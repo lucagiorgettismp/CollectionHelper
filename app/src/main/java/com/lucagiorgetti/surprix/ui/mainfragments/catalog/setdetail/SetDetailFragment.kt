@@ -56,7 +56,10 @@ class SetDetailFragment : ZoomImageFragment()  {
             setTitle(setName)
 
             hAdapter = SetDetailHeaderAdapter()
-            hAdapter!!.setThanksTo(setThanks)
+
+            if (setThanks != null){
+                hAdapter!!.setThanksTo(setThanks)
+            }
 
             mAdapter =
                 SetDetailRecyclerAdapter(object : SetDetailClickListener {

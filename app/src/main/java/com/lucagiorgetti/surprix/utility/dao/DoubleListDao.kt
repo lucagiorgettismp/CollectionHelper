@@ -50,8 +50,10 @@ class DoubleListDao(private val username: String?) {
                         UserDao.getUserByUsername(d.key, object : CallbackInterface<User?> {
                             override fun onStart() {}
                             override fun onSuccess(user: User?) {
-                                owners.add(user!!)
-                                listen.onSuccess(owners)
+                                if (user != null){
+                                    owners.add(user)
+                                    listen.onSuccess(owners)
+                                }
                             }
 
                             override fun onFailure() {}
